@@ -1157,6 +1157,34 @@ class BxDolMetatags extends BxDolFactory implements iBxDolFactoryObject
             return 0;
         }
 
+        /**
+         * @hooks
+         * @hookdef hook-meta_keyword-before_add_multiple 'meta_keyword', 'before_add_multiple' - hook to override meta keywords before it will be processed
+         * - $unit_name - equals `meta_keyword` or `meta_mention` 
+         * - $action - equals `before_add_multiple`
+         * - $object_id - content id 
+         * - $sender_id - currently logged in profile id
+         * - $extra_params - array of additional params with the following array keys:
+         *      - `metas` - [array] array of keyword/mentions, can be overridden in hook processing
+         *      - `text` - [string] original string with keywords
+         *      - `content_id` - [int] content id
+         *      - `object` - [string] metatags object name
+         * @hook @ref hook-meta_keyword-before_add_multiple
+         */
+        /**
+         * @hooks
+         * @hookdef hook-meta_keyword-before_add_multiple 'meta_keyword', 'before_add_multiple' - hook to override meta keyword/mention before it will be processed
+         * It's equivalent to @ref hook-meta_mention-before_added
+         * except mention value is used as $iObjectId
+         * @hook @ref hook-meta_keyword-before_add_multiple
+         */
+        bx_alert('meta_' . $sAlertName, 'before_add_multiple', 'mention' == $sAlertName ? 0 : $iId, bx_get_logged_profile_id(), [
+            'metas' => &$aMetas,
+            'text' => $s,
+            'content_id' => $iId, 
+            'object' => $this->_sObject
+        ]);
+
         if ($iRet = $this->_oQuery->$sFuncAdd($iId, $aMetas)) {
             foreach ($aMetas as $sMeta) {
                 $iObjectId = 'mention' == $sAlertName ? $sMeta : $iId;
