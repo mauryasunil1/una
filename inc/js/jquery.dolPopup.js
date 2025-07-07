@@ -647,6 +647,14 @@
 
             oAPopup.dolPopupHide();
         });
+        
+        var fOnShow = options.onShow;
+        options.onShow = function(oPopup) {
+            oBtnOk.focus();
+
+            if(typeof(fOnShow) == 'function')
+                fOnShow(oAPopup);
+        };
 
         var fOnHide = options.onHide;
         options.onHide = function(oPopup) {
@@ -714,6 +722,14 @@
 
             oCPopup.dolPopupHide();
         });
+
+        var fOnShow = options.onShow;
+        options.onShow = function(oPopup) {
+            oBtnYes.focus();
+
+            if(typeof(fOnShow) == 'function')
+                fOnShow(oCPopup);
+        };
 
         var fOnHide = options.onHide;
         options.onHide = function(oPopup) {
@@ -792,6 +808,14 @@
 
             oPPopup.dolPopupHide();
         });
+
+        var fOnShow = options.onShow;
+        options.onShow = function(oPopup) {
+            oBtnOk.focus();
+
+            if(typeof(fOnShow) == 'function')
+                fOnShow(oPPopup);
+        };
 
         var fOnHide = options.onHide;
         options.onHide = function(oPopup) {

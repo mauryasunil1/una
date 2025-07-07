@@ -420,9 +420,22 @@ function bx_center_content (sSel, sBlockStyle, bListenOnResize) {
 function bx_menu_popup (o, e, options, vars) {
     var options = options || {};
     var vars = vars || {};
-    var o = $.extend({}, $.fn.dolPopupDefaultOptions, {id: o, url: bx_append_url_params('menu.php', $.extend({o:o}, vars)), cssClass: 'bx-popup-menu'}, options);
+
     if ('undefined' == typeof(e))
         e = window;
+
+    var o = $.extend({}, $.fn.dolPopupDefaultOptions, {
+        id: o, 
+        url: bx_append_url_params('menu.php', $.extend({o:o}, vars)), 
+        cssClass: 'bx-popup-menu',
+        onShow: function(oPopup) {
+            oPopup.find('.bx-popup-content a:first').focus();
+        },
+        onHide: function(oPopup) {
+            $(e).focus();
+        }
+    }, options);
+
     $(e).dolPopupAjax(o);
 }
 
@@ -437,16 +450,24 @@ function bx_menu_popup_inline (jSel, e, options) {
         $(jSel).dolPopupHide(); 
     else {
         var options = options || {};
+
+        var bElement = e != undefined && $(e).length != 0;
+
         var o = $.extend({}, $.fn.dolPopupDefaultOptions, options, {
-            pointer: e != undefined && $(e).length != 0 ? {el:$(e)} : false, 
+            pointer: bElement ? {el:$(e)} : false, 
             cssClass: 'bx-popup-menu',
             onShow: function(oPopup) {
+                oPopup.find('.bx-popup-content a:first').focus();
                 oPopup.find('a').each(function () {
                     $(this).off('click.bx-popup-menu');
                     $(this).on('click.bx-popup-menu', function() {
                         $(jSel).dolPopupHide();
                     });
                 });
+            },
+            onHide: function(oPopup) {
+                if(bElement)
+                    $(e).focus();
             }
         });
 
@@ -462,7 +483,7 @@ function bx_menu_popup_inline (jSel, e, options) {
  * @param oVars - additional GET variables
  */
 function bx_menu_slide (sObject, oElement, sPosition, oOptions, oVars) {
-	var oVars = oVars || {};
+    var oVars = oVars || {};
     var oOptions = oOptions || {};
     oOptions = $.extend({}, {parent: 'body', container: '.bx-sliding-menu-content'}, oOptions);
 
@@ -596,6 +617,7 @@ function bx_menu_slide_inline (sMenu, e, sPosition) {
 
     if (eSlider.is(':visible')) {
         fClose();
+        $(e).focus();
 
         $(document).off('click.bx-sliding-menu touchend.bx-sliding-menu');
         $(window).off('resize.bx-sliding-menu');
@@ -607,6 +629,7 @@ function bx_menu_slide_inline (sMenu, e, sPosition) {
         $(window).off('resize.bx-sliding-menu');
 
         fOpen();
+        eSlider.find('.bx-popup-content a:first').focus();
         eSlider.find('a').each(function () {
             $(this).off('click.bx-sliding-menu');
             $(this).on('click.bx-sliding-menu', function () {
@@ -1502,6 +1525,13 @@ function bx_check_mq()
     }
 
     return window.getComputedStyle(document.querySelector('body'), '::before').getPropertyValue('content').replace(/'/g, "").replace(/"/g, "");
+}
+
+function bx_get_focusable(oContext = 'document')
+{
+  return Array.from(oContext.querySelectorAll('button, [href], input:not([type="hidden"]), textarea, select, [tabindex]:not([tabindex="-1"])')).filter(function(oElement) { 
+      return !oElement.closest('[hidden]'); 
+  });
 }
 
 /**

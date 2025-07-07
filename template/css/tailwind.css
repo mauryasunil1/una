@@ -687,6 +687,10 @@
         @apply hover:no-underline;
         @apply hover:-translate-y-px;
     }
+    .bx-btn-focus {
+        @apply focus:border-blue-500 dark:focus:border-blue-500 focus:border-opacity-70 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20 focus:outline-none;
+    }
+    
     .bx-btn-active {
         @apply active:bg-gray-300 dark:active:bg-gray-800;
         @apply active:border-gray-400 dark:active:border-gray-700;
@@ -701,7 +705,7 @@
         @apply bx-btn-text;
         @apply transform-gpu transition-all duration-150;
         @apply cursor-pointer;
-        @apply bx-btn-hover bx-btn-active;
+        @apply bx-btn-hover bx-btn-focus bx-btn-active;
     }
     .bx-btn i, 
     .bx-btn u {
@@ -1013,6 +1017,10 @@
         @apply bx-stl-mil-hover-bg;
     }
 
+    .bx-stl-mil-focus {
+        @apply focus:border-blue-500 dark:focus:border-blue-500 focus:border-opacity-70 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20 focus:outline-none;
+    }
+    
     .bx-stl-mil-active-bg {
         @apply active:border-gray-300 dark:active:border-gray-700;
         @apply active:bg-gray-300 dark:active:bg-black/50;
