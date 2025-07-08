@@ -17,11 +17,127 @@ define('BX_STRIPE_CONNECT_PMODE_PLATFORM', 'platform');
 
 class BxStripeConnectModule extends BxBaseModGeneralModule
 {
-    function __construct(&$aModule)
+    public function __construct(&$aModule)
     {
         parent::__construct($aModule);
 
         $this->_oConfig->init($this->_oDb);
+    }
+
+    /**
+     * 
+     * SERVICE METHODS
+     * 
+     */
+    public function serviceAccountCreate($iId)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $sError = _t('_bx_stripe_connect_err_perform');
+    	if(empty($iId) || $iId != bx_get_logged_profile_id())
+            return ['code' => 1, 'message' => $sError];
+
+        $oProfile = BxDolProfile::getInstance($iId);
+        if(!$oProfile)
+            return ['code' => 1, 'message' => $sError];
+
+        $sAccIdField = $CNF['FIELD_' . strtoupper($this->_oConfig->getMode()) . '_ACCOUNT_ID'];
+
+        $oApi = BxStripeConnectApi::getInstance();        
+        $oAccount = $oApi->createAccount($oProfile->getAccountObject()->getEmail());
+        if(!$oAccount)
+            return ['code' => 1, 'message' => $sError];
+
+        $this->_oDb->insertAccount([
+            'profile_id' => $iId,
+            $sAccIdField => $oAccount->id
+        ]);
+
+        $sLink = BX_DOL_URL_ROOT . BxDolPermalinks::getInstance()->permalink('page.php?i=payment-details');
+        $oAccountLink = $oApi->createAccountLinks($oAccount->id, $sLink, $sLink);
+        if(!$oAccountLink)
+            return ['code' => 1, 'message' => $sError];
+
+        return ['code' => 0, 'redirect' => $oAccountLink->url];
+    }
+
+    public function serviceAccountContinue($iId)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $sError = _t('_bx_stripe_connect_err_perform');
+    	if(empty($iId) || $iId != bx_get_logged_profile_id())
+            return ['code' => 1, 'message' => $sError];
+
+        $sModeUc = strtoupper($this->_oConfig->getMode());
+        $sAccIdField = $CNF['FIELD_' . $sModeUc . '_ACCOUNT_ID'];
+        $sAccDetailsField = $CNF['FIELD_' . $sModeUc . '_DETAILS'];
+
+        $aAccount = $this->_oDb->getAccount(['sample' => 'profile_id', 'profile_id' => $iId]);
+        if(empty($aAccount) || !is_array($aAccount) || $aAccount[$sAccIdField] == '')
+            return ['code' => 1, 'message' => $sError];
+
+        if((int)$aAccount[$sAccDetailsField] != 0)
+            return ['code' => 0];
+
+        $sLink = BX_DOL_URL_ROOT . BxDolPermalinks::getInstance()->permalink('page.php?i=payment-details');
+        $oAccountLink = BxStripeConnectApi::getInstance()->createAccountLinks($aAccount[$sAccIdField], $sLink, $sLink);
+        if(!$oAccountLink)
+            return ['code' => 1, 'message' => $sError];
+
+        return ['code' => 0, 'redirect' => $oAccountLink->url];
+    }
+
+    public function serviceAccountDelete($iId)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $sError = _t('_bx_stripe_connect_err_perform');
+    	if(empty($iId) || $iId != bx_get_logged_profile_id())
+            return ['code' => 1, 'message' => $sError];
+
+        $aAccount = $this->_oDb->getAccount(['sample' => 'profile_id', 'profile_id' => $iId]);
+        if(empty($aAccount) || !is_array($aAccount))
+            return ['code' => 1, 'message' => $sError];
+
+        $sAccIdField = $CNF['FIELD_' . strtoupper($this->_oConfig->getMode()) . '_ACCOUNT_ID'];
+
+        $oAccount = BxStripeConnectApi::getInstance()->deleteAccount($aAccount[$sAccIdField]);
+        if(!$oAccount || !$oAccount->deleted)
+            return ['code' => 2, 'message' => _t('_bx_stripe_connect_err_delete')];
+
+        $this->_oDb->deleteAccount([
+            'profile_id' => $iId,
+            $sAccIdField => $oAccount->id
+        ]);
+
+        return ['code' => 0, 'reload' => 1];
+    }
+
+    public function serviceAccountSessionCreate($iProfileId)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        if(!$iProfileId || ($iProfileId != $this->_iProfileId && !isAdmin()))
+            $iProfileId = $this->_iProfileId;
+        if(!$iProfileId)
+            return ['code' => 1];
+
+        $sModeUc = strtoupper($this->_oConfig->getMode());
+        $sAccIdField = $CNF['FIELD_' . $sModeUc . '_ACCOUNT_ID'];
+
+        $aAccount = $this->_oDb->getAccount(['sample' => 'profile_id', 'profile_id' => $iProfileId]);
+        if(empty($aAccount) || !is_array($aAccount) || $aAccount[$sAccIdField] == '')
+            return ['code' => 1];
+
+        $oAccountSession = BxStripeConnectApi::getInstance()->createAccountSessions($aAccount[$sAccIdField]);
+        if(!$oAccountSession)
+            return ['code' => 1];
+
+        return [
+            'code' => 0,
+            'secret' => $oAccountSession->client_secret
+        ];
     }
 
     /**
@@ -109,7 +225,12 @@ class BxStripeConnectModule extends BxBaseModGeneralModule
     public function serviceGetBlockPayments()
     {
         if(!isLogged())
-            return '';
+            return $this->_bIsApi ? [] : '';
+        
+        if($this->_bIsApi)
+            return [bx_api_get_block('stripe_connect', [
+                'embed' => 'payments'
+            ])];
 
         return $this->_oTemplate->getBlockPayments();
     }
@@ -121,15 +242,25 @@ class BxStripeConnectModule extends BxBaseModGeneralModule
     public function serviceGetBlockReportingChart()
     {
         if(!isLogged())
-            return '';
+            return $this->_bIsApi ? [] : '';
 
+        if($this->_bIsApi)
+            return [bx_api_get_block('stripe_connect', [
+                'embed' => 'reporting-chart'
+            ])];
+        
         return $this->_oTemplate->getBlockReportingChart();
     }
 
     public function serviceGetBlockBalances()
     {
         if(!isLogged())
-            return '';
+            return $this->_bIsApi ? [] : '';
+
+        if($this->_bIsApi)
+            return [bx_api_get_block('stripe_connect', [
+                'embed' => 'balances'
+            ])];
 
         return $this->_oTemplate->getBlockBalances();
     }
@@ -137,7 +268,12 @@ class BxStripeConnectModule extends BxBaseModGeneralModule
     public function serviceGetBlockNotifications()
     {
         if(!isLogged())
-            return '';
+            return $this->_bIsApi ? [] : '';
+
+        if($this->_bIsApi)
+            return [bx_api_get_block('stripe_connect', [
+                'embed' => 'notification-banner'
+            ])];
 
         return $this->_oTemplate->getBlockNotifications();
     }
@@ -155,119 +291,22 @@ class BxStripeConnectModule extends BxBaseModGeneralModule
 
     public function actionAccountCreate()
     {
-        $CNF = &$this->_oConfig->CNF;
-
-        $sError = _t('_bx_stripe_connect_err_perform');
-
-        $iId = (int)bx_get('id');
-    	if(empty($iId) || $iId != bx_get_logged_profile_id())
-            return echoJson(['code' => 1, 'message' => $sError]);
-
-        $oProfile = BxDolProfile::getInstance($iId);
-        if(!$oProfile)
-            return echoJson(['code' => 1, 'message' => $sError]);
-
-        $sAccIdField = $CNF['FIELD_' . strtoupper($this->_oConfig->getMode()) . '_ACCOUNT_ID'];
-
-        $oApi = BxStripeConnectApi::getInstance();        
-        $oAccount = $oApi->createAccount($oProfile->getAccountObject()->getEmail());
-        if(!$oAccount)
-            return echoJson(['code' => 1, 'message' => $sError]);
-
-        $this->_oDb->insertAccount([
-            'profile_id' => $iId,
-            $sAccIdField => $oAccount->id
-        ]);
-
-        $sLink = BX_DOL_URL_ROOT . BxDolPermalinks::getInstance()->permalink('page.php?i=payment-details');
-        $oAccountLink = $oApi->createAccountLinks($oAccount->id, $sLink, $sLink);
-        if(!$oAccountLink)
-            return echoJson(['code' => 1, 'message' => $sError]);
-
-        return echoJson(['code' => 0, 'redirect' => $oAccountLink->url]);
+        return echoJson($this->serviceAccountCreate((int)bx_get('id')));
     }
 
     public function actionAccountContinue()
     {
-        $CNF = &$this->_oConfig->CNF;
-
-        $sError = _t('_bx_stripe_connect_err_perform');
-
-        $iId = (int)bx_get('id');
-    	if(empty($iId) || $iId != bx_get_logged_profile_id())
-            return echoJson(['code' => 1, 'message' => $sError]);
-
-        $sModeUc = strtoupper($this->_oConfig->getMode());
-        $sAccIdField = $CNF['FIELD_' . $sModeUc . '_ACCOUNT_ID'];
-        $sAccDetailsField = $CNF['FIELD_' . $sModeUc . '_DETAILS'];
-
-        $aAccount = $this->_oDb->getAccount(['sample' => 'profile_id', 'profile_id' => $iId]);
-        if(empty($aAccount) || !is_array($aAccount) || $aAccount[$sAccIdField] == '')
-            return echoJson(['code' => 1, 'message' => $sError]);
-
-        if((int)$aAccount[$sAccDetailsField] != 0)
-            return echoJson(['code' => 0]);
-
-        $sLink = BX_DOL_URL_ROOT . BxDolPermalinks::getInstance()->permalink('page.php?i=payment-details');
-        $oAccountLink = BxStripeConnectApi::getInstance()->createAccountLinks($aAccount[$sAccIdField], $sLink, $sLink);
-        if(!$oAccountLink)
-            return echoJson(['code' => 1, 'message' => $sError]);
-
-        return echoJson(['code' => 0, 'redirect' => $oAccountLink->url]);
+        return echoJson($this->serviceAccountContinue((int)bx_get('id')));
     }
 
     public function actionAccountDelete()
     {
-        $CNF = &$this->_oConfig->CNF;
-
-        $sError = _t('_bx_stripe_connect_err_perform');
-
-        $iId = (int)bx_get('id');
-    	if(empty($iId) || $iId != bx_get_logged_profile_id())
-            return echoJson(['code' => 1, 'message' => $sError]);
-
-        $aAccount = $this->_oDb->getAccount(['sample' => 'profile_id', 'profile_id' => $iId]);
-        if(empty($aAccount) || !is_array($aAccount))
-            return echoJson(['code' => 1, 'message' => $sError]);
-
-        $sAccIdField = $CNF['FIELD_' . strtoupper($this->_oConfig->getMode()) . '_ACCOUNT_ID'];
-
-        $oAccount = BxStripeConnectApi::getInstance()->deleteAccount($aAccount[$sAccIdField]);
-        if(!$oAccount || !$oAccount->deleted)
-            return echoJson(['code' => 2, 'message' => _t('_bx_stripe_connect_err_delete')]);
-
-        $this->_oDb->deleteAccount([
-            'profile_id' => $iId,
-            $sAccIdField => $oAccount->id
-        ]);
-
-        return echoJson(['code' => 0, 'reload' => 1]);
+        return echoJson($this->serviceAccountDelete((int)bx_get('id')));
     }
 
     public function actionAccountSessionCreate($iProfileId)
     {
-        $CNF = &$this->_oConfig->CNF;
-
-        if(!$iProfileId || ($iProfileId != $this->_iProfileId && !isAdmin()))
-            $iProfileId = $this->_iProfileId;
-        if(!$iProfileId)
-            return echoJson(['code' => 1]);
-
-        $sModeUc = strtoupper($this->_oConfig->getMode());
-        $sAccIdField = $CNF['FIELD_' . $sModeUc . '_ACCOUNT_ID'];
-
-        $aAccount = $this->_oDb->getAccount(['sample' => 'profile_id', 'profile_id' => $iProfileId]);
-        if(empty($aAccount) || !is_array($aAccount) || $aAccount[$sAccIdField] == '')
-            return echoJson(['code' => 1]);
-
-        $oAccountSession = BxStripeConnectApi::getInstance()->createAccountSessions($aAccount[$sAccIdField]);
-        if(!$oAccountSession)
-            return echoJson(['code' => 1]);
-
-        return echoJson([
-            'code' => 0,
-            'secret' => $oAccountSession->client_secret
-        ]);
+        return echoJson($this->serviceAccountSessionCreate($iProfileId));
     }
 
     /**
