@@ -72,8 +72,8 @@ BxAnalytics.prototype.reloadData = function () {
                 top: 0,
                 bottom: 0
             }
-        }
-		
+        };
+
         Chart.defaults.scale.ticks.callback = function (label, index, labels) {
             if (label.length > 10)
                 return label.slice(0, 10) + '...';
@@ -82,15 +82,18 @@ BxAnalytics.prototype.reloadData = function () {
         };
 
         bx_loading($($this._sContainerDataSelector), false);
-        var oDataForChart = oData.data || false;
-        var oChartOptions = oData.options || oOptionsDefault;
+
         if ($this._oChart)
             $this._oChart.destroy();
+
+        var oDataForChart = oData.data || {};
+        var oChartOptions = oData.options || {};
         $this._oChart = new Chart($($this._sCanvasSelector), {
             type: oData.type != undefined ? oData.type : 'line',
             data: oDataForChart,
             options: $.extend({}, $this._oChartOptionsDefault, oChartOptions)
         });
+
         $this.dataToTable(oData);
     });
 };

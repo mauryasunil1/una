@@ -316,7 +316,6 @@ class BxAnalyticsModule extends BxDolModule
                 
             default:
                 $sType = "line";
-                $bIsTimeX = true;
                 $sTableName = '';
                 $aValues['strings'][0] = _t('_bx_analytics_txt_date');
                 $bDefaultFillData = false;
