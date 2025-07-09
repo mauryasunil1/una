@@ -29,6 +29,13 @@ class BxStripeConnectModule extends BxBaseModGeneralModule
      * SERVICE METHODS
      * 
      */
+    public function serviceGetSafeServices()
+    {
+        return array_merge(parent::serviceGetSafeServices(), [
+            'AccountSessionCreate' => '',
+        ]);
+    }
+
     public function serviceAccountCreate($iId)
     {
         $CNF = &$this->_oConfig->CNF;
@@ -229,6 +236,7 @@ class BxStripeConnectModule extends BxBaseModGeneralModule
         
         if($this->_bIsApi)
             return [bx_api_get_block('stripe_connect', [
+                'key' => $this->_oConfig->getApiPublicKey(),
                 'embed' => 'payments'
             ])];
 
@@ -246,6 +254,7 @@ class BxStripeConnectModule extends BxBaseModGeneralModule
 
         if($this->_bIsApi)
             return [bx_api_get_block('stripe_connect', [
+                'key' => $this->_oConfig->getApiPublicKey(),
                 'embed' => 'reporting-chart'
             ])];
         
@@ -259,6 +268,7 @@ class BxStripeConnectModule extends BxBaseModGeneralModule
 
         if($this->_bIsApi)
             return [bx_api_get_block('stripe_connect', [
+                'key' => $this->_oConfig->getApiPublicKey(),
                 'embed' => 'balances'
             ])];
 
@@ -272,6 +282,7 @@ class BxStripeConnectModule extends BxBaseModGeneralModule
 
         if($this->_bIsApi)
             return [bx_api_get_block('stripe_connect', [
+                'key' => $this->_oConfig->getApiPublicKey(),
                 'embed' => 'notification-banner'
             ])];
 
