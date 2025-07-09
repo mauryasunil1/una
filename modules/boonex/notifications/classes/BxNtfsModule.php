@@ -669,6 +669,11 @@ class BxNtfsModule extends BxBaseModNotificationsModule
     {
         if(!$iProfile)
             return false;
+        
+        $oPush = BxDolPush::getObjectInstance();
+        if(!$oPush)
+            return false;
+        
 
         $aContent = &$aNotification['content'];
         $aSettings = &$aNotification['settings'];
@@ -699,16 +704,16 @@ class BxNtfsModule extends BxBaseModNotificationsModule
 
         $sSubject = !empty($aSettings['subject']) ? $aSettings['subject'] : _t('_bx_ntfs_push_new_event_subject', getParam('site_title'));
 
-        return BxDolPush::getObjectInstance()->send($iProfile, array(
-            'contents' => array(
+        return $oPush->send($iProfile, [
+            'contents' => [
                 'en' => $aContent['message']
-            ),
-            'headings' => array(
+            ],
+            'headings' => [
                 'en' => $sSubject
-            ),
+            ],
             'url' => $aContent['url'],
             'icon' => $aContent['icon']
-        ), true);
+        ], true);
     }
 
     public function groupEvents(&$aEvents)
