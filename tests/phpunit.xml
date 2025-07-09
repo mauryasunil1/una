@@ -12,7 +12,17 @@
     </whitelist>
   </filter>
   <logging>
+    <junit outputFile="./../logs/junit.xml" />
+    <!--
     <log type="coverage-clover" target="../logs/clover.xml"/>
     <log type="junit" target="./../logs/junit.xml" />
+    -->
   </logging>
+  <coverage 
+          includeUncoveredFiles="true"
+          pathCoverage="false"
+          ignoreDeprecatedCodeUnits="true"
+          disableCodeCoverageIgnore="true">
+    <clover outputFile="../logs/clover.xml" />
+  </coverage>
 </phpunit>
