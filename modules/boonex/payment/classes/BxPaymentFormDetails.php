@@ -26,6 +26,7 @@ class BxPaymentFormDetails extends BxTemplFormView
     protected $_bCollapseFirst;
     
     protected $_iProfileId;
+    protected $_sPaymentProvider;
 
     function __construct($aInfo, $oTemplate = false)
     {
@@ -38,8 +39,7 @@ class BxPaymentFormDetails extends BxTemplFormView
         $this->_bCollapseFirst = true;
         
         $this->_iProfileId = $this->_oModule->getProfileId();
-
-        $this->init();
+        $this->_sPaymentProvider = '';
     }
 
     public function setProfileId($iProfileId = BX_PAYMENT_EMPTY_ID)
@@ -48,9 +48,22 @@ class BxPaymentFormDetails extends BxTemplFormView
             $this->_iProfileId = $iProfileId;
     }
 
+    public function setPaymentProvider($sPaymentProvider)
+    {
+        $this->_sPaymentProvider = $sPaymentProvider;
+
+        $this->aParams['db']['submit_name'] = $this->_getSubmitName();
+
+        $sName = $this->_getName();
+        $this->setId($sName);
+        $this->setName($sName);
+    }
+
     public function init()
     {
-        $aInputs = $this->_oModule->_oDb->getForm();
+        $this->aInputs = [];
+                
+        $aInputs = $this->_oModule->_oDb->getForm($this->_sPaymentProvider);
         if(empty($aInputs))
             return false;
 
@@ -76,7 +89,7 @@ class BxPaymentFormDetails extends BxTemplFormView
                     'caption' => _t($aInput['provider_caption']),
                     'info' => _t($aInput['provider_description']),
                     'collapsable' => true,
-                    'collapsed' => $bCollapsed
+                    'collapsed' => ($sSelected = bx_get('pp')) !== false && $sSelected == $aInput['provider_name'] ? false : $bCollapsed
                 );
 
                 $iProvider = $aInput['provider_id'];
@@ -146,16 +159,35 @@ class BxPaymentFormDetails extends BxTemplFormView
                 $this->aInputs[$aInput['name']] = array_merge($this->aInputs[$aInput['name']], $aAddon);
         }
 
-        $this->aInputs['provider_' . $iProvider . '_end'] = array(
-            'type' => 'block_end'
-        );
-        $this->aInputs['submit'] = array(
+        $sSubmitName = $this->_getSubmitName();
+        $this->aInputs[$sSubmitName] = [
             'type' => 'submit',
-            'name' => 'submit',
+            'name' => $sSubmitName,
             'value' => _t($this->_sLangsPrefix . 'form_details_input_do_submit'),
-        );
+        ];
+
+        $this->aInputs['provider_' . $iProvider . '_end'] = [
+            'type' => 'block_end'
+        ];
 
         return true;
+    }
+
+    public function initWithParams($iProfileId, $sPaymentProvider)
+    {
+        $this->setProfileId($iProfileId);
+        $this->setPaymentProvider($sPaymentProvider);
+        $this->init();
+    }
+
+    protected function _getName()
+    {
+        return $this->_sModule . '_form_details' . ($this->_sPaymentProvider ? '_' . $this->_sPaymentProvider : '');
+    }
+
+    protected function _getSubmitName()
+    {
+        return 'submit' . ($this->_sPaymentProvider ? '_' . $this->_sPaymentProvider : '');
     }
 }
 

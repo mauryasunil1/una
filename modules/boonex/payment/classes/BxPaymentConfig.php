@@ -22,7 +22,7 @@ class BxPaymentConfig extends BxBaseModPaymentConfig
 
         $sBaseUrl = BX_DOL_URL_ROOT . $this->getBaseUri();
 
-        $this->CNF = array_merge($this->CNF, array(
+        $this->CNF = array_merge($this->CNF, [
             // module icon
             'ICON' => 'credit-card col-gray-dark',
 
@@ -68,7 +68,7 @@ class BxPaymentConfig extends BxBaseModPaymentConfig
             'MODULE_CREDITS' => 'bx_credits',
 
             // some language keys
-            'T' => array(
+            'T' => [
                 'MSG_ITEM_ADDED' => '_bx_payment_msg_item_added',
                 'MSG_ITEM_DELETED' => '_bx_payment_msg_item_deleted',
                 'MSG_SINGLE_SELLER_MODE' => '_bx_payment_msg_single_seller',
@@ -84,8 +84,8 @@ class BxPaymentConfig extends BxBaseModPaymentConfig
                 'POPUP_PROVIDERS_SELECT' => '_bx_payment_popup_title_crd_providers_select', 
 
                 'TXT_CART_PROVIDER' => '_bx_payment_txt_cart_'
-            )
-        ));
+            ]
+        ]);
 
         $this->_aHtmlIds = array(
             'cart' => array(

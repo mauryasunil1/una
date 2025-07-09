@@ -25,8 +25,13 @@ class BxPaymentDb extends BxBaseModPaymentDb
     /**
      * Payment details methods
      */
-    public function getForm()
+    public function getForm($sPaymentProvider = '')
     {
+        $sWhereClause = '';
+
+        if(!empty($sPaymentProvider))
+            $sWhereClause .= $this->prepareAsString(" AND `tp`.`name`=?", $sPaymentProvider);
+        
         $sQuery = "SELECT
                 `tp`.`id` AS `provider_id`,
                 `tp`.`name` AS `provider_name`,
@@ -46,7 +51,7 @@ class BxPaymentDb extends BxBaseModPaymentDb
                 `tpo`.`check_error` AS `check_error`
             FROM `" . $this->_sPrefix . "providers` AS `tp`
             LEFT JOIN `" . $this->_sPrefix . "providers_options` AS `tpo` ON `tp`.`id`=`tpo`.`provider_id`
-            WHERE `tp`.`active`='1' 
+            WHERE `tp`.`active`='1'" . $sWhereClause . "
             ORDER BY `tp`.`order` ASC, `tpo`.`order` ASC";
 
         return $this->getAll($sQuery);
@@ -146,16 +151,16 @@ class BxPaymentDb extends BxBaseModPaymentDb
 
     public function getOptions($iUserId = BX_PAYMENT_EMPTY_ID, $iProviderId = 0)
     {
-    	$aBinding = array(
-    		'user_id' => $iUserId
-    	);
+        $aBinding = [
+            'user_id' => $iUserId
+        ];
 
         if($iUserId == BX_PAYMENT_EMPTY_ID && empty($iProviderId))
            return $this->getAll("SELECT `id`, `name`, `type` FROM `" . $this->_sPrefix . "providers_options`");
 
         $sWhereAddon = "";
         if(!empty($iProviderId)) {
-        	$aBinding['provider_id'] = $iProviderId;
+            $aBinding['provider_id'] = $iProviderId;
 
             $sWhereAddon = " AND `tpo`.`provider_id`=:provider_id";
         }
@@ -168,6 +173,23 @@ class BxPaymentDb extends BxBaseModPaymentDb
             WHERE 1" . $sWhereAddon . " AND `tuv`.`user_id`=:user_id ORDER BY `tpo`.`order`";
 
         return $this->getAllWithKey($sQuery, 'name', $aBinding);
+    }
+
+    public function getOptionsByProvider($mixedProvider)
+    {
+        $aBindings = [
+            'provider' => $mixedProvider
+        ];
+
+        $sJoinClause = $sWhereClause = '';
+        if(!is_numeric($mixedProvider)) {
+            $sJoinClause = " LEFT JOIN `" . $this->_sPrefix . "providers` AS `tp` ON `tpo`.`provider_id`=`tp`.`id`";
+            $sWhereClause = " AND `tp`.`name`=:provider";
+        }
+        else
+            $sWhereClause = " AND `tpo`.`provider_id`=:provider";
+
+        return $this->getAll("SELECT `tpo`.`id`, `tpo`.`name`, `tpo`.`type` FROM `" . $this->_sPrefix . "providers_options` AS `tpo`" . $sJoinClause . " WHERE 1" . $sWhereClause, $aBindings);
     }
 
     public function updateOption($iUserId, $iOptionId, $sValue)
