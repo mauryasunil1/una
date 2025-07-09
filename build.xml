@@ -416,6 +416,7 @@
                 <exclude name=".htaccess" />
                 <exclude name="clover.xml" />
                 <exclude name="phpcdp.xml" />
+                <exclude name="phpcpd.xml" />
                 <exclude name="junit.xml" />
             </fileset>
         </delete>
