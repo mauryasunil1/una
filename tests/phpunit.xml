@@ -5,12 +5,14 @@
       <directory>./units</directory>
     </testsuite>
   </testsuites>
+<!--
   <filter>
     <whitelist processUncoveredFilesFromWhitelist="false">
       <directory suffix=".php">./../inc/</directory>
       <directory suffix=".php">./../modules/boonex/antispam/classes/</directory>
     </whitelist>
   </filter>
+-->
   <logging>
     <junit outputFile="./../logs/junit.xml" />
     <!--
@@ -18,6 +20,7 @@
     <log type="junit" target="./../logs/junit.xml" />
     -->
   </logging>
+<!--
   <coverage 
           includeUncoveredFiles="true"
           pathCoverage="false"
@@ -25,4 +28,5 @@
           disableCodeCoverageIgnore="true">
     <clover outputFile="../logs/clover.xml" />
   </coverage>
+-->
 </phpunit>
