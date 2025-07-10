@@ -139,19 +139,20 @@ class BxPaymentFormDetails extends BxTemplFormView
                     break;
 
                 case 'value':
-                       $sName = str_replace($aInput['provider_option_prefix'], '', $aInput['name']);
-                       if(!in_array($sName, array('return_data_url', 'notify_url')))
-                            break;
-
-                       $sMethod = 'get' . bx_gen_method_name($sName);
+                       $sMethod = 'get' . bx_gen_method_name(str_replace($aInput['provider_option_prefix'], '', $aInput['name']));
                        if(method_exists($oProvider, $sMethod))
                             $this->aInputs[$aInput['name']]['value'] = $oProvider->$sMethod($this->_iProfileId);
                        break;
 
                 case 'custom':
                     $sMethod = 'get' . bx_gen_method_name(str_replace($aInput['provider_option_prefix'], '', $aInput['name']));
-                    if(method_exists($oProvider, $sMethod))
-                         $this->aInputs[$aInput['name']]['content'] = $oProvider->$sMethod($this->_iProfileId);
+                    if(method_exists($oProvider, $sMethod)) {
+                        $mixedContent = $oProvider->$sMethod($this->_iProfileId);
+                        if(is_array($mixedContent))
+                            $this->aInputs[$aInput['name']] = array_merge($this->aInputs[$aInput['name']], $mixedContent);
+                        else
+                            $this->aInputs[$aInput['name']]['content'] = $mixedContent;
+                    }
                     break;
             }
 

@@ -30,6 +30,7 @@ class BxStripeConnectTemplate extends BxBaseModGeneralTemplate
         $sAccIdField = $CNF['FIELD_' . $sModeUc . '_ACCOUNT_ID'];
         $sAccDetailsField = $CNF['FIELD_' . $sModeUc . '_DETAILS'];
  
+        $aApiButtons = [];
         $bShowContinue = false;
         $sActionMethod = $sActionTitle = '';
         if(($aAccount = $this->_oDb->getAccount(['sample' => 'profile_id', 'profile_id' => $iVendorId])) && is_array($aAccount) && $aAccount[$sAccIdField] != '') {
@@ -44,11 +45,36 @@ class BxStripeConnectTemplate extends BxBaseModGeneralTemplate
 
             $sActionMethod = 'accountDelete';
             $sActionTitle = '_bx_stripe_connect_btn_account_delete';
+
+            if($this->_bIsApi) {
+                if($bShowContinue)
+                    $aApiButtons[] = [
+                        'title' => _t('_bx_stripe_connect_btn_account_continue'),
+                        'callback' => '/api.php?r=' . $this->MODULE . '/account_continue&params[0]=' . $iVendorId
+                    ];
+
+                $aApiButtons[] = [
+                    'title' => _t($sActionTitle),
+                    'callback' => '/api.php?r=' . $this->MODULE . '/account_delete&params[0]=' . $iVendorId
+                ];
+            }
         }
         else {
             $sActionMethod = 'accountCreate';
             $sActionTitle = '_bx_stripe_connect_btn_account_create';
+
+            if($this->_bIsApi)
+                $aApiButtons[] = [
+                    'title' => _t($sActionTitle),
+                    'callback' => '/api.php?r=' . $this->MODULE . '/account_create&params[0]=' . $iVendorId
+                ];
         }
+
+        if($this->_bIsApi)
+            return [
+                'type' => 'stripe_connect',
+                'content' =>  $aApiButtons
+            ];
 
         $this->addJs(['main.js']);
         return $this->parseHtmlByName('connect_code.html', [

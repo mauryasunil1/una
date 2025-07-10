@@ -18,8 +18,11 @@ class BxStripeConnectConfig extends BxBaseModGeneralConfig
     protected $_sApiPublicKey;
     protected $_sApiSecretKey;
     protected $_sAccountType;
-    
+
     protected $_sPayMode;
+
+    protected $_sRefreshLink;
+    protected $_sReturnLink;
 
     public function __construct($aModule)
     {
@@ -111,6 +114,9 @@ class BxStripeConnectConfig extends BxBaseModGeneralConfig
     	$this->_sApiPublicKey = $this->_oDb->getParam($this->CNF['PARAM_API_PUBLIC_' . ($this->_sMode == BX_STRIPE_CONNECT_MODE_LIVE ? 'LIVE' : 'TEST')]);
     	$this->_sApiSecretKey = $this->_oDb->getParam($this->CNF['PARAM_API_SECRET_' . ($this->_sMode == BX_STRIPE_CONNECT_MODE_LIVE ? 'LIVE' : 'TEST')]);
         $this->_sPayMode = getParam($this->CNF['PARAM_PMODE']);
+
+        $this->_sRefreshLink = $this->_getLink();
+        $this->_sReturnLink = $this->_sRefreshLink;
     }
 
     public function getMode()
@@ -166,6 +172,28 @@ class BxStripeConnectConfig extends BxBaseModGeneralConfig
         }
 
         return $iResult;
+    }
+
+    public function getRefreshLink()
+    {
+        return $this->_sRefreshLink;
+    }
+
+    public function getReturnLink()
+    {
+        return $this->_sReturnLink;
+    }
+
+    protected function _getLink()
+    {
+        if($this->_bIsApi && ($sRootUrl = getParam('sys_api_url_root_email')) !== '') {
+            if(substr(BX_DOL_URL_ROOT, -1) == '/' && substr($sRootUrl, -1) != '/')
+                $sRootUrl .= '/';
+        }
+        else
+            $sRootUrl = BX_DOL_URL_ROOT;
+
+        return $sRootUrl . BxDolPermalinks::getInstance()->permalink('page.php?i=payment-details');
     }
 
     public function getHtmlIds($sKey = '')

@@ -33,6 +33,9 @@ class BxStripeConnectModule extends BxBaseModGeneralModule
     {
         return array_merge(parent::serviceGetSafeServices(), [
             'AccountSessionCreate' => '',
+            'AccountCreate' => '',
+            'AccountContinue' => '',
+            'AccountDelete' => ''
         ]);
     }
 
@@ -60,8 +63,9 @@ class BxStripeConnectModule extends BxBaseModGeneralModule
             $sAccIdField => $oAccount->id
         ]);
 
-        $sLink = BX_DOL_URL_ROOT . BxDolPermalinks::getInstance()->permalink('page.php?i=payment-details');
-        $oAccountLink = $oApi->createAccountLinks($oAccount->id, $sLink, $sLink);
+        $sRefreshLink = $this->_oConfig->getRefreshLink();
+        $sReturnLink = $this->_oConfig->getReturnLink();
+        $oAccountLink = $oApi->createAccountLinks($oAccount->id, $sRefreshLink, $sReturnLink);
         if(!$oAccountLink)
             return ['code' => 1, 'message' => $sError];
 
@@ -87,8 +91,9 @@ class BxStripeConnectModule extends BxBaseModGeneralModule
         if((int)$aAccount[$sAccDetailsField] != 0)
             return ['code' => 0];
 
-        $sLink = BX_DOL_URL_ROOT . BxDolPermalinks::getInstance()->permalink('page.php?i=payment-details');
-        $oAccountLink = BxStripeConnectApi::getInstance()->createAccountLinks($aAccount[$sAccIdField], $sLink, $sLink);
+        $sRefreshLink = $this->_oConfig->getRefreshLink();
+        $sReturnLink = $this->_oConfig->getReturnLink();
+        $oAccountLink = BxStripeConnectApi::getInstance()->createAccountLinks($aAccount[$sAccIdField], $sRefreshLink, $sReturnLink);
         if(!$oAccountLink)
             return ['code' => 1, 'message' => $sError];
 

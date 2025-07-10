@@ -70,11 +70,12 @@ class BxPaymentDetails extends BxBaseModPaymentDetails
             return ($sMsg = $this->_sLangsPrefix . 'msg_no_results') && $this->_bIsApi ? [bx_api_get_msg($sMsg)] : MsgBox(_t($sMsg));
 
         $mixedContent = $this->_bIsApi ? [] : '';
-        foreach($aPaymentProviders as $sPaymentProvider) {
+        foreach($aPaymentProviders as $iIndex => $sPaymentProvider) {
             $mixedForm = $this->getForm($iUserId, $sPaymentProvider);
 
             if($this->_bIsApi)
                 $mixedContent[] = bx_api_get_block('form', $mixedForm, [
+                    'id' => $iIndex + 1,
                     'ext' => [
                         'name' => $this->MODULE, 
                         'request' => ['url' => '/api.php?r=' . $this->MODULE . '/get_block_details/Details', 'immutable' => true]
@@ -90,7 +91,7 @@ class BxPaymentDetails extends BxBaseModPaymentDetails
         if(empty($mixedContent))
             return ($sMsg = $this->_sLangsPrefix . 'msg_no_results') && $this->_bIsApi ? [bx_api_get_msg($sMsg)] : MsgBox(_t($sMsg));
 
-        return $this->_bIsApi ? [$mixedContent] : $mixedContent;
+        return $this->_bIsApi ? $mixedContent : $mixedContent;
     }
 
     public function getForm($iProfileId, $sPaymentProvider)
