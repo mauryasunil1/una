@@ -2018,11 +2018,14 @@ function bx_check_maintenance_mode ($bShowHttpError = false)
  */
 function bx_check_maintenance_mode_soft ()
 {
-    $sUrl = bx_proto() . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
-    if (0 === strpos($sUrl, BX_DOL_URL_STUDIO)) // allow to view studio
-        return;
-    if (0 === strpos($sUrl, BX_DOL_URL_ROOT . 'member.php') && $_SERVER['REQUEST_METHOD'] === 'POST') // make studio login form to always work
-        return;
+    if (isset($_SERVER['HTTP_HOST'])) {
+        $sUrl = bx_proto() . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+        if (0 === strpos($sUrl, BX_DOL_URL_STUDIO)) // allow to view studio
+            return;
+        if (0 === strpos($sUrl, BX_DOL_URL_ROOT . 'member.php') && $_SERVER['REQUEST_METHOD'] === 'POST') // make studio login form to always work
+            return;
+    }
+
     if (defined('BX_DOL_UPGRADING')) // allow upgrade
         return;
     if (!getParam('sys_maintenance_mode')) // check mainenance mode switcher
