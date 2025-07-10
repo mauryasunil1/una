@@ -367,10 +367,10 @@ class BxDolMetatags extends BxDolFactory implements iBxDolFactoryObject
     public function keywordsAdd($iId, $s) 
     {
         /**
-         * First of all remove <a> HTML tags which don't have 'bx-mention-link' class WITH their content.
+         * First of all remove <a> HTML tags which don't have 'bx-tag-link' class WITH their content.
          * It's needed because hashtags cannot be used inside links, otherwise we'll get link inside link.
          */
-        $s = preg_replace("/<a\b((?!bx-mention-link)[^>])*>(.*?)<\/a>/si", '', $s);
+        $s = preg_replace("/<a\b((?!bx-tag-link)[^>])*>(.*?)<\/a>/si", '', $s);
 
         //--- Strip the other HTML tags.
         $s = strip_tags(str_replace(array('<br>', '<br />', '<hr>', '<hr />', '</p>', '</h1>', '</h2>', '</h3>', '</h4>', '</h5>', '</h6>'), "\n", $s));
@@ -488,14 +488,14 @@ class BxDolMetatags extends BxDolFactory implements iBxDolFactoryObject
             return $s;
 
         /**
-         * Replace <a> tags, which have 'bx-mention-link' class, with their content. 
+         * Replace <a> tags, which have 'bx-tag-link' class, with their content. 
          * It's needed to avoid link inside link after hashtags parsing.
          */
-        $s = preg_replace('/<a\b[^>]*\bbx-mention-link\b[^>]*>(.*?)<\/a>/si', '$1', $s);
+        $s = preg_replace('/<a\b[^>]*\bbx-tag-link\b[^>]*>(.*?)<\/a>/si', '$1', $s);
 
         foreach ($a as $sKeyword) {
             $f = function ($a) use ($sKeyword, $iId) {
-                return $a[1] . '<a class="bx-tag" rel="tag" href="' . $this->keywordsGetHashTagUrl($sKeyword, $iId) . '">' . (bx_is_api() ? '#' . $sKeyword : '<s>#</s><b>' . $sKeyword . '</b>') . '</a>';
+                return $a[1] . '<a class="bx-tag-link" rel="tag" href="' . $this->keywordsGetHashTagUrl($sKeyword, $iId) . '">' . (bx_is_api() ? '#' . $sKeyword : '<s>#</s><b>' . $sKeyword . '</b>') . '</a>';
             };
 
             $s = preg_replace_callback('/([^\pN^\pL])\#(' . preg_quote($sKeyword, '/') . ')/u', $f, $s);
@@ -519,7 +519,7 @@ class BxDolMetatags extends BxDolFactory implements iBxDolFactoryObject
     
         foreach ($a as $sKeyword)
             if (0 === strcasecmp(mb_strtolower($s), mb_strtolower($sKeyword)))
-                $s = '<a class="bx-tag" rel="tag" href="' . $this->keywordsGetHashTagUrl($sKeyword, $iId) . '">' . $sKeyword . '</a>';
+                $s = '<a class="bx-tag-link" rel="tag" href="' . $this->keywordsGetHashTagUrl($sKeyword, $iId) . '">' . $sKeyword . '</a>';
 
         return $s;
     }

@@ -139,9 +139,16 @@ function bx_editor_init(oEditor, oParams){
                         node.setAttribute('dchar', '@');
                     node.setAttribute('data-profile-id', value.dataProfileId);
                 }
+
+                const sDenotationChar = node.getAttribute('dchar');
+                if(sDenotationChar == '@')
+                    node.setAttribute('class', 'bx-mention-link');
+                else if(sDenotationChar == '#')
+                    node.setAttribute('class', 'bx-tag-link');
+
                 return node;
             }
-            
+
             format(name, value) {
                 if (name === 'href' || name === 'title' || name === 'dchar' || name === 'data-profile-id' || name === 'dataProfileId') {
                     if (value) {
@@ -192,7 +199,7 @@ function bx_editor_init(oEditor, oParams){
             
         }
         MenthionLink.blotName = 'menthion-link'; 
-        MenthionLink.className = 'bx-mention-link';
+        //MenthionLink.className = '1';
         MenthionLink.tagName = 'a';                
         Quill.register({
             'formats/menthion-link': MenthionLink

@@ -146,8 +146,8 @@ blockquote {
     color: #999999;
 }
 
-.bx-tag b,
-.bx-tag s {
+.bx-tag-link b,
+.bx-tag-link s {
     text-decoration: none;
     font-weight: normal;
 }
