@@ -1231,13 +1231,20 @@ function bx_search_extnded_sort(obj, url){
     location.href = url + '&sort=' +$(obj).val();
 }
 
-function bx_search_on_type (e, n, sFormSel, sResultsContSel, sLoadingContSel, bSortResults, iMinLen, onComplete) {
+function bx_search_on_type (e, n, sFormSel, sResultsContSel, sLoadingContSel, bSortResults, iMinLen, onComplete, onCancel) {
     var oForm = $(e.target).parents(sFormSel + ':first');
 
-    if ('undefined' != typeof(e) && 13 == e.keyCode) {
-        oForm.find('input[name=live_search]').val(0);
-        oForm.submit();
-        return false;
+    if ('undefined' != typeof(e)) {
+        if(e.keyCode == 13) {
+            oForm.find('input[name=live_search]').val(0);
+            oForm.submit();
+            return false;
+        }
+
+        if(e.keyCode == 27) { 
+            if(typeof onCancel === 'function')
+                onCancel(oForm);
+        }
     }
 
     iMinLen = typeof(iMinLen) != 'undefined' ? parseInt(iMinLen) : 0;
