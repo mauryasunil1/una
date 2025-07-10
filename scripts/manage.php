@@ -9,6 +9,7 @@
 
 $GLOBALS['bx_profiler_disable'] = true;
 define('BX_DOL_CRON_EXECUTE', '1');
+define('BX_DOL_UPGRADING', '1');
 
 /**
  * UNA command line interface
@@ -199,6 +200,7 @@ class BxDolManageCmd
                     'user' => $this->_aSiteConfig['db_user'],
                     'pwd' => $this->_aSiteConfig['db_password'],
                 ), $sErr);
+                $GLOBALS['bxDolClasses']['BxDolUpgradeDb'] = $oDb;
             } catch (Exception $e) {
                 $this->finish($this->_aReturnCodes['db connect failed']['code'], $this->_aReturnCodes['db connect failed']['msg'] . $e->getMessage());
             }
@@ -251,6 +253,7 @@ class BxDolManageCmd
             $sFolder = $oController->getAvailableUpgrade();
             if ($sFolder && $oController->runUpgrade($sFolder, in_array('ignore_version_check', $aOptions), $this->_isSkipFilesOperation)) {
                 setParam('sys_revision', getParam('sys_revision') + 1);
+                $oController->writeLog();
                 @bx_rrmdir($sUpgradeDir);
             }
             $oController->setMaintenanceMode(false);
