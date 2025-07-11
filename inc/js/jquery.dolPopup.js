@@ -231,17 +231,47 @@
                 }
 
                 // show popup
-
                 $el.css({display: 'block', visibility: 'visible'});
                 if (o.fog) {
-                	var oOnHide = function() {
-                		$(window).triggerHandler('resize.popupFog');
-                	};
-                	
+                    var oOnHide = function() {
+                        $(window).triggerHandler('resize.popupFog');
+                    };
+
                     if (o.speed > 0)
                         $('#bx-popup-fog').fadeIn(o.speed, oOnHide);
                     else
                         $('#bx-popup-fog').show(oOnHide);
+                }
+
+                /*
+                 * Trap focus inside popup.
+                 */
+                $el.find('.bx-popup-focus-trap').bind('focus', function() {
+                    var aFocusable = bx_get_focusable($el.get(0));
+                    if(aFocusable && aFocusable.length > 0)
+                        $(aFocusable[0]).focus();
+                });
+
+                /*
+                 * Add onHide to return focus back.
+                 */
+                const oSource = o.pointer ? $(o.pointer.el).get(0) : bx_clicked_stack_get();
+                if(oSource) {
+                    var onHide = null;
+                    if(typeof(o.onHide) == 'function')
+                        onHide = o.onHide;
+                    else if(typeof(o.onHide) == 'string')
+                        onHide = function(oPopup) {
+                            eval(o.onHide);
+                        };
+
+                    o.onHide = function() {
+                        if(typeof(onHide) == 'function')
+                            onHide($el);
+
+                        bx_clicked_stack_pop();
+                        $(oSource).focus();
+                    };
                 }
 
                 setTimeout(function () {
@@ -254,12 +284,16 @@
                         return;
                     }
 
+                    var aFocusable = bx_get_focusable($el.get(0));
+                    console.log(aFocusable);
+                    if(aFocusable && aFocusable.length > 0) {
+                        $(aFocusable[0]).focus();
+                    }
+
                     if(typeof(o.onShow) == 'function')
                         o.onShow($el);
                     else if(typeof(o.onShow) == 'string')
                     	eval(o.onShow);
-                    else
-                        $el.find('input[type=text]:first').focus(); //NOTE. Put cursor to the first input element, ONLY IF there is no any custom behaviour for onShow event.
 
                 }, o.speed);
 

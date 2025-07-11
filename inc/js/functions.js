@@ -427,13 +427,7 @@ function bx_menu_popup (o, e, options, vars) {
     var o = $.extend({}, $.fn.dolPopupDefaultOptions, {
         id: o, 
         url: bx_append_url_params('menu.php', $.extend({o:o}, vars)), 
-        cssClass: 'bx-popup-menu',
-        onShow: function(oPopup) {
-            oPopup.find('.bx-popup-content a:first').focus();
-        },
-        onHide: function(oPopup) {
-            $(e).focus();
-        }
+        cssClass: 'bx-popup-menu'
     }, options);
 
     $(e).dolPopupAjax(o);
@@ -457,7 +451,6 @@ function bx_menu_popup_inline (jSel, e, options) {
             pointer: bElement ? {el:$(e)} : false, 
             cssClass: 'bx-popup-menu',
             onShow: function(oPopup) {
-                oPopup.find('.bx-popup-content a:first').focus();
                 oPopup.find('a').each(function () {
                     $(this).off('click.bx-popup-menu');
                     $(this).on('click.bx-popup-menu', function() {
@@ -465,10 +458,6 @@ function bx_menu_popup_inline (jSel, e, options) {
                     });
                 });
             },
-            onHide: function(oPopup) {
-                if(bElement)
-                    $(e).focus();
-            }
         });
 
         $(jSel).dolPopup(o);
@@ -1536,9 +1525,9 @@ function bx_check_mq()
 
 function bx_get_focusable(oContext = 'document')
 {
-  return Array.from(oContext.querySelectorAll('button, [href], input:not([type="hidden"]), textarea, select, [tabindex]:not([tabindex="-1"])')).filter(function(oElement) { 
-      return !oElement.closest('[hidden]'); 
-  });
+    return Array.from(oContext.querySelectorAll('button, [href], input:not([type="hidden"]), textarea, select, [tabindex]:not([tabindex="-1"])')).filter(function(oElement) { 
+        return !$(oElement).closest(':hidden').length; 
+    });
 }
 
 /**
@@ -1731,6 +1720,32 @@ function bx_agents_action(oElement, sTool, sAction, aParams)
         },
         'json'
     );
+}
+
+function bx_clicked_stack_register()
+{
+    const iStackMaxLenth = 3;
+
+    $('a,button').on('click', function() {
+        if(typeof window.glClickedStack === 'undefined')
+            window.glClickedStack = [];    
+
+        window.glClickedStack.push(this);
+
+        if(window.glClickedStack.length > iStackMaxLenth)
+            window.glClickedStack = window.glClickedStack.slice(-iStackMaxLenth);
+    });
+}
+
+function bx_clicked_stack_get()
+{
+    const iLenth = window.glClickedStack.length;
+    return iLenth > 0 ? window.glClickedStack[iLenth - 1] : false;
+}
+
+function bx_clicked_stack_pop()
+{
+    return window.glClickedStack.length > 0 ? window.glClickedStack.pop() : false;
 }
 
 /** @} */

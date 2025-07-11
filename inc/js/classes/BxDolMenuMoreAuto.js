@@ -102,13 +102,7 @@ BxDolMenuMoreAuto.prototype.more = function(oElement)
             el: oElement
         }, 
         moveToDocRoot: false,
-        cssClass: 'bx-popup-menu',
-        onShow: function(oPopup) {
-            oPopup.find('.bx-popup-content a:first').focus();
-        },
-        onHide: function(oPopup) {
-            $(oElement).focus();
-        }
+        cssClass: 'bx-popup-menu'
     });
 }
 
