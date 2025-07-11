@@ -246,7 +246,7 @@
                 /*
                  * Trap focus inside popup.
                  */
-                $el.find('.bx-popup-focus-trap').bind('focus', function() {
+                $el.find('.bx-focus-trap').bind('focus', function() {
                     var aFocusable = bx_get_focusable($el.get(0));
                     if(aFocusable && aFocusable.length > 0)
                         $(aFocusable[0]).focus();
@@ -255,8 +255,7 @@
                 /*
                  * Add onHide to return focus back.
                  */
-                const oSource = o.pointer ? $(o.pointer.el).get(0) : bx_clicked_stack_get();
-                if(oSource) {
+                if(bx_clicked_stack_lenth()) {
                     var onHide = null;
                     if(typeof(o.onHide) == 'function')
                         onHide = o.onHide;
@@ -269,8 +268,7 @@
                         if(typeof(onHide) == 'function')
                             onHide($el);
 
-                        bx_clicked_stack_pop();
-                        $(oSource).focus();
+                        $(bx_clicked_stack_pop()).focus();
                     };
                 }
 
@@ -285,10 +283,8 @@
                     }
 
                     var aFocusable = bx_get_focusable($el.get(0));
-                    console.log(aFocusable);
-                    if(aFocusable && aFocusable.length > 0) {
+                    if(aFocusable && aFocusable.length > 0)
                         $(aFocusable[0]).focus();
-                    }
 
                     if(typeof(o.onShow) == 'function')
                         o.onShow($el);
@@ -544,12 +540,17 @@
 
                 var fOnLoad = function() {
                     bx_loading_content(oLoading, false);
+                    
+                    var oPopup = $('#' + sPopupId);
 
-                    $('#' + sPopupId + ' ' + options.container).bxProcessHtml().show();
-
-                    $('#' + sPopupId)._dolPopupSetPosition({
+                    oPopup.find(options.container).bxProcessHtml().show();
+                    oPopup._dolPopupSetPosition({
                         pointer: oPointerOptions
                     });
+
+                    var aFocusable = bx_get_focusable(oPopup.get(0));
+                    if(aFocusable && aFocusable.length > 0)
+                        $(aFocusable[0]).focus();
 
                     if (typeof (options.onLoad) == 'function')
                         options.onLoad('#' + sPopupId);

@@ -7,6 +7,8 @@
             if(typeof(aSidebars[i]) != 'string')
                 continue;
 
+            var oSidebar = bx_sidebar_get(aSidebars[i]);
+
             $('.bx-sidebar-' + aSidebars[i] + '-trigger').on('click', function(event) {
                 event.preventDefault();
 
@@ -36,6 +38,12 @@
 
                 bx_sidebar_toggle(aMatches[1]);
             });
+
+            $('.bx-sidebar.bx-sidebar-' + aSidebars[i] + ' .bx-focus-trap').bind('focus', function() {
+                var aFocusable = bx_get_focusable(oSidebar.get(0));
+                if(aFocusable && aFocusable.length > 0)
+                    $(aFocusable[0]).focus();
+            });
         }
     });
 
@@ -62,6 +70,8 @@
             if(aFocusable && aFocusable.length > 0)
                 $(aFocusable[0]).focus();
         }
+        else 
+            $(bx_clicked_stack_pop()).focus();
     }
 
     function bx_sidebar_dropdown_toggle(oLink) {

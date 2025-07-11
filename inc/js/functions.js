@@ -1523,13 +1523,6 @@ function bx_check_mq()
     return window.getComputedStyle(document.querySelector('body'), '::before').getPropertyValue('content').replace(/'/g, "").replace(/"/g, "");
 }
 
-function bx_get_focusable(oContext = 'document')
-{
-    return Array.from(oContext.querySelectorAll('button, [href], input:not([type="hidden"]), textarea, select, [tabindex]:not([tabindex="-1"])')).filter(function(oElement) { 
-        return !$(oElement).closest(':hidden').length; 
-    });
-}
-
 /**
  * This function loads the passed list of CSS files. In case when this function is called for dynamic loading 
  * of the same file but many times it allows to avoid multiply loadings of the same file.
@@ -1722,11 +1715,20 @@ function bx_agents_action(oElement, sTool, sAction, aParams)
     );
 }
 
+function bx_get_focusable(oContext = 'document')
+{
+    return Array.from(oContext.querySelectorAll('button, [href], input:not([type="hidden"]), textarea, select, [tabindex]:not(.bx-focus-trap, [tabindex="-1"])')).filter(function(oElement) { 
+        return !$(oElement).closest(':hidden').length; 
+    });
+}
+
 function bx_clicked_stack_register()
 {
     const iStackMaxLenth = 3;
 
-    $('a,button').on('click', function() {
+    $('a,button').filter(function(iIndex, oElement) {
+        return !$(oElement).closest('.bx-sidebar').length;
+    }).on('click', function() {
         if(typeof window.glClickedStack === 'undefined')
             window.glClickedStack = [];    
 
@@ -1737,9 +1739,14 @@ function bx_clicked_stack_register()
     });
 }
 
+function bx_clicked_stack_lenth()
+{
+    return window.glClickedStack.length;
+}
+
 function bx_clicked_stack_get()
 {
-    const iLenth = window.glClickedStack.length;
+    const iLenth = bx_clicked_stack_lenth();
     return iLenth > 0 ? window.glClickedStack[iLenth - 1] : false;
 }
 
