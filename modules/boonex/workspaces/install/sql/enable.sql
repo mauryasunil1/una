@@ -16,15 +16,12 @@ INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `type`, `e
 ('bx_workspaces_redirect_aadd', 'profile', @iCategId, '_bx_workspaces_option_redirect_aadd', 'select', 'a:2:{s:6:"module";s:13:"bx_workspaces";s:6:"method";s:30:"get_options_redirect_after_add";}', '', '', 3),
 ('bx_workspaces_redirect_aadd_custom_url', '', @iCategId, '_bx_workspaces_option_redirect_aadd_custom_url', 'digit', '', '', '', 4),
 ('bx_workspaces_num_connections_quick', '6', @iCategId, '_bx_workspaces_option_num_connections_quick', 'digit', '', '', '', 10),
-('bx_workspaces_per_page_browse', '24', @iCategId, '_bx_workspaces_option_per_page_browse', 'digit', '', '', '', 11),
-('bx_workspaces_num_rss', '10', @iCategId, '_bx_workspaces_option_num_rss', 'digit', '', '', '', 12),
-('bx_workspaces_per_page_browse_showcase', '32', @iCategId, '_sys_option_per_page_browse_showcase', 'digit', '', '', '', 15),
-('bx_workspaces_per_page_browse_recommended', '10', @iCategId, '_sys_option_per_page_browse_recommended', 'digit', '', '', '', 16),
-('bx_workspaces_searchable_fields', 'fullname,description', @iCategId, '_bx_workspaces_option_searchable_fields', 'list', 'a:2:{s:6:"module";s:13:"bx_workspaces";s:6:"method";s:21:"get_searchable_fields";}', '', '', 20),
+('bx_workspaces_searchable_fields', '', @iCategId, '_bx_workspaces_option_searchable_fields', 'list', 'a:2:{s:6:"module";s:13:"bx_workspaces";s:6:"method";s:21:"get_searchable_fields";}', '', '', 20),
 ('bx_workspaces_friends', 'on', @iCategId, '_bx_workspaces_option_friends', 'checkbox', '', '', '', 30),
 ('bx_workspaces_public_subscriptions', '', @iCategId, '_bx_workspaces_option_public_subscriptions', 'checkbox', '', '', '', 35),
 ('bx_workspaces_public_subscribed_me', '', @iCategId, '_bx_workspaces_option_public_subscribed_me', 'checkbox', '', '', '', 36),
-('bx_workspaces_enable_profile_activation_letter', 'on', @iCategId, '_bx_workspaces_option_enable_profile_activation_letter', 'checkbox', '', '', '', 40);
+('bx_workspaces_enable_profile_activation_letter', 'on', @iCategId, '_bx_workspaces_option_enable_profile_activation_letter', 'checkbox', '', '', '', 40),
+('bx_workspaces_context_module', '', @iCategId, '_bx_workspaces_option_context_module', 'select', 'a:2:{s:6:"module";s:13:"bx_workspaces";s:6:"method";s:19:"get_context_modules";}', '', '', 50);
 
 -- PAGES
 
@@ -545,7 +542,9 @@ INSERT INTO `sys_alerts` (`unit`, `action`, `handler_id`) VALUES
 ('bx_workspaces', 'timeline_report', @iHandler),
 ('bx_workspaces', 'timeline_repost', @iHandler),
 ('bx_workspaces', 'timeline_pin', @iHandler),
-('bx_workspaces', 'timeline_promote', @iHandler);
+('bx_workspaces', 'timeline_promote', @iHandler),
+('system', 'connection_before_add', @iHandler),
+('system', 'connection_removed', @iHandler);
 
 -- PRIVACY 
 INSERT INTO `sys_objects_privacy` (`object`, `module`, `action`, `title`, `default_group`, `spaces`, `table`, `table_field_id`, `table_field_author`, `override_class_name`, `override_class_file`) VALUES
