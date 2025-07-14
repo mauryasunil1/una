@@ -1,7 +1,7 @@
 version: 2
 updates:
   # Configuration for JavaScript dependencies
-  - package-ecosystem: "yarn"
+  - package-ecosystem: "npm"
     directory: "/" # Root directory
     schedule:
       interval: "daily"
