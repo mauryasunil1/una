@@ -68,7 +68,7 @@
     "select2": "^4.1.0-rc.0",
     "shepherd.js": "^11.2.0",
     "skrollr": "github:Prinzhorn/skrollr",
-    "spin.js": "4.1.1",
+    "spin.js": "4.1.2",
     "stackedit-js": "^1.0.7",
     "tablesorter": "^2.32.0",
     "theia-sticky-sidebar": "^1.7.0",
