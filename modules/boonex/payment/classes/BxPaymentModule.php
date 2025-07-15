@@ -517,7 +517,7 @@ class BxPaymentModule extends BxBaseModPaymentModule
 
         $aCustom = array();
         if(!empty($sCustom)) {
-            $aCustom = json_encode(base64_decode($sCustom), true);
+            $aCustom = json_decode(base64_decode($sCustom), true);
             if(empty($aCustom) || !is_array($aCustom))
                 $aCustom = array();
         }
@@ -557,7 +557,7 @@ class BxPaymentModule extends BxBaseModPaymentModule
 
         $aCustom = array();
         if(!empty($sCustom)) {
-            $aCustom = json_encode(base64_decode($sCustom), true);
+            $aCustom = json_decode(base64_decode($sCustom), true);
             if(empty($aCustom) || !is_array($aCustom))
                 $aCustom = array();
         }
@@ -608,7 +608,7 @@ class BxPaymentModule extends BxBaseModPaymentModule
 
         $aCustom = array();
         if(!empty($sCustom)) {
-            $aCustom = json_encode(base64_decode($sCustom), true);
+            $aCustom = json_decode(base64_decode($sCustom), true);
             if(empty($aCustom) || !is_array($aCustom))
                 $aCustom = array();
         }

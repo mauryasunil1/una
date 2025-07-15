@@ -250,7 +250,7 @@ class BxPaymentConfig extends BxBaseModPaymentConfig
 
     public function s2a($s)
     {
-        return json_encode(base64_decode($s));
+        return json_decode(base64_decode($s), true);
     }
 
     public function urlEncode($s)
