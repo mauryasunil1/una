@@ -2089,7 +2089,7 @@ jquery.easing@^1.4.1:
   resolved "https://registry.yarnpkg.com/jquery.easing/-/jquery.easing-1.4.1.tgz#47982c5836bd758fd48494923c4a101ef6e93e3b"
   integrity sha512-BVpRacWCbNfo/ALWxnLkIY/WRa4Ydg/LtwzIJZvDm7vrhV8Txv+ACi6EGnU11zT19sTc3KEPathWx6CtjWLD1w==
 
-"jquery@>=1.12.0 <5.0.0", jquery@>=1.2.6, jquery@>=1.7.0, jquery@>=1.7.2, jquery@^3.5.0, jquery@^3.7.1:
+"jquery@>=1.12.0 <5.0.0", jquery@>=1.2.6, jquery@>=1.7.2, jquery@^3.5.0, jquery@^3.7.1:
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.7.1.tgz#083ef98927c9a6a74d05a6af02806566d16274de"
   integrity sha512-m4avr8yL8kmFN8psrbFFFmB/If14iN5o9nw/NgnnM+kybDJpRsAynV2BsfpTYrTRysYUdADVD7CkUUizgkpLfg==
@@ -3711,12 +3711,10 @@ text-table@~0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==
 
-theia-sticky-sidebar@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/theia-sticky-sidebar/-/theia-sticky-sidebar-1.7.0.tgz#0fbb924e84eaff987368fd284d00caea7a7ec35a"
-  integrity sha512-ySa+jt8kfcCstdVq3GPbuNxPSkd4/voott1fHKrTc/uBoNE8gdGQHynYfIoaVFBcsc0vk3yw4C4N4uZ+fpECOA==
-  dependencies:
-    jquery ">=1.7.0"
+theia-sticky-sidebar@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/theia-sticky-sidebar/-/theia-sticky-sidebar-2.0.0.tgz#ebc66c8e4e9690b5c2d87c392b838c912a8e1fb5"
+  integrity sha512-MMjaEb/1LJPpcTbxN3803ZO5jMEAq99miOD+bNRvRi636y2TJxb5UFS21Pzg2qrCls9quuxcLzDlUSBw2qL6xQ==
 
 thenify-all@^1.0.0:
   version "1.6.0"
