@@ -175,7 +175,7 @@
   resolved "https://registry.yarnpkg.com/@napi-rs/canvas-win32-x64-msvc/-/canvas-win32-x64-msvc-0.1.73.tgz#6e4bc501dca4e409d11c19e78be922d9645a8c70"
   integrity sha512-YQmHXBufFBdWqhx+ympeTPkMfs3RNxaOgWm59vyjpsub7Us07BwCcmu1N5kildhO8Fm0syoI2kHnzGkJBLSvsg==
 
-"@napi-rs/canvas@^0.1.65":
+"@napi-rs/canvas@^0.1.71":
   version "0.1.73"
   resolved "https://registry.yarnpkg.com/@napi-rs/canvas/-/canvas-0.1.73.tgz#4cb1093f2674b122088dfc6d5f0b2f5bdde3c71a"
   integrity sha512-9iwPZrNlCK4rG+vWyDvyvGeYjck9MoP0NVQP6N60gqJNFA1GsN0imG05pzNsqfCvFxUxgiTYlR8ff0HC1HXJiw==
@@ -2879,12 +2879,12 @@ path-type@^3.0.0:
   dependencies:
     pify "^3.0.0"
 
-pdfjs-dist@^4.10.38:
-  version "4.10.38"
-  resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-4.10.38.tgz#3ee698003790dc266cc8b55c0e662ccb9ae18f53"
-  integrity sha512-/Y3fcFrXEAsMjJXeL9J8+ZG9U01LbuWaYypvDW2ycW1jL269L3js3DVBjDJ0Up9Np1uqDXsDrRihHANhZOlwdQ==
+pdfjs-dist@^5.3.93:
+  version "5.3.93"
+  resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-5.3.93.tgz#d1ef9bd9dce1bfcc421c00a96df195d27b7bbf4f"
+  integrity sha512-w3fQKVL1oGn8FRyx5JUG5tnbblggDqyx2XzA5brsJ5hSuS+I0NdnJANhmeWKLjotdbPQucLBug5t0MeWr0AAdg==
   optionalDependencies:
-    "@napi-rs/canvas" "^0.1.65"
+    "@napi-rs/canvas" "^0.1.71"
 
 "photoswipe@github:dimsemenov/PhotoSwipe#v4.1.3":
   version "4.1.3"
