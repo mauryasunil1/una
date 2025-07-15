@@ -359,12 +359,14 @@ class BxDolConnection extends BxDolFactory implements iBxDolFactoryObject
         $iMutual = 0;
         $iInitiator = (int)$iInitiator;
         $iContent = (int)$iContent;
+        $iOverrideResult = null;
 
         $aAlertExtras = [
             'initiator' => &$iInitiator,
             'content' => &$iContent,
             'mutual' => &$iMutual,
             'object' => $this,
+            'override_result' => &$iOverrideResult,
         ];
         if(!empty($aParams['alert_extras']) && is_array($aParams['alert_extras']))
             $aAlertExtras = array_merge($aAlertExtras, $aParams['alert_extras']);
@@ -380,11 +382,16 @@ class BxDolConnection extends BxDolFactory implements iBxDolFactoryObject
          *      - `initiator` - [int] by ref, profile id who is creating the connection, can be overridden in hook processing
          *      - `content` - [int] by ref, profile id with whom the connection is creating, can be overridden in hook processing
          *      - `mutual` - [int] by ref, if the relation is mutual or not, can be overridden in hook processing
-         *      - `object` - [object] an instance of relation, @see BxDolConnection
+         *      - `object` - [object] an instance of connection object, @see BxDolConnection
+         *      - `object_name` - [string] connection object name
+         *      - `override_result` - [boolean] by ref, stop adding and return specified result
          * @hook @ref hook-bx_dol_connection-connection_before_add
          */
         bx_alert($this->_sObject, 'connection_before_add', 0, false, $aAlertExtras);
-        
+        bx_alert('system', 'connection_before_add', 0, false, array_merge($aAlertExtras, ['object_name' => $this->_sObject]));
+        if (null !== $aAlertExtras['override_result'])
+            return $aAlertExtras['override_result'];
+
         if (!$this->_oQuery->addConnection($iInitiator, $iContent, $iMutual))
             return false;
 
@@ -395,6 +402,7 @@ class BxDolConnection extends BxDolFactory implements iBxDolFactoryObject
          * @hook @ref hook-bx_dol_connection-connection_added
          */
         bx_alert($this->_sObject, 'connection_added', 0, false, $aAlertExtras);
+        bx_alert('system', 'connection_added', 0, false, array_merge($aAlertExtras, ['object_name' => $this->_sObject]));
 
         $this->onAdded($iInitiator, $iContent, $iMutual);
 
@@ -492,6 +500,7 @@ class BxDolConnection extends BxDolFactory implements iBxDolFactoryObject
          * @hook @ref hook-bx_dol_connection-connection_before_remove
          */
         bx_alert($this->_sObject, 'connection_before_remove', 0, false, $aAlertExtras);
+        bx_alert('system', 'connection_before_remove', 0, false, array_merge($aAlertExtras, ['object_name' => $this->_sObject]));
 
         if(!$this->_oQuery->removeConnection($iInitiator, $iContent))
             return false;
@@ -503,6 +512,7 @@ class BxDolConnection extends BxDolFactory implements iBxDolFactoryObject
          * @hook @ref hook-bx_dol_connection-connection_removed
          */
         bx_alert($this->_sObject, 'connection_removed', 0, false, $aAlertExtras);
+        bx_alert('system', 'connection_removed', 0, false, array_merge($aAlertExtras, ['object_name' => $this->_sObject]));
 
         $this->onRemoved($iInitiator, $iContent, $iMutual);
 

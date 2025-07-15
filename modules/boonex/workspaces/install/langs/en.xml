@@ -24,6 +24,7 @@
     <string name="_bx_workspaces_option_friends"><![CDATA[Friendship]]></string>
     <string name="_bx_workspaces_option_public_subscriptions"><![CDATA[Public following list]]></string>
     <string name="_bx_workspaces_option_public_subscribed_me"><![CDATA[Public followers list]]></string>
+    <string name="_bx_workspaces_option_context_module"><![CDATA[Context module to use as Workspace]]></string>
 
     <string name="_bx_workspaces_form_profile"><![CDATA[Workspaces]]></string>
     <string name="_bx_workspaces_form_profile_display_add"><![CDATA[Add Workspace]]></string>

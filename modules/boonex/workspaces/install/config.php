@@ -112,17 +112,17 @@ $aConfig = array(
     	'process_menu_triggers' => 1,
     	'process_page_triggers' => 1,
     	'process_esearches' => 1,
-    	'register_transcoders' => 1,
+    	'register_transcoders' => 0,
         'clear_db_cache' => 1,
     ),
     'disable' => array (
         'execute_sql' => 1,
-    	'unregister_transcoders' => 1,
+    	'unregister_transcoders' => 0,
     	'update_relations' => 1,
         'clear_db_cache' => 1,
     ),
     'disable_failed' => array (
-    	'register_transcoders' => 1,
+    	'register_transcoders' => 0,
     	'clear_db_cache' => 1,
     ),
 
