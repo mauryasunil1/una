@@ -1930,16 +1930,16 @@
         },
         {
             "name": "twilio/sdk",
-            "version": "8.6.4",
+            "version": "8.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twilio/twilio-php",
-                "reference": "d8c69844909eb73f1870a2398f6b87309ea29918"
+                "reference": "4a914d4fcbab9ee6b7ea84f8df171022f208fdf5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/d8c69844909eb73f1870a2398f6b87309ea29918",
-                "reference": "d8c69844909eb73f1870a2398f6b87309ea29918",
+                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/4a914d4fcbab9ee6b7ea84f8df171022f208fdf5",
+                "reference": "4a914d4fcbab9ee6b7ea84f8df171022f208fdf5",
                 "shasum": ""
             },
             "require": {
@@ -1976,7 +1976,7 @@
                 "sms",
                 "twilio"
             ],
-            "time": "2025-07-03T09:44:09+00:00"
+            "time": "2025-07-10T11:52:59+00:00"
         },
         {
             "name": "unaio/amazon-s3-php-class-hmac-v2",
@@ -1990,23 +1990,23 @@
         },
         {
             "name": "wikimedia/less.php",
-            "version": "v5.3.1",
+            "version": "v5.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/less.php.git",
-                "reference": "fb0ed6296bb69cad225dd49b7e93765aab9ae88b"
+                "reference": "75a0db4a7698b5fe668af553329605ac40f374af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/less.php/zipball/fb0ed6296bb69cad225dd49b7e93765aab9ae88b",
-                "reference": "fb0ed6296bb69cad225dd49b7e93765aab9ae88b",
+                "url": "https://api.github.com/repos/wikimedia/less.php/zipball/75a0db4a7698b5fe668af553329605ac40f374af",
+                "reference": "75a0db4a7698b5fe668af553329605ac40f374af",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.4.3"
+                "php": ">=8.1"
             },
             "require-dev": {
-                "mediawiki/mediawiki-codesniffer": "46.0.0",
+                "mediawiki/mediawiki-codesniffer": "47.0.0",
                 "mediawiki/mediawiki-phan-config": "0.15.1",
                 "mediawiki/minus-x": "1.1.3",
                 "php-parallel-lint/php-console-highlighter": "1.0.0",
@@ -2059,9 +2059,9 @@
             ],
             "support": {
                 "issues": "https://github.com/wikimedia/less.php/issues",
-                "source": "https://github.com/wikimedia/less.php/tree/v5.3.1"
+                "source": "https://github.com/wikimedia/less.php/tree/v5.4.0"
             },
-            "time": "2025-04-16T22:21:45+00:00"
+            "time": "2025-07-03T20:27:02+00:00"
         }
     ],
     "packages-dev": [],
