@@ -168,7 +168,7 @@ class BxBaseStudioFormsPreValues extends BxDolStudioFormsPreValues
             if(($sIconType = $oForm->getCleanValue('icon_type'))) {
                 $aData['use'] = $sIconType;
                 foreach($this->aIconTypes as $sType)
-                    if(($sIcon = $oForm->getCleanValue('icon_' . $sType)))
+                    if(($sIcon = $oForm->getCleanValue('icon_' . $sType)) !== false)
                         $aData[$sType] = $sIcon;
 
                 $aAdd['Data'] = serialize($aData);
@@ -353,17 +353,17 @@ class BxBaseStudioFormsPreValues extends BxDolStudioFormsPreValues
             if(($sIconType = $oForm->getCleanValue('icon_type'))) {
                 $aData['use'] = $sIconType;
                 foreach($this->aIconTypes as $sType)
-                    if(($sIcon = $oForm->getCleanValue('icon_' . $sType)))
+                    if(($sIcon = $oForm->getCleanValue('icon_' . $sType)) !== false)
                         $aData[$sType] = $sIcon;
 
                 $aAdd['Data'] = serialize($aData);
             }
 
             $bEmpty = $oForm->getCleanValue('Empty') == 'on';
-            if($bEmpty && !empty($aValue['value']))
-                $aAdd['Value'] = 0;
-            else if(!$bEmpty && empty($aValue['value']))
-                $aAdd['Value'] = $this->_getAvailableSetValue($this->sList);
+            if($bEmpty)
+                $aAdd['Value'] = empty($aValue['value']) ? $aValue['value'] : 0;
+            else
+                $aAdd['Value'] = !empty($aValue['value']) ? $aValue['value'] : $this->_getAvailableSetValue($this->sList);
 
             if(!empty($aAdd) && $bUseInSets) {
                 $mixedValue = $aAdd['Value'];
