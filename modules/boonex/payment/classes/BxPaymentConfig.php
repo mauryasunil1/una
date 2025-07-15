@@ -243,14 +243,19 @@ class BxPaymentConfig extends BxBaseModPaymentConfig
         return 0;
     }
 
-    public function a2s($a)
+    public function a2s($a, $bEncodeString = true)
     {
-        return base64_encode(json_encode($a));
+        $s = json_encode($a);
+
+        return $bEncodeString ? base64_encode($s) : $s;
     }
 
-    public function s2a($s)
+    public function s2a($s, $bDecodeString = true)
     {
-        return json_decode(base64_decode($s), true);
+        if($bDecodeString)
+            $s = base64_decode($s);
+
+        return json_decode($s, true);
     }
 
     public function urlEncode($s)

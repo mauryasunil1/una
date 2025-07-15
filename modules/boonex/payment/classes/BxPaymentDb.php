@@ -231,12 +231,17 @@ class BxPaymentDb extends BxBaseModPaymentDb
 
     public function getCartContent($iId)
     {
-        $aCart = $this->getRow("SELECT * FROM `" . $this->_sPrefix . "cart` WHERE `client_id`=:client_id LIMIT 1", array(
+        $aCart = $this->getRow("SELECT * FROM `" . $this->_sPrefix . "cart` WHERE `client_id`=:client_id LIMIT 1", [
             'client_id' => $iId
-        ));
+        ]);
 
         if(empty($aCart) || !is_array($aCart))
-            $aCart = array('items' => '', 'customs' => '');
+            $aCart = ['items' => '', 'customs' => []];
+
+        if(!empty($aCart['customs']))
+            $aCart['customs'] = is_string($aCart['customs']) ? $this->_oConfig->s2a($aCart['customs'], false) : $aCart['customs'];
+        else 
+            $aCart['customs'] = [];
 
         return $aCart;
     }
@@ -252,7 +257,7 @@ class BxPaymentDb extends BxBaseModPaymentDb
         return $this->query("REPLACE INTO `" . $this->_sPrefix . "cart` SET `client_id`=:client_id, `items`=:items, `customs`=:customs", array(
             'client_id' => $iId,
             'items' => $sItems,
-            'customs' => !empty($aCustoms) && is_array($aCustoms) ? serialize($aCustoms) : ''
+            'customs' => !empty($aCustoms) && is_array($aCustoms) ? $this->_oConfig->a2s($aCustoms, false) : ''
         ));
     }
 
@@ -376,7 +381,7 @@ class BxPaymentDb extends BxBaseModPaymentDb
             'type' => $sType, 
             'provider' => $sProvider,
             'items' => trim($sItems, ':'),
-            'customs' => !empty($aCustom) && is_array($aCustom) ? serialize($aCustom) : '',
+            'customs' => !empty($aCustom) && is_array($aCustom) ? $this->_oConfig->a2s($aCustom, false) : '',
             'amount' => $aCartInfo['items_price'],
             'currency' => $sCurrency,
             'data' => !empty($aData) ? serialize($aData) : ''

@@ -512,18 +512,18 @@ class BxPaymentModule extends BxBaseModPaymentModule
      */
     public function actionAddToCart($iSellerId, $iModuleId, $iItemId, $iItemCount, $sCustom = '')
     {
-        if(empty($sCustom) && bx_get('custom') !== false)
-            $sCustom = bx_process_input(bx_get('custom'));
+        if(empty($sCustom) && ($sCustom = bx_get('custom')) !== false)
+            $sCustom = bx_process_input($sCustom);
 
-        $aCustom = array();
+        $aCustom = [];
         if(!empty($sCustom)) {
-            $aCustom = json_decode(base64_decode($sCustom), true);
+            $aCustom = $this->_oConfig->s2a($sCustom);
             if(empty($aCustom) || !is_array($aCustom))
-                $aCustom = array();
+                $aCustom = [];
         }
 
         $aResult = $this->getObjectCart()->serviceAddToCart($iSellerId, $iModuleId, $iItemId, $iItemCount, $aCustom);
-		echoJson($aResult);
+        echoJson($aResult);
     }
 
     /**
@@ -608,9 +608,9 @@ class BxPaymentModule extends BxBaseModPaymentModule
 
         $aCustom = array();
         if(!empty($sCustom)) {
-            $aCustom = json_decode(base64_decode($sCustom), true);
+            $aCustom = $this->_oConfig->s2a($sCustom);
             if(empty($aCustom) || !is_array($aCustom))
-                $aCustom = array();
+                $aCustom = [];
         }
 
         echoJson($this->getObjectSubscriptions()->serviceSubscribeWithAddons($iSellerId, $sSellerProvider, $iModuleId, $iItemId, $iItemCount, $sItemAddons, $sRedirect, $aCustom));
@@ -993,7 +993,7 @@ class BxPaymentModule extends BxBaseModPaymentModule
             //--- For Single time payments.
             if($bTypeSingle && (float)$aItem[$sKeyPriceSingle] == 0) {
                 $aCart = $this->_oDb->getCartContent($aInfo['client_id']);
-                $aCartCustoms = !empty($aCart['customs']) ? unserialize($aCart['customs']) : array();
+                $aCartCustoms = $aCart['customs'];
 
                 $aCartItem = array($aInfo['vendor_id'], $aItem['module_id'], $aItem['id'], $aItem['quantity']);
                 $aCartItemCustom = $this->_oConfig->pullCustom($aCartItem, $aCartCustoms);
@@ -1025,7 +1025,7 @@ class BxPaymentModule extends BxBaseModPaymentModule
 
         if($bTypeSingle && (empty($aCustoms) || !is_array($aCustoms))) {
             $aCart = $this->_oDb->getCartContent($aInfo['client_id']);
-            $aCartCustoms = !empty($aCart['customs']) ? unserialize($aCart['customs']) : array();
+            $aCartCustoms = $aCart['customs'];
 
             $aCustoms = array();
             foreach($aInfo['items'] as $aItem) {
@@ -1374,13 +1374,8 @@ class BxPaymentModule extends BxBaseModPaymentModule
         $iClientId = (int)$aPending['client_id'];
         $iSellerId = (int)$aPending['seller_id'];
         $sLicense = $this->_oConfig->getLicense();
-        $aCustoms = !empty($aPending['customs']) ? unserialize($aPending['customs']) : [];
-
-        $aCart = [];
-        if($bTypeSingle) {
-            $aCart = $this->_oDb->getCartContent($iClientId);
-            $aCart['customs'] = !empty($aCart['customs']) ? unserialize($aCart['customs']) : [];
-        }
+        $aCustoms = !empty($aPending['customs']) ? $this->_oConfig->s2a($aPending['customs'], false) : [];
+        $aCart = $bTypeSingle ? $this->_oDb->getCartContent($iClientId) : [];
 
         $bResult = false;
         $aItems = $this->_oConfig->descriptorsM2A($aPending['items']);

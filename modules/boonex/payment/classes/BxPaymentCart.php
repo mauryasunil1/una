@@ -220,10 +220,7 @@ class BxPaymentCart extends BxBaseModPaymentCart
             }
         }
 
-        $aCartCustom = array();
-        if(!empty($aCart['customs']))
-            $aCartCustom = unserialize($aCart['customs']);
-
+        $aCartCustom = $aCart['customs'];
         if(!empty($aCustom) && is_array($aCustom))
             $aCartCustom[$sCiDsc] = !empty($aCartCustom[$sCiDsc]) && is_array($aCartCustom[$sCiDsc]) ? array_merge($aCartCustom[$sCiDsc], $aCustom) : $aCustom;
 
@@ -265,21 +262,18 @@ class BxPaymentCart extends BxBaseModPaymentCart
      */
     public function serviceDeleteFromCart($iSellerId, $iModuleId = 0, $iItemId = 0)
     {
-    	$CNF = &$this->_oModule->_oConfig->CNF;
+        $CNF = &$this->_oModule->_oConfig->CNF;
 
         if($iSellerId == BX_PAYMENT_EMPTY_ID)
             return array('code' => 1, 'message' => _t($CNF['T']['ERR_WRONG_DATA']));
 
-		$iClientId = $this->_oModule->getProfileId();
+        $iClientId = $this->_oModule->getProfileId();
         if(empty($iClientId))
             return array('code' => 2, 'message' => _t($CNF['T']['ERR_REQUIRED_LOGIN']));
 
         $aCart = $this->_oModule->_oDb->getCartContent($iClientId);
 
-        $aCartCustom = array();
-        if(!empty($aCart['customs']))
-            $aCartCustom = unserialize($aCart['customs']);
-
+        $aCartCustom = $aCart['customs'];
         if(!empty($iModuleId) && !empty($iItemId)) {
             $sCiDsc = $this->_oModule->_oConfig->descriptorA2S(array($iSellerId, $iModuleId, $iItemId));
             if(!empty($aCartCustom[$sCiDsc]))
@@ -302,7 +296,7 @@ class BxPaymentCart extends BxBaseModPaymentCart
             'module_id' => $iModuleId,
             'item_id' => $iItemId,
         ));
-        
+
         return array('code' => 0, 'message' => _t($CNF['T']['MSG_ITEM_DELETED']));
     }
 
