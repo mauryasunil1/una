@@ -1276,6 +1276,15 @@
     }
 
     /* Common elements: Units */
+    .bx-def-icon-badge-size,
+    .bx-def-thumb-badge-size,
+    .bx-def-ava-badge-size {
+        @apply h-6 w-6;
+    }
+    .bx-def-ava-big-badge-size {
+        @apply h-8 w-8;
+    }
+
     .bx-artificer .bx-def-icon-size,
     .bx-artificer .bx-profile-avatar .bx-def-thumb-size,
     .bx-artificer .bx-profile-stats .bx-ps-user .bx-def-thumb-size {
@@ -1309,6 +1318,10 @@
 
     .bx-base-text-unit-title a {
         @apply text-lg lg:text-xl font-semibold;
+    }
+
+    .bx-base-pofile-unit-badge {
+        @apply inline-flex align-middle;
     }
 
     .bx-artificer .bx-base-pofile-unit-online {

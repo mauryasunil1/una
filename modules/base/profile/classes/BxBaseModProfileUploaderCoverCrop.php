@@ -40,7 +40,7 @@ class BxBaseModProfileUploaderCoverCrop extends BxTemplUploaderHTML5
         foreach ($aGhosts as $aFile) {
 
             // for cover image delete only unassigned ghosts and currently set covers
-            if ($aFile['id'] == $aContentInfo[$CNF['FIELD_COVER']] || $aFile['id'] != $aContentInfo[$CNF['FIELD_PICTURE']])
+            if ($aFile['id'] == $aContentInfo[$CNF['FIELD_COVER']] || !in_array($aFile['id'], [$aContentInfo[$CNF['FIELD_BADGE']], $aContentInfo[$CNF['FIELD_PICTURE']]]))
                 $iCount += $oStorage->deleteFile($aFile['id']);
 
         }
@@ -70,7 +70,7 @@ class BxBaseModProfileUploaderCoverCrop extends BxTemplUploaderHTML5
         foreach ($a as $aFile) {
 
             // for cover image show only unassigned ghosts and currently set covers
-            if ($aFile['file_id'] == $aContentInfo[$CNF['FIELD_COVER']] || $aFile['file_id'] != $aContentInfo[$CNF['FIELD_PICTURE']])
+            if ($aFile['file_id'] == $aContentInfo[$CNF['FIELD_COVER']] || !in_array(aFile['file_id'], [$aContentInfo[$CNF['FIELD_BADGE']], $aContentInfo[$CNF['FIELD_PICTURE']]]))
                 $aResult[$aFile['file_id']] = $aFile;
 
         }

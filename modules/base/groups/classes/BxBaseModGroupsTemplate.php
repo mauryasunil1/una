@@ -69,6 +69,8 @@ class BxBaseModGroupsTemplate extends BxBaseModProfileTemplate
         if($this->_oConfig->isUseCoverAsThumb())
             $aParams['show_avatar'] = false;
 
+        $aParams['show_badge'] = false;
+
         return parent::prepareCover($aData, $aParams);
     }     
 
@@ -162,6 +164,11 @@ class BxBaseModGroupsTemplate extends BxBaseModProfileTemplate
         }
 
         return $bResult;
+    }
+
+    protected function _isUnitBadge($aData, $sTemplateName = 'unit.html')
+    {
+        return false;
     }
 
     function _image ($sField, $sTranscodeObject, $sNoImage, $aData, $bSubstituteNoImage = true)

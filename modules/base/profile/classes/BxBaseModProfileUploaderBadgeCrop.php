@@ -9,18 +9,17 @@
  * @{
  */
 
-class BxBaseModProfileUploaderPictureCrop extends BxTemplUploaderCrop
+class BxBaseModProfileUploaderBadgeCrop extends BxTemplUploaderCrop
 {
     protected $_sModule;
     protected $_oModule;
 
     public function __construct ($aObject, $sStorageObject, $sUniqId, $oTemplate)
     {
-        if(!empty($this->_sModule))
+        if(!empty($this->_sModule) && empty($this->_oModule))
             $this->_oModule = BxDolModule::getInstance($this->_sModule);
 
-        parent::__construct($aObject, $sStorageObject, $sUniqId, $oTemplate);
-        
+        parent::__construct($aObject, $sStorageObject, $sUniqId, $oTemplate ? $oTemplate : $this->_oModule->_oTemplate);
     }
 
     public function deleteGhostsForProfile($iProfileId, $iContentId = false)
@@ -37,11 +36,9 @@ class BxBaseModProfileUploaderPictureCrop extends BxTemplUploaderCrop
 
         $aGhosts = $oStorage->getGhosts($iProfileId, $iContentId, $iContentId ? true : false);
         foreach ($aGhosts as $aFile) {
-
-            // for profile image delete only unassigned ghosts and currently set profile pictures
-            if ($aFile['id'] == $aContentInfo[$CNF['FIELD_PICTURE']] || !in_array($aFile['id'], [$aContentInfo[$CNF['FIELD_BADGE']], $aContentInfo[$CNF['FIELD_COVER']]]))
+            // for cover image delete only unassigned ghosts and currently set covers
+            if ($aFile['id'] == $aContentInfo[$CNF['FIELD_BADGE']] || !in_array($aFile['id'], [$aContentInfo[$CNF['FIELD_PICTURE']], $aContentInfo[$CNF['FIELD_COVER']]]))
                 $iCount += $oStorage->deleteFile($aFile['id']);
-
         }
 
         return $iCount;
@@ -67,10 +64,9 @@ class BxBaseModProfileUploaderPictureCrop extends BxTemplUploaderCrop
         $aContentInfo = $this->_oModule->_oDb->getContentInfoById($iContentId);
         $aResult = array();
         foreach ($a as $aFile) {
-
-            // for profile pictures show only unassigned ghosts and currently set profile pictures
-            if (($aFile['file_id'] == $aContentInfo[$CNF['FIELD_PICTURE']] || !in_array($aFile['file_id'], [$aContentInfo[$CNF['FIELD_BADGE']], $aContentInfo[$CNF['FIELD_COVER']]])))
-                $aResult[$aFile['file_id']] = $aFile;            
+            // for cover image show only unassigned ghosts and currently set covers
+            if ($aFile['file_id'] == $aContentInfo[$CNF['FIELD_BADGE']] || !in_array($aFile['file_id'], [$aContentInfo[$CNF['FIELD_PICTURE']], $aContentInfo[$CNF['FIELD_COVER']]]))
+                $aResult[$aFile['file_id']] = $aFile;
         }
 
         if ('array' == $sFormat) {

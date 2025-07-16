@@ -161,6 +161,8 @@ class BxBaseModProfileFormsEntryHelper extends BxBaseModGeneralFormsEntryHelper
             $oForm->processFiles($CNF['FIELD_PICTURE'], $iContentId, false);
         if (isset($CNF['FIELD_COVER']))
             $oForm->processFiles($CNF['FIELD_COVER'], $iContentId, false);
+        if (isset($CNF['FIELD_BADGE']))
+            $oForm->processFiles($CNF['FIELD_BADGE'], $iContentId, false);
 
         if(isset($CNF['FIELD_ALLOW_POST_TO']) && !empty($aContentInfo[$CNF['FIELD_ALLOW_POST_TO']]) && ($oPrivacy = BxDolPrivacy::getObjectInstance($CNF['OBJECT_PRIVACY_POST'])) !== false)
             $oPrivacy->reassociateGroupCustomWithContent($oProfile->id(), $iContentId, (int)$aContentInfo[$CNF['FIELD_ALLOW_POST_TO']]);

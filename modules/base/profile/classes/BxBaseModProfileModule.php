@@ -1073,7 +1073,12 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
     {
         return $this->_serviceEntityForm('editDataForm', $iContentId, $this->_oConfig->CNF['OBJECT_FORM_ENTRY_DISPLAY_EDIT_COVER']);
     }
-    
+
+    public function serviceEntityEditBadge($iContentId = 0)
+    {
+        return $this->_serviceEntityForm('editDataForm', $iContentId, $this->_oConfig->CNF['OBJECT_FORM_ENTRY_DISPLAY_EDIT_BADGE'], 'checkAllowedChangeBadge');
+    }
+
     public function serviceEntityEditSettings($iContentId = 0)
     {
         $CNF = &$this->_oConfig->CNF;
@@ -1786,6 +1791,14 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
     /**
      * @return CHECK_ACTION_RESULT_ALLOWED if access is granted or error message if access is forbidden.
      */
+    public function checkAllowedViewBadgeImage ($aDataEntry, $isPerformAction = false)
+    {
+        return $this->checkAllowedViewProfileImage($aDataEntry);
+    }
+    
+    /**
+     * @return CHECK_ACTION_RESULT_ALLOWED if access is granted or error message if access is forbidden.
+     */
     public function checkAllowedPost ($aDataEntry, $isPerformAction = false)
     {
         return $this->serviceCheckAllowedPostForProfile ($aDataEntry, $isPerformAction);
@@ -1820,6 +1833,30 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
             return CHECK_ACTION_RESULT_ALLOWED;
 
         return _t('_sys_txt_access_denied');
+    }
+
+    public function checkAllowedChangeBadge ($aDataEntry, $isPerformAction = false)
+    {
+        if(empty($aDataEntry) || !is_array($aDataEntry))
+            return _t('_sys_txt_not_found');
+
+        // moderator always has access
+        if($this->_isModerator($isPerformAction))
+            return CHECK_ACTION_RESULT_ALLOWED;
+
+        // owner (checked by account instead of author!) always have access
+        $oProfile = BxDolProfile::getInstanceByContentAndType($aDataEntry[$this->_oConfig->CNF['FIELD_ID']], $this->_aModule['name']);
+        if(!$oProfile)
+            return _t('_sys_txt_error_occured');
+
+        if($oProfile->getAccountId() != $this->_iAccountId)
+            return _t('_sys_txt_access_denied');
+
+        $aCheck = checkActionModule($this->_iProfileId, 'change badge', $this->getName(), false);
+        if($aCheck[CHECK_ACTION_RESULT] !== CHECK_ACTION_RESULT_ALLOWED)
+            return $aCheck[CHECK_ACTION_MESSAGE];
+
+        return CHECK_ACTION_RESULT_ALLOWED;
     }
 
     /**

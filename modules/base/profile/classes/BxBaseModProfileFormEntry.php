@@ -59,6 +59,14 @@ class BxBaseModProfileFormEntry extends BxBaseModGeneralFormEntry
             );
         }
 
+        if (($sKey = 'FIELD_BADGE') && !empty($CNF[$sKey]) && isset($this->aInputs[$CNF[$sKey]])) {
+            $this->_aImageFields[$CNF[$sKey]] = [
+                'storage_object' => $CNF['OBJECT_STORAGE_BADGE'],
+                'images_transcoder' => $CNF['OBJECT_IMAGES_TRANSCODER_BADGE'],
+                'uploaders' => $CNF['OBJECT_UPLOADERS_PICTURE'],
+            ];
+        }
+
         foreach ($this->_aImageFields as $sField => $aParams) {
             $this->aInputs[$sField]['storage_object'] = $aParams['storage_object'];
             $this->aInputs[$sField]['uploaders'] = !empty($this->aInputs[$sField]['value']) ? unserialize($this->aInputs[$sField]['value']) : $aParams['uploaders'];

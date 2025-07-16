@@ -150,14 +150,6 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
 
         $bPublic = $isCheckPrivateContent && !empty($CNF['OBJECT_PRIVACY_VIEW']) ? $this->isProfilePublic($aData) : true;
 
-        $bPublicThumb = true;
-        if($isCheckPrivateContent && $oModule->checkAllowedViewProfileImage($aData) !== CHECK_ACTION_RESULT_ALLOWED)
-            $bPublicThumb = false;
-
-        $bPublicCover = true;
-        if($isCheckPrivateContent && $oModule->checkAllowedViewCoverImage($aData) !== CHECK_ACTION_RESULT_ALLOWED)
-            $bPublicCover = false;
-
         $oProfile = BxDolProfile::getInstanceByContentAndType($iContentId, $this->MODULE);
         $iProfile = $oProfile->id();
 
@@ -166,23 +158,33 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
 
         // get profile's title
         $sTitle = $oModule->serviceProfileName($iContentId);
+        $sTitleAttr = bx_html_attribute($sTitle);
 
         $sText = $sSummary = '';
         if(!empty($CNF['FIELD_TEXT']) && !empty($aData[$CNF['FIELD_TEXT']])) {
             $sText = $this->getText($aData);
             $sSummary = $this->getSummary($aData, $sTitle, $sText, $sUrl);
         }
-        
-        $sCoverUrl = $bPublicCover ? $this->urlCoverUnit($aData, false) : '';
+
+        $sCoverUrl = '';
+        if(!$isCheckPrivateContent || $oModule->checkAllowedViewCoverImage($aData) === CHECK_ACTION_RESULT_ALLOWED)
+            $sCoverUrl = $this->urlCoverUnit($aData, false);
         $bCoverUrl = !empty($sCoverUrl);
 
         if(empty($sCoverUrl) && ($iCoverId = (int)getParam('sys_unit_cover_profile')) != 0)
             $sCoverUrl = BxDolTranscoder::getObjectInstance(BX_DOL_TRANSCODER_OBJ_COVER_UNIT_PROFILE)->getFileUrlById($iCoverId);
         if(empty($sCoverUrl))
             $sCoverUrl = $this->getImageUrl('cover.svg');
-        
-        $sThumbUrl = $this->_isUnitThumb($aData, $sTemplate) && $bPublicThumb ? $this->_getUnitThumbUrl($sTemplateSize, $aData, false) : '';
+
+        $sThumbUrl = '';
+        if($this->_isUnitThumb($aData, $sTemplate) && (!$isCheckPrivateContent || $oModule->checkAllowedViewProfileImage($aData) === CHECK_ACTION_RESULT_ALLOWED))
+            $sThumbUrl = $this->_getUnitThumbUrl($sTemplateSize, $aData, false);
         $bThumbUrl = !empty($sThumbUrl);
+
+        $sBadgeUrl = '';
+        if($this->_isUnitBadge($aData, $sTemplate) && (!$isCheckPrivateContent || $oModule->checkAllowedViewBadgeImage($aData) === CHECK_ACTION_RESULT_ALLOWED))
+            $sBadgeUrl = $this->_getUnitBadgeUrl($sTemplateSize, $aData, false);
+        $bBadgeUrl = !empty($sBadgeUrl);
 
         $aTmplVarsThumbnail = array(
             'class_size' => '',
@@ -236,11 +238,20 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
                     'title' => $sTitle,
                 )
             ),
+            'bx_if:show_badge' => [
+                'condition' => $bBadgeUrl,
+                'content' => $bBadgeUrl ? [
+                    'size' => $sTemplateSize,
+                    'badge_url' => $sBadgeUrl,
+                    'badge_link' => $aData[$CNF['FIELD_BADGE_LINK']],
+                    'title_attr' => $sTitleAttr,
+                ] : []
+            ],
             'content_url' => $bPublic ? $sUrl : 'javascript:void(0);',
             'content_click' => !$bPublic ? 'javascript:bx_alert(' . bx_js_string('"' . _t('_sys_access_denied_to_private_content') . '"') . ');' : '',
             'content_target' => !empty($aParams['link_target']) ? $aParams['link_target'] : '_self',
             'title' => $sTitle,
-            'title_attr' => bx_html_attribute($sTitle),
+            'title_attr' => $sTitleAttr,
             'addon' => !empty($aData['addon']) ? $aData['addon'] : '',
             'module_name' => _t($CNF['T']['txt_sample_single']),
             'ts' => $aData[$CNF['FIELD_ADDED']],
@@ -315,6 +326,7 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
         $sShowData = isset($aParams['show_data']) ? $aParams['show_data'] : '';
         $bShowCover = !isset($aParams['show_cover']) || $aParams['show_cover'] === true;
         $bShowAvatar = !isset($aParams['show_avatar']) || $aParams['show_avatar'] === true;
+        $bShowBadge = !isset($aParams['show_badge']) || $aParams['show_badge'] === true;
         $sAddCode = "";
         
 
@@ -528,6 +540,22 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
                 ]), true, true);
             }
         }
+        
+        //--- Process Badge
+        $bTmplVarsShowBadge = false;
+        $aTmplVarsShowBadge = [];
+
+        if($bShowBadge) {
+            $sUrlBadge = $this->_image($CNF['FIELD_BADGE'], $CNF['OBJECT_IMAGES_TRANSCODER_BADGE'], 'no-picture-thumb.png', $aData, false);
+
+            if(($bTmplVarsShowBadge = !empty($sUrlBadge))) 
+                $aTmplVarsShowBadge = [
+                    'size' => 'ava-big',
+                    'badge_url' => $sUrlBadge,
+                    'badge_link' => $aData[$CNF['FIELD_BADGE_LINK']],
+                    'title_attr' => bx_html_attribute($sTitle),
+                ];
+        }
 
         //--- Process Actions menu
         $sActionsMenu = '';
@@ -558,13 +586,21 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
             'bx_if:show_title_as_tag' => [
                 'condition' => !$bUseAsAuthor,
                 'content' => [
-                    'title' => $sTitle
+                    'title' => $sTitle,
+                    'bx_if:show_badge' => [
+                        'condition' => $bTmplVarsShowBadge,
+                        'content' => $aTmplVarsShowBadge
+                    ]
                 ]
             ],
             'bx_if:show_title_as_text' => [
                 'condition' => $bUseAsAuthor,
                 'content' => [
-                    'title' => $sTitle
+                    'title' => $sTitle,
+                    'bx_if:show_badge' => [
+                        'condition' => $bTmplVarsShowBadge,
+                        'content' => $aTmplVarsShowBadge
+                    ]
                 ]
             ],
             'bx_if:show_avatar' => [
@@ -574,6 +610,10 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
             'bx_if:show_avatar_placeholder' => [
                 'condition' => !$bTmplVarsShowAvatar,
                 'content' => [true]
+            ],
+            'bx_if:show_badge' => [
+                'condition' => $bTmplVarsShowBadge,
+                'content' => $aTmplVarsShowBadge
             ],
             'badges' => $oModule->serviceGetBadges($aData[$CNF['FIELD_ID']]),
             'action_menu' => $sActionsMenu,
@@ -821,6 +861,18 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
             return $this->$sMethod($aData, $bSubstituteNoImage);
         else
             return $this->_getUnitThumbUrl($this->_sUnitSizeDefault, $aData, $bSubstituteNoImage);
+    }
+    
+    protected function _isUnitBadge($aData, $sTemplateName = 'unit.html')
+    {
+        return true;
+    }
+
+    protected function _getUnitBadgeUrl($sSize, $aData, $bSubstituteNoImage = true)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        return $this->_image($CNF['FIELD_BADGE'], $CNF['OBJECT_IMAGES_TRANSCODER_BADGE'], 'no-picture-thumb.png', $aData, $bSubstituteNoImage);
     }
 }
 
