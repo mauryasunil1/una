@@ -63,7 +63,7 @@ class BxBaseModProfileFormEntry extends BxBaseModGeneralFormEntry
             $this->_aImageFields[$CNF[$sKey]] = [
                 'storage_object' => $CNF['OBJECT_STORAGE_BADGE'],
                 'images_transcoder' => $CNF['OBJECT_IMAGES_TRANSCODER_BADGE'],
-                'uploaders' => $CNF['OBJECT_UPLOADERS_PICTURE'],
+                'uploaders' => $CNF['OBJECT_UPLOADERS_BADGE'],
             ];
         }
 
