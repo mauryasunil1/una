@@ -209,7 +209,7 @@ class BxPaymentCart extends BxBaseModPaymentCart
         if($sCartItemsResult === false) {            
         if(strpos($sCartItems, $sCiDsc) !== false)
                 $sCartItemsResult = preg_replace_callback(
-                "/" . $this->_oModule->_oConfig->descriptorA2S(array($iSellerId, $iModuleId, $iItemId, '([0-9]+)')) . "/", function($aMatches) use($iSellerId, $iModuleId, $iItemId, $iItemCount) {
+                "/" . $this->_oModule->_oConfig->descriptorA2S(array(preg_quote($iSellerId, '/'), preg_quote($iModuleId, '/'), preg_quote($iItemId, '/'), '([0-9]+)')) . "/", function($aMatches) use($iSellerId, $iModuleId, $iItemId, $iItemCount) {
                     return $this->_oModule->_oConfig->descriptorA2S(array($iSellerId, $iModuleId, $iItemId, $aMatches[1] + $iItemCount));
                 },
             	$sCartItems
@@ -288,7 +288,7 @@ class BxPaymentCart extends BxBaseModPaymentCart
             $iModuleId = $iItemId = '[0-9\-]+';
         }
 
-        $aCart['items'] = trim(preg_replace("'" . $this->_oModule->_oConfig->descriptorA2S(array($iSellerId, $iModuleId, $iItemId, '[0-9]+:?')) . "'", "", $aCart['items']), ":");
+        $aCart['items'] = trim(preg_replace("'" . $this->_oModule->_oConfig->descriptorA2S(array(preg_quote($iSellerId, "'"), preg_quote($iModuleId, "'"), preg_quote($iItemId, "'"), '[0-9]+:?')) . "'", "", $aCart['items']), ":");
         $this->_oModule->_oDb->setCartItems($iClientId, $aCart['items'], $aCartCustom);
 
         $this->_oModule->alert('delete_from_cart', 0, 0, array(
@@ -339,7 +339,7 @@ class BxPaymentCart extends BxBaseModPaymentCart
             if(empty($aItemInfo) || !is_array($aItemInfo)) {
                 if($bTypeSingle) {
                     $sCartItems = $this->_oModule->_oDb->getCartItems($iClientId);
-                    $sCartItems = trim(preg_replace("'" . $this->_oModule->_oConfig->descriptorA2S($aItem) . ":?'", "", $sCartItems), ":");
+                    $sCartItems = trim(preg_replace("'" . preg_quote($this->_oModule->_oConfig->descriptorA2S($aItem), "'") . ":?'", "", $sCartItems), ":");
                     $this->_oModule->_oDb->setCartItems($iClientId, $sCartItems);
                 }
 
