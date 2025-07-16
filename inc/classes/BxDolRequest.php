@@ -138,8 +138,9 @@ class BxDolRequest extends BxDol
         if(isset($GLOBALS['bxDolClasses'][$sClass]))
             return $GLOBALS['bxDolClasses'][$sClass];
 
-        if (!preg_match('/^[A-Za-z0-9_]+\/[A-Za-z0-9_]+$/', $aModule['path']) || !preg_match('/^[A-Za-z0-9_]+$/', $sClass))
+        if (($aModule['path'] && !preg_match('/^[A-Za-z0-9_]+\/[A-Za-z0-9_]+\/$/', $aModule['path'])) || !preg_match('/^[A-Za-z0-9_]+$/', $sClass)) {
             return false;
+        }
 
         if($aModule['path']) {
             $sFile = BX_DIRECTORY_PATH_MODULES . $aModule['path'] . 'classes/' . $sClass . '.php';
