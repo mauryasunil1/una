@@ -71,6 +71,10 @@
     <string name="_bx_orgs_form_profile_input_online_search"><![CDATA[Online only]]></string>
     <string name="_bx_orgs_form_profile_input_sys_cover"><![CDATA[Cover Picture]]></string>
     <string name="_bx_orgs_form_profile_input_cover"><![CDATA[Upload New Cover Picture]]></string>
+    <string name="_bx_orgs_form_profile_input_sys_badge"><![CDATA[Badge Image]]></string>
+    <string name="_bx_orgs_form_profile_input_badge"><![CDATA[Upload New Badge Image]]></string>
+    <string name="_bx_orgs_form_profile_input_sys_badge_link"><![CDATA[Badge Link]]></string>
+    <string name="_bx_orgs_form_profile_input_badge_link"><![CDATA[Badge Link]]></string>
     <string name="_bx_orgs_form_profile_input_sys_delete_confirm"><![CDATA[Delete confirmation]]></string>
     <string name="_bx_orgs_form_profile_input_delete_confirm"><![CDATA[I am sure I want to delete this profile]]></string>
     <string name="_bx_orgs_form_profile_input_delete_confirm_info"><![CDATA[This action can not be undone.]]></string>
@@ -120,6 +124,7 @@
     <string name="_bx_orgs_acl_action_use_paid_join"><![CDATA[Use paid join]]></string>
     <string name="_bx_orgs_acl_action_delete_profile"><![CDATA[Delete Organization's Profile]]></string>
     <string name="_bx_orgs_acl_action_view_profile"><![CDATA[View Organization's Profile]]></string>
+    <string name="_bx_orgs_acl_action_change_badge"><![CDATA[Change Organization's Profile Badge]]></string>
     <string name="_bx_orgs_acl_action_edit_any_profile"><![CDATA[Edit Any Organization's Profile]]></string>
     <string name="_bx_orgs_acl_action_delete_any_profile"><![CDATA[Delete Any Organization's Profile]]></string>
     <string name="_bx_orgs_acl_action_delete_invites"><![CDATA[Delete Invites]]></string>
@@ -130,6 +135,8 @@
     <string name="_bx_orgs_page_title_edit_profile"><![CDATA[Edit Profile]]></string>
     <string name="_bx_orgs_page_title_sys_edit_profile_cover"><![CDATA[Edit Profile Cover]]></string>
     <string name="_bx_orgs_page_title_edit_profile_cover"><![CDATA[Edit Cover]]></string>
+    <string name="_bx_orgs_page_title_sys_edit_profile_badge"><![CDATA[Edit Badge]]></string>
+    <string name="_bx_orgs_page_title_edit_profile_badge"><![CDATA[Edit Badge]]></string>
     <string name="_bx_orgs_page_title_manage_profile"><![CDATA[Manage]]></string>
     <string name="_bx_orgs_page_title_sys_manage_profile"><![CDATA[Manage]]></string>
     <string name="_bx_orgs_page_title_sys_delete_profile"><![CDATA[Delete Profile]]></string>
@@ -193,6 +200,7 @@
     <string name="_bx_orgs_page_block_title_create_profile"><![CDATA[Create a Profile - Organization]]></string>
     <string name="_bx_orgs_page_block_title_edit_profile"><![CDATA[Edit Profile]]></string>
     <string name="_bx_orgs_page_block_title_edit_profile_cover"><![CDATA[Edit Cover]]></string>
+    <string name="_bx_orgs_page_block_title_edit_profile_badge"><![CDATA[Edit Badge]]></string>
     <string name="_bx_orgs_page_block_title_delete_profile"><![CDATA[Delete Profile]]></string>
     <string name="_bx_orgs_page_block_title_profile_all_actions"><![CDATA[All Actions]]></string>
     <string name="_bx_orgs_page_block_title_join_profile"><![CDATA[Join Organization]]></string>
@@ -294,6 +302,8 @@
     <string name="_bx_orgs_menu_item_title_edit_pricing"><![CDATA[Edit Pricing]]></string>
     <string name="_bx_orgs_menu_item_title_system_edit_profile"><![CDATA[Edit Organization]]></string>
     <string name="_bx_orgs_menu_item_title_edit_profile"><![CDATA[Edit Profile]]></string>
+    <string name="_bx_orgs_menu_item_title_system_edit_badge"><![CDATA[Edit Badge]]></string>
+    <string name="_bx_orgs_menu_item_title_edit_badge"><![CDATA[Edit Badge]]></string>
     <string name="_bx_orgs_menu_item_title_system_delete_profile"><![CDATA[Delete Profile and Data]]></string>
     <string name="_bx_orgs_menu_item_title_delete_profile"><![CDATA[Delete Profile and Data]]></string>
     <string name="_bx_orgs_menu_item_title_system_delete_account"><![CDATA[Delete Account]]></string>

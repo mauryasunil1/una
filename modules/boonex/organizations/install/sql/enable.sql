@@ -80,6 +80,13 @@ INSERT INTO `sys_objects_page`(`object`, `uri`, `title_system`, `title`, `module
 INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`) VALUES 
 ('bx_organizations_edit_profile', 1, 'bx_organizations', '_bx_orgs_page_block_title_edit_profile', 11, 2147483647, 'service', 'a:2:{s:6:\"module\";s:16:\"bx_organizations\";s:6:\"method\";s:11:\"entity_edit\";}', 0, 0, 0);
 
+-- PAGE: edit badge
+INSERT INTO `sys_objects_page`(`object`, `uri`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
+('bx_organizations_edit_badge', 'edit-organization-badge', '_bx_orgs_page_title_sys_edit_profile_badge', '_bx_orgs_page_title_edit_profile_badge', 'bx_organizations', 5, 2147483647, 1, 'page.php?i=edit-persons-badge', '', '', '', 0, 1, 0, 'BxOrgsPageEntry', 'modules/boonex/organizations/classes/BxOrgsPageEntry.php');
+
+INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`) VALUES 
+('bx_organizations_edit_badge', 1, 'bx_organizations', '_bx_orgs_page_block_title_edit_profile_badge', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:16:"bx_organizations";s:6:"method";s:17:"entity_edit_badge";}', 0, 0, 0);
+
 -- PAGE: invite members
 INSERT INTO `sys_objects_page`(`object`, `uri`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
 ('bx_organizations_invite', 'invite-to-organization', '_bx_orgs_page_title_sys_invite_to_organization', '_bx_orgs_page_title_invite_to_organization', 'bx_organizations', 5, 2147483647, 1, 'page.php?i=invite-to-organization', '', '', '', 0, 1, 0, 'BxOrgsPageEntry', 'modules/boonex/organizations/classes/BxOrgsPageEntry.php');
@@ -317,6 +324,7 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_organizations_view_actions_more', 'bx_organizations', 'notes', '_sys_menu_item_title_system_va_notes', '_sys_menu_item_title_va_notes', 'javascript:void(0)', 'javascript:bx_get_notes(this,  ''{module_uri}'', {content_id});', '', 'exclamation-triangle', '', 192, '', 1, 0, 20),
 ('bx_organizations_view_actions_more', 'bx_organizations', 'audit', '_sys_menu_item_title_system_va_audit', '_sys_menu_item_title_va_audit', 'page.php?i=dashboard-audit&module=bx_organizations&content_id={content_id}', '', '', 'history', '', 192, '', 1, 0, 30),
 ('bx_organizations_view_actions_more', 'bx_organizations', 'edit-organization-profile', '_bx_orgs_menu_item_title_system_edit_profile', '_bx_orgs_menu_item_title_edit_profile', 'page.php?i=edit-organization-profile&id={content_id}', '', '', 'pencil-alt', '', 2147483647, '', 1, 0, 40),
+('bx_organizations_view_actions_more', 'bx_organizations', 'edit-organization-badge', '_bx_orgs_menu_item_title_system_edit_badge', '_bx_orgs_menu_item_title_edit_badge', 'page.php?i=edit-organization-badge&id={content_id}', '', '', 'fa-certificate', '', 2147483647, '', 1, 0, 42),
 ('bx_organizations_view_actions_more', 'bx_organizations', 'edit-organization-pricing', '_bx_orgs_menu_item_title_system_edit_pricing', '_bx_orgs_menu_item_title_edit_pricing', 'page.php?i=edit-organization-pricing&profile_id={profile_id}', '', '', 'money-check-alt', '', 2147483647, 'a:3:{s:6:"module";s:16:"bx_organizations";s:6:"method";s:20:"is_pricing_avaliable";s:6:"params";a:1:{i:0;s:12:"{profile_id}";}}', 1, 0, 50),
 ('bx_organizations_view_actions_more', 'bx_organizations', 'invite-to-organization', '_bx_orgs_menu_item_title_system_invite', '_bx_orgs_menu_item_title_invite', 'page.php?i=invite-to-organization&id={content_id}', '', '', 'user-friends', '', 2147483647, '', 1, 0, 60),
 ('bx_organizations_view_actions_more', 'bx_organizations', 'delete-organization-profile', '_bx_orgs_menu_item_title_system_delete_profile', '_bx_orgs_menu_item_title_delete_profile', 'page.php?i=delete-organization-profile&id={content_id}', '', '', 'remove', '', 2147483647, '', 1, 0, 70),
@@ -518,6 +526,10 @@ INSERT INTO `sys_acl_actions` (`Module`, `Name`, `AdditionalParamName`, `Title`,
 SET @iIdActionProfileView = LAST_INSERT_ID();
 
 INSERT INTO `sys_acl_actions` (`Module`, `Name`, `AdditionalParamName`, `Title`, `Desc`, `Countable`, `DisabledForLevels`) VALUES
+('bx_organizations', 'change badge', NULL, '_bx_orgs_acl_action_change_badge', '', 1, 3);
+SET @iIdActionChangeBadge = LAST_INSERT_ID();
+
+INSERT INTO `sys_acl_actions` (`Module`, `Name`, `AdditionalParamName`, `Title`, `Desc`, `Countable`, `DisabledForLevels`) VALUES
 ('bx_organizations', 'edit any entry', NULL, '_bx_orgs_acl_action_edit_any_profile', '', 1, 3);
 SET @iIdActionProfileEditAny = LAST_INSERT_ID();
 
@@ -574,6 +586,11 @@ INSERT INTO `sys_acl_matrix` (`IDLevel`, `IDAction`) VALUES
 (@iModerator, @iIdActionProfileView),
 (@iAdministrator, @iIdActionProfileView),
 (@iPremium, @iIdActionProfileView),
+
+-- set profile badge
+(@iModerator, @iIdActionChangeBadge),
+(@iAdministrator, @iIdActionChangeBadge),
+(@iPremium, @iIdActionChangeBadge),
 
 -- any profile edit
 (@iModerator, @iIdActionProfileEditAny),
@@ -771,7 +788,8 @@ INSERT INTO `sys_email_templates` (`Module`, `NameSystem`, `Name`, `Subject`, `B
 -- UPLOADERS
 INSERT INTO `sys_objects_uploader` (`object`, `active`, `override_class_name`, `override_class_file`) VALUES
 ('bx_organizations_cover_crop', 1, 'BxOrgsUploaderCoverCrop', 'modules/boonex/organizations/classes/BxOrgsUploaderCoverCrop.php'),
-('bx_organizations_picture_crop', 1, 'BxOrgsUploaderPictureCrop', 'modules/boonex/organizations/classes/BxOrgsUploaderPictureCrop.php');
+('bx_organizations_picture_crop', 1, 'BxOrgsUploaderPictureCrop', 'modules/boonex/organizations/classes/BxOrgsUploaderPictureCrop.php'),
+('bx_organizations_badge_crop', 1, 'BxOrgsUploaderBadgeCrop', 'modules/boonex/organizations/classes/BxOrgsUploaderBadgeCrop.php');
 
 
 -- CRON

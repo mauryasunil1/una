@@ -65,7 +65,7 @@ $aConfig = array(
     	'trigger_page_profile_view_entry', 
     ),
 
-	/**
+    /**
      * Storage objects to automatically delete files from upon module uninstallation.
      * Note. Don't add storage objects used in transcoder objects.
      */
@@ -73,7 +73,7 @@ $aConfig = array(
     	'bx_organizations_pics'
     ),
 
-	/**
+    /**
      * Transcoders.
      */
     'transcoders' => array(
@@ -84,10 +84,11 @@ $aConfig = array(
     	'bx_organizations_picture', 
     	'bx_organizations_cover', 
     	'bx_organizations_cover_thumb',
-    	'bx_organizations_gallery'
+    	'bx_organizations_gallery',
+        'bx_organizations_badge'
     ),
 
-	/**
+    /**
      * Extended Search Forms.
      */
     'esearches' => array(

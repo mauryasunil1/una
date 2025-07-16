@@ -67,6 +67,10 @@
     <string name="_bx_orgs_form_profile_input_online_search"><![CDATA[В сети]]></string>
     <string name="_bx_orgs_form_profile_input_sys_cover"><![CDATA[Картинка обложки]]></string>
     <string name="_bx_orgs_form_profile_input_cover"><![CDATA[Загрузить новую картинку обложки]]></string>
+    <string name="_bx_orgs_form_profile_input_sys_badge"><![CDATA[Изображение значка]]></string>
+    <string name="_bx_orgs_form_profile_input_badge"><![CDATA[Загрузить новое изображение значка]]></string>
+    <string name="_bx_orgs_form_profile_input_sys_badge_link"><![CDATA[Ссылка значка]]></string>
+    <string name="_bx_orgs_form_profile_input_badge_link"><![CDATA[Ссылка значка]]></string>
     <string name="_bx_orgs_form_profile_input_sys_delete_confirm"><![CDATA[Удалить подтверждение]]></string>
     <string name="_bx_orgs_form_profile_input_delete_confirm"><![CDATA[Я уверен, что хочу удалить этот профиль]]></string>
     <string name="_bx_orgs_form_profile_input_delete_confirm_info"><![CDATA[Это действие не может быть отменено.]]></string>
@@ -117,6 +121,7 @@
     <string name="_bx_orgs_acl_action_use_paid_join"><![CDATA[Использовать платный вход в организацию]]></string>
     <string name="_bx_orgs_acl_action_delete_profile"><![CDATA[Удалить профиль организации]]></string>
     <string name="_bx_orgs_acl_action_view_profile"><![CDATA[Просмотреть профиль организации]]></string>
+    <string name="_bx_orgs_acl_action_change_badge"><![CDATA[Изменять значок профиля организации]]></string>
     <string name="_bx_orgs_acl_action_edit_any_profile"><![CDATA[Редактировать профиль любой организации]]></string>
     <string name="_bx_orgs_acl_action_delete_any_profile"><![CDATA[Удалять профиль любой организации]]></string>
     <string name="_bx_orgs_acl_action_delete_invites"><![CDATA[Удалять приглашения]]></string>
@@ -127,6 +132,8 @@
     <string name="_bx_orgs_page_title_edit_profile"><![CDATA[Редактировать профиль]]></string>
     <string name="_bx_orgs_page_title_sys_edit_profile_cover"><![CDATA[Редактировать обложку профиля]]></string>
     <string name="_bx_orgs_page_title_edit_profile_cover"><![CDATA[Редактировать обложку]]></string>
+    <string name="_bx_orgs_page_title_sys_edit_profile_badge"><![CDATA[Редактировать значок]]></string>
+    <string name="_bx_orgs_page_title_edit_profile_badge"><![CDATA[Редактировать значок]]></string>
     <string name="_bx_orgs_page_title_manage_profile"><![CDATA[Управление]]></string>
     <string name="_bx_orgs_page_title_sys_manage_profile"><![CDATA[Управление группой]]></string>
     <string name="_bx_orgs_page_title_sys_delete_profile"><![CDATA[Удалить профиль]]></string>
@@ -189,6 +196,7 @@
     <string name="_bx_orgs_page_block_title_choose_type"><![CDATA[Выбрать тип профиля]]></string>
     <string name="_bx_orgs_page_block_title_create_profile"><![CDATA[Создать профиль - организация]]></string>
     <string name="_bx_orgs_page_block_title_edit_profile"><![CDATA[Редактировать профиль]]></string>
+    <string name="_bx_orgs_page_block_title_edit_profile_cover"><![CDATA[Редактировать обложку]]></string>
     <string name="_bx_orgs_page_block_title_edit_profile_cover"><![CDATA[Редактировать обложку]]></string>
     <string name="_bx_orgs_page_block_title_delete_profile"><![CDATA[Удалить профиль]]></string>
     <string name="_bx_orgs_page_block_title_profile_all_actions"><![CDATA[Все действия]]></string>
@@ -288,6 +296,8 @@
     <string name="_bx_orgs_menu_item_title_edit_pricing"><![CDATA[Редактировать цены]]></string>
     <string name="_bx_orgs_menu_item_title_system_edit_profile"><![CDATA[Редактировать организацию]]></string>
     <string name="_bx_orgs_menu_item_title_edit_profile"><![CDATA[Редактировать профиль]]></string>
+    <string name="_bx_orgs_menu_item_title_system_edit_badge"><![CDATA[Редактировать значок]]></string>
+    <string name="_bx_orgs_menu_item_title_edit_badge"><![CDATA[Редактировать значок]]></string>
     <string name="_bx_orgs_menu_item_title_system_delete_profile"><![CDATA[Удалить профиль и данные]]></string>
     <string name="_bx_orgs_menu_item_title_delete_profile"><![CDATA[Удалить профиль и данные]]></string>
     <string name="_bx_orgs_menu_item_title_system_delete_account"><![CDATA[Удалить аккаунт]]></string>
