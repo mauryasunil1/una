@@ -152,6 +152,7 @@ class BxPersonsConfig extends BxBaseModProfileConfig
             'OBJECT_GRID_COMMON' => 'bx_persons_common',
             'OBJECT_UPLOADERS_COVER' => array('bx_persons_cover_crop'),
             'OBJECT_UPLOADERS_PICTURE' => array('bx_persons_picture_crop'),
+            'OBJECT_UPLOADERS_BADGE' => array('bx_persons_badge_crop'),
             
             'BADGES_AVALIABLE' => true,
 
