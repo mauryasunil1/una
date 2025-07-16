@@ -10,6 +10,8 @@ CREATE TABLE IF NOT EXISTS `bx_persons_data` (
   `picture` int(11) NOT NULL,
   `cover` int(11) NOT NULL,
   `cover_data` varchar(50) NOT NULL,
+  `badge` int(11) NOT NULL default '0',
+  `badge_link` varchar(255) NOT NULL default '',
   `fullname` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
   `description` text NOT NULL,
@@ -274,7 +276,8 @@ INSERT INTO `sys_objects_transcoder` (`object`, `storage_object`, `source_type`,
 ('bx_persons_picture', 'bx_persons_pictures_resized', 'Storage', 'a:1:{s:6:"object";s:19:"bx_persons_pictures";}', 'no', '1', '2592000', '0'),
 ('bx_persons_cover', 'bx_persons_pictures_resized', 'Storage', 'a:1:{s:6:"object";s:19:"bx_persons_pictures";}', 'no', '1', '2592000', '0'),
 ('bx_persons_cover_thumb', 'bx_persons_pictures_resized', 'Storage', 'a:1:{s:6:"object";s:19:"bx_persons_pictures";}', 'no', '1', '2592000', '0'),
-('bx_persons_gallery', 'bx_persons_pictures_resized', 'Storage', 'a:1:{s:6:"object";s:19:"bx_persons_pictures";}', 'no', '1', '2592000', '0');
+('bx_persons_gallery', 'bx_persons_pictures_resized', 'Storage', 'a:1:{s:6:"object";s:19:"bx_persons_pictures";}', 'no', '1', '2592000', '0'),
+('bx_persons_badge', 'bx_persons_pictures_resized', 'Storage', 'a:1:{s:6:"object";s:19:"bx_persons_pictures";}', 'no', '1', '2592000', '0');
 
 INSERT INTO `sys_transcoder_filters` (`transcoder_object`, `filter`, `filter_params`, `order`) VALUES 
 ('bx_persons_icon', 'Resize', 'a:3:{s:1:"w";s:2:"30";s:1:"h";s:2:"30";s:13:"square_resize";s:1:"1";}', '0'),
@@ -284,7 +287,8 @@ INSERT INTO `sys_transcoder_filters` (`transcoder_object`, `filter`, `filter_par
 ('bx_persons_picture', 'Resize', 'a:3:{s:1:"w";s:4:"1024";s:1:"h";s:4:"1024";s:13:"square_resize";s:1:"0";}', '0'),
 ('bx_persons_cover', 'Resize', 'a:2:{s:1:"w";s:3:"960";s:1:"h";s:3:"480";}', '0'),
 ('bx_persons_cover_thumb', 'Resize', 'a:3:{s:1:"w";s:2:"48";s:1:"h";s:2:"48";s:13:"square_resize";s:1:"1";}', '0'),
-('bx_persons_gallery', 'Resize', 'a:1:{s:1:"w";s:3:"500";}', '0');
+('bx_persons_gallery', 'Resize', 'a:1:{s:1:"w";s:3:"500";}', '0'),
+('bx_persons_badge', 'Resize', 'a:3:{s:1:"w";s:2:"32";s:1:"h";s:2:"32";s:13:"square_resize";s:1:"1";}', '0');
 
 -- FORMS
 INSERT INTO `sys_objects_form`(`object`, `module`, `title`, `action`, `form_attrs`, `table`, `key`, `uri`, `uri_title`, `submit_name`, `params`, `deletable`, `active`, `override_class_name`, `override_class_file`, `parent_form`) VALUES 
@@ -296,8 +300,10 @@ INSERT INTO `sys_form_displays`(`object`, `display_name`, `module`, `view_mode`,
 ('bx_person', 'bx_person_delete', 'bx_persons', 0, '_bx_persons_form_profile_display_delete'),
 ('bx_person', 'bx_person_edit', 'bx_persons', 0, '_bx_persons_form_profile_display_edit'),
 ('bx_person', 'bx_person_edit_cover', 'bx_persons', 0, '_bx_persons_form_profile_display_edit_cover'),
+('bx_person', 'bx_person_edit_badge', 'bx_persons', 0, '_bx_persons_form_profile_display_edit_badge'),
 ('bx_person', 'bx_person_view', 'bx_persons', 1, '_bx_persons_form_profile_display_view'),
 ('bx_person', 'bx_person_view_full', 'bx_persons', 1, '_bx_persons_form_profile_display_view_full'),
+
 ('bx_person_skills', 'bx_person_skills', 'bx_persons', 0, '_bx_persons_skills_form_profile_display_add'),
 ('bx_person_skills', 'bx_person_skills_view', 'bx_persons', 1, '_bx_persons_skills_form_profile_display_view');
 
@@ -314,6 +320,8 @@ INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `ch
 ('bx_person', 'bx_persons', 'last_name', '', '', 0, 'text', '_bx_persons_form_profile_input_sys_last_name', '_bx_persons_form_profile_input_last_name', '', 1, 0, 0, '', '', '', '', '', '', 'Xss', '', 1, 0, ''),
 ('bx_person', 'bx_persons', 'cover', 'a:1:{i:0;s:21:"bx_persons_cover_crop";}', 'a:1:{s:21:"bx_persons_cover_crop";s:24:"_sys_uploader_crop_title";}', 0, 'files', '_bx_persons_form_profile_input_sys_cover', '_bx_persons_form_profile_input_cover', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0, ''),
 ('bx_person', 'bx_persons', 'picture', 'a:1:{i:0;s:23:"bx_persons_picture_crop";}', 'a:1:{s:23:"bx_persons_picture_crop";s:24:"_sys_uploader_crop_title";}', 0, 'files', '_bx_persons_form_profile_input_sys_picture', '_bx_persons_form_profile_input_picture', '', 0, 0, 0, '', '', '', '', '', '_bx_persons_form_profile_input_picture_err', '', '', 1, 0, ''),
+('bx_person', 'bx_persons', 'badge', 'a:1:{i:0;s:21:"bx_persons_badge_crop";}', 'a:1:{s:21:"bx_persons_badge_crop";s:24:"_sys_uploader_crop_title";}', 0, 'files', '_bx_persons_form_profile_input_sys_badge', '_bx_persons_form_profile_input_badge', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0, ''),
+('bx_person', 'bx_persons', 'badge_link', '', '', 0, 'text', '_bx_persons_form_profile_input_sys_badge_link', '_bx_persons_form_profile_input_badge_link', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 1, 0, ''),
 ('bx_person', 'bx_persons', 'location', '', '', 0, 'location', '_sys_form_input_sys_location', '_sys_form_input_location', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0, ''),
 ('bx_person', 'bx_persons', 'birthday', '0', '', 0, 'datepicker', '_bx_persons_form_profile_input_sys_birthday', '_bx_persons_form_profile_input_birthday', '', 1, 0, 0, '', '', '', 'date_range', 'a:3:{s:3:"min";i:18;s:3:"max";i:99;s:8:"required";b:0;}', '_bx_persons_form_profile_input_birthday_err', 'Date', '', 1, 0, ''),
 ('bx_person', 'bx_persons', 'gender', '', '#!Sex', 0, 'select', '_bx_persons_form_profile_input_sys_gender', '_bx_persons_form_profile_input_gender', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 1, 0, ''),
@@ -327,6 +335,7 @@ INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `ch
 ('bx_person', 'bx_persons', 'changed', '', '', 0, 'datetime', '_bx_persons_form_profile_input_sys_date_changed', '_bx_persons_form_profile_input_date_changed', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0, ''),
 ('bx_person', 'bx_persons', 'friends_count', '', '', 0, 'text', '_bx_persons_form_profile_input_sys_friends_count', '_bx_persons_form_profile_input_friends_count', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0, ''),
 ('bx_person', 'bx_persons', 'followers_count', '', '', 0, 'text', '_bx_persons_form_profile_input_sys_followers_count', '_bx_persons_form_profile_input_followers_count', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0, ''),
+
 ('bx_person_skills', 'bx_persons', 'skill_name', '', '', 0, 'text', '_bx_persons_skills_form_profile_input_sys_skill_name', '_bx_persons_skills_form_profile_input_skill_name', '', 1, 0, 0, '', '', '', 'Avail', '', '_bx_persons_skills_form_profile_input_skill_name_err', 'Xss', '', 1, 0, '');
 
 INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for_levels`, `active`, `order`) VALUES 
@@ -367,6 +376,10 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_person_edit_cover', 'picture', 2147483647, 0, 3),
 ('bx_person_edit_cover', 'cover', 2147483647, 1, 7),
 ('bx_person_edit_cover', 'do_submit', 2147483647, 1, 8),
+
+('bx_person_edit_badge', 'badge', 2147483647, 1, 1),
+('bx_person_edit_badge', 'badge_link', 2147483647, 1, 2),
+('bx_person_edit_badge', 'do_submit', 2147483647, 1, 3),
 
 ('bx_person_view', 'gender', 2147483647, 1, 1),
 ('bx_person_view', 'birthday', 2147483647, 1, 2),

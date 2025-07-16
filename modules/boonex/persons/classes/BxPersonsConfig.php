@@ -25,6 +25,7 @@ class BxPersonsConfig extends BxBaseModProfileConfig
             'view-persons-profile' => 'checkAllowedView',
             'edit-persons-profile' => 'checkAllowedEdit',
             'edit-persons-cover' => 'checkAllowedChangeCover',
+            'edit-persons-badge' => 'checkAllowedChangeBadge',
             'delete-persons-profile' => 'checkAllowedDelete',
         ));
 
@@ -49,6 +50,8 @@ class BxPersonsConfig extends BxBaseModProfileConfig
             'FIELD_PICTURE' => 'picture',
             'FIELD_COVER' => 'cover',
             'FIELD_COVER_POSITION' => 'cover_data',
+            'FIELD_BADGE' => 'badge',
+            'FIELD_BADGE_LINK' => 'badge_link',
             'FIELD_BIRTHDAY' => 'birthday',
             'FIELD_ALLOW_VIEW_TO' => 'allow_view_to',
             'FIELD_ALLOW_POST_TO' => 'allow_post_to',
@@ -101,6 +104,7 @@ class BxPersonsConfig extends BxBaseModProfileConfig
             // objects
             'OBJECT_STORAGE' => 'bx_persons_pictures',
             'OBJECT_STORAGE_COVER' => 'bx_persons_pictures',
+            'OBJECT_STORAGE_BADGE' => 'bx_persons_pictures',
             'OBJECT_IMAGES_TRANSCODER_THUMB' => 'bx_persons_thumb',
             'OBJECT_IMAGES_TRANSCODER_ICON' => 'bx_persons_icon',
             'OBJECT_IMAGES_TRANSCODER_AVATAR' => 'bx_persons_avatar',
@@ -109,6 +113,7 @@ class BxPersonsConfig extends BxBaseModProfileConfig
             'OBJECT_IMAGES_TRANSCODER_COVER' => 'bx_persons_cover',
             'OBJECT_IMAGES_TRANSCODER_COVER_THUMB' => 'bx_persons_cover_thumb',
             'OBJECT_IMAGES_TRANSCODER_GALLERY' => 'bx_persons_gallery',
+            'OBJECT_IMAGES_TRANSCODER_BADGE' => 'bx_persons_badge',
             'OBJECT_VIEWS' => 'bx_persons',
             'OBJECT_VOTES' => 'bx_persons',
             'OBJECT_REACTIONS' => 'bx_persons_reactions',
@@ -125,6 +130,7 @@ class BxPersonsConfig extends BxBaseModProfileConfig
             'OBJECT_FORM_ENTRY_DISPLAY_ADD' => 'bx_person_add',
             'OBJECT_FORM_ENTRY_DISPLAY_EDIT' => 'bx_person_edit',
             'OBJECT_FORM_ENTRY_DISPLAY_EDIT_COVER' => 'bx_person_edit_cover',
+            'OBJECT_FORM_ENTRY_DISPLAY_EDIT_BADGE' => 'bx_person_edit_badge',
             'OBJECT_FORM_ENTRY_DISPLAY_DELETE' => 'bx_person_delete',
             'OBJECT_MENU_ACTIONS_VIEW_ENTRY' => 'bx_persons_view_actions', // actions menu on view entry page
             'OBJECT_MENU_ACTIONS_VIEW_ENTRY_MORE' => 'bx_persons_view_actions_more', // actions menu on view entry page for "more" popup
