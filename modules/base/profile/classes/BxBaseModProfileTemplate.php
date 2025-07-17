@@ -124,6 +124,47 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
         return $this->getModule()->getDataAPI($aData, $aParams);
     }
 
+    public function getBadgeImage($aData, $bSubstituteNoImage = false)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        return $this->_image($CNF['FIELD_BADGE'], $CNF['OBJECT_IMAGES_TRANSCODER_BADGE'], 'no-picture-thumb.png', $aData, $bSubstituteNoImage);
+    }
+    
+    public function getBadgeLink($aData)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $sLink = $aData[$CNF['FIELD_BADGE_LINK']];
+        if(!$sLink && ($oProfile = BxDolProfile::getInstanceByContentAndType($aData[$CNF['FIELD_ID']], $this->_oConfig->getName())) !== false) 
+            $sLink = $oProfile->getUrl();
+
+        return $sLink;
+    }
+
+    public function getBadge($mixedData, $sSize = 'icon')
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        if(!is_array($mixedData))
+            $mixedData = $this->_oDb->getContentInfoById((int)$mixedData);
+
+        $oModule = $this->getModule();
+        if(!$mixedData || !$oModule->isBadge($mixedData) || $oModule->checkAllowedViewBadgeImage($mixedData) !== CHECK_ACTION_RESULT_ALLOWED)
+            return '';
+
+        $sBadgeUrl = $this->getBadgeImage($mixedData);
+        if(empty($sBadgeUrl))
+            return '';
+
+        return $this->parseHtmlByName('badge.html', [
+            'size' => $sSize,
+            'badge_url' => $sBadgeUrl,
+            'badge_link' => $this->getBadgeLink($mixedData),
+            'title_attr' => bx_html_attribute($mixedData[$CNF['FIELD_TITLE']])
+        ]);
+    }
+
     function unitVars ($aData, $isCheckPrivateContent = true, $mixedTemplate = false, $aParams = [])
     {
         $CNF = &$this->_oConfig->CNF;
@@ -182,8 +223,8 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
         $bThumbUrl = !empty($sThumbUrl);
 
         $sBadgeUrl = '';
-        if($this->_isUnitBadge($aData, $sTemplate) && (!$isCheckPrivateContent || $oModule->checkAllowedViewBadgeImage($aData) === CHECK_ACTION_RESULT_ALLOWED))
-            $sBadgeUrl = $this->_getUnitBadgeUrl($sTemplateSize, $aData, false);
+        if($oModule->isBadge($aData) && (!$isCheckPrivateContent || $oModule->checkAllowedViewBadgeImage($aData) === CHECK_ACTION_RESULT_ALLOWED))
+            $sBadgeUrl = $this->getBadgeImage($aData);
         $bBadgeUrl = !empty($sBadgeUrl);
 
         $aTmplVarsThumbnail = array(
@@ -243,7 +284,7 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
                 'content' => $bBadgeUrl ? [
                     'size' => $sTemplateSize,
                     'badge_url' => $sBadgeUrl,
-                    'badge_link' => $aData[$CNF['FIELD_BADGE_LINK']],
+                    'badge_link' => $this->getBadgeLink($aData),
                     'title_attr' => $sTitleAttr,
                 ] : []
             ],
@@ -326,7 +367,7 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
         $sShowData = isset($aParams['show_data']) ? $aParams['show_data'] : '';
         $bShowCover = !isset($aParams['show_cover']) || $aParams['show_cover'] === true;
         $bShowAvatar = !isset($aParams['show_avatar']) || $aParams['show_avatar'] === true;
-        $bShowBadge = !isset($aParams['show_badge']) || $aParams['show_badge'] === true;
+        $bShowBadge = $oModule->isBadge($aData) && (!isset($aParams['show_badge']) || $aParams['show_badge'] === true);
         $sAddCode = "";
         
 
@@ -546,13 +587,13 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
         $aTmplVarsShowBadge = [];
 
         if($bShowBadge) {
-            $sUrlBadge = $this->_image($CNF['FIELD_BADGE'], $CNF['OBJECT_IMAGES_TRANSCODER_BADGE'], 'no-picture-thumb.png', $aData, false);
+            $sUrlBadge = $this->getBadgeImage($aData);
 
             if(($bTmplVarsShowBadge = !empty($sUrlBadge))) 
                 $aTmplVarsShowBadge = [
                     'size' => 'ava-big',
                     'badge_url' => $sUrlBadge,
-                    'badge_link' => $aData[$CNF['FIELD_BADGE_LINK']],
+                    'badge_link' => $this->getBadgeLink($aData),
                     'title_attr' => bx_html_attribute($sTitle),
                 ];
         }
@@ -861,18 +902,6 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
             return $this->$sMethod($aData, $bSubstituteNoImage);
         else
             return $this->_getUnitThumbUrl($this->_sUnitSizeDefault, $aData, $bSubstituteNoImage);
-    }
-    
-    protected function _isUnitBadge($aData, $sTemplateName = 'unit.html')
-    {
-        return true;
-    }
-
-    protected function _getUnitBadgeUrl($sSize, $aData, $bSubstituteNoImage = true)
-    {
-        $CNF = &$this->_oConfig->CNF;
-
-        return $this->_image($CNF['FIELD_BADGE'], $CNF['OBJECT_IMAGES_TRANSCODER_BADGE'], 'no-picture-thumb.png', $aData, $bSubstituteNoImage);
     }
 }
 

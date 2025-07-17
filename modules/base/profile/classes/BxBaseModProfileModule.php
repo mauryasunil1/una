@@ -173,6 +173,11 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
         $mixedResult = $this->_getFieldValueThumb('FIELD_COVER', $iContentId, $sTranscoder);
         return $mixedResult !== false ? $mixedResult : '';
     }
+    
+    public function serviceGetBadges($iContentId, $bIsSingle = false, $bIsCompact = false)
+    {
+        return $this->_oTemplate->getBadge($iContentId) . parent::serviceGetBadges($iContentId, $bIsSingle, $bIsCompact);
+    }
 
     public function serviceGetSearchResultUnit ($iContentId, $sUnitTemplate = '')
     {
@@ -1793,9 +1798,17 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
      */
     public function checkAllowedViewBadgeImage ($aDataEntry, $isPerformAction = false)
     {
-        return $this->checkAllowedViewProfileImage($aDataEntry);
+        $oProfile = BxDolProfile::getInstanceByContentAndType($aDataEntry[$this->_oConfig->CNF['FIELD_ID']], $this->_aModule['name']);
+        if(!$oProfile)
+            return _t('_sys_txt_error_occured');
+
+        $aCheck = checkActionModule($oProfile->id(), 'change badge', $this->_aModule['name'], false);
+        if($aCheck[CHECK_ACTION_RESULT] !== CHECK_ACTION_RESULT_ALLOWED)
+            return $aCheck[CHECK_ACTION_MESSAGE];       
+
+        return $this->checkAllowedViewProfileImage($aDataEntry, $isPerformAction);
     }
-    
+
     /**
      * @return CHECK_ACTION_RESULT_ALLOWED if access is granted or error message if access is forbidden.
      */
@@ -2184,6 +2197,14 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
     }
 
     // ====== COMMON METHODS
+    public function isBadge($aData)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        //TODO: Test ACL for Change Badge
+        return !empty($CNF['FIELD_BADGE']) && $this->checkAllowedViewBadgeImage($aData) === CHECK_ACTION_RESULT_ALLOWED;
+    }
+
     public function isMenuItemVisible($sObject, &$aItem, &$aContentInfo)
     {
         $CNF = &$this->_oConfig->CNF;
