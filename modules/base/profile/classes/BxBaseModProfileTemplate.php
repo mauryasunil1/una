@@ -151,18 +151,21 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
 
         $oModule = $this->getModule();
         if(!$mixedData || !$oModule->isBadge($mixedData) || $oModule->checkAllowedViewBadgeImage($mixedData) !== CHECK_ACTION_RESULT_ALLOWED)
-            return '';
+            return $this->_bIsApi ? [] : '';
 
         $sBadgeUrl = $this->getBadgeImage($mixedData);
         if(empty($sBadgeUrl))
-            return '';
-
-        return $this->parseHtmlByName('badge.html', [
-            'size' => $sSize,
+            return $this->_bIsApi ? [] : '';
+        
+        $aBadge = [
             'badge_url' => $sBadgeUrl,
             'badge_link' => $this->getBadgeLink($mixedData),
             'title_attr' => bx_html_attribute($mixedData[$CNF['FIELD_TITLE']])
-        ]);
+        ];
+
+        return $this->_bIsApi ? $aBadge : $this->parseHtmlByName('badge.html', array_merge([
+            'size' => $sSize
+        ], $aBadge));
     }
 
     function unitVars ($aData, $isCheckPrivateContent = true, $mixedTemplate = false, $aParams = [])

@@ -173,10 +173,18 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
         $mixedResult = $this->_getFieldValueThumb('FIELD_COVER', $iContentId, $sTranscoder);
         return $mixedResult !== false ? $mixedResult : '';
     }
-    
+
     public function serviceGetBadges($iContentId, $bIsSingle = false, $bIsCompact = false)
     {
-        return $this->_oTemplate->getBadge($iContentId) . parent::serviceGetBadges($iContentId, $bIsSingle, $bIsCompact);
+        $mixedBadge = $this->_oTemplate->getBadge($iContentId);
+        $mixedBadges = parent::serviceGetBadges($iContentId, $bIsSingle, $bIsCompact);
+
+        if($this->_bIsApi)
+            $mixedBadges[] = $mixedBadge;
+        else
+            $mixedBadges = $mixedBadge . $mixedBadges;
+
+        return $mixedBadges;
     }
 
     public function serviceGetSearchResultUnit ($iContentId, $sUnitTemplate = '')

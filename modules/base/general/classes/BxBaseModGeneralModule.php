@@ -3285,11 +3285,10 @@ class BxBaseModGeneralModule extends BxDolModule
             return $sResult;
 
         if(empty($aBadges) || !is_array($aBadges))
-            return '';
+            return $this->_bIsApi ? [] : '';
 
-        if (bx_is_api()){
+        if($this->_bIsApi)
             return $aBadges;
-        }
         
         if($bIsSingle)
             return BxDolService::call('system', 'get_badge', array($aBadges[0], $bIsCompact), 'TemplServices');
