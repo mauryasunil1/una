@@ -28,9 +28,14 @@ class BxReputationConfig extends BxBaseModNotificationsConfig
             'FIELD_LEVEL_NAME' => 'name',
             'FIELD_LEVEL_ICON' => 'icon',
 
+            // page URIs
+            'URL_LEADERBOARD' => 'page.php?i=leaderboard',
+            'URL_HISTORY' => 'page.php?i=points-history',
+
             // some params
             'PARAM_MULTILEVEL' => 'bx_reputation_enable_multilevel',
             'PARAM_LEADERBOARD_LIMIT' => 'bx_reputation_leaderboard_limit',
+            'PARAM_HISTORY_LIMIT' => 'bx_reputation_history_limit',
 
             // objects
             'OBJECT_FORM_HANDLER' => 'bx_reputation_handler',

@@ -37,19 +37,30 @@ class BxReputationDb extends BxBaseModNotificationsDb
         $aMethod = ['name' => 'getAll', 'params' => [0 => 'query']];
         $sSelectClause = '*';
         $sWhereClause = $sGroupClause = $sOrderClause = $sLimitClause = '';
-        
+
         switch($aParams['sample']) {
+            case 'owner_id':
+                $aMethod['params'][1] = [
+                    'owner_id' => $aParams['owner_id']
+                ];
+
+                $sWhereClause = 'AND `owner_id`=:owner_id';
+                $sOrderClause = '`date` DESC';
+                if(isset($aParams['start'], $aParams['limit']))
+                    $sLimitClause = $aParams['start'] . ', ' . $aParams['limit'];
+                break;
+
             case 'stats':
                 $aMethod['name'] = 'getPairs';
                 $aMethod['params'][1] = 'owner_id';
                 $aMethod['params'][2] = 'points';
                 $aMethod['params'][3] = [];
-                
+
                 $sSelectClause = '`owner_id`, SUM(`points`) AS `points`';
 
                 if(!empty($aParams['days']))
                     $sWhereClause = $this->prepareAsString('AND `date` >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL ? DAY))', (int)$aParams['days']);
-                
+
                 $sGroupClause = '`owner_id`';
                 $sOrderClause = '`points` DESC';
                 $sLimitClause = '0, ' . (int)$aParams['limit'];
@@ -75,7 +86,7 @@ class BxReputationDb extends BxBaseModNotificationsDb
 
         $aMethod = ['name' => 'getAll', 'params' => [0 => 'query']];
         $sSelectClause = '`trl`.*';
-        $sJoinClause = $sWhereClause = '';
+        $sJoinClause = $sWhereClause = $sOrderClause = '';
 
         if(!empty($aParams))
             switch($aParams['sample']) {
@@ -104,12 +115,36 @@ class BxReputationDb extends BxBaseModNotificationsDb
 
                     $sWhereClause = "AND `trl`.`points_in` <= :points AND IF(`trl`.`points_out` <> 0, `trl`.`points_out` > :points, 1)";
                     break;
+
+                case 'id':
+                    $aMethod['name'] = 'getRow';
+                    $aMethod['params'][1] = [
+                        'id' => $aParams['id']
+                    ];
+
+                    $sWhereClause = "AND `trl`.`id` = :id";
+                    break;
+                
+                case 'all':
+                    if(isset($aParams['active'])) {
+                        $aMethod['params'][1] = [
+                            'active' => (int)$aParams['active'] ? 1 : 0
+                        ];
+
+                        $sWhereClause = "AND `trl`.`active` = :active";
+                    }
+
+                    $sOrderClause = "`trl`.`order` ASC";
+                    break;
             }
+
+        if(!empty($sOrderClause))
+            $sOrderClause = "ORDER BY " . $sOrderClause;
 
         $aMethod['params'][0] = "SELECT 
                 " . $sSelectClause . " 
             FROM `" . $CNF['TABLE_LEVELS'] . "` AS `trl` " . $sJoinClause . " 
-            WHERE 1 " . $sWhereClause;
+            WHERE 1 " . $sWhereClause . " " . $sOrderClause;
 
         return call_user_func_array([$this, $aMethod['name']], $aMethod['params']);
     }

@@ -13,7 +13,8 @@ SET @iCategId = LAST_INSERT_ID();
 
 INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `type`, `extra`, `check`, `check_error`, `order`) VALUES
 ('bx_reputation_enable_multilevel', '', @iCategId, '_bx_reputation_option_enable_multilevel', 'checkbox', '', '', '', 1),
-('bx_reputation_leaderboard_limit', '10', @iCategId, '_bx_reputation_option_leaderboard_limit', 'digit', '', '', '', 11);
+('bx_reputation_leaderboard_limit', '10', @iCategId, '_bx_reputation_option_leaderboard_limit', 'digit', '', '', '', 11),
+('bx_reputation_history_limit', '20', @iCategId, '_bx_reputation_option_history_limit', 'digit', '', '', '', 13);
 
 
 -- PAGE: leaderboard
@@ -25,17 +26,29 @@ INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title`, `designb
 ('bx_reputation_leaderboard', 3, @sName, '_bx_reputation_page_block_title_leaderboard_month', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:21:"get_block_leaderboard";s:6:"params";a:1:{i:0;i:30;}}', 0, 1, 1),
 ('bx_reputation_leaderboard', 4, @sName, '_bx_reputation_page_block_title_leaderboard_all_time', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:21:"get_block_leaderboard";}', 0, 1, 1);
 
+-- PAGE: history
+INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `uri`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
+('bx_reputation_history', '_bx_reputation_page_title_sys_history', '_bx_reputation_page_title_history', @sName, 13, 2147483647, 1, 'points-history', 'page.php?i=points-history', '', '', '', 0, 1, 0, '', '');
+
+INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`) VALUES
+('bx_reputation_history', 2, @sName, '_bx_reputation_page_block_title_summary', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:17:"get_block_summary";}', 0, 1, 1),
+('bx_reputation_history', 3, @sName, '_bx_reputation_page_block_title_history', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:17:"get_block_history";}', 0, 1, 1);
 
 -- PAGES: add page block on home
 SET @iPBCellHome = 2;
 SET @iPBOrderHome = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_pages_blocks` WHERE `object` = 'sys_home' AND `cell_id` = @iPBCellHome ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `tabs`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `active`, `order`) VALUES 
-('sys_home', @iPBCellHome, @sName, '_bx_reputation_page_block_title_system_summary', '_bx_reputation_page_block_title_summary', 13, 0, 2147483644, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:17:"get_block_summary";}', 0, 1, 1, @iPBOrderHome + 1);
+('sys_home', @iPBCellHome, @sName, '_bx_reputation_page_block_title_system_summary', '_bx_reputation_page_block_title_summary', 13, 0, 2147483644, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:17:"get_block_summary";}', 0, 0, 1, @iPBOrderHome + 1);
 
 -- PAGES: add page block to profiles modules (trigger* page objects are processed separately upon modules enable/disable)
 SET @iPBCellProfile = 3;
 INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `active`, `order`) VALUES
 ('trigger_page_profile_view_entry', @iPBCellProfile, @sName, '_bx_reputation_page_block_title_system_summary', '_bx_reputation_page_block_title_summary', 13, 2147483647, 'service', 'a:3:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:17:"get_block_summary";s:6:"params";a:1:{i:0;s:12:"{profile_id}";}}', 0, 0, 1, 0);
+
+-- PAGE: service blocks
+SET @iBlockOrder = (SELECT `order` FROM `sys_pages_blocks` WHERE `object` = '' AND `cell_id` = 0 ORDER BY `order` DESC LIMIT 1);
+INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`) VALUES 
+('', 0, @sName, '', '_bx_reputation_page_block_title_levels', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:16:"get_block_levels";}', 0, 1, IFNULL(@iBlockOrder, 0) + 1);
 
 
 -- MENU: add to site menu

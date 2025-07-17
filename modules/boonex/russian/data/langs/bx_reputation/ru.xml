@@ -5,6 +5,7 @@
     <!-- Options -->
     <string name="_bx_reputation_option_enable_multilevel"><![CDATA[Включить возможность иметь несколько уровней одновременно]]></string>
     <string name="_bx_reputation_option_leaderboard_limit"><![CDATA[Количество элементов в таблице лидеров]]></string>
+    <string name="_bx_reputation_option_history_limit"><![CDATA[Количество элементов на странице в истории баллов]]></string>
 
     <!-- Forms -->
     <string name="_bx_reputation_form_handler"><![CDATA[Обработчик]]></string>
@@ -46,6 +47,7 @@
     <string name="_bx_reputation_form_input_err"><![CDATA[Поле обязательно. Пожалуйста, заполните его.]]></string>
 
     <!-- Pages -->
+    <string name="_bx_reputation_page_block_title_levels"><![CDATA[Уровни]]></string>
     <string name="_bx_reputation_page_title_sys_leaderboard"><![CDATA[Таблица лидеров]]></string>
     <string name="_bx_reputation_page_title_leaderboard"><![CDATA[Таблица лидеров]]></string>
     <string name="_bx_reputation_page_block_title_leaderboard_week"><![CDATA[Таблица лидеров (7 дней)]]></string>
@@ -53,6 +55,9 @@
     <string name="_bx_reputation_page_block_title_leaderboard_all_time"><![CDATA[Таблица лидеров (за все время)]]></string>
     <string name="_bx_reputation_page_block_title_system_summary"><![CDATA[Сводка]]></string>
     <string name="_bx_reputation_page_block_title_summary"><![CDATA[Сводка]]></string>
+    <string name="_bx_reputation_page_title_sys_history"><![CDATA[История баллов]]></string>
+    <string name="_bx_reputation_page_title_history"><![CDATA[История]]></string>
+    <string name="_bx_reputation_page_block_title_history"><![CDATA[История]]></string>
 
     <!-- Menus -->
     <string name="_bx_reputation_menu_item_title_system_leaderboard"><![CDATA[Таблица лидеров]]></string>
@@ -64,25 +69,6 @@
     <string name="_bx_reputation_grid_column_title_hdr_active"><![CDATA[Активные]]></string>
     <string name="_bx_reputation_grid_column_title_hdr_alert_unit"><![CDATA[Раздел]]></string>
     <string name="_bx_reputation_grid_column_title_hdr_alert_action"><![CDATA[Действие]]></string>
-    <string name="_bx_reputation_grid_column_value_hdr_aa_added"><![CDATA[Добавить]]></string>
-    <string name="_bx_reputation_grid_column_value_hdr_aa_post_common"><![CDATA[Написать пост]]></string>
-    <string name="_bx_reputation_grid_column_value_hdr_aa_repost"><![CDATA[Сдулать репост]]></string>
-    <string name="_bx_reputation_grid_column_value_hdr_aa_deleted"><![CDATA[Удалить]]></string>
-    <string name="_bx_reputation_grid_column_value_hdr_aa_delete"><![CDATA[Удалить пост]]></string>
-    <string name="_bx_reputation_grid_column_value_hdr_aa_delete_repost"><![CDATA[Удалить репост]]></string>
-    <string name="_bx_reputation_grid_column_value_hdr_aa_commentPost"><![CDATA[Оставить комментарий]]></string>
-    <string name="_bx_reputation_grid_column_value_hdr_aa_commentRemoved"><![CDATA[Удалить комментарий]]></string>
-    <string name="_bx_reputation_grid_column_value_hdr_aa_doVote"><![CDATA[Проголосовать]]></string>
-    <string name="_bx_reputation_grid_column_value_hdr_aa_undoVote"><![CDATA[Отменить голосование]]></string>
-    <string name="_bx_reputation_grid_column_value_hdr_aa_doVoteUp"><![CDATA[Проголосовать 'за']]></string>
-    <string name="_bx_reputation_grid_column_value_hdr_aa_undoVoteUp"><![CDATA[Отменить голосование 'за']]></string>
-    <string name="_bx_reputation_grid_column_value_hdr_aa_doVoteDown"><![CDATA[Проголосовать 'против']]></string>
-    <string name="_bx_reputation_grid_column_value_hdr_aa_undoVoteDown"><![CDATA[Отменить голосование 'против']]></string>
-    <string name="_bx_reputation_grid_column_value_hdr_aa_connection_added"><![CDATA[Добавить соединение]]></string>
-    <string name="_bx_reputation_grid_column_value_hdr_aa_connection_removed"><![CDATA[Удалить соединение]]></string>
-    <string name="_bx_reputation_grid_column_title_hdr_au_sys_profiles_friends"><![CDATA[Дружба]]></string>
-    <string name="_bx_reputation_grid_column_title_hdr_au_sys_profiles_subscriptions"><![CDATA[Подписка]]></string>
-    <string name="_bx_reputation_grid_column_title_hdr_au_module_fans"><![CDATA[{0}' пользователи]]></string>
     <string name="_bx_reputation_grid_column_title_hdr_points_active"><![CDATA[Баллы (активные)]]></string>
     <string name="_bx_reputation_grid_column_title_hdr_points_passive"><![CDATA[Баллы (пассивные)]]></string>
     <string name="_bx_reputation_grid_action_title_hdr_activate"><![CDATA[Активировать]]></string>
@@ -107,4 +93,25 @@
 
     <!-- Other -->
     <string name="_bx_reputation_txt_points"><![CDATA[баллов]]></string>
+    <string name="_bx_reputation_txt_from_to"><![CDATA[{0}]]></string>
+
+    <string name="_bx_reputation_txt_au_sys_profiles_friends"><![CDATA[Дружба]]></string>
+    <string name="_bx_reputation_txt_au_sys_profiles_subscriptions"><![CDATA[Подписка]]></string>
+    <string name="_bx_reputation_txt_au_module_fans"><![CDATA[{0}' пользователи]]></string>
+    <string name="_bx_reputation_txt_aa_added"><![CDATA[Добавить]]></string>
+    <string name="_bx_reputation_txt_aa_post_common"><![CDATA[Написать пост]]></string>
+    <string name="_bx_reputation_txt_aa_repost"><![CDATA[Сдулать репост]]></string>
+    <string name="_bx_reputation_txt_aa_deleted"><![CDATA[Удалить]]></string>
+    <string name="_bx_reputation_txt_aa_delete"><![CDATA[Удалить пост]]></string>
+    <string name="_bx_reputation_txt_aa_delete_repost"><![CDATA[Удалить репост]]></string>
+    <string name="_bx_reputation_txt_aa_commentPost"><![CDATA[Оставить комментарий]]></string>
+    <string name="_bx_reputation_txt_aa_commentRemoved"><![CDATA[Удалить комментарий]]></string>
+    <string name="_bx_reputation_txt_aa_doVote"><![CDATA[Проголосовать]]></string>
+    <string name="_bx_reputation_txt_aa_undoVote"><![CDATA[Отменить голосование]]></string>
+    <string name="_bx_reputation_txt_aa_doVoteUp"><![CDATA[Проголосовать 'за']]></string>
+    <string name="_bx_reputation_txt_aa_undoVoteUp"><![CDATA[Отменить голосование 'за']]></string>
+    <string name="_bx_reputation_txt_aa_doVoteDown"><![CDATA[Проголосовать 'против']]></string>
+    <string name="_bx_reputation_txt_aa_undoVoteDown"><![CDATA[Отменить голосование 'против']]></string>
+    <string name="_bx_reputation_txt_aa_connection_added"><![CDATA[Добавить соединение]]></string>
+    <string name="_bx_reputation_txt_aa_connection_removed"><![CDATA[Удалить соединение]]></string>
 </resources>

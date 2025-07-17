@@ -16,8 +16,61 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
         parent::__construct($oConfig, $oDb);
     }
 
+    public function getBlockLevels()
+    {
+        $oFunctions = BxTemplFunctions::getInstance();
+
+        $aLevels = $this->_oDb->getLevels([
+            'sample' => 'all', 
+            'active' => true
+        ]);
+
+        $aTmplVarsLevels = [];
+        foreach($aLevels as $aLevel) {
+            list($sIconFont, $sIconUrl, $sIconA, $sIconHtml) = $oFunctions->getIcon($aLevel['icon']);
+            $bIconFont = !empty($sIconFont);
+            $bIconHtml = !empty($sIconHtml);
+
+            $aTmplVarsLevels[] = array_merge([
+                'id' => $aLevel['id'],
+                'name' => $aLevel['name'],
+                'title' => _t($aLevel['title']),
+                'icon' => $aLevel['icon'],
+                'points_in' => (int)$aLevel['points_in'],
+                'points_out' => (int)$aLevel['points_out'],
+            ], (!$this->_bIsApi ? [
+                'bx_if:icon' => [
+                    'condition' => $bIconFont || $bIconHtml,
+                    'content' => [
+                        'bx_if:icon_font' => [
+                            'condition' => $bIconFont,
+                            'content' => [
+                                'icon' => $sIconFont
+                            ]
+                        ],
+                        'bx_if:icon_html' => [
+                            'condition' => $bIconHtml,
+                            'content' => [
+                                'icon' => $sIconHtml
+                            ]
+                        ],
+                    ]
+                ],
+                'points' => _t('_bx_reputation_txt_from_to', (int)$aLevel['points_in'], (int)$aLevel['points_out'])
+            ] : [
+                'icon' => $bIconHtml ? $sIconHtml : ''
+            ]));
+        }
+
+        return $this->parseHtmlByName('block_levels.html', [
+            'bx_repeat:levels' => $aTmplVarsLevels
+        ]);
+    }
+
     public function getBlockSummary($iProfileId)
     {
+        $CNF = &$this->_oConfig->CNF;
+
         $oProfile = BxDolProfile::getInstance($iProfileId);
         if(!$oProfile)
             return false;
@@ -59,15 +112,19 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
                 ],
                 'title' => $sTitle
             ] : [
+                'name' => $aProfileLevel['name'],
+                'title' => $sTitle,
                 'icon' => $bIconHtml ? $sIconHtml : '',
-                'title' => $sTitle
             ];
         }
 
+        $iProfilePoints = $bProfileInfo ? (int)$aProfileInfo['points'] : 0;
+        
         if($this->_bIsApi)
             return [
                 bx_api_get_block('reputation_summary', [
                     'author_data' => BxDolProfile::getData($iProfileId),
+                    'points' => $iProfilePoints,
                     'levels' => $aTmplVarsLevels,
                 ])
             ];
@@ -75,8 +132,56 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
         return $this->parseHtmlByName('block_summary.html', [
             'profile_image' => $oProfile->getUnit($iProfileId, ['template' => ['name' => 'unit_wo_info', 'size' => 'ava']]),
             'profile_name' => $oProfile->getDisplayName(),
-            'points' => $bProfileInfo ? $aProfileInfo['points'] : 0,
+            'points' => $iProfilePoints,
+            'history_url' => BxDolPermalinks::getInstance()->permalink($CNF['URL_HISTORY']),
             'bx_repeat:levels' => $aTmplVarsLevels
+        ]);
+    }
+
+    public function getBlockHistory($iProfileId, $iStart = 0, $iLimit = 0)
+    {
+        $CNF = &$this->_oConfig->CNF;
+        $oModule = $this->getModule();
+
+        if(!$iLimit)
+            $iLimit = (int)getParam($CNF['PARAM_HISTORY_LIMIT']);
+
+        $aItems = $this->_oDb->getEvents([
+            'sample' => 'owner_id', 
+            'owner_id' => $iProfileId,
+            'start' => $iStart,
+            'limit' => $iLimit + 1
+        ]);
+
+        $aTmplVarsItems = [];        
+        foreach($aItems as $aItem) {
+            $aTmplVarsItems[] = [
+                'unit' => $oModule->getUnitTitle($aItem['type']),
+                'action' => $oModule->getActionTitle($aItem['action']),
+                'points' => ($iPoints = (int)$aItem['points']) > 0 ? '+' . $iPoints : $iPoints,
+                'date' => bx_time_js($aItem['date'])
+            ];
+        }
+
+        if($this->_bIsApi)
+            return $aTmplVarsItems;
+
+        $oPaginate = new BxTemplPaginate([
+            'start' => $iStart,
+            'per_page' => $iLimit,
+            'on_change_page' => "return !loadDynamicBlockAutoPaginate(this, '{start}', '{per_page}')"
+        ]);
+        $oPaginate->setNumFromDataArray($aTmplVarsItems);
+        $sPaginate = $oPaginate->getSimplePaginate();
+
+        return $this->parseHtmlByName('block_history.html', [
+            'bx_repeat:items' => $aTmplVarsItems,
+            'bx_if:show_paginate' => [
+                'condition' => !empty($sPaginate),
+                'content' => [
+                    'paginate' => $sPaginate
+                ]
+            ]
         ]);
     }
 
