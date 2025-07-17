@@ -122,7 +122,7 @@ class BxDolStudioModule extends BxTemplStudioWidget
                 if(empty($sValue))
                     break;
 
-                $iWidgetId = bx_process_input(bx_get($this->sParamPrefix . '_widget_id'), BX_DATA_INT);
+                $iWidgetId = (int)bx_get($this->sParamPrefix . '_widget_id');
 
                 $aResult = $this->activate($sValue, $iWidgetId);
                 break;

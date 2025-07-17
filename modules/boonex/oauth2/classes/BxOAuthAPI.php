@@ -310,8 +310,6 @@ class BxOAuthAPI extends BxDol
 
         if (!($aParams = bx_get('params')))
             $aParams = array();
-        elseif (is_string($aParams) && preg_match('/^a:[\d+]:\{/', $aParams))
-            $aParams = @unserialize($aParams);
         elseif (is_string($aParams) && preg_match('/^\[.*\]$/', $aParams))
             $aParams = @json_decode($aParams);
         if (!is_array($aParams))
@@ -319,6 +317,11 @@ class BxOAuthAPI extends BxDol
 
         if (!($sClass = bx_get('class')))
             $sClass = 'Module';
+
+        if (!preg_match('/^[A-Za-z0-9_]+$/', $sModule) || !preg_match('/^[A-Za-z0-9_]+$/', $sMethod) || !preg_match('/^[A-Za-z0-9_]+$/', $sClass)) {
+            $this->errorOutput(500, 'error', 'Malformed request');
+            return false;
+        }
 
         if (!BxDolRequest::serviceExists($sModule, $sMethod, $sClass)) {
             $this->errorOutput(404, 'not_found', 'Service was not found');

@@ -2,7 +2,7 @@
 SET @sStorageEngine = (SELECT `value` FROM `sys_options` WHERE `name` = 'sys_storage_default');
 
 -- TABLE: PROFILES
-CREATE TABLE IF NOT EXISTS ``sys_objects_transcoder`` (
+CREATE TABLE IF NOT EXISTS `bx_organizations_data` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `author` int(10) unsigned NOT NULL,
   `added` int(11) NOT NULL,
