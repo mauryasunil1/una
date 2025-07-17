@@ -2150,6 +2150,7 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
         $bViewItem = isset($aParams['view']) && $aParams['view'] == BX_TIMELINE_VIEW_ITEM;
 
         $aEvent['author_data'] = BxDolProfile::getData($aEvent['object_owner_id']);
+        $aEvent['author_badges'] = BxDolProfile::getInstance($aEvent['object_owner_id'])->getBadges();
         $aEvent['author_actions'] = [];
 
         $aEvent['context_data'] = (int)$aEvent['object_privacy_view'] < 0 ? BxDolProfile::getData(abs($aEvent['object_privacy_view'])) : [];
@@ -2248,7 +2249,7 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
          */
 
         return array_intersect_key($aEvent, array_flip([
-            'id', 'type', 'object_privacy_view', 'content', 'labels', 'date', 'menu_actions', 'menu_counters', 'menu_manage', 'author_data', 'author_actions', 'context_data', 'url', 'owners', 'cmts'
+            'id', 'type', 'object_privacy_view', 'content', 'labels', 'date', 'menu_actions', 'menu_counters', 'menu_manage', 'author_data', 'author_badges', 'author_actions', 'context_data', 'url', 'owners', 'cmts'
         ]));
     }
 
