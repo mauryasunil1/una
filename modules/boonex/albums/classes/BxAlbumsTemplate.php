@@ -233,6 +233,28 @@ class BxAlbumsTemplate extends BxBaseModTextTemplate
 
         $aVars = array_merge($aVars, $this->mediaVars($aMediaInfo, $CNF['OBJECT_IMAGES_TRANSCODER_BIG'], $CNF['OBJECT_VIDEOS_TRANSCODERS']['poster'], $aParams));
 
+        $aMediaItems = $oModule->_oDb->getMediaListByContentId($aMediaInfo['content_id'], false);
+        $aMediaItemsFormatted = [];
+        foreach ($aMediaItems as $i => $r) {
+            $a = $this->mediaVars($r, $CNF['OBJECT_IMAGES_TRANSCODER_BIG'], $CNF['OBJECT_VIDEOS_TRANSCODERS']['poster'], $aParams);
+            $aMedia = $a['bx_if:image']['condition'] ? $a['bx_if:image']['content'] : $a['bx_if:video']['content'];
+            $aMediaItemsFormatted[$i] = [
+                'index' => $i,
+                'alt' => $aMedia['title'],
+                'url' => $aMedia['url'],
+                'media-id' => $r['id'],
+
+            ];
+            if ($a['bx_if:video']['condition']) {
+                $aMediaItemsFormatted[$i]['html'] = '<div class="pswp__video">' . $a['bx_if:video']['content']['video'] . '</div>';
+            } else {
+                $aMediaItemsFormatted[$i]['src'] = $aMedia['url_img'];
+                $aMediaItemsFormatted[$i]['width'] = $a['bx_if:image']['content']['w'];
+                $aMediaItemsFormatted[$i]['height'] = $a['bx_if:image']['content']['h'];
+            }
+        }
+        $aVars['media_items'] = json_encode($aMediaItemsFormatted);
+
         return $this->parseHtmlByName('media-view.html', $aVars);
     }
 

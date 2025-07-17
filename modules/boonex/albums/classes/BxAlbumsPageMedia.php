@@ -92,9 +92,6 @@ class BxAlbumsPageMedia extends BxTemplPage
                 $oMetatags->addPageMetaInfo($this->_aMediaInfo['id'], $this->_getThumbForMetaObject());
         }
 
-        $aVars = array();
-        $this->_oTemplate->addInjection ('injection_footer', 'text', $this->_oModule->_oTemplate->parseHtmlByName('photoswipe.html', $aVars));
-
         return parent::getCode ();
     }
 
@@ -114,14 +111,13 @@ class BxAlbumsPageMedia extends BxTemplPage
 
         $this->_oModule->_oTemplate->addCss([
             BX_DIRECTORY_PATH_PLUGINS_PUBLIC . 'photo-swipe/|photoswipe.css',
-            BX_DIRECTORY_PATH_PLUGINS_PUBLIC . 'photo-swipe/default-skin/|default-skin.css',
         ]);
 
         $this->_oModule->_oTemplate->addJs([
             'history.js',
             'history.adapter.jquery.js',
-            'photo-swipe/photoswipe.min.js',
-            'photo-swipe/photoswipe-ui-default.min.js',
+            'photo-swipe/photoswipe.umd.min.js',
+            'photo-swipe/photoswipe-lightbox.umd.min.js',
             'media_view.js',
         ]);
     }
