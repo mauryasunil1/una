@@ -225,11 +225,6 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
             $sThumbUrl = $this->_getUnitThumbUrl($sTemplateSize, $aData, false);
         $bThumbUrl = !empty($sThumbUrl);
 
-        $sBadgeUrl = '';
-        if($oModule->isBadge($aData) && (!$isCheckPrivateContent || $oModule->checkAllowedViewBadgeImage($aData) === CHECK_ACTION_RESULT_ALLOWED))
-            $sBadgeUrl = $this->getBadgeImage($aData);
-        $bBadgeUrl = !empty($sBadgeUrl);
-
         $aTmplVarsThumbnail = array(
             'class_size' => '',
             'bx_if:show_thumb_image' => array(
@@ -282,15 +277,6 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
                     'title' => $sTitle,
                 )
             ),
-            'bx_if:show_badge' => [
-                'condition' => $bBadgeUrl,
-                'content' => $bBadgeUrl ? [
-                    'size' => $sTemplateSize,
-                    'badge_url' => $sBadgeUrl,
-                    'badge_link' => $this->getBadgeLink($aData),
-                    'title_attr' => $sTitleAttr,
-                ] : []
-            ],
             'content_url' => $bPublic ? $sUrl : 'javascript:void(0);',
             'content_click' => !$bPublic ? 'javascript:bx_alert(' . bx_js_string('"' . _t('_sys_access_denied_to_private_content') . '"') . ');' : '',
             'content_target' => !empty($aParams['link_target']) ? $aParams['link_target'] : '_self',
