@@ -64,12 +64,7 @@ BxDolCmts.prototype.cmtInit = function()
         $this._cmtsInitSeeMore($($this._sRootId));
 
         // init gallery
-        const lightbox = new PhotoSwipeLightbox({
-            gallery: '.pswp-gallery',
-            children: 'a',
-            pswpModule: PhotoSwipe,
-        });
-        lightbox.init();
+        $this._cmtsInitGallery($($this._sRootId));
     });
 };
 
@@ -808,6 +803,7 @@ BxDolCmts.prototype._getCmt = function (e, iCmtId)
                     $(this).hide().html(oData.content).bxProcessHtml().bx_anim('show', $this._sAnimationEffect, $this._iAnimationSpeed);
 
                 $this._cmtsInitSeeMore($(this));
+                $this._cmtsInitGallery($(this));
             });
         },
         'json'
@@ -886,6 +882,7 @@ BxDolCmts.prototype._cmtsReplace = function(oReplace, sContent, onLoad)
             $this._cmtsBlink($(this));
 
             $this._cmtsInitSeeMore($(this));
+            $this._cmtsInitGallery($(this));
 
             if(typeof onLoad == 'function')
                 onLoad();
@@ -901,6 +898,7 @@ BxDolCmts.prototype._cmtsReplaceContent = function(oParent, sContent, onLoad)
             $this._cmtsBlink($(this));
 
             $this._cmtsInitSeeMore($(this));
+            $this._cmtsInitGallery($(this));
 
             if(typeof onLoad == 'function')
             onLoad();
@@ -918,6 +916,17 @@ BxDolCmts.prototype._cmtsBlink = function(oParent)
         oParent.find('.' + sBlinkClass).removeClass(sBlinkClass);
     });
 };
+
+BxDolCmts.prototype._cmtsInitGallery = function(oParent) 
+{
+    // init gallery
+    const lightbox = new PhotoSwipeLightbox({
+        gallery: '.pswp-gallery',
+        children: 'a',
+        pswpModule: PhotoSwipe,
+    });
+    lightbox.init();
+}
 
 BxDolCmts.prototype._cmtsInitSeeMore = function(oParent)
 {
