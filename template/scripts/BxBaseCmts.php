@@ -96,12 +96,11 @@ class BxBaseCmts extends BxDolCmts
 
         $sResult = $this->_oTemplate->addCss([
             BX_DIRECTORY_PATH_PLUGINS_PUBLIC . 'photo-swipe/|photoswipe.css',
-            BX_DIRECTORY_PATH_PLUGINS_PUBLIC . 'photo-swipe/default-skin/|default-skin.css',
         ], $bDynamicMode);
 
         $sResult .= $this->_oTemplate->addJs([
-            'photo-swipe/photoswipe.min.js',
-            'photo-swipe/photoswipe-ui-default.min.js',
+            'photo-swipe/photoswipe.umd.min.js',
+            'photo-swipe/photoswipe-lightbox.umd.min.js',
         ], $bDynamicMode);
 
         return $sResult;
@@ -288,7 +287,6 @@ class BxBaseCmts extends BxDolCmts
             'content_after' => $sContentAfter,
             'post_form_top' => $sPostFormTop,
             'post_form_bottom'  => $sPostFormBottom,
-            'image_preview' => $this->_oTemplate->parseHtmlByName('comments_photoswipe.html', []),
             'script' => $sJsContent
         ]);
 
@@ -375,8 +373,6 @@ class BxBaseCmts extends BxDolCmts
         $sComment = $this->getComment($iCmtId, $aBp, $aDp);
         if (!$sComment)
             return '';
-
-        BxDolTemplate::getInstance()->addInjection ('injection_footer', 'text', $this->_oTemplate->parseHtmlByName('comments_photoswipe.html', []));
 
         return $this->_oTemplate->parseHtmlByName('comment_block.html', array(
             'style_prefix' => $this->_sStylePrefix,
@@ -567,8 +563,6 @@ class BxBaseCmts extends BxDolCmts
 
         if(empty($sAddon))
             $sAddon = $this->getJsScript($aBp, $aDp);
-
-        BxDolTemplate::getInstance()->addInjection ('injection_footer', 'text', $this->_oTemplate->parseHtmlByName('comments_photoswipe.html', []));
 
         return $this->_oTemplate->parseHtmlByName('comment_search.html', array(
             'comment' => $this->getComment($iCmtId, $aBp, $aDp),

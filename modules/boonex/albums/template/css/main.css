@@ -236,6 +236,9 @@
     bottom:0;
     left:0;
     right:0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .pswp__video:before {
@@ -245,6 +248,9 @@
   height: 100%;
 }
 
-.pswp__video video {
-    vertical-align: middle;    
+.pswp__video > div,
+.pswp__video > video {
+    display:inline-block;
+    vertical-align: middle;
 }
+
