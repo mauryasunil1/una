@@ -21,7 +21,7 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
         $CNF = &$this->_oConfig->CNF;
 
         if(!$iLimit)
-            $iLimit = (int)getParam($CNF['PARAM_ACTIONS_LIMIT']);
+            $iLimit = !$this->_bIsApi ? (int)getParam($CNF['PARAM_ACTIONS_LIMIT']) : 9999;
 
         $aHandlers = $this->_oDb->getHandlers([
             'type' => 'all', 
@@ -197,7 +197,7 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
         $oModule = $this->getModule();
 
         if(!$iLimit)
-            $iLimit = (int)getParam($CNF['PARAM_HISTORY_LIMIT']);
+            $iLimit = !$this->_bIsApi ? (int)getParam($CNF['PARAM_HISTORY_LIMIT']) : 9999;
 
         $aItems = $this->_oDb->getEvents([
             'sample' => 'owner_id', 
