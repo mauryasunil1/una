@@ -94,6 +94,16 @@
     <string name="_bx_reputation_msg_assign_levels"><![CDATA[Уровни репутации успешно назначены {0} профилям.]]></string>
 
     <!-- Other -->
+    <string name="_bx_reputation_txt_level_newcomer"><![CDATA[Новичок]]></string>
+    <string name="_bx_reputation_txt_level_explorer"><![CDATA[Исследователь]]></string>
+    <string name="_bx_reputation_txt_level_contributor"><![CDATA[Помощник]]></string>
+    <string name="_bx_reputation_txt_level_collaborator"><![CDATA[Сотрудник]]></string>
+    <string name="_bx_reputation_txt_level_enthusiast"><![CDATA[Энтузиаст]]></string>
+    <string name="_bx_reputation_txt_level_advocate"><![CDATA[Защитник]]></string>
+    <string name="_bx_reputation_txt_level_visionary"><![CDATA[Провидец]]></string>
+    <string name="_bx_reputation_txt_level_luminary"><![CDATA[Светило]]></string>
+    <string name="_bx_reputation_txt_level_origin"><![CDATA[Первоисточник]]></string>
+
     <string name="_bx_reputation_txt_points"><![CDATA[баллов]]></string>
     <string name="_bx_reputation_txt_from_to"><![CDATA[{0}]]></string>
     <string name="_bx_reputation_txt_unit_action"><![CDATA[Действие]]></string>

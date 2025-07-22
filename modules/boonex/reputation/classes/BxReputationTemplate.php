@@ -40,9 +40,7 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
         }
 
         if($this->_bIsApi)
-            return [
-                bx_api_get_block('reputation_actions', $aTmplVarsActions)
-            ];
+            return $aTmplVarsActions;
 
         $oPaginate = new BxTemplPaginate([
             'start' => $iStart,
@@ -110,12 +108,7 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
             ]));
         }
 
-        if($this->_bIsApi)
-            return [
-                bx_api_get_block('reputation_levels', $aTmplVarsLevels)
-            ];
-
-        return $this->parseHtmlByName('block_levels.html', [
+        return $this->_bIsApi ? $aTmplVarsLevels : $this->parseHtmlByName('block_levels.html', [
             'bx_repeat:levels' => $aTmplVarsLevels
         ]);
     }
@@ -172,14 +165,12 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
         }
 
         $iProfilePoints = $bProfileInfo ? (int)$aProfileInfo['points'] : 0;
-        
+
         if($this->_bIsApi)
             return [
-                bx_api_get_block('reputation_summary', [
-                    'author_data' => BxDolProfile::getData($iProfileId),
-                    'points' => $iProfilePoints,
-                    'levels' => $aTmplVarsLevels,
-                ])
+                'author_data' => BxDolProfile::getData($iProfileId),
+                'points' => $iProfilePoints,
+                'levels' => $aTmplVarsLevels,
             ];
 
         return $this->parseHtmlByName('block_summary.html', [

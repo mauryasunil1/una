@@ -55,6 +55,17 @@ CREATE TABLE IF NOT EXISTS `bx_reputation_levels` (
   UNIQUE KEY `name` (`name`)
 );
 
+INSERT INTO `bx_reputation_levels` (`name`, `title`, `icon`, `points_in`, `points_out`, `date`, `active`, `order`) VALUES
+('newcomer', '_bx_reputation_txt_level_newcomer', '', 1, 4, UNIX_TIMESTAMP(), 1, 1),
+('explorer', '_bx_reputation_txt_level_explorer', '', 5, 19, UNIX_TIMESTAMP(), 1, 2),
+('contributor', '_bx_reputation_txt_level_contributor', '', 20, 49, UNIX_TIMESTAMP(), 1, 3),
+('collaborator', '_bx_reputation_txt_level_collaborator', '', 50, 99, UNIX_TIMESTAMP(), 1, 4),
+('enthusiast', '_bx_reputation_txt_level_enthusiast', '', 100, 499, UNIX_TIMESTAMP(), 1, 5),
+('advocate', '_bx_reputation_txt_level_advocate', '', 500, 1999, UNIX_TIMESTAMP(), 1, 6),
+('visionary', '_bx_reputation_txt_level_visionary', '', 2000, 9999, UNIX_TIMESTAMP(), 1, 7),
+('luminary', '_bx_reputation_txt_level_luminary', '', 10000, 49999, UNIX_TIMESTAMP(), 1, 8),
+('origin', '_bx_reputation_txt_level_origin', '', 50000, 0, UNIX_TIMESTAMP(), 1, 9);
+
 -- TABLE: profiles
 CREATE TABLE IF NOT EXISTS `bx_reputation_profiles` (
   `id` int(11) NOT NULL DEFAULT '0',

@@ -64,12 +64,20 @@ class BxReputationModule extends BxBaseModNotificationsModule
         if(($iGetPerPage = bx_get('per_page')) !== false)
             $iLimit = (int)$iGetPerPage;
 
-        return $this->_oTemplate->getBlockActions($iStart, $iLimit);
+        $mixedResult = $this->_oTemplate->getBlockActions($iStart, $iLimit);
+
+        return !$this->_bIsApi ? $mixedResult : [
+            bx_api_get_block('reputation_actions', $mixedResult)
+        ];
     }
 
     public function serviceGetBlockLevels()
     {
-        return $this->_oTemplate->getBlockLevels();
+        $mixedResult = $this->_oTemplate->getBlockLevels();
+
+        return !$this->_bIsApi ? $mixedResult : [
+            bx_api_get_block('reputation_levels', $mixedResult)
+        ];
     }
 
     public function serviceGetBlockSummary($iProfileId = 0)
@@ -79,7 +87,14 @@ class BxReputationModule extends BxBaseModNotificationsModule
         if(!$iProfileId)
             return false;
 
-        return $this->_oTemplate->getBlockSummary($iProfileId);
+        $mixedResult = $this->_oTemplate->getBlockSummary($iProfileId);
+
+        return !$this->_bIsApi ? $mixedResult : [
+            bx_api_get_block('reputation_summary', array_merge($mixedResult, [
+                'actions_list' => $this->_oTemplate->getBlockActions(),
+                'levels_list' => $this->_oTemplate->getBlockLevels()
+            ]))
+        ];
     }
 
     public function serviceGetBlockHistory($iProfileId = 0, $iStart = 0, $iLimit = 0)
