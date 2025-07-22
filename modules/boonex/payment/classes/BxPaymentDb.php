@@ -78,6 +78,8 @@ class BxPaymentDb extends BxBaseModPaymentDb
                     $aMethod['params'][1] = 'name';
 
                     $sWhereClause = " AND `tp`.`for_single`='1'";
+                    if(!empty($aParams['active'])) 
+                        $sWhereClause .= " AND `tp`.`active`='1'";
 
                     if(isset($aParams['order']) && $aParams['order'] === true)
                         $sOrderClause = "`tp`.`order` ASC";
@@ -88,6 +90,8 @@ class BxPaymentDb extends BxBaseModPaymentDb
                     $aMethod['params'][1] = 'name';
 
                     $sWhereClause = " AND `tp`.`for_recurring`='1'";
+                    if(!empty($aParams['active'])) 
+                        $sWhereClause .= " AND `tp`.`active`='1'";
 
                     if(isset($aParams['order']) && $aParams['order'] === true)
                         $sOrderClause = "`tp`.`order` ASC";
@@ -261,14 +265,22 @@ class BxPaymentDb extends BxBaseModPaymentDb
         ));
     }
 
-	public function getVendorInfoProvidersSingle($iVendorId)
+    public function getVendorInfoProvidersSingle($iVendorId, $bActiveOnly = false)
     {
-    	return $this->getVendorInfoProviders($iVendorId, array('type' => 'for_single', 'order' => true));
+        $aParams = ['type' => 'for_single', 'order' => true];
+        if($bActiveOnly)
+            $aParams['active'] = true;
+        
+    	return $this->getVendorInfoProviders($iVendorId, $aParams);
     }
 
-	public function getVendorInfoProvidersRecurring($iVendorId)
+    public function getVendorInfoProvidersRecurring($iVendorId, $bActiveOnly = false)
     {
-    	return $this->getVendorInfoProviders($iVendorId, array('type' => 'for_recurring', 'order' => true));
+        $aParams = ['type' => 'for_recurring', 'order' => true];
+        if($bActiveOnly)
+            $aParams['active'] = true;
+        
+    	return $this->getVendorInfoProviders($iVendorId, $aParams);
     }
 
     public function getVendorInfoProviders($iVendorId, $aParams = [])

@@ -232,7 +232,7 @@ class BxPaymentSubscriptions extends BxBaseModPaymentSubscriptions
     	if($mixedResult !== true)
             return $mixedResult;
 
-        $aSellerProviders = $this->_oModule->_oDb->getVendorInfoProvidersRecurring($iSellerId);
+        $aSellerProviders = $this->_oModule->_oDb->getVendorInfoProvidersRecurring($iSellerId, true);
         if(empty($aSellerProviders))
             return array('code' => 5, 'message' => _t($CNF['T']['ERR_NOT_ACCEPT_PAYMENTS']));
 

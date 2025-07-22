@@ -1163,6 +1163,8 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
         if(!$oGrid)
             return $this->_bIsApi ? [] : '';
 
+        $oGrid->setProfileId($iProfileId);
+
         if($this->_bIsApi){
             return [
                 bx_api_get_block('grid', $oGrid->getCodeAPI())
