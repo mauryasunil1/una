@@ -16,6 +16,54 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
         parent::__construct($oConfig, $oDb);
     }
 
+    public function getBlockActions($iStart = 0, $iLimit = 0)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        if(!$iLimit)
+            $iLimit = (int)getParam($CNF['PARAM_ACTIONS_LIMIT']);
+
+        $aHandlers = $this->_oDb->getHandlers([
+            'type' => 'all', 
+            'active' => true,
+            'start' => $iStart,
+            'limit' => $iLimit + 1
+        ]);
+
+        $aTmplVarsActions = [];
+        foreach($aHandlers as $aHandler) {
+            $aTmplVarsActions[] = [
+                'action' => _t('_bx_reputation_txt_unit_action_value', $this->_oModule->getUnitTitle($aHandler['alert_unit']), $this->_oModule->getActionTitle($aHandler['alert_action'])),
+                'points_active' => ($iPa = (int)$aHandler['points_active']) > 0 ? '+' . $iPa : '-' . abs($iPa),
+                'points_passive' => ($iPp = (int)$aHandler['points_passive']) > 0 ? '+' . $iPp : '-' . abs($iPp)
+            ];
+        }
+
+        if($this->_bIsApi)
+            return [
+                bx_api_get_block('reputation_actions', $aTmplVarsActions)
+            ];
+
+        $oPaginate = new BxTemplPaginate([
+            'start' => $iStart,
+            'per_page' => $iLimit,
+            'on_change_page' => "return !loadDynamicBlockAutoPaginate(this, '{start}', '{per_page}')"
+        ]);
+        $oPaginate->setNumFromDataArray($aTmplVarsActions);
+        $sPaginate = $oPaginate->getSimplePaginate();
+
+        $this->addCss(['main.css']);
+        return $this->parseHtmlByName('block_actions.html', [
+            'bx_repeat:actions' => $aTmplVarsActions,
+            'bx_if:show_paginate' => [
+                'condition' => !empty($sPaginate),
+                'content' => [
+                    'paginate' => $sPaginate
+                ]
+            ]
+        ]);
+    }
+
     public function getBlockLevels()
     {
         $oFunctions = BxTemplFunctions::getInstance();
@@ -61,6 +109,11 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
                 'icon' => $bIconHtml ? $sIconHtml : ''
             ]));
         }
+
+        if($this->_bIsApi)
+            return [
+                bx_api_get_block('reputation_levels', $aTmplVarsLevels)
+            ];
 
         return $this->parseHtmlByName('block_levels.html', [
             'bx_repeat:levels' => $aTmplVarsLevels
@@ -158,13 +211,15 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
             $aTmplVarsItems[] = [
                 'unit' => $oModule->getUnitTitle($aItem['type']),
                 'action' => $oModule->getActionTitle($aItem['action']),
-                'points' => ($iPoints = (int)$aItem['points']) > 0 ? '+' . $iPoints : $iPoints,
-                'date' => bx_time_js($aItem['date'])
+                'points' => ($iPoints = (int)$aItem['points']) > 0 ? '+' . $iPoints : '-' . abs($iPoints),
+                'date' => $this->_bIsApi ? $aItem['date'] : bx_time_js($aItem['date'])
             ];
         }
 
         if($this->_bIsApi)
-            return $aTmplVarsItems;
+            return [
+                bx_api_get_block('reputation_history', $aTmplVarsItems)
+            ];
 
         $oPaginate = new BxTemplPaginate([
             'start' => $iStart,
@@ -174,6 +229,7 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
         $oPaginate->setNumFromDataArray($aTmplVarsItems);
         $sPaginate = $oPaginate->getSimplePaginate();
 
+        $this->addCss(['main.css']);
         return $this->parseHtmlByName('block_history.html', [
             'bx_repeat:items' => $aTmplVarsItems,
             'bx_if:show_paginate' => [

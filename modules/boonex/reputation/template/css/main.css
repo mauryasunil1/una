@@ -3,3 +3,13 @@
     width: auto;
     margin: 0;
 }
+
+/*--- History ---*/
+.bx-reputation-h-footer .bx-paginate {
+    justify-content: flex-end;
+}
+
+/*--- Actions ---*/
+.bx-reputation-a-footer .bx-paginate {
+    justify-content: flex-end;
+}

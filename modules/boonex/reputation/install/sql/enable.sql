@@ -14,7 +14,8 @@ SET @iCategId = LAST_INSERT_ID();
 INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `type`, `extra`, `check`, `check_error`, `order`) VALUES
 ('bx_reputation_enable_multilevel', '', @iCategId, '_bx_reputation_option_enable_multilevel', 'checkbox', '', '', '', 1),
 ('bx_reputation_leaderboard_limit', '10', @iCategId, '_bx_reputation_option_leaderboard_limit', 'digit', '', '', '', 11),
-('bx_reputation_history_limit', '20', @iCategId, '_bx_reputation_option_history_limit', 'digit', '', '', '', 13);
+('bx_reputation_history_limit', '20', @iCategId, '_bx_reputation_option_history_limit', 'digit', '', '', '', 13),
+('bx_reputation_actions_limit', '20', @iCategId, '_bx_reputation_option_actions_limit', 'digit', '', '', '', 15);
 
 
 -- PAGE: leaderboard
@@ -48,7 +49,8 @@ INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title_system`, `
 -- PAGE: service blocks
 SET @iBlockOrder = (SELECT `order` FROM `sys_pages_blocks` WHERE `object` = '' AND `cell_id` = 0 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`) VALUES 
-('', 0, @sName, '', '_bx_reputation_page_block_title_levels', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:16:"get_block_levels";}', 0, 1, IFNULL(@iBlockOrder, 0) + 1);
+('', 0, @sName, '', '_bx_reputation_page_block_title_actions', 13, 2147483647, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:17:"get_block_actions";}', 0, 1, IFNULL(@iBlockOrder, 0) + 1),
+('', 0, @sName, '', '_bx_reputation_page_block_title_levels', 13, 2147483647, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:16:"get_block_levels";}', 0, 1, IFNULL(@iBlockOrder, 0) + 2);
 
 
 -- MENU: add to site menu

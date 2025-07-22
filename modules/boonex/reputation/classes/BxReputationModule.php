@@ -56,10 +56,15 @@ class BxReputationModule extends BxBaseModNotificationsModule
             'profile_id' => $iProfileId
         ]);
     }
-    
-    public function serviceGetBlockPoints()
+
+    public function serviceGetBlockActions($iStart = 0, $iLimit = 0)
     {
-        return 'TODO: Block with Unit + Action --- points';
+        if(($iGetStart = bx_get('start')) !== false)
+            $iStart = (int)$iGetStart;
+        if(($iGetPerPage = bx_get('per_page')) !== false)
+            $iLimit = (int)$iGetPerPage;
+
+        return $this->_oTemplate->getBlockActions($iStart, $iLimit);
     }
 
     public function serviceGetBlockLevels()
@@ -83,6 +88,11 @@ class BxReputationModule extends BxBaseModNotificationsModule
             $iProfileId = $iLoggedId;
         if(!$iProfileId)
             return false;
+
+        if(($iGetStart = bx_get('start')) !== false)
+            $iStart = (int)$iGetStart;
+        if(($iGetPerPage = bx_get('per_page')) !== false)
+            $iLimit = (int)$iGetPerPage;
 
         return $this->_oTemplate->getBlockHistory($iProfileId, $iStart, $iLimit);
     }

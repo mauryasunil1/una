@@ -1,3 +1,4 @@
+/*--- Studio: Levels manager ---*/
 .bx-reputation-level-icon {
     display: inline-block;
     width: 1.5rem;
@@ -8,3 +9,5 @@ i.bx-reputation-level-icon {
     line-height: 1.5rem;
     font-size: 1.0rem;
 }
+
+/*--- User End: Levels list  ---*/

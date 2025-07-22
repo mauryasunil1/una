@@ -285,7 +285,7 @@ class BxReputationDb extends BxBaseModNotificationsDb
     {
         $aMethod = ['name' => 'getAll', 'params' => [0 => 'query']];
         $sSelectClause = '*';
-        $sWhereClause = '';
+        $sWhereClause = $sOrderClause = $sLimitClause = '';
 
         if(!empty($aParams))
             switch($aParams['type']) {
@@ -296,11 +296,31 @@ class BxReputationDb extends BxBaseModNotificationsDb
                     $sSelectClause = 'DISTINCT `alert_unit`';
                     break;
 
+                case 'all':
+                    if(isset($aParams['active'])) {
+                        $aMethod['params'][1] = [
+                            'active' => (int)$aParams['active'] ? 1 : 0
+                        ];
+
+                        $sWhereClause = "AND `active` = :active";
+                    }
+
+                    $sOrderClause = "`group` ASC, `type` ASC";
+                    if(isset($aParams['start'], $aParams['limit']))
+                        $sLimitClause = $aParams['start'] . ', ' . $aParams['limit'];
+                    break;
+
                 default:
                     return parent::getHandlers($aParams);
             }
 
-        $aMethod['params'][0] = "SELECT " . $sSelectClause . " FROM `{$this->_sTableHandlers}` WHERE 1 " . $sWhereClause;
+        if($sOrderClause)
+            $sOrderClause = "ORDER BY " . $sOrderClause;
+
+        if($sLimitClause)
+            $sLimitClause = "LIMIT " . $sLimitClause;
+
+        $aMethod['params'][0] = "SELECT " . $sSelectClause . " FROM `{$this->_sTableHandlers}` WHERE 1 " . $sWhereClause . " " . $sOrderClause . " " . $sLimitClause;
         return call_user_func_array(array($this, $aMethod['name']), $aMethod['params']);
     }
 }

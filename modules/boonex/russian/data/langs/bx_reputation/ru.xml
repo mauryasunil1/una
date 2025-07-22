@@ -6,6 +6,7 @@
     <string name="_bx_reputation_option_enable_multilevel"><![CDATA[Включить возможность иметь несколько уровней одновременно]]></string>
     <string name="_bx_reputation_option_leaderboard_limit"><![CDATA[Количество элементов в таблице лидеров]]></string>
     <string name="_bx_reputation_option_history_limit"><![CDATA[Количество элементов на странице в истории баллов]]></string>
+    <string name="_bx_reputation_option_actions_limit"><![CDATA[Количество элементов на странице в списке действий]]></string>
 
     <!-- Forms -->
     <string name="_bx_reputation_form_handler"><![CDATA[Обработчик]]></string>
@@ -47,6 +48,7 @@
     <string name="_bx_reputation_form_input_err"><![CDATA[Поле обязательно. Пожалуйста, заполните его.]]></string>
 
     <!-- Pages -->
+    <string name="_bx_reputation_page_block_title_actions"><![CDATA[Действия]]></string>
     <string name="_bx_reputation_page_block_title_levels"><![CDATA[Уровни]]></string>
     <string name="_bx_reputation_page_title_sys_leaderboard"><![CDATA[Таблица лидеров]]></string>
     <string name="_bx_reputation_page_title_leaderboard"><![CDATA[Таблица лидеров]]></string>
@@ -94,6 +96,11 @@
     <!-- Other -->
     <string name="_bx_reputation_txt_points"><![CDATA[баллов]]></string>
     <string name="_bx_reputation_txt_from_to"><![CDATA[{0}]]></string>
+    <string name="_bx_reputation_txt_unit_action"><![CDATA[Действие]]></string>
+    <string name="_bx_reputation_txt_unit_action_value"><![CDATA[{0}: {1}]]></string>
+    <string name="_bx_reputation_txt_points_active"><![CDATA[Баллы (активные)*]]></string>
+    <string name="_bx_reputation_txt_points_passive"><![CDATA[Баллы (пассивные)**]]></string>
+    <string name="_bx_reputation_txt_actions_legend"><![CDATA[<b>*</b> - действия, которые вы выполнили;<br /><b>**</b> - действия, выполненные кем-то другим с вашим профилем и/или контентом.]]></string>
 
     <string name="_bx_reputation_txt_au_sys_profiles_friends"><![CDATA[Дружба]]></string>
     <string name="_bx_reputation_txt_au_sys_profiles_subscriptions"><![CDATA[Подписка]]></string>

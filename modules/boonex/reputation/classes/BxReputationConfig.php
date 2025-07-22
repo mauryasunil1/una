@@ -36,6 +36,7 @@ class BxReputationConfig extends BxBaseModNotificationsConfig
             'PARAM_MULTILEVEL' => 'bx_reputation_enable_multilevel',
             'PARAM_LEADERBOARD_LIMIT' => 'bx_reputation_leaderboard_limit',
             'PARAM_HISTORY_LIMIT' => 'bx_reputation_history_limit',
+            'PARAM_ACTIONS_LIMIT' => 'bx_reputation_actions_limit',
 
             // objects
             'OBJECT_FORM_HANDLER' => 'bx_reputation_handler',
