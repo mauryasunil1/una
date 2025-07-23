@@ -234,7 +234,25 @@ class BxChartsModule extends BxDolModule
                 array_push($aValues['links'], $oModule->serviceGetLink($aValue['object_id']));
             }
             $aValues['colors'] = array_slice($this->aColors, 0, count($aValues['values']));
-            echo  '{"type": "doughnut", "data":{"labels":' . json_encode($aValues['labels']) . ',"datasets":[{"data":' . json_encode($aValues['values']) . ',"backgroundColor":' . json_encode($aValues['colors']) . '}]}, "options": {"legend": {"position": "bottom"}}, "links": ' . json_encode($aValues['links']) . '}';
+
+            echo json_encode([
+                "type" => "doughnut", 
+                "data" => [
+                    "labels" => $aValues['labels'],
+                    "datasets" => [[
+                        "data" => $aValues['values'],
+                        "backgroundColor" => $aValues['colors'],
+                    ]],
+                ], 
+                "options" => [
+                    "plugins" => [
+                        "legend" => [
+                            "position" => "bottom",
+                        ],
+                    ],
+                ], 
+                "links" => $aValues['links'],
+            ]);
         }
         
         if ($Id == 'MostActiveProfiles'){
@@ -247,7 +265,35 @@ class BxChartsModule extends BxDolModule
                 array_push($aValues['values2'], $aValue['views_count']);
                 array_push($aValues['links'], $oModule->serviceGetLink($aValue['object_id']));
             }
-            echo  '{"type":"horizontalBar",  "data": {"labels":' . json_encode($aValues['labels']) . ',"datasets": [{"label": "' . _t('_bx_charts_most_active_profiles_legend_posts') . '","backgroundColor": "' . $this->aColors[0] . '","borderColor": "' . $this->aColors[0] . '","borderWidth": 1,"data": ' . json_encode($aValues['values1']) . '}, {"label": "' . _t('_bx_charts_most_active_profiles_legend_views') . '","backgroundColor": "' . $this->aColors[1] . '","borderColor":"' . $this->aColors[1] . '","borderWidth": 1,"data": ' . json_encode($aValues['values2']) . '}]}, "options": {"legend": {"position": "bottom"}}, "links": ' . json_encode($aValues['links']) . '}';
+            echo json_encode([
+                "type" => "bar",
+                "data" => [
+                    "labels" => $aValues['labels'],
+                    "datasets" => [
+                        [
+                            "label" => _t('_bx_charts_most_active_profiles_legend_posts'),
+                            "backgroundColor" => $this->aColors[0],
+                            "borderColor" => $this->aColors[0],
+                            "borderWidth" => 1,
+                            "data" => $aValues['values1'],
+                        ], [
+                            "label" => _t('_bx_charts_most_active_profiles_legend_views'),
+                            "backgroundColor" => $this->aColors[1],
+                            "borderColor" => $this->aColors[1],
+                            "borderWidth" => 1,
+                            "data" => $aValues['values2'],
+                        ]
+                    ]
+                ],
+                "options" => [
+                    "plugins" => [
+                        "legend" => [
+                            "position" => "bottom",
+                        ],
+                    ],
+                ], 
+                "links" => $aValues['links'],
+            ]);
         }
         
         if ($Id == 'MostFollowedProfiles'){
@@ -259,7 +305,27 @@ class BxChartsModule extends BxDolModule
                 array_push($aValues['values'], $aValue['followers_count']);
                 array_push($aValues['links'], $oModule->serviceGetLink($aValue['object_id']));
             }
-            echo  '{"type":"horizontalBar",  "data": {"labels":' . json_encode($aValues['labels']) . ',"datasets": [{"label": "' . _t('_bx_charts_most_followed_profiles_legend') . '","backgroundColor": "' . $this->aColors[0] . '","borderColor": "' . $this->aColors[0] . '","borderWidth": 1,"data": ' . json_encode($aValues['values']) . '}]}, "options": {"legend": {"position": "bottom"}}, "links": ' . json_encode($aValues['links']) . '}';
+            echo  json_encode([
+                "type" => "bar",
+                "data" => [
+                    "labels" => $aValues['labels'],
+                    "datasets" => [[
+                        "label" => _t('_bx_charts_most_followed_profiles_legend'),
+                        "backgroundColor" => $this->aColors[0],
+                        "borderColor" => $this->aColors[0],
+                        "borderWidth" => 1,
+                        "data" => $aValues['values'],
+                    ]], 
+                ],
+                "options" => [
+                    "plugins" => [
+                        "legend" => [
+                            "position" => "bottom",
+                        ],
+                    ],
+                ], 
+                "links" => $aValues['links'],
+            ]);
         }
         
         if ($Id == 'GrowthByModules'){
@@ -278,8 +344,6 @@ class BxChartsModule extends BxDolModule
             $aData = $this->_oDb->getGrowth($sTableName);
             $aTmp2 = $this->_oDb->getGrowthInitValue($sTableName); 
             $iValuePrev = $aTmp2[0]; 
-            $iMinTime = $aTmp2[1] * 1000; 
-            $iMaxTime = time() * 1000; 
             $sGroupBy = getParam('bx_charts_chart_growth_group_by');
             foreach ($aData as $aValue) {
                 $aValue['count1'] = $iValuePrev + $aValue['count'];
@@ -288,8 +352,42 @@ class BxChartsModule extends BxDolModule
                 array_push($aValues['values2'], array('x' => $iX, 'y' => $aValue['count']));
                 $iValuePrev = $aValue['count1'];
             }
-            
-            echo  '{"type":"line",  "data": {"datasets": [{"label": "' . $sModuleTitle . ':' . _t('_bx_charts_growth_speed_legend') . '","fill": "false","backgroundColor": "' . $this->aColors[2] . '","borderColor":"' . $this->aColors[2] . '","borderWidth": 1,"data": ' . json_encode($aValues['values2']) . '}, {"label": "' . $sModuleTitle . ':' . _t('_bx_charts_growth_legend') . '","fill": "false","backgroundColor": "' . $this->aColors[3] . '","borderColor": "' . $this->aColors[3] . '","borderWidth": 1,"data": ' . json_encode($aValues['values1']) . '}]}, "options": {"legend": {"position": "bottom"},"scales": {"xAxes": [{"type": "time", "time": {"tooltipFormat": "DD.MM.YYYY", "unit" : "' . ($sGroupBy == 'month' ? 'month' : 'day') . '"}, "ticks": {"min": "' . $iMinTime . '", "max": "' . $iMaxTime . '", "autoSkip": "true"}, "display": "true", "distribution": "linear"}]}}}';
+
+            echo json_encode([
+                "type" => "line",
+                "data" => [
+                    "datasets" => [[
+                        "label" => $sModuleTitle . ':' . _t('_bx_charts_growth_speed_legend'),
+                        "fill" => false,
+                        "backgroundColor" => $this->aColors[2],
+                        "borderColor" => $this->aColors[2],
+                        "borderWidth" => 1,
+                        "data" => $aValues['values2'],
+                    ], [
+                        "label" => $sModuleTitle . ':' . _t('_bx_charts_growth_legend'),
+                        "fill" => false,
+                        "backgroundColor" => $this->aColors[3],
+                        "borderColor" => $this->aColors[3],
+                        "borderWidth" => 1,
+                        "data" => $aValues['values1'],
+                    ]]
+                ], 
+                "options" => [
+                    "plugins" => [
+                        "legend" => [
+                            "position" => "bottom",
+                        ],
+                    ],
+                    "scales" => [
+                        "x" => [
+                            "type" => "time", 
+                            "time" => [
+                                "unit" => $sGroupBy == 'month' ? 'month' : 'day',
+                            ],
+                        ]
+                    ]
+                ]
+            ]);
         }
     }
     
