@@ -29,6 +29,7 @@ INSERT INTO `bx_reputation_handlers`(`group`, `type`, `alert_unit`, `alert_actio
 CREATE TABLE IF NOT EXISTS `bx_reputation_events` (
   `id` int(11) NOT NULL auto_increment,
   `owner_id` int(11) NOT NULL default '0',
+  `context_id` int(11) NOT NULL default '0',
   `type` varchar(64) NOT NULL default '',
   `action` varchar(64) NOT NULL default '',
   `object_id` int(11) NOT NULL default '0',
@@ -68,15 +69,19 @@ INSERT INTO `bx_reputation_levels` (`name`, `title`, `icon`, `points_in`, `point
 
 -- TABLE: profiles
 CREATE TABLE IF NOT EXISTS `bx_reputation_profiles` (
-  `id` int(11) NOT NULL DEFAULT '0',
+  `id` int(11) NOT NULL auto_increment,
+  `profile_id` int(11) NOT NULL DEFAULT '0',
+  `context_id` int(11) NOT NULL default '0',
   `points` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `profile` (`profile_id`, `context_id`)
 );
 
 -- TABLE: profiles' levels
 CREATE TABLE IF NOT EXISTS `bx_reputation_profiles_levels` (
   `id` int(11) NOT NULL auto_increment,
   `profile_id` int(11) NOT NULL DEFAULT '0',
+  `context_id` int(11) NOT NULL default '0',
   `level_id` int(11) NOT NULL DEFAULT '0',
   `date` int(11) NOT NULL default '0',
   PRIMARY KEY (`id`)

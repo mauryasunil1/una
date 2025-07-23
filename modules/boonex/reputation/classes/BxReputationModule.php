@@ -44,9 +44,9 @@ class BxReputationModule extends BxBaseModNotificationsModule
     /**
      * SERVICE METHODS
      */
-    public function serviceAssignPoints($iProfileId, $iPoints)
+    public function serviceAssignPoints($iProfileId, $iPoints, $iContextId = 0)
     {
-        return $this->assignPoints($iProfileId, $iPoints);
+        return $this->assignPoints($iProfileId, $iContextId, $iPoints);
     }
 
     public function serviceGetLevels($iProfileId)
@@ -80,14 +80,14 @@ class BxReputationModule extends BxBaseModNotificationsModule
         ];
     }
 
-    public function serviceGetBlockSummary($iProfileId = 0)
+    public function serviceGetBlockSummary($iProfileId = 0, $iContextId = 0)
     {
         if(!$iProfileId && ($iLoggedId = bx_get_logged_profile_id()))
             $iProfileId = $iLoggedId;
         if(!$iProfileId)
             return false;
 
-        $mixedResult = $this->_oTemplate->getBlockSummary($iProfileId);
+        $mixedResult = $this->_oTemplate->getBlockSummary($iProfileId, $iContextId);
 
         return !$this->_bIsApi ? $mixedResult : [
             bx_api_get_block('reputation_summary', array_merge($mixedResult, [
@@ -97,7 +97,7 @@ class BxReputationModule extends BxBaseModNotificationsModule
         ];
     }
 
-    public function serviceGetBlockHistory($iProfileId = 0, $iStart = 0, $iLimit = 0)
+    public function serviceGetBlockHistory($iProfileId = 0, $iContextId = 0, $iStart = 0, $iLimit = 0)
     {
         if(!$iProfileId && ($iLoggedId = bx_get_logged_profile_id()))
             $iProfileId = $iLoggedId;
@@ -109,23 +109,58 @@ class BxReputationModule extends BxBaseModNotificationsModule
         if(($iGetPerPage = bx_get('per_page')) !== false)
             $iLimit = (int)$iGetPerPage;
 
-        return $this->_oTemplate->getBlockHistory($iProfileId, $iStart, $iLimit);
+        return $this->_oTemplate->getBlockHistory($iProfileId, $iContextId, $iStart, $iLimit);
     }
 
-    public function serviceGetBlockLeaderboard($iDays = 0)
+    public function serviceGetBlockLeaderboard($iContextId = 0, $iDays = 0)
     {
-        return $this->_oTemplate->getBlockLeaderboard($iDays);
+        return $this->_oTemplate->getBlockLeaderboard($iContextId, $iDays);
+    }
+
+    public function serviceGetBlockWidget($iProfileId = 0, $iContextId = 0)
+    {
+        if(!$iProfileId && ($iLoggedId = bx_get_logged_profile_id()))
+            $iProfileId = $iLoggedId;
+        if(!$iProfileId)
+            return false;
+
+        if(!$this->_bIsApi)
+            return false;
+
+        $sModule = $this->getName();
+        $sLangKey = '_bx_reputation_page_block_title_';
+
+        $sParamProfile = '&params[]=' . $iProfileId;
+        $sParamContext = ($iContextId = (int)$iContextId) ? '&params[]=' . $iContextId : '';
+
+        return [
+            bx_api_get_block('reputation_widget', [
+                'tabs'=> [
+                    ['url' => '/api.php?r=' . $sModule . '/get_block_summary' . $sParamProfile . $sParamContext, 'title' => _t($sLangKey . 'summary')],
+                    ['url' => '/api.php?r=' . $sModule . '/get_block_leaderboard' . $sParamContext . '&params[]=7', 'title' => _t($sLangKey . 'leaderboard_week')],
+                    ['url' => '/api.php?r=' . $sModule . '/get_block_leaderboard' . $sParamContext . '&params[]=30', 'title' => _t($sLangKey . 'leaderboard_month')],
+                    ['url' => '/api.php?r=' . $sModule . '/get_block_leaderboard' . $sParamContext . '', 'title' => _t($sLangKey . 'leaderboard_all_time')]
+                ]
+            ])
+        ];
     }
 
     /**
      * COMMON METHODS
      */
-    public function assignPoints($iProfileId, $iPoints)
+    public function assignPoints($iProfileId, $iContextId, $iPoints)
     {
-        if(!$this->_oDb->insertProfile($iProfileId, $iPoints))
+        if(!$this->_oDb->insertProfile($iProfileId, $iContextId, $iPoints))
             return false; 
-            
-        $iProfilePoints = $this->_oDb->getProfilePoints($iProfileId);
+
+        $this->assignLevels($iProfileId, $iContextId);
+
+        return true; 
+    }
+    
+    public function assignLevels($iProfileId, $iContextId)
+    {
+        $iProfilePoints = $this->_oDb->getProfilePoints($iProfileId, $iContextId);
 
         $aLevels = $this->_oDb->getLevels([
             'sample' => 'points', 
@@ -134,27 +169,34 @@ class BxReputationModule extends BxBaseModNotificationsModule
 
         $bMultilevel = $this->_oConfig->isMultilevel();
         if($bMultilevel)
-            $this->_oDb->deleteProfilesLevelsByPoints($iProfileId, $iProfilePoints);
+            $this->_oDb->deleteProfilesLevelsByPoints($iProfileId, $iContextId, $iProfilePoints);
 
         foreach($aLevels as $aLevel) {
             $iLevelId = (int)$aLevel['id'];
-            if($this->hasLevel($iProfileId, $iLevelId))
+            if($this->hasLevel($iProfileId, $iContextId, $iLevelId))
                 continue;
 
             if(!$bMultilevel)
-                $this->_oDb->deleteProfilesLevels(['sample' => 'profile_id', 'profile_id' => $iProfileId]);
+                $this->_oDb->deleteProfilesLevels([
+                    'sample' => 'profile_id', 
+                    'profile_id' => $iProfileId, 
+                    'context_id' => $iContextId
+                ]);
 
-            $this->_oDb->insertProfilesLevels(['profile_id' => $iProfileId, 'level_id' => $iLevelId]);
+            $this->_oDb->insertProfilesLevels([
+                'profile_id' => $iProfileId, 
+                'context_id' => $iContextId,
+                'level_id' => $iLevelId
+            ]);
         }
-
-        return true; 
     }
 
-    public function hasLevel($iProfileId, $iLevelId)
+    public function hasLevel($iProfileId, $iContextId, $iLevelId)
     {
         $aProfileLevels = $this->_oDb->getLevels([
             'sample' => 'profile_id', 
-            'profile_id' => $iProfileId
+            'profile_id' => $iProfileId,
+            'context_id' => $iContextId
         ]);
 
         foreach($aProfileLevels as $aProfileLevel)

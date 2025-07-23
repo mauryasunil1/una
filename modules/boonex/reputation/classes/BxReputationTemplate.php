@@ -113,7 +113,7 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
         ]);
     }
 
-    public function getBlockSummary($iProfileId)
+    public function getBlockSummary($iProfileId, $iContextId = 0)
     {
         $CNF = &$this->_oConfig->CNF;
 
@@ -121,11 +121,16 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
         if(!$oProfile)
             return false;
 
-        $aProfileInfo = $this->_oDb->getProfiles(['sample' => 'id', 'id' => $iProfileId]);
+        $aProfileInfo = $this->_oDb->getProfiles([
+            'sample' => 'profile_id', 
+            'profile_id' => $iProfileId, 
+            'context_id' => $iContextId
+        ]);
         $bProfileInfo = !empty($aProfileInfo) && is_array($aProfileInfo);
         $aProfileLevels = $this->_oDb->getLevels([
             'sample' => 'profile_id', 
-            'profile_id' => $iProfileId
+            'profile_id' => $iProfileId,
+            'context_id' => $iContextId
         ]);
 
         $oFunctions = BxTemplFunctions::getInstance();
@@ -182,7 +187,7 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
         ]);
     }
 
-    public function getBlockHistory($iProfileId, $iStart = 0, $iLimit = 0)
+    public function getBlockHistory($iProfileId, $iContextId = 0, $iStart = 0, $iLimit = 0)
     {
         $CNF = &$this->_oConfig->CNF;
         $oModule = $this->getModule();
@@ -193,6 +198,7 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
         $aItems = $this->_oDb->getEvents([
             'sample' => 'owner_id', 
             'owner_id' => $iProfileId,
+            'context_id' => ($iContextId = (int)$iContextId) ? $iContextId : false,
             'start' => $iStart,
             'limit' => $iLimit + 1
         ]);
@@ -232,19 +238,28 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
         ]);
     }
 
-    public function getBlockLeaderboard($iDays = 0, $iLimit = 0)
+    public function getBlockLeaderboard($iContextId = 0, $iDays = 0, $iLimit = 0)
     {
         $CNF = &$this->_oConfig->CNF;
-        
-        if(!$iLimit)
-            $iLimit = (int)getParam($CNF['PARAM_LEADERBOARD_LIMIT']);
 
+        $iContextId = (int)$iContextId;
+        $iDays = (int)$iDays;
+        $iLimit = $iLimit ? (int)$iLimit : (int)getParam($CNF['PARAM_LEADERBOARD_LIMIT']);
         $bGrowth = $iDays > 0;
 
         if($bGrowth) 
-            $aItems = $this->_oDb->getEvents(['sample' => 'stats', 'days' => $iDays, 'limit' => $iLimit]);
+            $aItems = $this->_oDb->getEvents([
+                'sample' => 'stats', 
+                'context_id' => $iContextId ?: false,
+                'days' => $iDays, 
+                'limit' => $iLimit
+            ]);
         else
-            $aItems = $this->_oDb->getProfiles(['sample' => 'stats', 'limit' => $iLimit]);
+            $aItems = $this->_oDb->getProfiles([
+                'sample' => 'stats',
+                'context_id' => $iContextId,
+                'limit' => $iLimit
+            ]);
 
         $aTmplVarsProfiles = [];
         foreach($aItems as $iProfileId => $iPoints)

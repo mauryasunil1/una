@@ -54,9 +54,14 @@ class BxReputationAlertsResponse extends BxBaseModNotificationsResponse
 
         $iOwnerId = $oAlert->iSender;
         $iObjectOwnerId = abs($this->_getObjectOwnerId($oAlert->aExtras));
+        $iObjectPrivacyView = $this->_getObjectPrivacyView($oAlert->aExtras);
+
+        $bInContext = $iObjectPrivacyView < 0;
+        $iContextId = $bInContext ? abs($iObjectPrivacyView) : 0;
 
         $aEvent = [
             'owner_id' => 0,
+            'context_id' => $iContextId,
             'type' => $oAlert->sUnit,
             'action' => $oAlert->sAction,
             'object_id' => $oAlert->iObject,
@@ -71,7 +76,9 @@ class BxReputationAlertsResponse extends BxBaseModNotificationsResponse
                 'points' => $iPoints
             ]));
 
-            $this->_oModule->assignPoints($iOwnerId, $iPoints);
+            $this->_oModule->assignPoints($iOwnerId, 0, $iPoints);
+            if($bInContext)
+                $this->_oModule->assignPoints($iOwnerId, $iContextId, $iPoints);
         }
 
         if(($iPoints = (int)$aHandler['points_passive']) != 0 && $iOwnerId != $iObjectOwnerId) {
@@ -80,7 +87,9 @@ class BxReputationAlertsResponse extends BxBaseModNotificationsResponse
                 'points' => $iPoints
             ]));
 
-            $this->_oModule->assignPoints($iObjectOwnerId, $iPoints);
+            $this->_oModule->assignPoints($iObjectOwnerId, 0, $iPoints);
+            if($bInContext)
+                $this->_oModule->assignPoints($iObjectOwnerId, $iContextId, $iPoints);
         }
     }
 

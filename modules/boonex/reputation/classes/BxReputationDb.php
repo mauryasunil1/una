@@ -44,7 +44,14 @@ class BxReputationDb extends BxBaseModNotificationsDb
                     'owner_id' => $aParams['owner_id']
                 ];
 
-                $sWhereClause = 'AND `owner_id`=:owner_id';
+                $sWhereClause = 'AND `owner_id` = :owner_id';
+
+                if(isset($aParams['context_id']) && $aParams['context_id'] !== false) {
+                    $aMethod['params'][1]['context_id'] = $aParams['context_id'];
+
+                    $sWhereClause .= ' AND `context_id` = :context_id';
+                }
+
                 $sOrderClause = '`date` DESC';
                 if(isset($aParams['start'], $aParams['limit']))
                     $sLimitClause = $aParams['start'] . ', ' . $aParams['limit'];
@@ -58,8 +65,17 @@ class BxReputationDb extends BxBaseModNotificationsDb
 
                 $sSelectClause = '`owner_id`, SUM(`points`) AS `points`';
 
-                if(!empty($aParams['days']))
-                    $sWhereClause = $this->prepareAsString('AND `date` >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL ? DAY))', (int)$aParams['days']);
+                if(isset($aParams['context_id']) && $aParams['context_id'] !== false) {
+                    $aMethod['params'][3]['context_id'] = $aParams['context_id'];
+
+                    $sWhereClause .= ' AND `context_id` = :context_id';
+                }
+
+                if(!empty($aParams['days'])) {
+                    $aMethod['params'][3]['days'] = (int)$aParams['days'];
+
+                    $sWhereClause .= ' AND `date` >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL :days DAY))';
+                }
 
                 $sGroupClause = '`owner_id`';
                 $sOrderClause = '`points` DESC';
@@ -106,6 +122,12 @@ class BxReputationDb extends BxBaseModNotificationsDb
 
                     $sSelectClause .= ", `trpl`.`date` AS `date_assign`";
                     $sJoinClause = " INNER JOIN `" . $CNF['TABLE_PROFILES_LEVELS'] . "` AS `trpl` ON `trl`.`id`=`trpl`.`level_id` AND `trpl`.`profile_id`=:profile_id";
+
+                    if(isset($aParams['context_id']) && $aParams['context_id'] !== false) {
+                        $aMethod['params'][1]['context_id'] = $aParams['context_id'];
+
+                        $sJoinClause .= "  AND `trpl`.`context_id`=:context_id";
+                    }
                     break;
 
                 case 'points':
@@ -114,15 +136,6 @@ class BxReputationDb extends BxBaseModNotificationsDb
                     ];
 
                     $sWhereClause = "AND `trl`.`points_in` <= :points AND IF(`trl`.`points_out` <> 0, `trl`.`points_out` > :points, 1)";
-                    break;
-
-                case 'id':
-                    $aMethod['name'] = 'getRow';
-                    $aMethod['params'][1] = [
-                        'id' => $aParams['id']
-                    ];
-
-                    $sWhereClause = "AND `trl`.`id` = :id";
                     break;
                 
                 case 'all':
@@ -149,21 +162,22 @@ class BxReputationDb extends BxBaseModNotificationsDb
         return call_user_func_array([$this, $aMethod['name']], $aMethod['params']);
     }
 
-    public function insertProfile($iId, $iPoints)
+    public function insertProfile($iProfileId, $iContextId, $iPoints)
     {
         $CNF = &$this->_oConfig->CNF;
 
-        return $this->query("INSERT INTO `" . $CNF['TABLE_PROFILES'] . "` (`id`, `points`) VALUES (:id, :points) ON DUPLICATE KEY UPDATE `points`=`points`+:points", [
-            'id' => $iId,
+        return $this->query("INSERT INTO `" . $CNF['TABLE_PROFILES'] . "` (`profile_id`, `context_id`, `points`) VALUES (:profile_id, :context_id, :points) ON DUPLICATE KEY UPDATE `points`=`points`+:points", [
+            'profile_id' => $iProfileId,
+            'context_id' => $iContextId,
             'points' => $iPoints
         ]);
     }
 
-    public function deleteProfile($iId)
+    public function deleteProfile($iProfileId)
     {
         $CNF = &$this->_oConfig->CNF;
 
-        return $this->query("DELETE FROM `" . $CNF['TABLE_PROFILES'] . "` WHERE `id`=:id", ['id' => $iId]);
+        return $this->query("DELETE FROM `" . $CNF['TABLE_PROFILES'] . "` WHERE `profile_id`=:profile_id", ['profile_id' => $iProfileId]);
     }
     
     public function getProfiles($aParams = [])
@@ -175,20 +189,27 @@ class BxReputationDb extends BxBaseModNotificationsDb
         $sJoinClause = $sWhereClause = $sOrderClause = $sLimitClause = '';
         
         switch($aParams['sample']) {
-            case 'id':
+            case 'profile_id':
                 $aMethod['name'] = 'getRow';
                 $aMethod['params'][1] = [
-                    'id' => $aParams['id']
+                    'profile_id' => $aParams['profile_id'],
+                    'context_id' => isset($aParams['context_id']) ? $aParams['context_id'] : 0 
                 ];
 
-                $sWhereClause = "AND `trp`.`id` = :id";
+                $sWhereClause = "AND `trp`.`profile_id` = :profile_id AND `trp`.`context_id` = :context_id";
                 break;
 
             case 'stats':
                 $aMethod['name'] = 'getPairs';
-                $aMethod['params'][1] = 'id';
+                $aMethod['params'][1] = 'profile_id';
                 $aMethod['params'][2] = 'points';
                 $aMethod['params'][3] = [];
+
+                if(isset($aParams['context_id']) && $aParams['context_id'] !== false) {
+                    $aMethod['params'][3]['context_id'] = $aParams['context_id'];
+
+                    $sWhereClause .= ' AND `context_id` = :context_id';
+                }
 
                 $sOrderClause = '`trp`.`points` DESC';
                 $sLimitClause = '0, ' . (int)$aParams['limit'];
@@ -225,11 +246,12 @@ class BxReputationDb extends BxBaseModNotificationsDb
         return call_user_func_array([$this, $aMethod['name']], $aMethod['params']);
     }
 
-    public function getProfilePoints($iProfileId)
+    public function getProfilePoints($iProfileId, $iContextId = 0)
     {
         $aProfile = $this->getProfiles([
-            'sample' => 'id', 
-            'id' => $iProfileId
+            'sample' => 'profile_id', 
+            'profile_id' => $iProfileId,
+            'context_id' => $iContextId
         ]);
 
         return $aProfile && isset($aProfile['points']) ? (int)$aProfile['points'] : 0;
@@ -259,6 +281,12 @@ class BxReputationDb extends BxBaseModNotificationsDb
                 ];
 
                 $sWhereClause = "`profile_id`=:profile_id";
+                
+                if(isset($aParams['context_id']) && $aParams['context_id'] !== false) {
+                    $aBindings['context_id'] = $aParams['context_id'];
+
+                    $sWhereClause .= " AND `context_id` = :context_id";
+                }
                 break;
         }
 
@@ -268,15 +296,16 @@ class BxReputationDb extends BxBaseModNotificationsDb
         return $this->query("DELETE FROM `" . $CNF['TABLE_PROFILES_LEVELS'] . "` WHERE " . $sWhereClause, $aBindings);
     }
 
-    public function deleteProfilesLevelsByPoints($iProfileId, $iPoints)
+    public function deleteProfilesLevelsByPoints($iProfileId, $iContextId, $iPoints)
     {
         $CNF = &$this->_oConfig->CNF;
 
         return $this->query("DELETE FROM `trpl` 
                 USING `" . $CNF['TABLE_PROFILES_LEVELS'] . "` AS `trpl` 
                 LEFT JOIN `" . $CNF['TABLE_LEVELS'] . "` AS `trl` ON `trpl`.`level_id`=`trl`.`id` 
-                WHERE `trpl`.`profile_id` = :profile_id AND (`trl`.`points_in` > :points OR IF(`trl`.`points_out` <> 0, `trl`.`points_out` <= :points, 0))", [
+                WHERE `trpl`.`profile_id` = :profile_id AND `trpl`.`context_id` = :context_id AND (`trl`.`points_in` > :points OR IF(`trl`.`points_out` <> 0, `trl`.`points_out` <= :points, 0))", [
             'profile_id' => $iProfileId,
+            'context_id' => $iContextId,
             'points' => $iPoints
         ]);
     }

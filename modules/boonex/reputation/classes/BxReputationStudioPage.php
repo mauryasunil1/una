@@ -44,9 +44,9 @@ class BxReputationStudioPage extends BxBaseModNotificationsStudioPage
                     $aProfiles = $this->_oModule->_oDb->getProfiles(['sample' => 'points_range', 'points_in' => $aLevel['points_in'], 'points_out' => $aLevel['points_out']]);
                     if(empty($aProfiles) || !is_array($aProfiles))
                         continue;
-                    
+
                     foreach($aProfiles as $aProfile)
-                        if($this->_oModule->_oDb->insertProfilesLevels(['profile_id' => $aProfile['id'], 'level_id' => $aLevel['id']]))
+                        if($this->_oModule->_oDb->insertProfilesLevels(['profile_id' => $aProfile['profile_id'], 'level_id' => $aLevel['id']]))
                             $iUpdated++;
                 }
 

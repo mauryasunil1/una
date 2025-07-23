@@ -23,8 +23,8 @@ INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `lay
 ('bx_reputation_leaderboard', '_bx_reputation_page_title_sys_leaderboard', '_bx_reputation_page_title_leaderboard', @sName, 8, 2147483647, 1, 'leaderboard', 'page.php?i=leaderboard', '', '', '', 0, 1, 0, '', '');
 
 INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`) VALUES
-('bx_reputation_leaderboard', 2, @sName, '_bx_reputation_page_block_title_leaderboard_week', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:21:"get_block_leaderboard";s:6:"params";a:1:{i:0;i:7;}}', 0, 1, 1),
-('bx_reputation_leaderboard', 3, @sName, '_bx_reputation_page_block_title_leaderboard_month', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:21:"get_block_leaderboard";s:6:"params";a:1:{i:0;i:30;}}', 0, 1, 1),
+('bx_reputation_leaderboard', 2, @sName, '_bx_reputation_page_block_title_leaderboard_week', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:21:"get_block_leaderboard";s:6:"params";a:2:{i:0;i:0;i:1;i:7;}}', 0, 1, 1),
+('bx_reputation_leaderboard', 3, @sName, '_bx_reputation_page_block_title_leaderboard_month', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:21:"get_block_leaderboard";s:6:"params";a:2:{i:0;i:0;i:1;i:30;}}', 0, 1, 1),
 ('bx_reputation_leaderboard', 4, @sName, '_bx_reputation_page_block_title_leaderboard_all_time', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:21:"get_block_leaderboard";}', 0, 1, 1);
 
 -- PAGE: history
