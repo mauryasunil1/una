@@ -92,7 +92,7 @@ class BxAdsTemplate extends BxBaseModTextTemplate
         $oForm = new BxTemplFormView($aForm);
 
         $oTemplate = BxDolTemplate::getInstance();
-        $oTemplate->addJs(['chart.min.js', 'BxDolChartGrowth.js']);
+        $oTemplate->addJs(['chart.umd.min.js', 'chartjs-adapter-moment.min.js', 'BxDolChartGrowth.js']);
         $oTemplate->addCss(['chart.css']);
 
         if($this->_bIsApi){

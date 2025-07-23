@@ -38,9 +38,9 @@ class BxChartsCron extends BxDolCron
         $this->_oModule->_oDb->clearTopByLikes();
         foreach($aModules as $sModule){
             $oModule = BxDolModule::getInstance($sModule);
-            if(isset($oModule->_oConfig->CNF['OBJECT_VOTES'])){
-                $sSystem = $oModule->_oConfig->CNF['OBJECT_VOTES'];
-                if(empty($sSystem))
+            if(!empty($oModule->_oConfig->CNF['OBJECT_REACTIONS'])){
+                $sSystem = $oModule->_oConfig->CNF['OBJECT_REACTIONS'];
+                if(empty($sSystem) || empty($aSystems[$sSystem]['table_track']))
                     continue;
                 $this->_oModule->_oDb->saveTopByLikes($sModule, $aSystems[$sSystem]['table_track']);
             }

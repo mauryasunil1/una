@@ -13,7 +13,15 @@ function BxCharts(oOptions) {
     this._sChartName = oOptions.sChartName == undefined ? '' : oOptions.sChartName;
     this._sActionsUri = oOptions.sActionUri;
     this._sKeyGraph = 'bx_chart_growth_graph_' + this._sChartName;
-    this._oChartOptionsDefault = {  };
+    this._oChartOptionsDefault = { layout: { 
+        autoPadding: true, 
+        padding: {
+            left: 40,
+            right: 40,
+            top: 40,
+            bottom: 20
+        }
+    }};
     var $this = this;
     $(document).ready(function () {
         $this.loadData();
@@ -28,7 +36,7 @@ BxCharts.prototype.loadData = function () {
     var sAdditionalParameters = "";
     if ($('.bx_chart_growth_selector_' + this._sChartName).length > 0) {
         sAdditionalParameters = '?m=' + $('.bx_chart_growth_selector_' + this._sChartName).val();
-        $('.bx_chart_growth_selector_' + this._sChartName).change(function () {
+        $('.bx_chart_growth_selector_' + this._sChartName).off().change(function () {
             $this.loadData();
         });
     }
@@ -51,25 +59,10 @@ BxCharts.prototype.loadData = function () {
     	    }
 
     	    if (oData.links) {
-    	        Chart.defaults.doughnut.legend.onClick = function (e, legendItem) {
-    	            var iIndex = $this._oChart.data.datasets[0].backgroundColor.indexOf(legendItem.fillStyle);
-    	            if (iIndex && oData.links[iIndex] && oData.links[iIndex] != "") {
-    	                location.href = oData.links[iIndex];
-    	            }
+    	        oData.options.plugins.legend.onClick = function (e, legendItem, legend) {
+                    if (legendItem.index != undefined)
+                        window.open(oData.links[legendItem.index], '_blank');
     	        };
-    	    }
-
-    	    Chart.defaults.doughnut.tooltips.callbacks.label = function (tooltipItem, data) {
-    	        return data.labels[tooltipItem.index];
-    	    };
-
-    	    Chart.defaults.global.layout  = {
-    	        padding: {
-    	                left: 40,
-    	                right: 40,
-    	                top: 40,
-    	                bottom: 20
-    	        }
     	    }
 
     	    var oDataForChart = oData.data || false;
@@ -85,18 +78,14 @@ BxCharts.prototype.loadData = function () {
 
     	    if (oData.links) {
     	        oGraph.click(function (evt) {
-    	            var activePoint = $this._oChart.getElementAtEvent(evt)[0];
-    	            if (activePoint) {
-    	                var oDataChart = activePoint._chart.data;
-    	                var iDatasetIndex = activePoint._datasetIndex;
-    	                var sLabel = oDataChart.datasets[iDatasetIndex].label;
-    	                var sValue = oDataChart.datasets[iDatasetIndex].data[activePoint._index];
-    	                var sLink = oData.links[activePoint._index];
-    	                if (sLink != "")
-    	                    location.href = sLink;
+    	            var activePoint = $this._oChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
+    	            if (activePoint && activePoint.length) {
+    	                var sLink = oData.links[activePoint[0].index];
+    	                if (sLink != undefined && sLink != "")
+    	                    window.open(sLink, '_blank');
     	            }
     	        });
-    	    }
+            }
     	},
     	'json'
     );

@@ -43,7 +43,7 @@ class BxChartsTemplate extends BxBaseModGeneralTemplate
     
     function getChart($sChartName, $iHeight)
     {
-        $this->addJs(array('chart.min.js', 'chart.js'));
+        $this->addJs(array('chart.umd.min.js', 'chartjs-adapter-moment.min.js', 'chart.js'));
         $this->addCss(array('chart.css'));
         return $this->getJsCode('chart', array('chartName' => $sChartName)) . $this->parseHtmlByName('chart.html', array('chart_name' => $sChartName, 'height' => $iHeight));
     }
