@@ -176,6 +176,8 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
                 'author_data' => BxDolProfile::getData($iProfileId),
                 'points' => $iProfilePoints,
                 'levels' => $aTmplVarsLevels,
+                'actions_list' => $this->getBlockActions(),
+                'levels_list' => $this->getBlockLevels()
             ];
 
         return $this->parseHtmlByName('block_summary.html', [

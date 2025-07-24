@@ -60,6 +60,8 @@
     <string name="_bx_reputation_page_title_sys_history"><![CDATA[История баллов]]></string>
     <string name="_bx_reputation_page_title_history"><![CDATA[История]]></string>
     <string name="_bx_reputation_page_block_title_history"><![CDATA[История]]></string>
+    <string name="_bx_reputation_page_block_title_system_widget"><![CDATA[Виджет (только для API)]]></string>
+    <string name="_bx_reputation_page_block_title_widget"><![CDATA[Виджет]]></string>
 
     <!-- Menus -->
     <string name="_bx_reputation_menu_item_title_system_leaderboard"><![CDATA[Таблица лидеров]]></string>

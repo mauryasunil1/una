@@ -63,6 +63,8 @@
     <string name="_bx_reputation_page_title_sys_history"><![CDATA[Points history]]></string>
     <string name="_bx_reputation_page_title_history"><![CDATA[History]]></string>
     <string name="_bx_reputation_page_block_title_history"><![CDATA[History]]></string>
+    <string name="_bx_reputation_page_block_title_system_widget"><![CDATA[Widget (for API only)]]></string>
+    <string name="_bx_reputation_page_block_title_widget"><![CDATA[Widget]]></string>
 
     <!-- Menus -->
     <string name="_bx_reputation_menu_item_title_system_leaderboard"><![CDATA[Leaderboard]]></string>

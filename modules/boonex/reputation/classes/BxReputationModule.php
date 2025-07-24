@@ -90,10 +90,7 @@ class BxReputationModule extends BxBaseModNotificationsModule
         $mixedResult = $this->_oTemplate->getBlockSummary($iProfileId, $iContextId);
 
         return !$this->_bIsApi ? $mixedResult : [
-            bx_api_get_block('reputation_summary', array_merge($mixedResult, [
-                'actions_list' => $this->_oTemplate->getBlockActions(),
-                'levels_list' => $this->_oTemplate->getBlockLevels()
-            ]))
+            bx_api_get_block('reputation_summary', $mixedResult)
         ];
     }
 
@@ -131,16 +128,25 @@ class BxReputationModule extends BxBaseModNotificationsModule
         $sLangKey = '_bx_reputation_page_block_title_';
 
         $sParamProfile = '&params[]=' . $iProfileId;
-        $sParamContext = ($iContextId = (int)$iContextId) ? '&params[]=' . $iContextId : '';
+        $sParamContext = '&params[]=' . $iContextId;
 
         return [
             bx_api_get_block('reputation_widget', [
-                'tabs'=> [
-                    ['url' => '/api.php?r=' . $sModule . '/get_block_summary' . $sParamProfile . $sParamContext, 'title' => _t($sLangKey . 'summary')],
-                    ['url' => '/api.php?r=' . $sModule . '/get_block_leaderboard' . $sParamContext . '&params[]=7', 'title' => _t($sLangKey . 'leaderboard_week')],
-                    ['url' => '/api.php?r=' . $sModule . '/get_block_leaderboard' . $sParamContext . '&params[]=30', 'title' => _t($sLangKey . 'leaderboard_month')],
-                    ['url' => '/api.php?r=' . $sModule . '/get_block_leaderboard' . $sParamContext . '', 'title' => _t($sLangKey . 'leaderboard_all_time')]
-                ]
+                'tabs'=> [[
+                    'url' => '/api.php?r=' . $sModule . '/get_block_summary' . $sParamProfile . $sParamContext, 
+                    'title' => _t($sLangKey . 'summary'),
+                    'data' => $this->_oTemplate->getBlockSummary($iProfileId, (int)$iContextId),
+                    'selected' => true,  
+                ], [
+                    'url' => '/api.php?r=' . $sModule . '/get_block_leaderboard' . $sParamContext . '&params[]=7', 
+                    'title' => _t($sLangKey . 'leaderboard_week')
+                ], [
+                    'url' => '/api.php?r=' . $sModule . '/get_block_leaderboard' . $sParamContext . '&params[]=30', 
+                    'title' => _t($sLangKey . 'leaderboard_month')
+                ], [
+                    'url' => '/api.php?r=' . $sModule . '/get_block_leaderboard' . $sParamContext . '', 
+                    'title' => _t($sLangKey . 'leaderboard_all_time')
+                ]]
             ])
         ];
     }
