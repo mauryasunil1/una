@@ -71,7 +71,7 @@
     "recordrtc": "^5.6.2",
     "select2": "^4.1.0-rc.0",
     "select2-to-tree": "https://github.com/clivezhg/select2-to-tree",
-    "shepherd.js": "^11.2.0",
+    "shepherd.js": "^14.5.1",
     "skrollr": "github:Prinzhorn/skrollr",
     "spin.js": "^4.1.2",
     "stackedit-js": "^1.0.7",
@@ -110,7 +110,7 @@
     "build:pusher": "mkdir -p plugins_public/pusher; cd plugins_public/pusher; cp -r ../../node_modules/pusher-js/dist/web/* .",
     "build:quill": "mkdir -p plugins_public/quill; cd plugins_public/quill; cp -r ../../node_modules/quill/dist/* .; cp -r ../../node_modules/quill-mention/dist/* .; cp -r ../../node_modules/quill-emoji/dist/* .; cp -r ../../node_modules/quill-html-edit-button/dist/* .; cp -r ../../node_modules/quill-image-uploader/dist/quill.* .; cp -r ../../node_modules/quill-image-resize-module/image-resize.min.js .",
     "build:select2": "mkdir -p plugins_public/select2/select2-to-tree; cd plugins_public/select2; cp -r ../../node_modules/select2/dist/* .; cp -r ../../node_modules/select2-to-tree/src/* select2-to-tree",
-    "build:shepherd": "mkdir -p plugins_public/shepherd; cd plugins_public/shepherd; cp -r ../../node_modules/shepherd.js/dist/* .",
+    "build:shepherd": "mkdir -p plugins_public/shepherd/js; mkdir -p plugins_public/shepherd/css; cp node_modules/shepherd.js/dist/css/shepherd.css plugins_public/shepherd/css; rollup node_modules/shepherd.js/dist/esm/shepherd.mjs --file=plugins_public/shepherd/js/shepherd.js --format iife -n ShephBundle --footer \"Shepherd = ShephBundle.default\"; uglifyjs plugins_public/shepherd/js/shepherd.js -c -m > plugins_public/shepherd/js/shepherd.min.js",
     "build:skrollr": "mkdir -p plugins_public/skrollr; cd plugins_public/skrollr; cp -r ../../node_modules/skrollr/dist/* .",
     "build:spin.js": "mkdir -p plugins_public/spin.js; cd plugins_public/spin.js; cp -r ../../node_modules/spin.js/spin.* .; grep -v 'export { Spinner };' spin.js > tmp && mv tmp spin.js",
     "build:stackedit.js": "mkdir -p plugins_public/stackedit.js; cd plugins_public/stackedit.js; cp -r ../../node_modules/stackedit-js/docs/lib/* .",
@@ -149,6 +149,7 @@
     "@tailwindcss/typography": "^0.5.16",
     "bower": "^1.8.14",
     "npm-run-all": "^4.1.5",
+    "rollup": "^4.45.1",
     "tailwindcss": "^3.4.17",
     "uglify-js": "^3.19.3"
   }
