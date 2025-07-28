@@ -2778,4 +2778,44 @@ function bx_is_serialized($string)
     return preg_match('/^([adObis]):[0-9]+:/', $string) === 1;
 }
 
+
+function bx_get_context_workspace($bFromCache = true)
+{
+    if ($bFromCache && !empty($GLOBALS['bxWorkspaceContext']))
+        return $GLOBALS['bxWorkspaceContext'];
+
+    $o = BxDolProfile::getInstance();
+    if (!$o) {
+        return ($GLOBALS['bxWorkspaceContext'] = false);
+    }
+
+    $sModule = $o->getModule();
+    if ($sModule !== 'bx_workspaces') {
+        return ($GLOBALS['bxWorkspaceContext'] = false);
+    }
+
+    $sModuleContext = getParam('bx_workspaces_context_module');
+    if (!$sModuleContext) {
+        return ($GLOBALS['bxWorkspaceContext'] = false);
+    }
+
+    $oModuleContext = BxDolModule::getInstance($sModuleContext);
+    if (!$oModuleContext) {
+        return ($GLOBALS['bxWorkspaceContext'] = false);
+    }
+
+    $CNF = $oModuleContext->_oConfig->CNF;
+    $oConnection = BxDolConnection::getObjectInstance($CNF['OBJECT_CONNECTIONS']);
+    if (!$oConnection) {
+        return ($GLOBALS['bxWorkspaceContext'] = false);
+    }
+
+    $a = $oConnection->getConnectedContent ($o->id(), true, 0, 1);
+    if (!$a) {
+        return ($GLOBALS['bxWorkspaceContext'] = false);
+    }
+
+    return ($GLOBALS['bxWorkspaceContext'] = array_pop($a));
+}
+
 /** @} */

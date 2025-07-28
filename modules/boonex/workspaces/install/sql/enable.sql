@@ -544,7 +544,9 @@ INSERT INTO `sys_alerts` (`unit`, `action`, `handler_id`) VALUES
 ('bx_workspaces', 'timeline_pin', @iHandler),
 ('bx_workspaces', 'timeline_promote', @iHandler),
 ('system', 'connection_before_add', @iHandler),
-('system', 'connection_removed', @iHandler);
+('system', 'connection_removed', @iHandler),
+('menu', 'get_code_before', @iHandler),
+('system', 'get_logo', @iHandler);
 
 -- PRIVACY 
 INSERT INTO `sys_objects_privacy` (`object`, `module`, `action`, `title`, `default_group`, `spaces`, `table`, `table_field_id`, `table_field_author`, `override_class_name`, `override_class_file`) VALUES
