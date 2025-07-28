@@ -45,6 +45,9 @@
     <string name="_bx_spaces_form_profile_input_sys_space_cat"><![CDATA[Категория]]></string>
     <string name="_bx_spaces_form_profile_input_space_cat"><![CDATA[Категория]]></string>
     <string name="_bx_spaces_form_profile_input_space_cat_err"><![CDATA[Поле категории необходимо]]></string>
+    <string name="_bx_spaces_form_profile_input_sys_multicat"><![CDATA[Категории]]></string>
+    <string name="_bx_spaces_form_profile_input_multicat"><![CDATA[Категории]]></string>
+    <string name="_bx_spaces_form_profile_input_multicat_err"><![CDATA[Поле «Категории» обязательно для заполнения. Выберите хотя бы одну категорию.]]></string>
     <string name="_bx_spaces_form_profile_input_sys_picture"><![CDATA[Картинка пространства]]></string>
     <string name="_bx_spaces_form_profile_input_picture"><![CDATA[Загрузить новую картинку пространства]]></string>
     <string name="_bx_spaces_form_profile_input_picture_err"><![CDATA[Необходима картинка пространства.]]></string>
@@ -187,6 +190,8 @@
     <string name="_bx_spaces_page_block_title_entry_social_sharing"><![CDATA[Поделиться]]></string>
     <string name="_bx_spaces_page_block_title_entry_rating"><![CDATA[Рейтинг]]></string>
     <string name="_bx_spaces_page_block_title_categories"><![CDATA[Категории пространств]]></string>
+    <string name="_bx_spaces_page_block_title_sys_multicats"><![CDATA[Категории пространств (Мульти)]]></string>
+    <string name="_bx_spaces_page_block_title_multicats"><![CDATA[Категории пространств]]></string>
     <string name="_bx_spaces_page_block_title_invite_to_space"><![CDATA[Пригласить участников в пространство]]></string>
     <string name="_bx_spaces_page_block_title_search_form"><![CDATA[Форма поиска]]></string>
     <string name="_bx_spaces_page_block_title_search_results"><![CDATA[Результаты поиска]]></string>

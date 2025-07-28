@@ -45,6 +45,9 @@
     <string name="_bx_spaces_form_profile_input_sys_space_cat"><![CDATA[Category]]></string>
     <string name="_bx_spaces_form_profile_input_space_cat"><![CDATA[Category]]></string>
     <string name="_bx_spaces_form_profile_input_space_cat_err"><![CDATA[Category field is mandatory]]></string>
+    <string name="_bx_spaces_form_profile_input_sys_multicat"><![CDATA[Categories]]></string>
+    <string name="_bx_spaces_form_profile_input_multicat"><![CDATA[Categories]]></string>
+    <string name="_bx_spaces_form_profile_input_multicat_err"><![CDATA[Categories field is mandatory. Please select at least one category.]]></string>
     <string name="_bx_spaces_form_profile_input_sys_picture"><![CDATA[Space Picture]]></string>
     <string name="_bx_spaces_form_profile_input_picture"><![CDATA[Upload New Space Picture]]></string>
     <string name="_bx_spaces_form_profile_input_picture_err"><![CDATA[Space picture is mandatory.]]></string>
@@ -195,6 +198,8 @@
 	<string name="_bx_spaces_page_block_title_entry_social_sharing"><![CDATA[Share]]></string>
         <string name="_bx_spaces_page_block_title_entry_rating"><![CDATA[Rating]]></string>
 	<string name="_bx_spaces_page_block_title_categories"><![CDATA[Spaces Categories]]></string>
+        <string name="_bx_spaces_page_block_title_sys_multicats"><![CDATA[Spaces Categories (Multi)]]></string>
+        <string name="_bx_spaces_page_block_title_multicats"><![CDATA[Spaces Categories]]></string>
 	<string name="_bx_spaces_page_block_title_invite_to_space"><![CDATA[Invite Members to the Space]]></string>
 	<string name="_bx_spaces_page_block_title_search_form"><![CDATA[Search Form]]></string>
 	<string name="_bx_spaces_page_block_title_search_results"><![CDATA[Search Results]]></string>

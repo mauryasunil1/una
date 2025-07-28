@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS `bx_spaces_data` (
   `space_name` varchar(255) NOT NULL,
   `space_cat` int(11) NOT NULL,
   `space_desc` text NOT NULL,
+  `multicat` text NOT NULL,
   `labels` text NOT NULL,
   `location` text NOT NULL,
   `members` int(11) NOT NULL default '0',
@@ -398,6 +399,7 @@ INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `ch
 ('bx_space', 'bx_spaces', 'picture', 'a:1:{i:0;s:22:"bx_spaces_picture_crop";}', 'a:1:{s:22:"bx_spaces_picture_crop";s:24:"_sys_uploader_crop_title";}', 0, 'files', '_bx_spaces_form_profile_input_sys_picture', '_bx_spaces_form_profile_input_picture', '', 0, 0, 0, '', '', '', '', '', '_bx_spaces_form_profile_input_picture_err', '', '', 1, 0),
 ('bx_space', 'bx_spaces', 'location', '', '', 0, 'location', '_sys_form_input_sys_location', '_sys_form_input_location', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_space', 'bx_spaces', 'labels', '', '', 0, 'custom', '_sys_form_input_sys_labels', '_sys_form_input_labels', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
+('bx_space', 'bx_spaces', 'multicat', '', '', 0, 'custom', '_bx_spaces_form_profile_input_sys_multicat', '_bx_spaces_form_profile_input_multicat', '', 1, 0, 0, '', '', '', 'avail', '', '_bx_spaces_form_profile_input_multicat_err', 'Xss', '', 1, 0),
 -- Settings
 ('bx_space', 'bx_spaces', 'stg_tabs', 1, '', 0, 'checkbox_set', '_bx_spaces_form_profile_input_sys_stg_tabs', '_bx_spaces_form_profile_input_stg_tabs', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 1, 0);
 

@@ -1260,35 +1260,63 @@ class BxBaseModGeneralFormEntry extends BxTemplFormView
     
     protected function genCustomInputMulticat(&$aInput)
     {
-        $sJsObject = $this->_oModule->_oConfig->getJsObject('categories');
-		$aValuesForSelect = BxDolCategories::getInstance()->getData(array('type' => 'by_module_and_author', 'module' => $this->_oModule->getName(), 'author' => bx_get_logged_profile_id()));
+        $aValuesForSelect = BxDolCategories::getInstance()->getData([
+            'type' => 'by_module_and_author', 
+            'module' => $this->_oModule->getName(), 
+            'author' => bx_get_logged_profile_id()
+        ]);
         
-        $aSelectedItems = array();
-        if (isset($aInput['value']) && is_array($aInput['value']))
-		    $aInput['value'] = array_filter($aInput['value']);
         
+        if(isset($aInput['value']) && is_array($aInput['value']))
+            $aInput['value'] = array_filter($aInput['value']);
+        
+        $aValues = [];
         if(!empty($aInput['value'])) {
             if (!is_array($aInput['value']))
-                $aValues = BxDolCategories::getInstance()->getData(array('type' => 'by_module_and_object', 'module' => $this->_oModule->getName(), 'object_id' => (!empty($aInput['content_id']) ? (int)$aInput['content_id'] : 0 )));
+                $aValues = BxDolCategories::getInstance()->getData([
+                    'type' => 'by_module_and_object', 
+                    'module' => $this->_oModule->getName(), 
+                    'object_id' => (!empty($aInput['content_id']) ? (int)$aInput['content_id'] : 0 )
+                ]);
             else
                 $aValues = $aInput['value'];
             
             $aValues = array_filter($aValues);
-            foreach($aValues as $sValue) {
-                if (!array_key_exists($sValue, $aValuesForSelect)){
-                    $aValuesForSelect[$sValue] = array('key' => $sValue, 'value' => $sValue);
-                }
-            }
-            foreach($aValues as $sValue) {
-                $sInput = $this->genCustomInputMulticatSelect($aInput, $aValuesForSelect, $sValue);
-                $aSelectedItems[] = array('js_object' => $sJsObject, 'select_cat' => $sInput);
-            }
+            foreach($aValues as $sValue)
+                if(!array_key_exists($sValue, $aValuesForSelect))
+                    $aValuesForSelect[$sValue] = [
+                        'key' => $sValue, 
+                        'value' => $sValue
+                    ];
         }
-        else{
-            $aSelectedItems = array(
-                array('js_object' => $sJsObject, 'select_cat' => $this->genCustomInputMulticatSelect($aInput, $aValuesForSelect))
-            );
+
+        if($this->_bIsApi) {
+            array_walk($aValuesForSelect, function(&$aValue, $sKey) {
+                $aValue['value'] = _t($aValue['key']);
+            });
+
+            return array_merge($aInput, [
+                'type' => 'multicat',
+                'values' => array_values($aValuesForSelect),
+                'value' => $aValues
+            ]);
         }
+
+        $sJsObject = $this->_oModule->_oConfig->getJsObject('categories');
+
+        $aSelectedItems = [];
+        if(!empty($aValues))
+            foreach($aValues as $sValue)
+                $aSelectedItems[] = [
+                    'js_object' => $sJsObject, 
+                    'select_cat' => $this->genCustomInputMulticatSelect($aInput, $aValuesForSelect, $sValue)
+                ];
+        else
+            $aSelectedItems[] = [
+                'js_object' => $sJsObject, 
+                'select_cat' => $this->genCustomInputMulticatSelect($aInput, $aValuesForSelect)
+            ];
+
         return $this->_oModule->_oTemplate->parseHtmlByName('form_categories.html', array(
             'bx_repeat:items' => $aSelectedItems,
             'js_object' => $sJsObject, 

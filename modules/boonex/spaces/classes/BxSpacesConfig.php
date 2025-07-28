@@ -48,6 +48,7 @@ class BxSpacesConfig extends BxBaseModGroupsConfig
             'FIELD_TITLE' => 'space_name',
             'FIELD_TEXT' => 'space_desc',
             'FIELD_CATEGORY' => 'space_cat',
+            'FIELD_MULTICAT' => 'multicat',
             'FIELD_PICTURE' => 'picture',
             'FIELD_COVER' => 'cover',
             'FIELD_COVER_POSITION' => 'cover_data',
@@ -101,6 +102,7 @@ class BxSpacesConfig extends BxBaseModGroupsConfig
             'PARAM_RECURRING_RESERVE' => 3, // 3 days for recurring payment to be registered
             'PARAM_PER_PAGE_FOR_FAVORITES_LISTS' => 'bx_spaces_per_page_for_favorites_lists',
             'PARAM_USE_IN' => 'bx_spaces_internal_notifications',
+            'PARAM_MULTICAT_ENABLED' => true,
 
             // objects
             'OBJECT_STORAGE' => 'bx_spaces_pics',
@@ -267,24 +269,26 @@ class BxSpacesConfig extends BxBaseModGroupsConfig
             ),
         );
 
-        $this->_aJsClasses = array(
+        $this->_aJsClasses = [
+            'categories' => 'BxDolCategories',
             'main' => 'BxSpacesMain',
             'manage_tools' => 'BxSpacesManageTools',
             'invite_popup' => 'BxSpacesInvitePopup',
             'prices' => 'BxSpacesPrices'
-        );
+        ];
 
-        $this->_aJsObjects = array(
+        $this->_aJsObjects = [
+            'categories' => 'oBxDolCategories',
             'main' => 'oBxSpacesMain',
             'manage_tools' => 'oBxSpacesManageTools',
             'invite_popup' => 'oBxSpacesInvitePopup',
             'prices' => 'oBxSpacesPrices'
-        );
+        ];
 
-        $this->_aGridObjects = array(
+        $this->_aGridObjects = [
             'common' => $this->CNF['OBJECT_GRID_COMMON'],
             'administration' => $this->CNF['OBJECT_GRID_ADMINISTRATION'],
-        );
+        ];
     }
 
 }
