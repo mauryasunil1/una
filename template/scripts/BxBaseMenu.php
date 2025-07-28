@@ -56,6 +56,32 @@ class BxBaseMenu extends BxDolMenu
         $sMenuTitle = isset($this->_aObject['title']) ? _t($this->_aObject['title']) : 'Menu-' . rand(0, PHP_INT_MAX);
         if (isset($GLOBALS['bx_profiler'])) $GLOBALS['bx_profiler']->beginMenu($sMenuTitle);
 
+        /**
+         * @hooks
+         * @hookdef hook-menu-get_code_before 'menu', 'get_code_before' - hook before menu output
+         * - $unit_name - equals `menu`
+         * - $action - equals `get_code_before` 
+         * - $object_id - not used 
+         * - $sender_id - not used 
+         * - $extra_params - array of additional params with the following array keys:
+         *      - `object_name` - menu object name
+         *      - `object_array` - menu object array
+         *      - `object` - menu object
+         *      - `override_result` - menu code
+         * @hook @ref hook-menu-get_code_before
+         */
+        $mixedRes = null;
+        bx_alert('menu', 'get_code_before', 0, 0, [
+            'object_name' => $this->_sObject, 
+            'object_array' => $this->_aObject, 
+            'object' => $this, 
+            'override_result' => &$mixedRes,
+        ]);
+        if ($mixedRes !== null) {
+            if (isset($GLOBALS['bx_profiler'])) $GLOBALS['bx_profiler']->endMenu($sMenuTitle);
+            return $mixedRes;
+        }
+
         if(!$this->_iPageType)
             $this->_iPageType = BxDolTemplate::getInstance()->getPageType();
 
@@ -65,6 +91,29 @@ class BxBaseMenu extends BxDolMenu
             $this->_addJsCss();
             $s = $this->_getCode($this->_aObject['template'], $aVars);
         }
+
+        /**
+         * @hooks
+         * @hookdef hook-menu-get_code_after 'menu', 'get_code_after' - hook after menu output
+         * - $unit_name - equals `menu`
+         * - $action - equals `get_code_after` 
+         * - $object_id - not used 
+         * - $sender_id - not used 
+         * - $extra_params - array of additional params with the following array keys:
+         *      - `object_name` - menu object name
+         *      - `object_array` - menu object array
+         *      - `object` - menu object
+         *      - `override_result` - menu code
+         * @hook @ref hook-menu-get_code_after
+         */
+        $mixedRes = null;
+        bx_alert('menu', 'get_code_after', 0, 0, [
+            'object_name' => $this->_sObject, 
+            'object_array' => $this->_aObject, 
+            'object' => $this, 
+            'vars' => $aVars,
+            'override_result' => &$s,
+        ]);
 
         if (isset($GLOBALS['bx_profiler'])) $GLOBALS['bx_profiler']->endMenu($sMenuTitle);
 
