@@ -51,7 +51,7 @@ SET @iBlockOrder = (SELECT `order` FROM `sys_pages_blocks` WHERE `object` = '' A
 INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `active`, `active_api`, `order`) VALUES 
 ('', 0, @sName, '', '_bx_reputation_page_block_title_actions', 13, 2147483647, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:17:"get_block_actions";}', 0, 1, 1, 0, IFNULL(@iBlockOrder, 0) + 1),
 ('', 0, @sName, '', '_bx_reputation_page_block_title_levels', 13, 2147483647, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:16:"get_block_levels";}', 0, 1, 1, 0, IFNULL(@iBlockOrder, 0) + 2),
-('', 0, @sName, '_bx_reputation_page_block_title_system_widget', '_bx_reputation_page_block_title_widget', 13, 2147483647, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:16:"get_block_levels";}', 0, 1, 0, 1, IFNULL(@iBlockOrder, 0) + 3);
+('', 0, @sName, '_bx_reputation_page_block_title_system_widget', '_bx_reputation_page_block_title_widget', 13, 2147483647, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:16:"get_block_widget";}', 0, 1, 0, 1, IFNULL(@iBlockOrder, 0) + 3);
 
 
 -- MENU: add to site menu
