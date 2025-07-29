@@ -103,6 +103,7 @@ class BxSpacesConfig extends BxBaseModGroupsConfig
             'PARAM_PER_PAGE_FOR_FAVORITES_LISTS' => 'bx_spaces_per_page_for_favorites_lists',
             'PARAM_USE_IN' => 'bx_spaces_internal_notifications',
             'PARAM_MULTICAT_ENABLED' => true,
+            'PARAM_MULTICAT_AUTO_ACTIVATION_FOR_CATEGORIES' => 'bx_spaces_auto_activation_for_categories',
 
             // objects
             'OBJECT_STORAGE' => 'bx_spaces_pics',

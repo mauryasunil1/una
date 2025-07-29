@@ -1296,7 +1296,7 @@ class BxBaseModGeneralFormEntry extends BxTemplFormView
             });
 
             return array_merge($aInput, [
-                'type' => 'multicat',
+                'type' => 'select_multiple',
                 'values' => array_values($aValuesForSelect),
                 'value' => $aValues
             ]);

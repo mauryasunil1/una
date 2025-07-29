@@ -13,6 +13,7 @@ SET @iCategId = LAST_INSERT_ID();
 INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `type`, `extra`, `check`, `check_error`, `order`) VALUES
 ('bx_spaces_enable_multilevel_hierarchy', '', @iCategId, '_bx_spaces_option_enable_multilevel_hierarchy', 'checkbox', '', '', '', 0),
 ('bx_spaces_enable_auto_approve', 'on', @iCategId, '_bx_spaces_option_enable_auto_approve', 'checkbox', '', '', '', 1),
+('bx_spaces_auto_activation_for_categories', 'on', @iCategId, '_bx_spaces_option_auto_activation_for_categories', 'checkbox', '', '', '', 3),
 ('bx_spaces_num_connections_quick', '6', @iCategId, '_bx_spaces_option_num_connections_quick', 'digit', '', '', '', 10),
 ('bx_spaces_per_page_browse', '24', @iCategId, '_bx_spaces_option_per_page_browse', 'digit', '', '', '', 11),
 ('bx_spaces_num_rss', '10', @iCategId, '_bx_spaces_option_num_rss', 'digit', '', '', '', 12),
