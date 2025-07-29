@@ -1212,27 +1212,37 @@ class BxBaseModGeneralFormEntry extends BxTemplFormView
      * 
      */
     
-    protected function processMulticatBefore($sFieldName, &$aValsToAdd){
-        if (isset($this->aInputs[$sFieldName])){
-            $this->aInputs[$sFieldName]['value'] = array_unique(array_filter($this->aInputs[$sFieldName]['value'], function($sTmp){
-               return trim($sTmp);
-            }));  
-            $aValsToAdd[$sFieldName] = implode(',', $this->aInputs[$sFieldName]['value']);
-        }
+    protected function processMulticatBefore($sFieldName, &$aValsToAdd)
+    {
+        if(!isset($this->aInputs[$sFieldName]))
+            return;
+
+        if($this->_bIsApi && is_string($this->aInputs[$sFieldName]['value']))
+            $this->aInputs[$sFieldName]['value'] = explode(',', $this->aInputs[$sFieldName]['value']);
+
+        $this->aInputs[$sFieldName]['value'] = array_unique(array_filter($this->aInputs[$sFieldName]['value'], function($sTmp) {
+           return trim($sTmp);
+        }));
+
+        $aValsToAdd[$sFieldName] = implode(',', $this->aInputs[$sFieldName]['value']);
     }
     
-    protected function processMulticatAfter($sFieldName, $iContentId){
+    protected function processMulticatAfter($sFieldName, $iContentId)
+    {
+        if(!isset($this->aInputs[$sFieldName]))
+            return;
+
         $CNF = &$this->_oModule->_oConfig->CNF;
-        $bAutoActivation = (isset($CNF['PARAM_MULTICAT_AUTO_ACTIVATION_FOR_CATEGORIES']) && getParam($CNF['PARAM_MULTICAT_AUTO_ACTIVATION_FOR_CATEGORIES']) == 'on') ? true : false;
-		$oCategories = BxDolCategories::getInstance();
-        if (isset($this->aInputs[$sFieldName])){
-            $oCategories->delete($this->_oModule->getName(), $iContentId);
-            foreach($this->aInputs[$sFieldName]['value'] as  $sValue) {
-                $oCategories->add($this->_oModule->getName(), bx_get_logged_profile_id(), $sValue, $iContentId, $bAutoActivation);
-            }
-        }
+
+        $sModule = $this->_oModule->getName();
+        $bAutoActivation = (($sKey = 'PARAM_MULTICAT_AUTO_ACTIVATION_FOR_CATEGORIES') && isset($CNF[$sKey]) && getParam($CNF[$sKey]) == 'on');
+
+        $oCategories = BxDolCategories::getInstance();
+        $oCategories->delete($sModule, $iContentId);
+        foreach($this->aInputs[$sFieldName]['value'] as  $sValue)
+            $oCategories->add($sModule, bx_get_logged_profile_id(), $sValue, $iContentId, $bAutoActivation);
     }
-    
+
     protected function genCustomViewRowValueMulticat(&$aInput)
     {
 		$oCategories = BxDolCategories::getInstance();
