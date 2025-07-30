@@ -339,13 +339,14 @@ class BxStripeConnectModule extends BxBaseModGeneralModule
     {
         $CNF = &$this->_oConfig->CNF;
 
-        if(empty($aParams['vendor_id']))
+        $iVendorId = 0;
+        if(empty($aParams['vendor_id']) || ($iVendorId = (int)$aParams['vendor_id']) == $this->_oConfig->getMainSeller())
             return false;
 
         $sModeUc = strtoupper($this->_oConfig->getMode());
         $sAccIdField = $CNF['FIELD_' . $sModeUc . '_ACCOUNT_ID'];
-            
-        $aAccount = $this->_oDb->getAccount(['sample' => 'profile_id', 'profile_id' => (int)$aParams['vendor_id']]);
+
+        $aAccount = $this->_oDb->getAccount(['sample' => 'profile_id', 'profile_id' => $iVendorId]);
         if(empty($aAccount) || !is_array($aAccount) || empty($aAccount[$sAccIdField]))
             return false;
 
@@ -365,8 +366,11 @@ class BxStripeConnectModule extends BxBaseModGeneralModule
         try {
             $sModeUc = strtoupper($this->_oConfig->getMode());
             $sAccIdField = $CNF['FIELD_' . $sModeUc . '_ACCOUNT_ID'];
-
+            
             $iVendorId = (int)$aParams['session_params']['metadata']['vendor'];
+            if($iVendorId == $this->_oConfig->getMainSeller())
+                return false;
+
             $aAccount = $this->_oDb->getAccount(['sample' => 'profile_id', 'profile_id' => $iVendorId]);
             if(empty($aAccount) || !is_array($aAccount) || empty($aAccount[$sAccIdField]))
                 return false;

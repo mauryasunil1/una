@@ -14,7 +14,7 @@ bx_import('BxDolAcl');
 define('BX_ACL_LICENSE_TYPE_SINGLE', 'single'); //--- one-time payment license
 define('BX_ACL_LICENSE_TYPE_RECURRING', 'recurring'); //--- recurring payment license
 
-class BxAclModule extends BxDolModule
+class BxAclModule extends BxBaseModGeneralModule
 {
     /**
      * Constructor
@@ -107,17 +107,22 @@ class BxAclModule extends BxDolModule
      */
 	public function serviceGetBlockView()
 	{
-	    bx_require_authentication(false, false, $this->serviceGetViewUrl());
+            bx_require_authentication(false, false, $this->serviceGetViewUrl());
 
-		$sGrid = $this->_oConfig->getGridObject('view');
-		$oGrid = BxDolGrid::getObjectInstance($sGrid);
-        if(!$oGrid)
-            return '';
+            $sGrid = $this->_oConfig->getGridObject('view');
+            $oGrid = BxDolGrid::getObjectInstance($sGrid);
+            if(!$oGrid)
+                return $this->_bIsApi ? [] : '';
 
-        $this->_oTemplate->addCss(array('view.css'));
-		return array(
-            'content' => $oGrid->getCode()
-        );
+            if($this->_bIsApi)
+                return [
+                    bx_api_get_block('grid', $oGrid->getCodeAPI())
+                ];
+
+            $this->_oTemplate->addCss(['view.css']);
+            return [
+                'content' => $oGrid->getCode()
+            ];
 	}
 
 	/**

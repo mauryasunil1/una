@@ -13,6 +13,7 @@ class BxStripeConnectConfig extends BxBaseModGeneralConfig
 {
     protected $_oDb;
 
+    protected $_iMainSeller;
     protected $_sMode;
 
     protected $_sApiPublicKey;
@@ -102,6 +103,8 @@ class BxStripeConnectConfig extends BxBaseModGeneralConfig
             'commissions_popup' => $sPrefix . '-commissions-popup-',
         ];
 
+        $this->_iMainSeller = 0;
+
         $this->_sAccountType = 'standard'; //'express'
     }
 
@@ -117,6 +120,14 @@ class BxStripeConnectConfig extends BxBaseModGeneralConfig
 
         $this->_sRefreshLink = $this->_getLink();
         $this->_sReturnLink = $this->_sRefreshLink;
+    }
+
+    public function getMainSeller()
+    {
+        if(empty($this->_iMainSeller))
+            $this->_iMainSeller = (int)BxDolPayments::getInstance()->getOption('site_admin');
+
+    	return $this->_iMainSeller;
     }
 
     public function getMode()

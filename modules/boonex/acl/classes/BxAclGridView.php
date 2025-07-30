@@ -42,20 +42,53 @@ class BxAclGridView extends BxAclGridLevels
 
         $aIds = $this->_getIds();
         if($aIds === false)
-            return echoJson(array());
+            return $this->_bIsApi ? [] : echoJson([]);
 
-        $aItem = $this->_oModule->_oDb->getPrices(array('type' => 'by_id', 'value' => $aIds[0]));
+        $aItem = $this->_oModule->_oDb->getPrices(['type' => 'by_id', 'value' => $aIds[0]]);
         if(!is_array($aItem) || empty($aItem) || (float)$aItem['price'] != 0)
-        	return echoJson(array());
+            return $this->_bIsApi ? [] : echoJson(array());
 
-        $aResult = array();
+        $aResult = [];
         $iUserId = bx_get_logged_profile_id();
-        if(BxDolAcl::getInstance()->setMembership($iUserId, $aItem['level_id'], array('period' => $aItem['period'], 'period_unit' => $aItem['period_unit']), true))
-            $aResult = array('grid' => $this->getCode(false), 'blink' => $aItem['id'], 'msg' => _t('_bx_acl_msg_performed'));
+        if(BxDolAcl::getInstance()->setMembership($iUserId, $aItem['level_id'], ['period' => $aItem['period'], 'period_unit' => $aItem['period_unit']], true))
+            $aResult = ['grid' => $this->getCode(false), 'blink' => $aItem['id'], 'msg' => _t('_bx_acl_msg_performed')];
         else
-            $aResult = array('msg' => _t('_bx_acl_err_cannot_perform'));
+            $aResult = ['msg' => _t('_bx_acl_err_cannot_perform')];
 
-        return echoJson($aResult);
+        return $this->_bIsApi ? [] : echoJson($aResult);
+    }
+
+    public function performActionBuy()
+    {
+        if(!$this->_bIsApi)
+            return echoJson([]);
+        
+        $aIds = $this->_getIds();
+        if($aIds === false)
+            return [];
+
+        $aResult = $this->_oPayment->addToCart($this->_iOwner, $this->MODULE, array_shift($aIds), 1, true);
+        if(isset($aResult['code']) && (int)$aResult['code'] != 0)
+            return [bx_api_get_msg($aResult['message'])];
+
+        return [];
+    }
+
+    public function performActionSubscribe()
+    {
+        if(!$this->_bIsApi)
+            return echoJson([]);
+        
+        $aIds = $this->_getIds();
+        if($aIds === false)
+            return [];
+
+        //TODO: Payment Provider selector should be realized.
+        $aResult = $this->_oPayment->subscribeWithAddons($this->_iOwner, 'stripe_v3', $this->MODULE, array_shift($aIds), 1, true);
+        if(isset($aResult['code']) && (int)$aResult['code'] != 0)
+            return [bx_api_get_msg($aResult['message'])];
+
+        return [];
     }
 
     public function getCode($isDisplayHeader = true)
@@ -80,7 +113,10 @@ class BxAclGridView extends BxAclGridLevels
     protected function _getActionChoose ($sType, $sKey, $a, $isSmall = false, $isDisabled = false, $aRow = array())
     {
         if((float)$aRow['price'] != 0 || BxDolAcl::getInstance()->isMemberLevelInSet(array($aRow['level_id'])))
-            return '';
+            return $this->_bIsApi ? [] : '';
+
+        if($this->_bIsApi)
+            return array_merge($a, ['name' => $sKey, 'type' => 'callback', 'on_callback' => 'hide']);
 
         return  parent::_getActionDefault($sType, $sKey, $a, false, $isDisabled, $aRow);
     }
@@ -90,7 +126,15 @@ class BxAclGridView extends BxAclGridLevels
         $CNF = &$this->_oModule->_oConfig->CNF;
 
         if((float)$aRow['price'] == 0 || !$this->_bTypeSingle || ($this->_bTypeRecurring && getParam($CNF['PARAM_RECURRING_PRIORITIZE']) == 'on' && !$this->_isLifetime($aRow)))
-            return '';
+            return $this->_bIsApi ? [] : '';
+
+        if($this->_bIsApi)
+            return array_merge($a, [
+                'name' => $sKey, 
+                'type' => 'callback', 
+                'on_callback' => 'redirect',
+                'redirect_url' => bx_api_get_relative_url($this->_oPayment->getCartUrl($this->_iOwner))
+            ]);
 
     	$aJs = $this->_oPayment->getAddToCartJs($this->_iOwner, $this->MODULE, $aRow['id'], 1, true);
     	if(!empty($aJs) && is_array($aJs)) {
@@ -112,7 +156,16 @@ class BxAclGridView extends BxAclGridLevels
     protected function _getActionSubscribe ($sType, $sKey, $a, $isSmall = false, $isDisabled = false, $aRow = array())
     {
         if((float)$aRow['price'] == 0 || !$this->_bTypeRecurring || ($this->_bTypeSingle && $this->_isLifetime($aRow)))
-            return '';
+            return $this->_bIsApi ? [] : '';
+
+        if($this->_bIsApi)
+            return array_merge($a, [
+                'name' => $sKey, 
+                'type' => 'object', 
+                'object_name' => 'stripe_v3',
+                'seller_id' => $this->_iOwner,
+                'items' => [$this->_oPayment->getCartItemDescriptor($this->_iOwner, $this->_oModule->_oConfig->getId(), $aRow['id'], 1)],
+            ]);
 
     	$aJs = $this->_oPayment->getSubscribeJs($this->_iOwner, '', $this->MODULE, $aRow['id'], 1);
         if(!empty($aJs) && is_array($aJs)) {
