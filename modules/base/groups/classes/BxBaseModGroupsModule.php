@@ -1139,7 +1139,7 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
             $aBlocks = [];
             if(!empty($sNote))
                 $aBlocks[] = bx_api_get_msg($sNote);
-            $aBlocks[] = bx_api_get_block('grid', $oGrid->getCodeAPI());
+            $aBlocks[] = bx_api_get_block('pricing', $oGrid->getCodeAPI(true));
 
             return $aBlocks;
         }
