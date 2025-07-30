@@ -210,6 +210,7 @@
     <string name="_bx_spaces_page_block_title_sys_cover_block"><![CDATA[Обложка]]></string>
     <string name="_bx_spaces_page_block_title_cover_block"><![CDATA[Обложка]]></string>
     <string name="_bx_spaces_page_title_sys_entries_by_category"><![CDATA[Пространства в категории]]></string>
+    <string name="_bx_spaces_page_title_sys_entries_by_multi_category"><![CDATA[Пространства в мультикатегории]]></string>
     <string name="_bx_spaces_page_title_entries_by_category"><![CDATA[Пространства в {category_name}]]></string>
     <string name="_bx_spaces_page_block_title_sys_entries_by_category"><![CDATA[Пространства в категории]]></string>
     <string name="_bx_spaces_page_block_title_entries_by_category"><![CDATA[{category_name}]]></string>

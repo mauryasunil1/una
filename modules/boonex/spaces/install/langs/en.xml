@@ -214,6 +214,7 @@
         <string name="_bx_spaces_page_block_title_sys_cover_block"><![CDATA[Cover]]></string>
         <string name="_bx_spaces_page_block_title_cover_block"><![CDATA[Cover]]></string>
         <string name="_bx_spaces_page_title_sys_entries_by_category"><![CDATA[Spaces in category]]></string>
+        <string name="_bx_spaces_page_title_sys_entries_by_multi_category"><![CDATA[Spaces in multi category]]></string>
         <string name="_bx_spaces_page_title_entries_by_category"><![CDATA[Spaces in {category_name}]]></string>
         <string name="_bx_spaces_page_block_title_sys_entries_by_category"><![CDATA[Spaces in category]]></string>
         <string name="_bx_spaces_page_block_title_entries_by_category"><![CDATA[{category_name}]]></string>

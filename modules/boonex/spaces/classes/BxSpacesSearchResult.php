@@ -182,6 +182,19 @@ class BxSpacesSearchResult extends BxBaseModGroupsSearchResult
                 $this->aCurrent['rss']['link'] = 'modules/?r=spaces/rss/' . $sMode . '/' . $iCategory;
                 break;
 
+            case 'multi_category':
+                $sCategory = $aParams['category'];
+                $this->addMarkers([
+                    'category' => $sCategory
+                ]);
+                    
+                $this->setCategoryObject('multi');
+                $this->setCustomSearchCondition(['keyword' => $sCategory]);
+
+                $this->sBrowseUrl = $CNF['URL_MULTI_CATEGORY'] . '&category={category}';
+                $this->aCurrent['title'] = _t('_bx_spaces_page_title_browse_category');
+                break;
+
             case '': // search results
                 $this->sBrowseUrl = BX_DOL_SEARCH_KEYWORD_PAGE;
                 $this->aCurrent['title'] = _t('_bx_spaces');
