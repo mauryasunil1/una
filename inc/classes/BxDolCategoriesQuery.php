@@ -69,7 +69,7 @@ class BxDolCategoriesQuery extends BxDolDb
                 $oModule = BxDolModule::getInstance($aParams['module']);
                 $CNF = $oModule->_oConfig->CNF;
                 
-                $sSelectClause = "`sc`.`value`, COUNT(`sc`.`id`) as `num`";
+                $sSelectClause = "`sc`.`value`, `sc`.`icon_type`, `sc`.`icon`, COUNT(`sc`.`id`) as `num`";
                 $sJoinClause = "INNER JOIN `sys_categories2objects` `soc` ON `sc`.`id` =  `soc`.`category_id`";
                 if (isset($CNF['FIELD_STATUS']))
                     $sJoinClause .= "INNER JOIN `" . $CNF['TABLE_ENTRIES'] . "` `data` ON `soc`.`object_id` =  `data`.`id` AND `data`.`" . $CNF['FIELD_STATUS'] . "` = 'active'";
@@ -88,7 +88,7 @@ class BxDolCategoriesQuery extends BxDolDb
                 $oModule = BxDolModule::getInstance($aParams['module']);
                 $CNF = $oModule->_oConfig->CNF;
                 
-                $sSelectClause = "`sc`.`value`, COUNT(`sc`.`id`) as `num`";
+                $sSelectClause = "`sc`.`value`, `sc`.`icon_type`, `sc`.`icon`, COUNT(`sc`.`id`) as `num`";
                 $sJoinClause = " INNER JOIN `sys_categories2objects` `soc` ON `sc`.`id` =  `soc`.`category_id`";
                 $sJoinClause .= " INNER JOIN `" . $CNF['TABLE_ENTRIES'] . "` `data` ON `soc`.`object_id` =  `data`.`id` AND `data`.`" . $CNF['FIELD_ALLOW_VIEW_TO'] . "` = :context_id";
                 if (isset($CNF['FIELD_STATUS']))

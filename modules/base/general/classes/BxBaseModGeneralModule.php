@@ -1530,6 +1530,36 @@ class BxBaseModGeneralModule extends BxDolModule
      * @page service Service Calls
      * @section bx_base_general Base General
      * @subsection bx_base_general-browsing Browsing
+     * @subsubsection bx_base_general-browse_multi_category category
+     * 
+     * @code bx_srv('bx_posts', 'browse_multi_category', [...]); @endcode
+     * 
+     * Display entries in multi category
+     * @param $sUnitView browsing unity view, 
+     *                   such as: full, extended, gallery, showcase
+     * @param $bEmptyMessage display or not "empty" message when there is no content
+     * @param $bAjaxPaginate use AJAX paginate or not
+     * 
+     * @see BxBaseModGeneralModule::serviceBrowseMultiCategory BxBaseModGeneralModule::serviceBrowse
+     */
+    /** 
+     * @ref bx_base_general-browse_multi_category "browse_multi_category"
+     */
+    public function serviceBrowseMultiCategory($sUnitView = false, $bEmptyMessage = true, $bAjaxPaginate = true, $aParams = [])
+    {
+        $sType = 'multi_category';
+
+        $aParams = array_merge(['category' => bx_process_input(bx_get('category'))], $aParams);
+        if($sUnitView)
+            $aParams['unit_view'] = $sUnitView;
+
+        return $this->_serviceBrowse($sType, $aParams, BX_DB_PADDING_DEF, $bEmptyMessage, $bAjaxPaginate);
+    }
+
+    /**
+     * @page service Service Calls
+     * @section bx_base_general Base General
+     * @subsection bx_base_general-browsing Browsing
      * @subsubsection bx_base_general-browse_favorite_list_actions browse_favorite_list_actions
      * 
      * @code bx_srv('bx_posts', 'browse_favorite_list_actions', [...]); @endcode
@@ -3311,51 +3341,20 @@ class BxBaseModGeneralModule extends BxDolModule
      * @code bx_srv('bx_posts', 'categories_multi_list', [...]); @endcode
      * 
      * Display multi-categorories block with number of posts in each category
-     * @param $bDisplayEmptyCats display empty categories
+     * @param $bAsArray boolean reature as array or not.
      * 
      * @see BxBaseModGeneralModule::serviceCategoriesMultiList
      */
     /** 
      * @ref bx_base_general-categories_multi_list "categories_multi_list"
      */
-    public function serviceCategoriesMultiList($bDisplayEmptyCats = true)
+    public function serviceCategoriesMultiList($bAsArray = false)
     {
-        $aContextInfo = bx_get_page_info();
-
-        $mProfileContextId = false;
-        if ($aContextInfo !== false)
-            $mProfileContextId = $aContextInfo['context_profile_id'];
-        
         $oCategories = BxDolCategories::getInstance();
-        if ($mProfileContextId)
-            $aCats = $oCategories->getData([
-                'type' => 'by_module&context_with_num', 
-                'module' => $this->getName(), 
-                'context_id' => $mProfileContextId
-            ]);
-        else{
-            $aCats = $oCategories->getData([
-                'type' => 'by_module_with_num', 
-                'module' => $this->getName()
-            ]);
-        }
-        $aVars = array('bx_repeat:cats' => array());
-        foreach ($aCats as $oCat) {
-            $sValue = $oCat['value'];
-            $iNum = $oCat['num'];
-            
-            $aVars['bx_repeat:cats'][] = array(
-                'url' => $oCategories->getUrl($this->getName(), $sValue, $mProfileContextId ? '&context_id=' . $mProfileContextId : ''),
-                'name' => _t($sValue),
-                'value' => $sValue,
-                'num' => $iNum,
-            );
-        }
-        
-        if (!$aVars['bx_repeat:cats'])
-            return '';
+        $oCategories->setModule($this->getName());
+        $mixedResult = $oCategories->getCategoriesList($bAsArray || $this->_bIsApi);
 
-        return $this->_oTemplate->parseHtmlByName('category_list_multi.html', $aVars);
+        return !$this->_bIsApi ? $mixedResult : [bx_api_get_block('categories_list',  $mixedResult)];
     }
 
     /**

@@ -6355,6 +6355,8 @@ CREATE TABLE IF NOT EXISTS `sys_categories` (
   `added` int(11) NOT NULL,
   `module` varchar(32) NOT NULL,
   `value` varchar(100) NOT NULL,
+  `icon_type` varchar(8) NOT NULL DEFAULT '',
+  `icon` text NOT NULL,
   `status` enum ('active', 'hidden') NOT NULL DEFAULT 'active',
   PRIMARY KEY (`id`)
 );

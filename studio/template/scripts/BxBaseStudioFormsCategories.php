@@ -194,8 +194,10 @@ class BxBaseStudioFormsCategories extends BxDolStudioFormsCategories
         return parent::_getCellDefault(_t($mixedValue), $sKey, $aField, $aRow);
     }
     
-    protected function _getForm($sAction, $aCategory = array())
+    protected function _getForm($sAction, $aCategory = [])
     {
+        $sIconType = !empty($aCategory['icon_type']) ? $aCategory['icon_type'] : '';
+
         $aForm = array(
             'form_attrs' => array(
                 'id' => 'adm-form-cats-form-' . $sAction,
@@ -237,6 +239,35 @@ class BxBaseStudioFormsCategories extends BxDolStudioFormsCategories
                         'error' => _t('_adm_form_err_categories_value'),
                     ),
                 ),
+                'icon_type' => [
+                    'type' => 'select',
+                    'name' => 'icon_type',
+                    'caption' => _t('_adm_form_txt_pre_values_icon_type'),
+                    'info' => '',
+                    'values' => [
+                        ['key' => '', 'value' => _t('_sys_please_select')],
+                        ['key' => 'icon', 'value' => _t('_adm_form_txt_pre_values_icon_type_icon')],
+                        ['key' => 'emoji', 'value' => _t('_adm_form_txt_pre_values_icon_type_emoji')],
+                        ['key' => 'image', 'value' => _t('_adm_form_txt_pre_values_icon_type_image')]
+                    ],
+                    'value' => isset($aCategory['icon_type']) ? $aCategory['icon_type'] : '',
+                    'required' => '0',
+                    'db' => [
+                        'pass' => 'Xss',
+                    ]
+                ],
+                'icon' => [
+                    'type' => 'textarea',
+                    'name' => 'icon',
+                    'caption' => _t('_adm_form_txt_pre_values_icon'),
+                    'info' => '',
+                    'value' => isset($aCategory['icon']) ? $aCategory['icon'] : '',
+                    'required' => '0',
+                    'code' => 1,
+                    'db' => [
+                        'pass' => 'Xss',
+                    ]
+                ],
                 'controls' => array(
                     'name' => 'controls',
                     'type' => 'input_set',

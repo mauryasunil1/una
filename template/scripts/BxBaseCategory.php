@@ -179,7 +179,7 @@ class BxBaseCategory extends BxDolCategory
                         ],
                     ]
                 ],
-                'selected_class' => $sValue == bx_get('category') ? 'bx-category-list-item-selected' : '',
+                'selected_class' => $sValue == bx_get('category') ? 'bx-menu-tab-active' : '',
             ] : [
                 'icon_type' => $sIconType,
                 'icon' => $sIcon
