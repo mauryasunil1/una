@@ -159,7 +159,7 @@ INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title`, `designbo
 
 -- PAGE: profiles by category
 INSERT INTO `sys_objects_page`(`object`, `uri`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
-('bx_spaces_category', 'spaces-category', '_bx_spaces_page_title_sys_entries_by_multi_category', '_bx_spaces_page_title_entries_by_category', 'bx_spaces', 1, 2147483647, 1, 'page.php?i=spaces-category', '', '', '', 0, 1, 0, 'BxSpacesPageBrowse', 'modules/boonex/spaces/classes/BxSpacesPageBrowse.php');
+('bx_spaces_category', 'spaces-category', '_bx_spaces_page_title_sys_entries_by_category', '_bx_spaces_page_title_entries_by_category', 'bx_spaces', 1, 2147483647, 1, 'page.php?i=spaces-category', '', '', '', 0, 1, 0, 'BxSpacesPageBrowse', 'modules/boonex/spaces/classes/BxSpacesPageBrowse.php');
 
 INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `active`, `order`) VALUES 
 ('bx_spaces_category', 1, 'bx_spaces', '', '_bx_spaces_page_block_title_categories', 11, 2147483647, 'service', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:15:"categories_list";s:6:"params";a:2:{i:0;s:14:"bx_spaces_cats";i:1;a:2:{s:10:\"show_empty\";b:1;s:21:\"show_empty_categories\";b:1;}}s:5:"class";s:20:"TemplServiceCategory";}', 0, 0, 1, 1),
@@ -167,7 +167,7 @@ INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `t
 
 -- PAGE: profiles by multi category
 INSERT INTO `sys_objects_page`(`object`, `uri`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
-('bx_spaces_mcategory', 'spaces-mcategory', '_bx_spaces_page_title_sys_entries_by_category', '_bx_spaces_page_title_entries_by_category', 'bx_spaces', 1, 2147483647, 1, 'page.php?i=spaces-mcategory', '', '', '', 0, 1, 0, 'BxSpacesPageBrowse', 'modules/boonex/spaces/classes/BxSpacesPageBrowse.php');
+('bx_spaces_mcategory', 'spaces-mcategory', '_bx_spaces_page_title_sys_entries_by_multi_category', '_bx_spaces_page_title_entries_by_category', 'bx_spaces', 1, 2147483647, 1, 'page.php?i=spaces-mcategory', '', '', '', 0, 1, 0, 'BxSpacesPageBrowse', 'modules/boonex/spaces/classes/BxSpacesPageBrowse.php');
 
 INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `active`, `order`) VALUES 
 ('bx_spaces_mcategory', 1, 'bx_spaces', '', '_bx_spaces_page_block_title_categories', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:9:"bx_spaces";s:6:"method";s:21:"categories_multi_list";}', 0, 0, 1, 1),
