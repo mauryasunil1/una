@@ -271,39 +271,43 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         $aResult = parent::serviceGetTimelinePost($aEvent, $aBrowseParams);
         if(empty($aResult) || !is_array($aResult) || empty($aResult['date']))
             return $aResult;
+
         $aContentInfo = $this->_oDb->getContentInfoById($aEvent['object_id']);
         if($aContentInfo[$CNF['FIELD_PUBLISHED']] > $aResult['date'])
             $aResult['date'] = $aContentInfo[$CNF['FIELD_PUBLISHED']];
+
         return $aResult;
     }
 	
-	public function serviceGetTimelineCompleted($aEvent, $aBrowseParams = array())
+    public function serviceGetTimelineCompleted($aEvent, $aBrowseParams = array())
     {
         $CNF = &$this->_oConfig->CNF;
 
         $aResult = parent::serviceGetTimelinePost($aEvent, $aBrowseParams);
-		$aResult['sample_action'] = $aResult['content']['sample_action'] = _t('_bx_tasks_txt_action_completed');
         if(empty($aResult) || !is_array($aResult) || empty($aResult['date']))
             return $aResult;
-		
+
         $aContentInfo = $this->_oDb->getContentInfoById($aEvent['object_id']);
         if($aContentInfo[$CNF['FIELD_PUBLISHED']] > $aResult['date'])
             $aResult['date'] = $aContentInfo[$CNF['FIELD_PUBLISHED']];
+
+        $aResult['sample_action'] = $aResult['content']['sample_action'] = _t('_bx_tasks_txt_action_completed');
         return $aResult;
     }
-	
-	public function serviceGetTimelineReopened($aEvent, $aBrowseParams = array())
+
+    public function serviceGetTimelineReopened($aEvent, $aBrowseParams = array())
     {
         $CNF = &$this->_oConfig->CNF;
 
         $aResult = parent::serviceGetTimelinePost($aEvent, $aBrowseParams);
-		$aResult['sample_action'] = $aResult['content']['sample_action'] = _t('_bx_tasks_txt_action_reopened');
         if(empty($aResult) || !is_array($aResult) || empty($aResult['date']))
             return $aResult;
-		
+
         $aContentInfo = $this->_oDb->getContentInfoById($aEvent['object_id']);
         if($aContentInfo[$CNF['FIELD_PUBLISHED']] > $aResult['date'])
             $aResult['date'] = $aContentInfo[$CNF['FIELD_PUBLISHED']];
+
+        $aResult['sample_action'] = $aResult['content']['sample_action'] = _t('_bx_tasks_txt_action_reopened');
         return $aResult;
     }
 
@@ -313,7 +317,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 
         $sEventPrivacy = $sModule . '_allow_view_event_to';
         if(BxDolPrivacy::getObjectInstance($sEventPrivacy) === false)
-                $sEventPrivacy = '';
+            $sEventPrivacy = '';
 
         $aResult = parent::serviceGetNotificationsData();
         $aResult['handlers'] = array_merge($aResult['handlers'], array(
