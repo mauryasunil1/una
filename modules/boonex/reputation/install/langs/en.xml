@@ -55,11 +55,12 @@
     <string name="_bx_reputation_page_block_title_levels"><![CDATA[Levels]]></string>
     <string name="_bx_reputation_page_title_sys_leaderboard"><![CDATA[Leaderboard]]></string>
     <string name="_bx_reputation_page_title_leaderboard"><![CDATA[Leaderboard]]></string>
-    <string name="_bx_reputation_page_block_title_leaderboard_week"><![CDATA[Leaderboard (7-days)]]></string>
-    <string name="_bx_reputation_page_block_title_leaderboard_month"><![CDATA[Leaderboard (30-days)]]></string>
-    <string name="_bx_reputation_page_block_title_leaderboard_all_time"><![CDATA[Leaderboard (all-time)]]></string>
+    <string name="_bx_reputation_page_block_title_leaderboard_week"><![CDATA[7 day]]></string>
+    <string name="_bx_reputation_page_block_title_leaderboard_month"><![CDATA[30-day]]></string>
+    <string name="_bx_reputation_page_block_title_leaderboard_all_time"><![CDATA[All-time]]></string>
     <string name="_bx_reputation_page_block_title_system_summary"><![CDATA[Summary]]></string>
     <string name="_bx_reputation_page_block_title_summary"><![CDATA[Summary]]></string>
+    <string name="_bx_reputation_page_block_title_summary_own"><![CDATA[You]]></string>
     <string name="_bx_reputation_page_title_sys_history"><![CDATA[Points history]]></string>
     <string name="_bx_reputation_page_title_history"><![CDATA[History]]></string>
     <string name="_bx_reputation_page_block_title_history"><![CDATA[History]]></string>

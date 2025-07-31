@@ -44,6 +44,15 @@ class BxReputationModule extends BxBaseModNotificationsModule
     /**
      * SERVICE METHODS
      */
+    public function serviceGetSafeServices()
+    {
+        return array_merge(parent::serviceGetSafeServices(), [
+            'GetBlockActions' => '',
+            'GetBlockLevels' => '',
+            'GetBlockLeaderboard' => '',
+        ]);
+    }
+
     public function serviceAssignPoints($iProfileId, $iPoints, $iContextId = 0)
     {
         return $this->assignPoints($iProfileId, $iContextId, $iPoints);
@@ -111,11 +120,16 @@ class BxReputationModule extends BxBaseModNotificationsModule
 
     public function serviceGetBlockLeaderboard($iContextId = 0, $iDays = 0)
     {
-        return $this->_oTemplate->getBlockLeaderboard($iContextId, $iDays);
+        $mixedResult = $this->_oTemplate->getBlockLeaderboard($iContextId, $iDays);
+
+        return !$this->_bIsApi ? $mixedResult : [
+            bx_api_get_block('reputation_leaderboard', $mixedResult)
+        ];
     }
 
     public function serviceGetBlockWidget($iProfileId = 0, $iContextId = 0)
     {
+        $iLoggedId = 0;
         if(!$iProfileId && ($iLoggedId = bx_get_logged_profile_id()))
             $iProfileId = $iLoggedId;
         if(!$iProfileId)
@@ -133,19 +147,19 @@ class BxReputationModule extends BxBaseModNotificationsModule
         return [
             bx_api_get_block('reputation_widget', [
                 'tabs'=> [[
-                    'url' => '/api.php?r=' . $sModule . '/get_block_summary' . $sParamProfile . $sParamContext, 
-                    'title' => _t($sLangKey . 'summary'),
-                    'data' => $this->_oTemplate->getBlockSummary($iProfileId, (int)$iContextId),
-                    'selected' => true,  
-                ], [
                     'url' => '/api.php?r=' . $sModule . '/get_block_leaderboard' . $sParamContext . '&params[]=7', 
-                    'title' => _t($sLangKey . 'leaderboard_week')
+                    'title' => _t($sLangKey . 'leaderboard_week'),
+                    'data' => $this->_oTemplate->getBlockLeaderboard((int)$iContextId, 7),
+                    'selected' => true,  
                 ], [
                     'url' => '/api.php?r=' . $sModule . '/get_block_leaderboard' . $sParamContext . '&params[]=30', 
                     'title' => _t($sLangKey . 'leaderboard_month')
                 ], [
                     'url' => '/api.php?r=' . $sModule . '/get_block_leaderboard' . $sParamContext . '', 
                     'title' => _t($sLangKey . 'leaderboard_all_time')
+                ],[
+                    'url' => '/api.php?r=' . $sModule . '/get_block_summary' . $sParamProfile . $sParamContext, 
+                    'title' => _t($sLangKey . 'summary' . ($iProfileId == $iLoggedId ? '_own' : '')),
                 ]]
             ])
         ];

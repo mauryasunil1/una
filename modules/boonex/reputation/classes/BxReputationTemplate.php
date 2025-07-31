@@ -274,10 +274,8 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
 
         if($this->_bIsApi)
             return [
-                bx_api_get_block('reputation_leaderboard', [
-                    'days' => $iDays,
-                    'profiles' => $aTmplVarsProfiles
-                ])
+                'days' => $iDays,
+                'profiles' => $aTmplVarsProfiles
             ];
 
         $this->addCss(['main.css']);
