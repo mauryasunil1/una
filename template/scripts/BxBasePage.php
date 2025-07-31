@@ -53,6 +53,7 @@ class BxBasePage extends BxDolPage
         if (isLogged() && $oProfile = BxDolProfile::getInstance()) {
             $this->addMarkers([
                 'logged_profile_id' => $oProfile->id(),
+                'logged_profile_cid' => $oProfile->getContentId(),
                 'logged_account_id' => $oProfile->getAccountId(),
                 'logged_profile_module' => $oProfile->getModule(),
                 'logged_display_name' => $oProfile->getDisplayName(),
