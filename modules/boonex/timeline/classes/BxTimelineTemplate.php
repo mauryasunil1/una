@@ -2231,9 +2231,9 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
 
                 if(!empty($aCmts['data']) && is_array($aCmts['data'])) {
                     $aCmts['data'] = array_reverse($aCmts['data']);
-
-                    $aEvent['cmts'] = $aCmts;
                 }
+                $aEvent['cmts'] = $aCmts;
+                
             }
 
             $aEvent['cmts']['count'] = $aEvent['comments']['count'];
