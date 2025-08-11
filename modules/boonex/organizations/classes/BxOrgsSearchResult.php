@@ -103,7 +103,7 @@ class BxOrgsSearchResult extends BxBaseModGroupsSearchResult
                 break;
 
             case 'joined_entries':
-                $oJoinedProfile = BxDolProfile::getInstance((int)$aParams['joined_profile']);
+                $oJoinedProfile = !empty($aParams['joined_profile']) ? BxDolProfile::getInstance((int)$aParams['joined_profile']) : null;
                 if (!$oJoinedProfile) {
                     $this->isError = true;
                     break;
