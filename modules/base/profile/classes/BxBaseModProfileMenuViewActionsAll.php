@@ -191,7 +191,10 @@ class BxBaseModProfileMenuViewActionsAll extends BxBaseModGeneralMenuViewActions
         $aBadgesList = array_map(function ($aBadge) {
             return [
                 "value" => $aBadge['id'],
-                "label" => $aBadge['text']
+                "label" => $aBadge['text'],
+                "icon" => $aBadge['icon'],
+                "color" => $aBadge['color'],
+                "is_icon_only" => $aBadge['is_icon_only']
             ];
         }, $aBadges);
         

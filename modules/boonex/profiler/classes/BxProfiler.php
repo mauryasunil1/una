@@ -634,7 +634,7 @@ class BxProfiler extends BxDol
 
     function _debugPrintAny ($mixed)
     {
-        if (is_string)
+        if (is_string($mixed))
             return "'" . (strlen($mixed) > $this->_sLogMaxArgLength ? substr($mixed, 0, $this->_sLogMaxArgLength) . '...' : $mixed) . "'";
         else
             return $mixed;
