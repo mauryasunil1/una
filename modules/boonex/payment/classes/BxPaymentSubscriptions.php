@@ -499,15 +499,22 @@ class BxPaymentSubscriptions extends BxBaseModPaymentSubscriptions
 
         $sMethod = 'displayBlockSbs' . bx_gen_method_name($sType);
         if(!$this->_oModule->_oTemplate->isMethodExists($sMethod))
-            return array(
+            return $this->_bIsApi ? [] : [
                 'content' => MsgBox(_t('_Empty'))
-            );
+            ];
 
-    	$iUserId = $this->_oModule->getProfileId();
+        $iUserId = $this->_oModule->getProfileId();
         if(empty($iUserId))
-            return array(
+            return $this->_bIsApi ? [] : [
                 'content' => MsgBox(_t($CNF['T']['ERR_REQUIRED_LOGIN']))
-            );
+            ];
+
+        $mixedBlockContent = $this->_oModule->_oTemplate->$sMethod($iUserId);
+
+        if($this->_bIsApi)
+            return !$mixedBlockContent ? [] : [
+                bx_api_get_block('subscriptions_' . $sType, $mixedBlockContent)
+            ];
 
         $this->_oModule->setSiteSubmenu('menu_dashboard', 'system', 'dashboard-subscriptions');
 
@@ -516,10 +523,10 @@ class BxPaymentSubscriptions extends BxBaseModPaymentSubscriptions
         if($oBlockSubmenu) 
             $oBlockSubmenu->setSelected($this->MODULE, 'sbs-' . str_replace('_', '-', $sType));     
 
-        return array(
-            'content' => $this->_oModule->_oTemplate->$sMethod($iUserId),
+        return [
+            'content' => $mixedBlockContent,
             'menu' => $this->_oModule->_oConfig->getObject('menu_sbs_submenu')
-        );
+        ];
     }
 
     private function _getInterval($iPeriod, $sPeriodUnit, $iTrial = 0)

@@ -228,11 +228,14 @@ class BxPaymentTemplate extends BxBaseModPaymentTemplate
     {
         $oGrid = BxDolGrid::getObjectInstance($this->_oConfig->getObject('grid_sbs_list_my'), $this->getModule()->_oTemplate);
         if(!$oGrid || empty($iClientId))
-            return MsgBox(_t($this->_sLangsPrefix . 'msg_no_results'));
+            return $this->_bIsApi ? false : MsgBox(_t($this->_sLangsPrefix . 'msg_no_results'));
 
-		$oGrid->addQueryParam('client_id', $iClientId);
+        $oGrid->addQueryParam('client_id', $iClientId);
 
-		$this->addJsCssSubscriptions();
+        if($this->_bIsApi)
+            return $oGrid->getCodeAPI(true);
+
+        $this->addJsCssSubscriptions();
         return $this->displayJsCode(BX_PAYMENT_ORDERS_TYPE_SUBSCRIPTION) . $oGrid->getCode();
     }
 
@@ -240,9 +243,12 @@ class BxPaymentTemplate extends BxBaseModPaymentTemplate
     {
         $oGrid = BxDolGrid::getObjectInstance($this->_oConfig->getObject('grid_sbs_list_all'), $this->getModule()->_oTemplate);
         if(!$oGrid)
-            return MsgBox(_t($this->_sLangsPrefix . 'msg_no_results'));
+            return $this->_bIsApi ? false : MsgBox(_t($this->_sLangsPrefix . 'msg_no_results'));
 
-		$this->addJsCssSubscriptions();
+        if($this->_bIsApi)
+            return $oGrid->getCodeAPI(true);
+
+        $this->addJsCssSubscriptions();
         return $this->displayJsCode(BX_PAYMENT_ORDERS_TYPE_SUBSCRIPTION) . $oGrid->getCode();
     }
 
