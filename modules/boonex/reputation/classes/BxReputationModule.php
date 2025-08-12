@@ -50,6 +50,7 @@ class BxReputationModule extends BxBaseModNotificationsModule
             'GetBlockActions' => '',
             'GetBlockLevels' => '',
             'GetBlockLeaderboard' => '',
+            'GetBlockSummary' => '',
         ]);
     }
 
@@ -127,7 +128,7 @@ class BxReputationModule extends BxBaseModNotificationsModule
         ];
     }
 
-    public function serviceGetBlockWidget($iProfileId = 0, $iContextId = 0)
+    public function serviceGetBlockWidget($iProfileId = 0, $iContextId = 0, $aParams = [])
     {
         $iLoggedId = 0;
         if(!$iProfileId && ($iLoggedId = bx_get_logged_profile_id()))
@@ -144,25 +145,60 @@ class BxReputationModule extends BxBaseModNotificationsModule
         $sParamProfile = '&params[]=' . $iProfileId;
         $sParamContext = '&params[]=' . $iContextId;
 
+        $aTabs = [
+            'leaderboard_week' => [
+                'url' => '/api.php?r=' . $sModule . '/get_block_leaderboard' . $sParamContext . '&params[]=7', 
+                'title' => _t($sLangKey . 'leaderboard_week'),
+            ], 
+            'leaderboard_month' => [
+                'url' => '/api.php?r=' . $sModule . '/get_block_leaderboard' . $sParamContext . '&params[]=30', 
+                'title' => _t($sLangKey . 'leaderboard_month')
+            ], 
+            'leaderboard_all_time' => [
+                'url' => '/api.php?r=' . $sModule . '/get_block_leaderboard' . $sParamContext . '', 
+                'title' => _t($sLangKey . 'leaderboard_all_time')
+            ],
+            'summary' => [
+                'url' => '/api.php?r=' . $sModule . '/get_block_summary' . $sParamProfile . $sParamContext, 
+                'title' => _t($sLangKey . 'summary' . ($iProfileId == $iLoggedId ? '_own' : '')),
+            ]
+        ];
+
+        if(($sKey = 'tabs_order') && !empty($aParams[$sKey]) && is_array($aParams[$sKey]))
+            $aTabs = array_merge(array_flip($aParams[$sKey]), $aTabs);
+
+        $sTabSelected = ($sKey = 'tab_selected') && !empty($aParams[$sKey]) && isset($aTabs[$aParams[$sKey]]) ? $aParams[$sKey] : array_key_first($aTabs);
+
+        $aTabs[$sTabSelected] = array_merge($aTabs[$sTabSelected], [
+            'selected' => true,
+            'data' => $this->{'_getTabData' . bx_gen_method_name($sTabSelected)}((int)$iProfileId, (int)$iContextId),
+        ]);
+
         return [
             bx_api_get_block('reputation_widget', [
-                'tabs'=> [[
-                    'url' => '/api.php?r=' . $sModule . '/get_block_leaderboard' . $sParamContext . '&params[]=7', 
-                    'title' => _t($sLangKey . 'leaderboard_week'),
-                    'data' => $this->_oTemplate->getBlockLeaderboard((int)$iContextId, 7),
-                    'selected' => true,  
-                ], [
-                    'url' => '/api.php?r=' . $sModule . '/get_block_leaderboard' . $sParamContext . '&params[]=30', 
-                    'title' => _t($sLangKey . 'leaderboard_month')
-                ], [
-                    'url' => '/api.php?r=' . $sModule . '/get_block_leaderboard' . $sParamContext . '', 
-                    'title' => _t($sLangKey . 'leaderboard_all_time')
-                ],[
-                    'url' => '/api.php?r=' . $sModule . '/get_block_summary' . $sParamProfile . $sParamContext, 
-                    'title' => _t($sLangKey . 'summary' . ($iProfileId == $iLoggedId ? '_own' : '')),
-                ]]
+                'tabs'=> array_values($aTabs)
             ])
         ];
+    }
+
+    private function _getTabDataLeaderboardWeek($iProfileId, $iContextId)
+    {
+        return $this->_oTemplate->getBlockLeaderboard($iContextId, 7);
+    }
+
+    private function _getTabDataLeaderboardMonth($iProfileId, $iContextId)
+    {
+        return $this->_oTemplate->getBlockLeaderboard($iContextId, 30);
+    }
+
+    private function _getTabDataLeaderboardAllTime($iProfileId, $iContextId)
+    {
+        return $this->_oTemplate->getBlockLeaderboard($iContextId);
+    }
+
+    private function _getTabDataSummary($iProfileId, $iContextId)
+    {
+        return $this->_oTemplate->getBlockSummary($iProfileId, $iContextId);
     }
 
     /**
