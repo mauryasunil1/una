@@ -878,6 +878,141 @@ class BxBaseServiceProfiles extends BxDol
         return $this->_serviceBrowseConnections('connections', $aParamsBrowse, $aParams['design_box'], $aParams['empty_message'], $aParams['ajax_paginate']);
     }
 
+    public function serviceBrowseInvitations ($iProfileId = 0, $aParams = [])
+    {
+        $sMode = 'invitations';
+
+        if($this->_bIsApi)
+            $aParams = bx_api_get_browse_params($aParams);
+
+        if(!$iProfileId)
+            $iProfileId = bx_get_logged_profile_id();
+        if(!$iProfileId)
+            return '';
+        
+        $aParams = array_merge([
+            'params' => false,
+            'design_box' => BX_DB_PADDING_DEF,
+            'empty_message' => false,
+            'ajax_paginate' => true,
+        ], $aParams);
+
+        $aParamsBrowse = [
+            'profile' => $iProfileId, 
+        ];
+        if(!empty($aParams['params']) && is_array($aParams['params']))
+            $aParamsBrowse = array_merge($aParamsBrowse, $aParams['params']);
+
+        $aModules = [];
+        if(empty($aParamsBrowse['modules']) || !is_array($aParamsBrowse['modules'])) {
+            $aModules = bx_srv('system', 'get_modules_by_type', ['context', ['name_as_key' => true]]);
+            if(!empty($aModules) && is_array($aModules))
+                $aModules = array_keys($aModules);
+        }
+        else
+            $aModules = $aParamsBrowse['modules'];
+
+        $aData = $this->_bIsApi ? ['queries' => [], 'limit' => ''] : [];
+        foreach($aModules as $sModule) {
+            $o = new BxTemplProfileSearchResult($sMode, array_merge($aParamsBrowse, ['module' => $sModule]));
+            $o->setDesignBoxTemplateId($aParams['design_box']);
+            $o->setDisplayEmptyMsg($aParams['empty_message']);
+            $o->setAjaxPaginate($aParams['ajax_paginate']);
+            $o->setUnitParams(['context' => $sMode]);
+
+            if($o->isError)
+                continue;
+
+            if($this->_bIsApi) {
+                $aQuery = $o->getSearchQuery($sModule);
+
+                if(!empty($aQuery['query']))
+                    $aData['queries'][] = $aQuery['query'];
+                if(!empty($aQuery['limit']) && empty($aData['limit']))
+                    $aData['limit'] = $aQuery['limit'];
+            }
+            else
+                $aData = array_merge($aData, $o->getSearchData());
+        }
+ 
+        if($this->_bIsApi) {
+            $aItems = BxDolDb::getInstance()->getAll('(' . implode(') UNION (', $aData['queries']) . ') ORDER BY `added` DESC ' . $aData['limit']);
+
+            $aDataApi = [];
+            foreach($aItems as $aItem)
+                $aDataApi[] = BxDolProfile::getData($aItem['id']);
+
+            return [bx_api_get_block('browse', [
+                'module' => 'system',
+                'unit' => 'mixed',
+                'request_url' => '/api.php?r=system/browse_invitations/TemplServiceProfiles&params[]=' . $iProfileId . '&params[]=',
+                'data' =>  $aDataApi,
+                'params' => $aParamsBrowse
+            ])];
+        }
+        else
+            return $this->serviceBrowseQuick($aData, 0, 0, [
+                'unit_params' => isset($aParams['unit_params']) ? $aParams['unit_params'] : false
+            ]);
+    }
+
+    public function serviceBrowseQuick($aProfiles, $iStart = 0, $iLimit = 0, $aParams = [])
+    {
+        $sCode = $sPaginate = '';
+
+        if($iLimit) {
+            $aAdditionalParams = isset($aParams['additional_params']) ? $aParams['additional_params'] : [];
+
+            $oPaginate = new BxTemplPaginate([
+                'on_change_page' => "return !loadDynamicBlockAutoPaginate(this, '{start}', '{per_page}', " . bx_js_string(json_encode($aAdditionalParams)) . ");",
+                'num' => count($aProfiles),
+                'per_page' => $iLimit,
+                'start' => $iStart,
+            ]);
+
+            /* 
+             * Remove last item from connection array, because we've got one more item for pagination calculations only
+             */
+            if(count($aProfiles) > $iLimit)
+                array_pop($aProfiles);
+
+            if($iStart || $oPaginate->getNum() > $iLimit)
+                $sPaginate = $oPaginate->getSimplePaginate();
+        }
+
+        $bUnitParams = !empty($aParams['unit_params']) && is_array($aParams['unit_params']);
+
+        foreach ($aProfiles as $mixedProfile) {
+            $bProfile = is_array($mixedProfile);
+
+            $oProfile = BxDolProfile::getInstance($bProfile ? (int)$mixedProfile['id'] : (int)$mixedProfile);
+            if(!$oProfile)
+                continue;
+
+            $aUnitParams = ['template' => ['name' => 'unit', 'size' => 'thumb']];
+            if(BxDolModule::getInstance($oProfile->getModule()) instanceof BxBaseModGroupsModule)
+                $aUnitParams['template']['name'] = 'unit_wo_cover';
+
+            if($bProfile && !empty($mixedProfile['info']) && is_array($mixedProfile['info']))
+                $aUnitParams['template']['vars'] = $mixedProfile['info'];
+
+            if($bUnitParams)
+                $aUnitParams = array_merge($aUnitParams, $aParams['unit_params']);
+
+            $sCode .= $oProfile->getUnit(0, $aUnitParams);
+        }
+
+        return BxDolTemplate::getInstance()->parseHtmlByName('profiles_browse_quick.html', [
+            'code' => $sCode,
+            'bx_if:show_paginate' => [
+                'condition' => !empty($sPaginate),
+                'content' => [
+                    'paginate' => $sPaginate
+                ]
+            ]
+        ]);
+    }
+
     public function serviceBrowseRecommendationsFriends ($iProfileId = 0, $aParams = [])
     {
         if($this->_bIsApi)

@@ -3573,6 +3573,8 @@
         <string name="_sys_page_block_title_recom_friends"><![CDATA[С кем дружить]]></string>
         <string name="_sys_page_block_title_sys_recom_subscriptions"><![CDATA[Рекомендуемые подписки]]></string>
         <string name="_sys_page_block_title_recom_subscriptions"><![CDATA[На кого подписаться]]></string>
+        <string name="_sys_page_block_title_sys_invitations"><![CDATA[Приглашения]]></string>
+        <string name="_sys_page_block_title_invitations"><![CDATA[Приглашения]]></string>
         <string name="_sys_page_block_title_sys_create_post"><![CDATA[Создать публикацию]]></string>
 	<string name="_sys_page_block_title_create_post"><![CDATA[Добавить...]]></string>
 	<string name="_sys_page_block_title_sys_create_post_context"><![CDATA[Создать публикацию (в контекст)]]></string>

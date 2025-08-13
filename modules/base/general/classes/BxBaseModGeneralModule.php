@@ -3699,50 +3699,9 @@ class BxBaseModGeneralModule extends BxDolModule
     /**
      * Shows a list of profiles.
      */
-    protected function _serviceBrowseQuick($aProfiles, $iStart = 0, $iLimit = 4, $aAdditionalParams = array())
+    protected function _serviceBrowseQuick($aProfiles, $iStart = 0, $iLimit = 4, $aAdditionalParams = [])
     {
-        // get paginate object
-        $oPaginate = new BxTemplPaginate(array(
-            'on_change_page' => "return !loadDynamicBlockAutoPaginate(this, '{start}', '{per_page}', " . bx_js_string(json_encode($aAdditionalParams)) . ");",
-            'num' => count($aProfiles),
-            'per_page' => $iLimit,
-            'start' => $iStart,
-        ));
-
-        // remove last item from connection array, because we've got one more item for pagination calculations only
-        if (count($aProfiles) > $iLimit)
-            array_pop($aProfiles);
-
-        // get profiles HTML
-        $s = '';
-        foreach ($aProfiles as $mixedProfile) {
-            $bProfile = is_array($mixedProfile);
-
-            $oProfile = BxDolProfile::getInstance($bProfile ? (int)$mixedProfile['id'] : (int)$mixedProfile);
-            if(!$oProfile)
-                continue;
-
-            $aUnitParams = array('template' => array('name' => 'unit', 'size' => 'thumb'));
-            if(BxDolModule::getInstance($oProfile->getModule()) instanceof BxBaseModGroupsModule)
-                $aUnitParams['template']['name'] = 'unit_wo_cover';
-
-            if($bProfile && is_array($mixedProfile['info']))
-                $aUnitParams['template']['vars'] = $mixedProfile['info'];
-
-            $s .= $oProfile->getUnit(0, $aUnitParams);
-        }
-
-        $aTmplVarsPaginate = [];
-        if($iStart || $oPaginate->getNum() > $iLimit)
-            $aTmplVarsPaginate = ['paginate' => $oPaginate->getSimplePaginate()];
-
-        return $this->_oTemplate->parseHtmlByName('browse_quick.html', array(
-            'code' => $s,
-            'bx_if:show_paginate' => [
-                'condition' => !empty($aTmplVarsPaginate),
-                'content' => $aTmplVarsPaginate
-            ]
-        ));
+        return bx_srv('system', 'browse_quick', [$aProfiles, $iStart, $iLimit, ['additional_params' => $aAdditionalParams]], 'TemplServiceProfiles');
     }
 
     // ====== COMMON METHODS
