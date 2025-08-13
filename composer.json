@@ -40,9 +40,9 @@
             "type": "package",
             "package": {
                 "name": "ffmpeg/ffmpeg",
-                "version": "4.4.0",
+                "version": "6.0.0",
                 "dist": {
-                    "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b4.4/linux-x64",
+                    "url": "https://github.com/eugeneware/ffmpeg-static/releases/download/b6.0/ffmpeg-linux-x64",
                     "type": "file"
                 }
             }
@@ -106,7 +106,7 @@
             "@relocate-ffmpeg"
         ],
         "relocate-ffmpeg": [
-            "test -f ./plugins/ffmpeg/ffmpeg/linux-x64 && mv ./plugins/ffmpeg/ffmpeg/linux-x64 ./plugins/ffmpeg/ffmpeg.exe && rm -rf ./plugins/ffmpeg/ffmpeg || true",
+            "test -f ./plugins/ffmpeg/ffmpeg/ffmpeg-linux-x64 && mv ./plugins/ffmpeg/ffmpeg/ffmpeg-linux-x64 ./plugins/ffmpeg/ffmpeg.exe && rm -rf ./plugins/ffmpeg/ffmpeg || true",
             "patch -p1 < patches/plugins_tpyo_amazon-s3-php-class.txt"
         ]
     }
