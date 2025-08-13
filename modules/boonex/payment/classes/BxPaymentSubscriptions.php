@@ -513,7 +513,7 @@ class BxPaymentSubscriptions extends BxBaseModPaymentSubscriptions
 
         if($this->_bIsApi)
             return !$mixedBlockContent ? [] : [
-                bx_api_get_block('subscriptions_' . $sType, $mixedBlockContent)
+                bx_api_get_block('grid', $mixedBlockContent)
             ];
 
         $this->_oModule->setSiteSubmenu('menu_dashboard', 'system', 'dashboard-subscriptions');
