@@ -75,7 +75,16 @@ class BxDolCategoriesQuery extends BxDolDb
                     $sJoinClause .= "INNER JOIN `" . $CNF['TABLE_ENTRIES'] . "` `data` ON `soc`.`object_id` =  `data`.`id` AND `data`.`" . $CNF['FIELD_STATUS'] . "` = 'active'";
                 $sWhereClause = " AND `sc`.`status` = 'active' AND `soc`.`module` = :module";
                 $sGroupClause = "`sc`.`id`";
-                $sOrderClause = "`num` DESC";
+                $sOrderClause = "`sc`.`added` ASC";
+                if(isset($aParams['order_by']))
+                    switch($aParams['order_by']) {
+                        case 'num_asc':
+                            $sOrderClause = "`num` ASC";
+                            break;
+                        case 'num_desc':
+                            $sOrderClause = "`num` DESC";
+                            break;
+                    }
                 break;
                 
             case 'by_module&context_with_num':
@@ -95,7 +104,16 @@ class BxDolCategoriesQuery extends BxDolDb
                     $sJoinClause .= " AND `data`.`" . $CNF['FIELD_STATUS'] . "` = 'active' ";
                 $sWhereClause = " AND `sc`.`status` = 'active' AND `soc`.`module` = :module";
                 $sGroupClause = "`sc`.`id`";
-                $sOrderClause = "`num` DESC";
+                $sOrderClause = "`sc`.`added` ASC";
+                if(isset($aParams['order_by']))
+                    switch($aParams['order_by']) {
+                        case 'num_asc':
+                            $sOrderClause = "`num` ASC";
+                            break;
+                        case 'num_desc':
+                            $sOrderClause = "`num` DESC";
+                            break;
+                    }
                 break;
                 
             case 'by_module_and_object':
