@@ -16,6 +16,8 @@ class BxAclConfig extends BxBaseModGeneralConfig
     protected $_aCurrency;
     protected $_iOwner;
 
+    protected $_bShowToUnauthenticated;
+
     protected $_iExpireNotificationDays;
     protected $_bExpireNotifyOnce;
     protected $_iRemoveExpiredFor;
@@ -45,6 +47,7 @@ class BxAclConfig extends BxBaseModGeneralConfig
             'PARAM_DATE_FORMAT' => 'd.m.Y',
             'PARAM_RECURRING_RESERVE' => 'bx_acl_recurring_reserve',
             'PARAM_RECURRING_PRIORITIZE' => 'bx_acl_recurring_prioritize',
+            'PARAM_SHOW_TO_UNAUTHENTICATED' => 'bx_acl_show_to_unauthenticated',
 
             // objects 
             'OBJECT_GRID_ADMINISTRATION' => 'bx_acl_administration',
@@ -97,10 +100,18 @@ class BxAclConfig extends BxBaseModGeneralConfig
         $this->_oDb = &$oDb;
 
         $sOptionPrefix = $this->getPrefix('option');
+        
+        $this->_bShowToUnauthenticated = getParam($this->CNF['PARAM_SHOW_TO_UNAUTHENTICATED']) == 'on';
 
+        //TODO: Looks like these 3 settings aren't used or work.
         $this->_iExpireNotificationDays = (int)getParam($sOptionPrefix . 'expire_notification_days');
         $this->_bExpireNotifyOnce = getParam($sOptionPrefix . 'expire_notify_once') == 'on';
         $this->_iRemoveExpiredFor = (int)getParam($sOptionPrefix . 'remove_expired_for');
+    }
+
+    public function isShowToUnauthenticated()
+    {
+        return $this->_bShowToUnauthenticated;
     }
 
     public function getExpireNotificationDays()

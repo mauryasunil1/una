@@ -105,27 +105,28 @@ class BxAclModule extends BxBaseModGeneralModule
     /** 
      * @ref bx_acl-get_block_view "get_block_view"
      */
-	public function serviceGetBlockView()
-	{
+    public function serviceGetBlockView()
+    {
+        if(!$this->_oConfig->isShowToUnauthenticated())
             bx_require_authentication(false, false, $this->serviceGetViewUrl());
 
-            $sGrid = $this->_oConfig->getGridObject('view');
-            $oGrid = BxDolGrid::getObjectInstance($sGrid);
-            if(!$oGrid)
-                return $this->_bIsApi ? [] : '';
+        $sGrid = $this->_oConfig->getGridObject('view');
+        $oGrid = BxDolGrid::getObjectInstance($sGrid);
+        if(!$oGrid)
+            return $this->_bIsApi ? [] : '';
 
-            if($this->_bIsApi)
-                return [
-                    bx_api_get_block('pricing', $oGrid->getCodeAPI(true))
-                ];
-
-            $this->_oTemplate->addCss(['view.css']);
+        if($this->_bIsApi)
             return [
-                'content' => $oGrid->getCode()
+                bx_api_get_block('pricing', $oGrid->getCodeAPI(true))
             ];
-	}
 
-	/**
+        $this->_oTemplate->addCss(['view.css']);
+        return [
+            'content' => $oGrid->getCode()
+        ];
+    }
+
+    /**
      * @page service Service Calls
      * @section bx_acl Paid Levels
      * @subsection bx_acl-page_blocks Page Blocks
@@ -142,15 +143,15 @@ class BxAclModule extends BxBaseModGeneralModule
     /** 
      * @ref bx_acl-get_membership_actions "get_membership_actions"
      */
-	public function serviceGetMembershipActions($iProfileId)
-	{
-		if($iProfileId != $this->getUserId())
-			return '';
+    public function serviceGetMembershipActions($iProfileId)
+    {
+        if($iProfileId != $this->getUserId())
+            return '';
 
-		return $this->_oTemplate->displayMembershipActions($iProfileId);
-	}
+        return $this->_oTemplate->displayMembershipActions($iProfileId);
+    }
 
-	/**
+    /**
      * @page service Service Calls
      * @section bx_acl Paid Levels
      * @subsection bx_acl-payments Payments

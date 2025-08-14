@@ -40,23 +40,30 @@ class BxAclGridLevels extends BxTemplGrid
 
     protected function _getCellPeriod($mixedValue, $sKey, $aField, $aRow)
     {
-        if((int)$mixedValue == 0)
-            $mixedValue = _t('_bx_acl_txt_lifetime');
+        if(!$this->_bIsApi) {
+            if((int)$mixedValue == 0)
+                $mixedValue = _t('_bx_acl_txt_lifetime');
+            else
+                $mixedValue = _t('_bx_acl_txt_n_unit', $mixedValue, _t($this->_aPeriodUnits[$aRow['period_unit']]));
+        }
         else
-            $mixedValue = _t('_bx_acl_txt_n_unit', $mixedValue, _t($this->_aPeriodUnits[$aRow['period_unit']]));
+            $mixedValue = ['period' => $mixedValue, 'unit' => $aRow['period_unit']];
 
     	return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
     }
 
     protected function _getCellPrice($mixedValue, $sKey, $aField, $aRow)
     {
-        if((float)$mixedValue != 0) {
-            $aCurrency = $this->_oModule->_oConfig->getCurrency();
+        $aCurrency = $this->_oModule->_oConfig->getCurrency();
 
-            $mixedValue = _t('_bx_acl_grid_column_price_value', $aCurrency['sign'], $mixedValue);
+        if(!$this->_bIsApi) {
+            if((float)$mixedValue != 0)
+                $mixedValue = _t('_bx_acl_grid_column_price_value', $aCurrency['sign'], $mixedValue);
+            else 
+                $mixedValue = _t('_bx_acl_txt_free');
         }
-        else 
-            $mixedValue = _t('_bx_acl_txt_free');
+        else
+            $mixedValue = ['value' => $mixedValue, 'currency' => $aCurrency['code']];
 
         return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
     }

@@ -19,6 +19,7 @@ class BxAclGridView extends BxAclGridLevels
      */
     protected $_aJsCodes;
 
+    protected $_iLogged;
     protected $_iOwner;
     protected $_oPayment;
     protected $_bTypeSingle;
@@ -30,6 +31,7 @@ class BxAclGridView extends BxAclGridLevels
 
         $this->_aJsCodes = array();
 
+        $this->_iLogged = bx_get_logged_profile_id();
         $this->_iOwner = $this->_oModule->_oConfig->getOwner();
         $this->_oPayment = BxDolPayments::getInstance();
         $this->_bTypeSingle = $this->_oPayment->isAcceptingPayments($this->_iOwner, BX_PAYMENT_TYPE_SINGLE);
@@ -39,6 +41,9 @@ class BxAclGridView extends BxAclGridLevels
     public function performActionChoose()
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
+
+        if(!$this->_iLogged)
+            return $this->_bIsApi ? [] : echoJson([]);
 
         $aIds = $this->_getIds();
         if($aIds === false)
@@ -60,6 +65,9 @@ class BxAclGridView extends BxAclGridLevels
 
     public function performActionBuy()
     {
+        if(!$this->_iLogged)
+            return $this->_bIsApi ? [] : echoJson([]);
+
         if(!$this->_bIsApi)
             return echoJson([]);
         
@@ -76,6 +84,9 @@ class BxAclGridView extends BxAclGridLevels
 
     public function performActionSubscribe()
     {
+        if(!$this->_iLogged)
+            return $this->_bIsApi ? [] : echoJson([]);
+
         if(!$this->_bIsApi)
             return echoJson([]);
         
@@ -118,6 +129,11 @@ class BxAclGridView extends BxAclGridLevels
         if($this->_bIsApi)
             return array_merge($a, ['name' => $sKey, 'type' => 'callback', 'on_callback' => 'hide']);
 
+        if(!$this->_iLogged)
+            $a['attr'] = array_merge($a['attr'], [
+                'onclick' => "window.open('" . $this->_getLoginUrl() . "','_self');"
+            ]);
+
         return  parent::_getActionDefault($sType, $sKey, $a, false, $isDisabled, $aRow);
     }
 
@@ -135,20 +151,26 @@ class BxAclGridView extends BxAclGridLevels
                 'on_callback' => 'redirect',
                 'redirect_url' => bx_api_get_relative_url($this->_oPayment->getCartUrl($this->_iOwner))
             ]);
+        
+        if($this->_iLogged) {
+            $aJs = $this->_oPayment->getAddToCartJs($this->_iOwner, $this->MODULE, $aRow['id'], 1, true);
+            if(!empty($aJs) && is_array($aJs)) {
+                list($sJsCode, $sJsMethod) = $aJs;
 
-    	$aJs = $this->_oPayment->getAddToCartJs($this->_iOwner, $this->MODULE, $aRow['id'], 1, true);
-    	if(!empty($aJs) && is_array($aJs)) {
-            list($sJsCode, $sJsMethod) = $aJs;
+                $sJsCodeCheckSum = md5($sJsCode);
+                if(!isset($this->_aJsCodes[$sJsCodeCheckSum]))
+                    $this->_aJsCodes[$sJsCodeCheckSum] = $sJsCode;
 
-            $sJsCodeCheckSum = md5($sJsCode);
-            if(!isset($this->_aJsCodes[$sJsCodeCheckSum]))
-                $this->_aJsCodes[$sJsCodeCheckSum] = $sJsCode;
-
-            $a['attr'] = array(
-                'title' => bx_html_attribute(_t('_bx_acl_grid_action_buy_title')),
-                'onclick' => $sJsMethod
-            );
-    	}
+                $a['attr'] = array(
+                    'title' => bx_html_attribute(_t('_bx_acl_grid_action_buy_title')),
+                    'onclick' => $sJsMethod
+                );
+            }
+        }
+        else
+            $a['attr'] = array_merge($a['attr'], [
+                'onclick' => "window.open('" . $this->_getLoginUrl() . "','_self');"
+            ]);
 
         return  parent::_getActionDefault($sType, $sKey, $a, false, $isDisabled, $aRow);
     }
@@ -167,19 +189,25 @@ class BxAclGridView extends BxAclGridLevels
                 'items' => [$this->_oPayment->getCartItemDescriptor($this->_iOwner, $this->_oModule->_oConfig->getId(), $aRow['id'], 1)],
             ]);
 
-    	$aJs = $this->_oPayment->getSubscribeJs($this->_iOwner, '', $this->MODULE, $aRow['id'], 1);
-        if(!empty($aJs) && is_array($aJs)) {
-            list($sJsCode, $sJsMethod) = $aJs;
+        if($this->_iLogged) {
+            $aJs = $this->_oPayment->getSubscribeJs($this->_iOwner, '', $this->MODULE, $aRow['id'], 1);
+            if(!empty($aJs) && is_array($aJs)) {
+                list($sJsCode, $sJsMethod) = $aJs;
 
-            $sJsCodeCheckSum = md5($sJsCode);
-            if(!isset($this->_aJsCodes[$sJsCodeCheckSum]))
-                $this->_aJsCodes[$sJsCodeCheckSum] = $sJsCode;
+                $sJsCodeCheckSum = md5($sJsCode);
+                if(!isset($this->_aJsCodes[$sJsCodeCheckSum]))
+                    $this->_aJsCodes[$sJsCodeCheckSum] = $sJsCode;
 
-            $a['attr'] = array(
-                'title' => bx_html_attribute(_t('_bx_acl_grid_action_subscribe_title')),
-                'onclick' => $sJsMethod
-            );
+                $a['attr'] = array(
+                    'title' => bx_html_attribute(_t('_bx_acl_grid_action_subscribe_title')),
+                    'onclick' => $sJsMethod
+                );
+            }
         }
+        else
+            $a['attr'] = array_merge($a['attr'], [
+                'onclick' => "window.open('" . $this->_getLoginUrl() . "','_self');"
+            ]);
 
     	return parent::_getActionDefault($sType, $sKey, $a, false, $isDisabled, $aRow);
     }
@@ -187,6 +215,11 @@ class BxAclGridView extends BxAclGridLevels
     protected function _isLifetime($aRow)
     {
         return empty($aRow['period']) && empty($aRow['period_unit']);
+    }
+
+    protected function _getLoginUrl()
+    {
+        return bx_absolute_url(BxDolPermalinks::getInstance()->permalink('page.php?i=login'));
     }
 }
 

@@ -13,7 +13,8 @@ SET @iCategId = LAST_INSERT_ID();
 
 INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `type`, `check`, `check_error`, `extra`, `order`) VALUES
 ('bx_acl_recurring_reserve', '2', @iCategId, '_bx_acl_option_recurring_reserve', 'digit', '', '', '', 1),
-('bx_acl_recurring_prioritize', 'on', @iCategId, '_bx_acl_option_recurring_prioritize', 'checkbox', '', '', '', 2);
+('bx_acl_recurring_prioritize', 'on', @iCategId, '_bx_acl_option_recurring_prioritize', 'checkbox', '', '', '', 2),
+('bx_acl_show_to_unauthenticated', '', @iCategId, '_bx_acl_option_show_to_unauthenticated', 'checkbox', '', '', '', 10);
 
 
 -- PAGE: view levels
