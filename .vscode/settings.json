@@ -1,14 +1,15 @@
 {
     "files.exclude": {
-        "upgrade": true,
-        "**/updates": true
+        "upgrade/**": true,
+        "**/updates/**": true
     },
     "search.exclude": {
-        "upgrade": true,
-        "**/updates": true
+        "upgrade/**": true,
+        "**/updates/**": true
     },
     "files.watcherExclude": {
-        "upgrade": true,
-        "**/updates": true
-    }
+        "upgrade/**": true,
+        "**/updates/**": true
+    },
+    "intelephense.files.exclude": ["upgrade/**", "**/updates/**"]
 }
