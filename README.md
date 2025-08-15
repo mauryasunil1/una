@@ -82,10 +82,10 @@ Open UNA using the URL below in browser and proceed with the UNA installation
 ```
 http://localhost.una.io
 ```
-Use the following default credentials for DB configuration during UNA install:
-    MySQL user: `una`
-    MySQL password: `una`
-    MySQL database name: `una`
+Use the following default credentials for DB configuration during UNA install:  
+    MySQL user: `una`  
+    MySQL password: `una`  
+    MySQL database name: `una`  
 
 Use phpMyAdmin to add new database for UNA:
 ```
