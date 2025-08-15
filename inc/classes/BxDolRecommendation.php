@@ -82,6 +82,11 @@ class BxDolRecommendation extends BxDolFactory implements iBxDolFactoryObject
         return true;
     }
 
+    public static function getContextName($sObject)
+    {
+        return str_replace(['sys_', 'bx_'], ['recom_', 'recom_'], $sObject); 
+    }
+
     public function getConnection()
     {
         return $this->_aObject['connection'];

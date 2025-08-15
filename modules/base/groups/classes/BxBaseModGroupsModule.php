@@ -232,13 +232,20 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
 
     public function serviceGetSafeServices()
     {
-        return array_merge(parent::serviceGetSafeServices(), [
+        $CNF = &$this->_oConfig->CNF;
+
+        $a = [
             'GetQuestionnaire' => '',
             'GetInitialMembers' => '',
             'EntityInvite' => '',
             'Invitations' => '',
             'FansWithoutAdmins' => '',
-        ]);
+        ];
+
+        if(!empty($CNF['OBJECT_RECOMMENDATIONS_FANS']))
+            $a['BrowseRecommendationsFans'] = '';
+
+        return array_merge(parent::serviceGetSafeServices(), $a);
     }
 
     /**
@@ -1043,7 +1050,7 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
             $aData = array_merge($aData, [
                 'module' => 'system',
                 'unit' => 'mixed', 
-                'request_url' => '/api.php?r=bx_groups/browse_recommendations_fans&params[]=' . $iProfileId . '&params[]='
+                'request_url' => '/api.php?r=' . $this->getName() .'/browse_recommendations_fans&params[]=' . $iProfileId . '&params[]='
             ]);
 
             return [bx_api_get_block('browse', $aData)];
