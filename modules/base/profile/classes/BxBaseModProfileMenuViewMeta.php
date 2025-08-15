@@ -77,16 +77,18 @@ class BxBaseModProfileMenuViewMeta extends BxTemplMenuUnitMeta
         if(!$this->_bContentPublic || !$this->_oContentProfile)
             return false;
 
+        $oTemplate = BxDolTemplate::getInstance();
+
         $oAcl = BxDolAcl::getInstance();
         $aMembership =  $oAcl->getMemberMembershipInfo($this->_oContentProfile->id());
         $aLevelInfo =  $oAcl->getMembershipInfo($aMembership['id']);
 
         if($this->_bIsApi)
             return $this->_getMenuItemAPI($aItem, ['display' => 'button'], [
-                'title' => _t($aMembership['name'])
+                'title' => _t($aMembership['name']),
+                'icon' => $oTemplate->getImage($aLevelInfo['icon'], ['wrap_in_tag' => false])
             ]);
 
-        $oTemplate = BxDolTemplate::getInstance();
         return $aMembership ? $this->getUnitMetaItemText($oTemplate->parseHtmlByName('menu_meta_item.html', ['icon' => $oTemplate->getImage($aLevelInfo['icon'], array('class' => 'bx-acl-m-thumbnail')), 'caption' => _t($aMembership['name'])])): false;
                                                                                             
     }
