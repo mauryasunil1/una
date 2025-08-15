@@ -1418,23 +1418,25 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
      * 
      * @param  mixed $mixedId numeric id from Storage, string with template's file name or string with font icon.
      */
-    public function getImage($mixedId, $aParams = array())
+    public function getImage($mixedId, $aParams = [])
     {
         return $this->_getImage('image', $mixedId, $aParams);
     }
 
-	protected function _getImage($sType, $mixedId, $aParams = array())
+    protected function _getImage($sType, $mixedId, $aParams = [])
     {
+        $bWrap = ($sKey = 'wrap_in_tag') && (!isset($aParams[$sKey]) || $aParams[$sKey] === true);
+
         $sUrl = "";
-        $aType2Method = array('image' => 'getImageUrl', 'icon' => 'getIconUrl');
+        $aType2Method = ['image' => 'getImageUrl', 'icon' => 'getIconUrl'];
 
         //--- Check in System Storage.
         if(is_numeric($mixedId) && (int)$mixedId > 0) {
-        	$sStorage = BX_DOL_STORAGE_OBJ_IMAGES;
-        	if(!empty($aParams['storage'])) {
-        		$sStorage = $aParams['storage'];
-        		unset($aParams['storage']);
-        	}
+            $sStorage = BX_DOL_STORAGE_OBJ_IMAGES;
+            if(!empty($aParams['storage'])) {
+                $sStorage = $aParams['storage'];
+                unset($aParams['storage']);
+            }
 
             if(($sResult = BxDolStorage::getObjectInstance($sStorage)->getFileUrlById((int)$mixedId)) !== false)
                 $sUrl = $sResult;
@@ -1445,13 +1447,13 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
             $sUrl = $this->{$aType2Method[$sType]}($mixedId);
 
         if($sUrl != "")
-            return $this->parseImage($sUrl, array(
+            return $bWrap ? $this->parseImage($sUrl, [
                 'class' => isset($aParams['class']) && !empty($aParams['class']) ? $aParams['class'] : '',
             	'alt' => isset($aParams['alt']) && !empty($aParams['alt']) ? $aParams['alt'] : ''
-            ));
+            ]) : $sUrl;
 
         //--- Use iconic font.
-        return $this->parseIcon($mixedId, $aParams);
+        return $bWrap ? $this->parseIcon($mixedId, $aParams) : $mixedId;
     }
 
     /**
