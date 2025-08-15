@@ -559,7 +559,7 @@ INSERT INTO `sys_objects_connection` (`object`, `table`, `profile_initiator`, `p
 
 -- RECOMMENDATIONS
 INSERT INTO `sys_objects_recommendation` (`name`, `module`, `connection`, `content_info`, `countable`, `active`, `class_name`, `class_file`) VALUES
-('bx_jobs_fans', 'system', 'bx_jobs_fans', '', 1, 0, 'BxJobsRecommendationFans', 'modules/boonex/jobs/classes/BxJobsRecommendationFans.php');
+('bx_jobs_fans', 'bx_jobs', 'bx_jobs_fans', '', 1, 0, 'BxJobsRecommendationFans', 'modules/boonex/jobs/classes/BxJobsRecommendationFans.php');
 SET @iRecFans = LAST_INSERT_ID();
 
 INSERT INTO `sys_recommendation_criteria` (`object_id`, `name`, `source_type`, `source`, `params`, `weight`, `active`) VALUES

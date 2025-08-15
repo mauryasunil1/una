@@ -304,10 +304,12 @@ INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES
 
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `submenu_popup`, `visible_for_levels`, `visibility_custom`, `active`, `copyable`, `order`) VALUES 
 ('bx_groups_view_actions_all', 'bx_groups', 'join-group-profile', '_bx_groups_menu_item_title_system_pay_and_join', '', '', '', '', '', '', '', 0, 2147483647, '', 1, 0, 5),
-('bx_groups_view_actions_all', 'bx_groups', 'profile-fan-add', '_bx_groups_menu_item_title_system_become_fan', '', '', '', '', '', '', '', 0, 2147483647, '', 1, 0, 10),
-('bx_groups_view_actions_all', 'bx_groups', 'profile-fan-remove', '_bx_groups_menu_item_title_system_leave_group', '', '', '', '', '', '', '', 0, 2147483647, '', 1, 0, 20),
-('bx_groups_view_actions_all', 'bx_groups', 'profile-subscribe-add', '_bx_groups_menu_item_title_system_subscribe', '', '', '', '', '', '', '', 0, 2147483647, '', 1, 0, 30),
-('bx_groups_view_actions_all', 'bx_groups', 'profile-subscribe-remove', '_bx_groups_menu_item_title_system_unsubscribe', '', '', '', '', '', '', '', 0, 2147483647, '', 1, 0, 40),
+('bx_groups_view_actions_all', 'bx_groups', 'profile-fans', '_bx_groups_menu_item_title_system_fans', '', '', '', '', '', '', '', 0, 2147483647, '', 1, 0, 10),
+('bx_groups_view_actions_all', 'bx_groups', 'profile-fan-add', '_bx_groups_menu_item_title_system_become_fan', '', '', '', '', '', '', '', 0, 2147483647, '', 0, 0, 12),
+('bx_groups_view_actions_all', 'bx_groups', 'profile-fan-remove', '_bx_groups_menu_item_title_system_leave_group', '', '', '', '', '', '', '', 0, 2147483647, '', 0, 0, 14),
+('bx_groups_view_actions_all', 'bx_groups', 'profile-subscriptions', '_bx_groups_menu_item_title_system_subscriptions', '', '', '', '', '', '', '', 0, 2147483647, '', 1, 0, 30),
+('bx_groups_view_actions_all', 'bx_groups', 'profile-subscribe-add', '_bx_groups_menu_item_title_system_subscribe', '', '', '', '', '', '', '', 0, 2147483647, '', 0, 0, 32),
+('bx_groups_view_actions_all', 'bx_groups', 'profile-subscribe-remove', '_bx_groups_menu_item_title_system_unsubscribe', '', '', '', '', '', '', '', 0, 2147483647, '', 0, 0, 34),
 ('bx_groups_view_actions_all', 'bx_groups', 'profile-set-badges', '_sys_menu_item_title_system_set_badges', '', '', '', '', '', '', '', 0, 192, 'a:2:{s:6:"module";s:9:"bx_groups";s:6:"method";s:19:"is_badges_avaliable";}', 1, 0, 50),
 ('bx_groups_view_actions_all', 'bx_groups', 'comment', '_sys_menu_item_title_system_va_comment', '', '', '', '', '', '', '', 0, 2147483647, '', 0, 0, 200),
 ('bx_groups_view_actions_all', 'bx_groups', 'view', '_sys_menu_item_title_system_va_view', '', '', '', '', '', '', '', 0, 2147483647, '', 1, 0, 210),
@@ -545,7 +547,7 @@ INSERT INTO `sys_objects_connection` (`object`, `table`, `profile_initiator`, `p
 
 -- RECOMMENDATIONS
 INSERT INTO `sys_objects_recommendation` (`name`, `module`, `connection`, `content_info`, `countable`, `active`, `class_name`, `class_file`) VALUES
-('bx_groups_fans', 'system', 'bx_groups_fans', '', 1, 1, 'BxGroupsRecommendationFans', 'modules/boonex/groups/classes/BxGroupsRecommendationFans.php');
+('bx_groups_fans', 'bx_groups', 'bx_groups_fans', '', 1, 1, 'BxGroupsRecommendationFans', 'modules/boonex/groups/classes/BxGroupsRecommendationFans.php');
 SET @iRecFans = LAST_INSERT_ID();
 
 INSERT INTO `sys_recommendation_criteria` (`object_id`, `name`, `source_type`, `source`, `params`, `weight`, `active`) VALUES

@@ -20,15 +20,6 @@ class BxGroupsModule extends BxBaseModGroupsModule
 
         $this->_aSearchableNamesExcept[] = $this->_oConfig->CNF['FIELD_JOIN_CONFIRMATION'];
     }
-
-    public function serviceGetSafeServices()
-    {
-        $a = parent::serviceGetSafeServices();
-
-        return array_merge($a, [
-            'BrowseRecommendationsFans' => '',
-        ]);
-    }
 }
 
 /** @} */

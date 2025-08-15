@@ -26,15 +26,6 @@ class BxJobsModule extends BxBaseModGroupsModule
         ]);
     }
 
-    public function serviceGetSafeServices()
-    {
-        $a = parent::serviceGetSafeServices();
-
-        return array_merge($a, [
-            'BrowseRecommendationsFans' => '',
-        ]);
-    }
-
     public function serviceApplicants ($iContentId = 0, $bAsArray = false)
     {
         $CNF = &$this->_oConfig->CNF;

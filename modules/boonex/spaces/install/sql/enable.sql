@@ -550,7 +550,7 @@ INSERT INTO `sys_objects_connection` (`object`, `table`, `profile_initiator`, `p
 
 -- RECOMMENDATIONS
 INSERT INTO `sys_objects_recommendation` (`name`, `module`, `connection`, `content_info`, `countable`, `active`, `class_name`, `class_file`) VALUES
-('bx_spaces_fans', 'system', 'bx_spaces_fans', '', 1, 1, 'BxSpacesRecommendationFans', 'modules/boonex/spaces/classes/BxSpacesRecommendationFans.php');
+('bx_spaces_fans', 'bx_spaces', 'bx_spaces_fans', '', 1, 1, 'BxSpacesRecommendationFans', 'modules/boonex/spaces/classes/BxSpacesRecommendationFans.php');
 SET @iRecFans = LAST_INSERT_ID();
 
 INSERT INTO `sys_recommendation_criteria` (`object_id`, `name`, `source_type`, `source`, `params`, `weight`, `active`) VALUES
