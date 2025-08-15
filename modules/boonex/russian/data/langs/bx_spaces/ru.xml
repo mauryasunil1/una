@@ -214,6 +214,8 @@
     <string name="_bx_spaces_page_title_entries_by_category"><![CDATA[Пространства в {category_name}]]></string>
     <string name="_bx_spaces_page_block_title_sys_entries_by_category"><![CDATA[Пространства в категории]]></string>
     <string name="_bx_spaces_page_block_title_entries_by_category"><![CDATA[{category_name}]]></string>
+    <string name="_bx_spaces_page_block_title_sys_recom_fans"><![CDATA[Рекомендуемые пространства (Вступить)]]></string>
+    <string name="_bx_spaces_page_block_title_recom_fans"><![CDATA[Пространства для вступления]]></string>
 
     <string name="_bx_spaces_menu_title_submenu"><![CDATA[Пространства - Подменю]]></string>
     <string name="_bx_spaces_menu_set_title_submenu"><![CDATA[Пространства - Подменю]]></string>

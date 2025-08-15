@@ -31,6 +31,12 @@ DELETE FROM `sys_objects_search` WHERE `ObjectName` = 'bx_spaces';
 -- CONNECTIONS
 DELETE FROM `sys_objects_connection` WHERE `object` = 'bx_spaces_fans';
 
+-- RECOMMENDATIONS
+SET @iRecFans = (SELECT `id` FROM `sys_objects_recommendation` WHERE `name`='bx_spaces_fans' LIMIT 1);
+DELETE FROM `sys_objects_recommendation` WHERE `id`=@iRecFans;
+DELETE FROM `sys_recommendation_criteria` WHERE `object_id`=@iRecFans;
+DELETE FROM `sys_recommendation_data` WHERE `object_id`=@iRecFans;
+
 -- STATS
 DELETE FROM `sys_statistics` WHERE `name` LIKE 'bx_spaces%';
 

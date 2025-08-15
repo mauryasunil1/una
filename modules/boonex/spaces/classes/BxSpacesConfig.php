@@ -166,6 +166,7 @@ class BxSpacesConfig extends BxBaseModGroupsConfig
             'OBJECT_GRID_PRICES_MANAGE' => 'bx_spaces_prices_manage',
             'OBJECT_GRID_PRICES_VIEW' => 'bx_spaces_prices_view',
             'OBJECT_CONNECTIONS' => 'bx_spaces_fans',
+            'OBJECT_RECOMMENDATIONS_FANS' => 'bx_spaces_fans',
             'OBJECT_UPLOADERS_COVER' => array('bx_spaces_cover_crop'),
             'OBJECT_UPLOADERS_PICTURE' => array('bx_spaces_picture_crop'),
             'OBJECT_PRE_LIST_ROLES' => 'bx_spaces_roles',

@@ -218,6 +218,8 @@
         <string name="_bx_spaces_page_title_entries_by_category"><![CDATA[Spaces in {category_name}]]></string>
         <string name="_bx_spaces_page_block_title_sys_entries_by_category"><![CDATA[Spaces in category]]></string>
         <string name="_bx_spaces_page_block_title_entries_by_category"><![CDATA[{category_name}]]></string>
+        <string name="_bx_spaces_page_block_title_sys_recom_fans"><![CDATA[Recommended spaces (Join)]]></string>
+        <string name="_bx_spaces_page_block_title_recom_fans"><![CDATA[Space Suggestions]]></string>
 
         <string name="_bx_spaces_menu_title_submenu"><![CDATA[Spaces Submenu]]></string>
 	<string name="_bx_spaces_menu_set_title_submenu"><![CDATA[Spaces Submenu]]></string>

@@ -238,7 +238,8 @@ INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title_system`, `
 ('', 0, 'bx_spaces', '_bx_spaces_page_block_title_sys_multicats', '_bx_spaces_page_block_title_multicats', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:9:"bx_spaces";s:6:"method";s:21:"categories_multi_list";}', 0, 1, 1, IFNULL(@iBlockOrder, 0) + 2),
 ('', 0, 'bx_spaces', '_bx_spaces_page_block_title_sys_featured_entries_view_showcase', '_bx_spaces_page_block_title_featured_entries_view_showcase', 11, 2147483647, 'service', 'a:3:{s:6:\"module\";s:9:\"bx_spaces\";s:6:\"method\";s:15:\"browse_featured\";s:6:\"params\";a:3:{s:9:\"unit_view\";s:8:\"showcase\";s:13:\"empty_message\";b:0;s:13:\"ajax_paginate\";b:0;}}', 0, 1, 1, IFNULL(@iBlockOrder, 0) + 3),
 ('', 0, 'bx_spaces', '_bx_spaces_page_block_title_sys_recommended_entries_view_showcase', '_bx_spaces_page_block_title_recommended_entries_view_showcase', 11, 2147483647, 'service', 'a:3:{s:6:\"module\";s:9:\"bx_spaces\";s:6:\"method\";s:18:\"browse_recommended\";s:6:\"params\";a:3:{s:9:\"unit_view\";s:8:\"showcase\";s:13:\"empty_message\";b:0;s:13:\"ajax_paginate\";b:0;}}', 0, 1, 1, IFNULL(@iBlockOrder, 0) + 4),
-('', 0, 'bx_spaces', '_bx_spaces_page_block_title_sys_cover_block', '_bx_spaces_page_block_title_cover_block', 3, 2147483647, 'service', 'a:2:{s:6:\"module\";s:9:\"bx_spaces\";s:6:\"method\";s:12:\"entity_cover\";}', 0, 1, 1, IFNULL(@iBlockOrder, 0) + 5);
+('', 0, 'bx_spaces', '_bx_spaces_page_block_title_sys_cover_block', '_bx_spaces_page_block_title_cover_block', 3, 2147483647, 'service', 'a:2:{s:6:\"module\";s:9:\"bx_spaces\";s:6:\"method\";s:12:\"entity_cover\";}', 0, 1, 1, IFNULL(@iBlockOrder, 0) + 5),
+('', 0, 'bx_spaces', '_bx_spaces_page_block_title_sys_recom_fans', '_bx_spaces_page_block_title_recom_fans', 11, 2147483647, 'service', 'a:2:{s:6:\"module\";s:9:\"bx_spaces\";s:6:\"method\";s:27:\"browse_recommendations_fans\";}', 0, 1, 1, IFNULL(@iBlockOrder, 0) + 6);
 
 -- MENU
 
@@ -545,6 +546,17 @@ INSERT INTO `sys_objects_search` (`ObjectName`, `Title`, `Order`, `ClassName`, `
 -- CONNECTIONS
 INSERT INTO `sys_objects_connection` (`object`, `table`, `profile_initiator`, `profile_content`, `type`, `tt_content`, `tf_id_content`, `tf_count_content`, `override_class_name`, `override_class_file`) VALUES
 ('bx_spaces_fans', 'bx_spaces_fans', 1, 1, 'mutual', 'bx_spaces_data', 'id', 'members', 'BxSpacesConnectionFans', 'modules/boonex/spaces/classes/BxSpacesConnectionFans.php');
+
+-- RECOMMENDATIONS
+INSERT INTO `sys_objects_recommendation` (`name`, `module`, `connection`, `content_info`, `countable`, `active`, `class_name`, `class_file`) VALUES
+('bx_spaces_fans', 'system', 'bx_spaces_fans', '', 1, 1, 'BxSpacesRecommendationFans', 'modules/boonex/spaces/classes/BxSpacesRecommendationFans.php');
+SET @iRecFans = LAST_INSERT_ID();
+
+INSERT INTO `sys_recommendation_criteria` (`object_id`, `name`, `source_type`, `source`, `params`, `weight`, `active`) VALUES
+(@iRecFans, 'by_friends', 'sql', 'SELECT `tgf`.`content` AS `id`, SUM({points}) AS `value` FROM `sys_profiles_conn_friends` AS `tf` INNER JOIN `bx_spaces_fans` AS `tgf` ON `tf`.`content`=`tgf`.`initiator` AND `tgf`.`content` NOT IN (SELECT `content` FROM `bx_spaces_fans` WHERE `initiator`={profile_id}) AND `tgf`.`mutual`=''1'' WHERE `tf`.`initiator`={profile_id} AND `tf`.`mutual`=''1'' GROUP BY `id`', 'a:1:{s:6:"points";i:2;}', 0.5, 1),
+(@iRecFans, 'by_subscriptions', 'sql', 'SELECT `tgf`.`content` AS `id`, SUM({points}) AS `value` FROM `sys_profiles_conn_subscriptions` AS `ts` INNER JOIN `sys_profiles` AS `tp` ON `ts`.`content`=`tp`.`id` AND `tp`.`type` IN ({profile_types}) AND `tp`.`status`=''active'' INNER JOIN `bx_spaces_fans` AS `tgf` ON `ts`.`content`=`tgf`.`initiator` AND `tgf`.`content` NOT IN (SELECT `content` FROM `bx_spaces_fans` WHERE `initiator`={profile_id}) AND `tgf`.`mutual`=''1'' WHERE `ts`.`initiator`={profile_id} GROUP BY `id`', 'a:2:{s:6:"points";i:2;s:13:"profile_types";s:0:"";}', 0.2, 1),
+(@iRecFans, 'by_fans', 'sql', 'SELECT `tg2`.`content` AS `id`, SUM({points}) AS `value` FROM `bx_spaces_fans` AS `tg1` INNER JOIN `bx_spaces_fans` AS `tm` ON `tg1`.`content`=`tm`.`content` AND `tm`.`initiator`<>{profile_id} AND `tm`.`mutual`=''1'' INNER JOIN `bx_spaces_fans` AS `tg2` ON `tm`.`initiator`=`tg2`.`initiator` AND `tg2`.`mutual`=''1'' AND `tg2`.`content` NOT IN (SELECT `content` FROM `bx_spaces_fans` WHERE `initiator`={profile_id})  WHERE `tg1`.`initiator`={profile_id} AND `tg1`.`mutual`=''1'' GROUP BY `id`', 'a:1:{s:6:"points";i:1;}', 0.2, 1),
+(@iRecFans, 'featured', 'sql', 'SELECT `tp`.`id` AS `id`, {points} AS `value` FROM `bx_spaces_data` AS `tg` INNER JOIN `sys_profiles` AS `tp` ON `tg`.`id`=`tp`.`content_id` AND `tp`.`type`=''bx_spaces'' WHERE `tg`.`featured`<>''0'' AND `tg`.`status`=''active'' AND `tg`.`status_admin`=''active'' AND `tp`.`id` NOT IN (SELECT `content` FROM `bx_spaces_fans` WHERE `initiator`={profile_id})', 'a:1:{s:6:"points";i:0;}', 0.1, 1);
 
 -- STATS
 SET @iMaxOrderStats = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_statistics`);
