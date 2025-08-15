@@ -51,6 +51,53 @@ UNA is managed by [Yasko.Studio](https://yasko.studio) team and developed with t
 - Free community support - [Discussions](https://unacms.com/page/discussions-home)
 - Direct support and professional services - [UNA Pro](https://unacms.com/start)
 
+## Setup Development Environment
+
+Clone UNA repository to current folder:
+```bash
+git clone https://github.com/unacms/UNA.git una
+```
+
+Switch current directory to newly created `una` folder:
+```bash
+cd una
+```
+
+Install JavaScript depenences:
+```bash
+yarn
+```
+
+Install PHP dependences:
+```bash
+docker run --rm -it -v "$(pwd):/app" composer/composer installdocker run --rm -it -v "$(pwd):/app" composer/composer install --ignore-platform-reqs
+```
+
+Run UNA and related services:
+```bash
+docker compose up -d
+```
+
+Open UNA using the URL below in browser and proceed with the UNA installation
+```
+http://localhost.una.io
+```
+Use the following default credentials for DB configuration during UNA install:
+    MySQL user: `una`
+    MySQL password: `una`
+    MySQL database name: `una`
+
+Use phpMyAdmin to add new database for UNA:
+```
+http://localhost.una.io:8080
+```
+MySQL root user password: `root`
+
+Use Mailpit to inspect all emails coming from UNA:
+```
+http://localhost.una.io:8025
+```
+
 ## License
 
 MIT
