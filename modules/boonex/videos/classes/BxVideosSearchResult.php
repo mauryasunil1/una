@@ -68,7 +68,12 @@ class BxVideosSearchResult extends BxBaseModTextSearchResult
                 if(!$this->_updateCurrentForContext($sMode, $aParams, $oProfileAuthor))
                     $this->isError = true;
                 break;
-                
+
+            case 'followed_contexts':
+                if(!$this->_updateCurrentForFollowedContexts($sMode, $aParams, $oProfileAuthor))
+                    $this->isError = true;
+                break;
+
             case 'favorite':
                 if(!$this->_updateCurrentForFavorite($sMode, $aParams, $oProfileAuthor))
                     $this->isError = true;

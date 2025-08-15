@@ -68,13 +68,18 @@ class BxPostsSearchResult extends BxBaseModTextSearchResult
                 if(!$this->_updateCurrentForContext($sMode, $aParams, $oProfileAuthor))
                     $this->isError = true;
                 break;
-                
+
+            case 'followed_contexts':
+                if(!$this->_updateCurrentForFollowedContexts($sMode, $aParams, $oProfileAuthor))
+                    $this->isError = true;
+                break;
+
             case 'favorite':
                 if(!$this->_updateCurrentForFavorite($sMode, $aParams, $oProfileAuthor))
                     $this->isError = true;
                 break;
 			
-			case 'recent':
+            case 'recent':
             case 'public':
                 $this->sBrowseUrl = BxDolPermalinks::getInstance()->permalink($CNF['URL_HOME']);
                 $this->aCurrent['title'] = _t('_bx_posts_page_title_browse_recent');

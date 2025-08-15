@@ -74,7 +74,12 @@ class BxPhotosSearchResult extends BxBaseModTextSearchResult
                 if(!$this->_updateCurrentForContext($sMode, $aParams, $oProfileAuthor))
                     $this->isError = true;
                 break;
-                
+
+            case 'followed_contexts':
+                if(!$this->_updateCurrentForFollowedContexts($sMode, $aParams, $oProfileAuthor))
+                    $this->isError = true;
+                break;
+
             case 'favorite':
                 if(empty($this->aParams['author']) && bx_get('author') !== false)
                     $this->aParams['author'] = bx_process_input(bx_get('author'));

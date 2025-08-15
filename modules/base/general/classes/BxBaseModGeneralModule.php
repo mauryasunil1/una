@@ -1666,7 +1666,12 @@ class BxBaseModGeneralModule extends BxDolModule
     {
         return $this->_serviceBrowseWithParam ('context', 'profile_id', $iProfileId, $aParams);
     }
-    
+
+    public function serviceBrowseFollowedContexts ($iProfileId = 0, $aParams = [])
+    {
+        return $this->_serviceBrowseWithParam ('followed_contexts', 'profile_id', $iProfileId, $aParams);
+    }
+
     public function _serviceBrowseWithParam ($sParamName, $sParamGet, $sParamVal, $aParams = array())
     {
         if(!$sParamVal)

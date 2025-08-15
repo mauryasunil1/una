@@ -294,6 +294,35 @@ class BxBaseModGeneralSearchResult extends BxTemplSearchResult
         return $a;
     }
 
+    protected function _updateCurrentForFollowedContexts($sMode, $aParams, &$oProfileContext)
+    {
+        $CNF = &$this->oModule->_oConfig->CNF;
+
+        if(empty($aParams['followed_contexts']))
+            return false;
+
+        $iProfileId = (int)$aParams['followed_contexts'];
+        $aContextTypes = array_keys(bx_srv('system', 'get_modules_by_type', ['context', ['name_as_key' => true]]));
+        $aContextIds = BxDolConnection::getObjectInstance('sys_profiles_subscriptions')->getConnectedContentByType($iProfileId, $aContextTypes);
+
+        $this->aCurrent['restriction']['context'] = [
+            'value' => array_map(function($iValue) {
+                return -$iValue;
+            }, $aContextIds),
+            'field' => $CNF['FIELD_ALLOW_VIEW_TO'],
+            'operator' => 'in',
+        ];
+
+        if(!empty($aParams['per_page']))
+            $this->aCurrent['paginate']['perPage'] = is_numeric($aParams['per_page']) ? (int)$aParams['per_page'] : (int)getParam($aParams['per_page']);
+
+        $this->sBrowseUrl = '';
+        $this->aCurrent['title'] = '';
+        unset($this->aCurrent['rss']);
+
+        return true;
+    }
+
     function _getPseudFromParam ()
     {
         $mixedPseud = getParam($this->getModuleName() . '_browse_pseud');
