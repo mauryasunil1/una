@@ -88,11 +88,11 @@ Use the following default credentials for DB configuration during UNA install:
     Database user: `una`  
     Database password: `una`  
 
-Use phpMyAdmin to add new database for UNA:
+Use phpMyAdmin to manage UNA database:
 ```
 http://localhost.una.io:8080
 ```
-MySQL root user password: `root`
+MySQL `root` user password: `root`
 
 Use Mailpit to inspect all emails coming from UNA:
 ```
