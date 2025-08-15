@@ -12,6 +12,8 @@ RUN cd /opt/build && make -j4 && ldconfig && make install
 
 RUN apt update && export DEBIAN_FRONTEND=noninteractive && apt install -y software-properties-common && add-apt-repository ppa:ondrej/php && apt update && apt install -y php8.2 php8.2-dev
 
+RUN export DEBIAN_FRONTEND=noninteractive && apt install -y msmtp-mta netcat-traditional iputils-ping
+
 RUN export DEBIAN_FRONTEND=noninteractive && apt install -y php8.2-cli php8.2-fpm php8.2-gd php8.2-curl php8.2-zip php8.2-xml php8.2-mbstring php8.2-mysql php8.2-imagick php8.2-intl
 
 RUN cd /opt && git clone https://github.com/php-opencv/php-opencv.git
