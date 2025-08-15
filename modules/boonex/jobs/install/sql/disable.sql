@@ -34,7 +34,7 @@ DELETE FROM `sys_objects_connection` WHERE `object` = 'bx_jobs_fans';
 -- RECOMMENDATIONS
 SET @iRecFans = (SELECT `id` FROM `sys_objects_recommendation` WHERE `name`='bx_jobs_fans' LIMIT 1);
 DELETE FROM `sys_objects_recommendation` WHERE `id`=@iRecFans;
-DELETE FROM `sys_recommendation_criteria` WHERE `object_id`=@iRecFans AND `name` IN ('by_friends', 'by_subscriptions', 'by_fans');
+DELETE FROM `sys_recommendation_criteria` WHERE `object_id`=@iRecFans;
 DELETE FROM `sys_recommendation_data` WHERE `object_id`=@iRecFans;
 
 -- STATS
