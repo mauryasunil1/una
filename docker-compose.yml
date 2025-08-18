@@ -11,7 +11,7 @@ services:
         networks:
             unanet:
                 aliases:
-                    - example.local
+                    - localhost.una.io
 
     php:
         build:
@@ -75,6 +75,19 @@ services:
             - ./scripts/docker-compose/phpmyadmin.inc.php:/etc/phpmyadmin/config.user.inc.php
         depends_on:
             - mysql
+        networks:
+            - unanet
+
+    mailpit:
+        image: axllent/mailpit
+        container_name: mailpit
+        restart: unless-stopped
+        ports:
+            - "8025:8025"
+        environment:
+            MP_MAX_MESSAGES: 5000
+            MP_SMTP_AUTH_ACCEPT_ANY: 1
+            MP_SMTP_AUTH_ALLOW_INSECURE: 1
         networks:
             - unanet
 
