@@ -2209,7 +2209,6 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
     {
         $CNF = &$this->_oConfig->CNF;
 
-        //TODO: Test ACL for Change Badge
         return !empty($CNF['FIELD_BADGE']) && $this->checkAllowedViewBadgeImage($aData) === CHECK_ACTION_RESULT_ALLOWED;
     }
 

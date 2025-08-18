@@ -12,6 +12,10 @@
     -webkit-justify-content: flex-start;
     justify-content: flex-start;
 }
+.bx-base-pofile-units-wrapper:not(.bx-base-unit-showcase-wrapper) .bx-base-pofile-unit {
+    margin: 0;
+    padding: 0.5rem;
+}
 
 .bx-base-pofile-units-wrapper .bx-base-pofile-unit-with-cover {
     -webkit-flex: 0 0 100%;
@@ -194,8 +198,14 @@ p.bx-base-pofile-unit-thumb.bx-def-ava-big-size {
 .bx-base-profile-cover-meta .bx-menu-custom.bx-menu-custom-hor li .bx-base-bages-container {
     display: -webkit-flex;
     display: flex;
-    -webkit-align-items: flex-start;
-    align-items: flex-start;
+    -webkit-align-items: center;
+    align-items: center;
+}
+.bx-base-profile-cover-meta .bx-menu-custom.bx-menu-custom-hor li .bx-base-bages-container .bx-badges-list {
+    margin-left: 0.5rem;
+}
+.bx-base-profile-cover-meta .bx-menu-custom.bx-menu-custom-hor li .bx-base-bages-container .bx-badges-list:first-child {
+    margin-left: 0;
 }
 
 /*--- Entry: Profile Actions ---*/
