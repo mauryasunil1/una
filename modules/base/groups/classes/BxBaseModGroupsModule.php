@@ -1166,17 +1166,19 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
         if(!$this->_oConfig->isPaidJoin())
             return $this->_bIsApi ? [] : '';
 
+        if($this->_bIsApi && !$this->isPaidJoinByProfile($iProfileId))
+            return [];
+
         $oGrid = BxDolGrid::getObjectInstance($CNF['OBJECT_GRID_PRICES_VIEW']);
         if(!$oGrid)
             return $this->_bIsApi ? [] : '';
 
         $oGrid->setProfileId($iProfileId);
 
-        if($this->_bIsApi){
+        if($this->_bIsApi)
             return [
                 bx_api_get_block('grid', $oGrid->getCodeAPI())
             ];
-        }
 
         return $oGrid->getCode();
     }
