@@ -889,7 +889,7 @@ class BxBaseServiceProfiles extends BxDol
             $iProfileId = bx_get_logged_profile_id();
         if(!$iProfileId)
             return '';
-        
+
         $aParams = array_merge([
             'params' => false,
             'design_box' => BX_DB_PADDING_DEF,
@@ -923,7 +923,7 @@ class BxBaseServiceProfiles extends BxDol
             if($o->isError)
                 continue;
 
-            if($this->_bIsApi) {
+            if($this->_bIsApi && !defined('BX_API_PAGE')) {
                 $aQuery = $o->getSearchQuery($sModule);
 
                 if(!empty($aQuery['query']))
@@ -936,24 +936,52 @@ class BxBaseServiceProfiles extends BxDol
         }
  
         if($this->_bIsApi) {
-            $aItems = BxDolDb::getInstance()->getAll('(' . implode(') UNION (', $aData['queries']) . ') ORDER BY `added` DESC ' . $aData['limit']);
-
             $aDataApi = [];
-            foreach($aItems as $aItem)
-                $aDataApi[] = BxDolProfile::getData($aItem['id']);
+            if(!defined('BX_API_PAGE')) {
+                $aItems = BxDolDb::getInstance()->getAll('(' . implode(') UNION (', $aData['queries']) . ') ORDER BY `added` DESC ' . $aData['limit']);
+
+                $oProfileQuery = BxDolProfileQuery::getInstance();
+                foreach($aItems as $aItem) 
+                    if(($iContextPid = (int)$aItem['id']) && ($aContextProfileInfo = $oProfileQuery->getInfoById($iContextPid))) {
+                        $sContextModule = $aContextProfileInfo['type'];
+
+                        $sKey = bx_srv($sContextModule, 'get_invited_key', [$iContextPid, $iProfileId]);
+                        $sCallback = '/api.php?r=' . $aContextProfileInfo['type'] . '/process_invite/&params[]=' . $sKey . '&params[]=' . $iContextPid . '&params[]=';
+
+                        $aDataApi[] = array_merge(bx_srv($aContextProfileInfo['type'], 'get_search_result_unit', [$aContextProfileInfo['content_id']]), [
+                            'callback_accept' => $sCallback . '1',
+                            'callback_decline' => $sCallback . '0',
+                        ]);
+                    }
+            }
 
             return [bx_api_get_block('browse', [
                 'module' => 'system',
-                'unit' => 'mixed',
+                'unit' => 'invitations',
                 'request_url' => '/api.php?r=system/browse_invitations/TemplServiceProfiles&params[]=' . $iProfileId . '&params[]=',
                 'data' =>  $aDataApi,
-                'params' => $aParamsBrowse
+                'params' => [
+                    'start' => 0, 
+                    'per_page' => 999
+                ]
             ])];
         }
-        else
+        else {
+            if(!$aData && $aParams['empty_message'])
+                return MsgBox(_t('_Empty'));
+            
+            $aUnitParams = [
+                'template' => [
+                    'name' => 'unit_with_cover'
+                ]
+            ];
+            if(isset($aParams['unit_params']))
+                $aUnitParams = array_merge($aUnitParams, $aParams['unit_params']);
+
             return $this->serviceBrowseQuick($aData, 0, 0, [
-                'unit_params' => isset($aParams['unit_params']) ? $aParams['unit_params'] : false
+                'unit_params' => $aUnitParams
             ]);
+        }
     }
 
     public function serviceBrowseQuick($aProfiles, $iStart = 0, $iLimit = 0, $aParams = [])

@@ -89,6 +89,7 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
             'BrowseSubscribedMe' => 'BxBaseServiceProfiles',
             'BrowseSubscriptions' => 'BxBaseServiceProfiles',
             'BrowseMembers' => 'BxBaseServiceProfiles',
+            'BrowseInvitations' => 'BxBaseServiceProfiles',
             'UpdateSettings' => 'BxBaseServiceProfiles',
             'Befriend' => 'BxBaseServiceProfiles',
             'ProfileCounters' => 'BxBaseServiceProfiles',

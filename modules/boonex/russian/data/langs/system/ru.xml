@@ -3521,6 +3521,9 @@
     <string name="_sys_menu_item_title_con_followers"><![CDATA[Подписчики]]></string>
     <string name="_sys_menu_item_title_recom_friends"><![CDATA[Предложения]]></string>
     <string name="_sys_menu_item_title_recom_subscriptions"><![CDATA[На кого подписаться]]></string>
+    <string name="_sys_menu_title_ntfs_submenu"><![CDATA[Уведомления]]></string>
+    <string name="_sys_menu_set_title_ntfs_submenu"><![CDATA[Уведомления]]></string>
+    <string name="_sys_menu_item_title_ntfs_context_invitations"><![CDATA[Контекстные приглашения]]></string>
     <string name="_sys_metatags_mention_added"><![CDATA[<b class="bx-ntfs-content-profile">{owner_name}</b> упомянул <b class="bx-ntfs-content-entry">{entry_caption}</b>]]></string>
     <string name="_sys_mobile_friends"><![CDATA[Друзья]]></string>
     <string name="_sys_mobile_info"><![CDATA[Инфо]]></string>
@@ -3569,10 +3572,16 @@
 	<string name="_sys_page_block_title_author"><![CDATA[Автор]]></string>
         <string name="_sys_page_block_title_sys_ask_aqssistant"><![CDATA[Спросите ИИ]]></string>
         <string name="_sys_page_block_title_ask_aqssistant"><![CDATA[Спросите ИИ]]></string>
+        <string name="_sys_page_block_title_con_friends"><![CDATA[Друзья]]></string>
+        <string name="_sys_page_block_title_con_friend_requests"><![CDATA[Хотят дружить]]></string>
+        <string name="_sys_page_block_title_con_friend_requested"><![CDATA[Запрошенная дружба]]></string>
+        <string name="_sys_page_block_title_con_following"><![CDATA[Подписан на]]></string>
+        <string name="_sys_page_block_title_con_followers"><![CDATA[Подписчики]]></string>
         <string name="_sys_page_block_title_sys_recom_friends"><![CDATA[Рекомендуемые друзья]]></string>
         <string name="_sys_page_block_title_recom_friends"><![CDATA[С кем дружить]]></string>
         <string name="_sys_page_block_title_sys_recom_subscriptions"><![CDATA[Рекомендуемые подписки]]></string>
         <string name="_sys_page_block_title_recom_subscriptions"><![CDATA[На кого подписаться]]></string>
+        <string name="_sys_page_block_title_ntfs_context_invitations"><![CDATA[Контекстные приглашения]]></string>
         <string name="_sys_page_block_title_sys_invitations"><![CDATA[Приглашения]]></string>
         <string name="_sys_page_block_title_invitations"><![CDATA[Приглашения]]></string>
         <string name="_sys_page_block_title_sys_create_post"><![CDATA[Создать публикацию]]></string>
@@ -3691,28 +3700,22 @@
 	<string name="_sys_page_title_studio_dashboard"><![CDATA[Студия - Панель]]></string>
 	<string name="_sys_page_title_wiki_pages_list"><![CDATA[Подстраница: Список страниц]]></string>
 	<string name="_sys_page_title_wiki_page_contents"><![CDATA[Подстраница: Содержание страницы]]></string>
-    
         <string name="_sys_page_title_system_con_friends"><![CDATA[Связи: Друзья]]></string>
         <string name="_sys_page_title_con_friends"><![CDATA[Друзья]]></string>
-        <string name="_sys_page_block_title_con_friends"><![CDATA[Друзья]]></string>
         <string name="_sys_page_title_system_con_friend_requests"><![CDATA[Связи: Хотят дружить]]></string>
         <string name="_sys_page_title_con_friend_requests"><![CDATA[Хотят дружить]]></string>
-        <string name="_sys_page_block_title_con_friend_requests"><![CDATA[Хотят дружить]]></string>
         <string name="_sys_page_title_system_con_friend_requested"><![CDATA[Связи: Запрошенная дружба]]></string>
         <string name="_sys_page_title_con_friend_requested"><![CDATA[Запрошенная дружба]]></string>
-        <string name="_sys_page_block_title_con_friend_requested"><![CDATA[Запрошенная дружба]]></string>
         <string name="_sys_page_title_system_con_following"><![CDATA[Связи: Подписан на]]></string>
         <string name="_sys_page_title_con_following"><![CDATA[Подписан на]]></string>
-        <string name="_sys_page_block_title_con_following"><![CDATA[Подписан на]]></string>
         <string name="_sys_page_title_system_con_followers"><![CDATA[Связи: Подписчики]]></string>
         <string name="_sys_page_title_con_followers"><![CDATA[Подписчики]]></string>
-        <string name="_sys_page_block_title_con_followers"><![CDATA[Подписчики]]></string>
         <string name="_sys_page_title_system_recom_friends"><![CDATA[Рекомендации: Друзья]]></string>
         <string name="_sys_page_title_recom_friends"><![CDATA[Предложения друзей]]></string>
-        <string name="_sys_page_block_title_recom_friends"><![CDATA[Предложения друзей]]></string>
         <string name="_sys_page_title_system_recom_subscriptions"><![CDATA[Рекомендации: Подписки]]></string>
         <string name="_sys_page_title_recom_subscriptions"><![CDATA[На кого подписаться]]></string>
-        <string name="_sys_page_block_title_recom_subscriptions"><![CDATA[На кого подписаться]]></string>
+        <string name="_sys_page_title_system_ntfs_context_invitations"><![CDATA[Уведомления: контекстные приглашения]]></string>
+        <string name="_sys_page_title_ntfs_context_invitations"><![CDATA[Контекстные приглашения]]></string>
         <string name="_sys_page_type_application"><![CDATA[Приложение]]></string>
 	<string name="_sys_page_type_default"><![CDATA[Тип по умолчанию]]></string>
         <string name="_sys_page_type_standard"><![CDATA[Стандартная]]></string>

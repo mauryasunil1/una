@@ -77,6 +77,11 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
      */
     public function actionProcessInvite ($sKey, $iGroupProfileId, $bAccept)
     {
+        return $this->serviceProcessInvite($sKey, $iGroupProfileId, $bAccept);
+    }
+
+    public function serviceProcessInvite ($sKey, $iGroupProfileId, $bAccept)
+    {
         $aData = $this->_oDb->getInviteByKey($sKey, $iGroupProfileId);
         if (isset($aData['invited_profile_id'])){
             $CNF = &$this->_oConfig->CNF;
@@ -235,6 +240,7 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
         $CNF = &$this->_oConfig->CNF;
 
         $a = [
+            'ProcessInvite' => '',
             'GetQuestionnaire' => '',
             'GetInitialMembers' => '',
             'EntityInvite' => '',

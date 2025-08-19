@@ -3,23 +3,19 @@
  * Copyright (c) UNA, Inc - https://una.io
  * MIT License - https://opensource.org/licenses/MIT
  *
- * @defgroup    Notifications Notifications
- * @ingroup     UnaModules
- *
+ * @defgroup    UnaBaseView UNA Base Representation Classes
  * @{
  */
 
-class BxNtfsPageView extends BxTemplPage
+class BxBasePageNotifications extends BxTemplPage
 {
-    protected $_sModule;
-    protected $_oModule;
-
-    public function __construct($aObject, $oTemplate = false)
+    public function __construct($aObject, $oTemplate)
     {
         parent::__construct($aObject, $oTemplate);
 
-        $this->_sModule = 'bx_notifications';
-        $this->_oModule = BxDolModule::getInstance($this->_sModule);
+        $iProfileId = bx_get_logged_profile_id();
+        if(!$iProfileId)
+            return;
 
         if(($oMenuSubmenu = BxDolMenu::getObjectInstance('sys_site_submenu')) !== false) {
             $sMenuSubmenu = 'sys_ntfs_submenu';
@@ -30,8 +26,10 @@ class BxNtfsPageView extends BxTemplPage
             ]);
             $oMenuSubmenu->setDisplayAddons(true);
         }
-        else
-            $this->_oModule->setSubmenu('notifications-all');
+
+        $this->addMarkers([
+            'profile_id' => $iProfileId
+        ]);
     }
 }
 
