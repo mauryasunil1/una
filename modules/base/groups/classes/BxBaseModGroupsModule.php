@@ -1002,7 +1002,37 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
 
         return $this->_serviceBrowse ('joined_entries', array('joined_profile' => $iProfileId), BX_DB_PADDING_DEF, $bDisplayEmptyMsg);
     }
-    
+
+    /**
+     * Display entries posted into particular context and joined by profile
+     */
+    public function serviceBrowseContextJoinedEntries ($iContextPid = 0, $iProfileId = 0, $aParams = [])
+    {
+        if(!$iContextPid)
+            $iContextPid = bx_process_input(bx_get('profile_id'), BX_DATA_INT);
+        if(!$iContextPid)
+            return $this->_bIsApi ? [] : '';
+
+        if(!$iProfileId)
+            $iProfileId = bx_get_logged_profile_id();
+        if(!$iProfileId)
+            return $this->_bIsApi ? [] : '';
+
+        $bEmptyMessage = true;
+        if(isset($aParams['empty_message'])) {
+            $bEmptyMessage = (bool)$aParams['empty_message'];
+            unset($aParams['empty_message']);
+        }
+
+        $bAjaxPaginate = true;
+        if(isset($aParams['ajax_paginate'])) {
+            $bAjaxPaginate = (bool)$aParams['ajax_paginate'];
+            unset($aParams['ajax_paginate']);
+        }
+
+        return $this->_serviceBrowse ('context_joined_entries', ['context' => $iContextPid, 'joined_profile' => $iProfileId], BX_DB_PADDING_DEF, $bEmptyMessage, $bAjaxPaginate);
+    }
+
     public function serviceBrowseFollowedEntries ($iProfileId = 0, $bDisplayEmptyMsg = false)
     {
         if (!$iProfileId)

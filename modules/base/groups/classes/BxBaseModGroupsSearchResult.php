@@ -161,6 +161,33 @@ class BxBaseModGroupsSearchResult extends BxBaseModProfileSearchResult
         return true;
     }
 
+    protected function _updateCurrentForJoinedEntries($sMode, $aParams, &$oJoinedProfile)
+    {
+        $CNF = &$this->oModule->_oConfig->CNF;
+
+        $oJoinedProfile = BxDolProfile::getInstance((int)$aParams['joined_profile']);
+        if (!$oJoinedProfile)
+            return false;
+
+        $bProcessConditionsForPrivateContent = false;
+
+        $this->aCurrent['join']['fans'] = array(
+            'type' => 'INNER',
+            'table' => 'bx_groups_fans',
+            'mainField' => 'id',
+            'onField' => 'content',
+            'joinFields' => array('initiator'),
+        );
+
+        $this->aCurrent['restriction']['fans'] = array('value' => $oJoinedProfile->id(), 'field' => 'initiator', 'operator' => '=', 'table' => 'bx_groups_fans');
+
+        $this->sBrowseUrl = 'page.php?i=' . $CNF['URI_JOINED_ENTRIES'] . '&profile_id={profile_id}';
+        $this->aCurrent['title'] = ($sKey = 'txt_joined_entries') && !empty($CNF['T'][$sKey]) ? _t($CNF['T'][$sKey]) : '';
+        $this->aCurrent['rss']['link'] = 'modules/?r=groups/rss/' . $sMode . '/' . $oJoinedProfile->id();
+
+        return true;
+    }
+
     protected function _updateCurrentForContext($sMode, $aParams, &$oProfileContext)
     {
         $CNF = &$this->oModule->_oConfig->CNF;

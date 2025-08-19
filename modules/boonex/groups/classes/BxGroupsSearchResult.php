@@ -91,30 +91,28 @@ class BxGroupsSearchResult extends BxBaseModGroupsSearchResult
                 break;
 
             case 'joined_entries':
-                $oJoinedProfile = BxDolProfile::getInstance((int)$aParams['joined_profile']);
-                if (!$oJoinedProfile) {
+                $oJoinedProfile = null;
+                if(!$this->_updateCurrentForJoinedEntries($sMode, $aParams, $oJoinedProfile))
                     $this->isError = true;
-                    break;
-                }
 
-                $bProcessConditionsForPrivateContent = false;
-
-                $this->aCurrent['join']['fans'] = array(
-                    'type' => 'INNER',
-                    'table' => 'bx_groups_fans',
-                    'mainField' => 'id',
-                    'onField' => 'content',
-                    'joinFields' => array('initiator'),
-                );
-
-                $this->aCurrent['restriction']['fans'] = array('value' => $oJoinedProfile->id(), 'field' => 'initiator', 'operator' => '=', 'table' => 'bx_groups_fans');
-
-                $this->sBrowseUrl = 'page.php?i=' . $CNF['URI_JOINED_ENTRIES'] . '&profile_id={profile_id}';
-                $this->aCurrent['title'] = _t('_bx_groups_page_title_joined_entries');
-                $this->aCurrent['rss']['link'] = 'modules/?r=groups/rss/' . $sMode . '/' . $oJoinedProfile->id();
+                if(!$this->aCurrent['title'])
+                    $this->aCurrent['title'] = _t('_bx_groups_page_title_joined_entries');
                 break;
+
+            case 'context_joined_entries':
+                $oProfileContext = null;
+                if(!$this->_updateCurrentForContext('context', $aParams, $oProfileContext))
+                    $this->isError = true;
                 
-                
+                $oJoinedProfile = null;
+                if(!$this->_updateCurrentForJoinedEntries('joined_entries', $aParams, $oJoinedProfile))
+                    $this->isError = true;
+
+                $this->sBrowseUrl = '';
+                $this->aCurrent['title'] = '';
+                unset($this->aCurrent['rss']);
+                break;
+
             case 'followed_entries':
                 $oJoinedProfile = BxDolProfile::getInstance((int)$aParams['followed_profile']);
                 if (!$oJoinedProfile) {
