@@ -22,13 +22,22 @@ class BxDolApiConfig
 
     public function getQueries()
     {
-        $sResult = $this->_getQueriesPages();
-        $sResult .= $this->_getQueriesMenus();
+        $sResult = "";
+
+        $sResult .= "-- \n-- To copy 'Config API':\n-- ";
+        $sResult .= $this->_getQueriesPagesConfigApi();
+        $sResult .= $this->_getQueriesMenusConfigApi();
+        
+        $sResult .= "\n\n\n";
+        
+        $sResult .= "-- \n-- To copy 'Active API':\n-- ";
+        $sResult .= $this->_getQueriesPagesActiveApi();
+        $sResult .= $this->_getQueriesMenusActiveApi();
 
         echo "<pre>" . $sResult . "</pre>";
     }
-    
-    protected function _getQueriesPages()
+
+    protected function _getQueriesPagesConfigApi()
     {
         $aPages = $this->_oDb->getAll("SELECT `object`, `config_api` FROM `sys_objects_page` WHERE `config_api` <> '' ORDER BY `id` ASC");
 
@@ -44,8 +53,19 @@ class BxDolApiConfig
 
         return $sResult;
     }
-    
-    protected function _getQueriesMenus()
+
+    protected function _getQueriesPagesActiveApi()
+    {
+        $aBlocks = $this->_oDb->getAll("SELECT `object`, `module`, `title_system`, `title`, `active_api` FROM `sys_pages_blocks` WHERE `active_api` <> '0' ORDER BY `id` ASC");
+        
+        $sResult = "\n\n-- PAGE BLOCKS:\n";
+        foreach($aBlocks as $aBlock)
+            $sResult .= $this->_oDb->prepareAsString("UPDATE `sys_pages_blocks` SET `active_api`=? WHERE `object`=? AND `module`=? AND `title_system`=? AND `title`=?;\n", $aBlock['active_api'], $aBlock['object'], $aBlock['module'], $aBlock['title_system'], $aBlock['title']);
+
+        return $sResult;
+    }
+
+    protected function _getQueriesMenusConfigApi()
     {
         $aMenus = $this->_oDb->getAll("SELECT `object`, `config_api` FROM `sys_objects_menu` WHERE `config_api` <> '' ORDER BY `id` ASC");
 
@@ -58,6 +78,17 @@ class BxDolApiConfig
         $sResult .= "\n\n-- MENU ITEMS:\n";
         foreach($aItems as $aItem)
             $sResult .= $this->_oDb->prepareAsString("UPDATE `sys_menu_items` SET `config_api`=? WHERE `set_name`=? AND `module`=? AND `name`=?;\n", $aItem['config_api'], $aItem['set_name'], $aItem['module'], $aItem['name']);
+
+        return $sResult;
+    }
+
+    protected function _getQueriesMenusActiveApi()
+    {
+        $aItems = $this->_oDb->getAll("SELECT `set_name`, `module`, `name`, `active_api` FROM `sys_menu_items` WHERE `active_api` <> '0' ORDER BY `id` ASC");
+
+        $sResult = "\n\n-- MENU ITEMS:\n";
+        foreach($aItems as $aItem)
+            $sResult .= $this->_oDb->prepareAsString("UPDATE `sys_menu_items` SET `active_api`=? WHERE `set_name`=? AND `module`=? AND `name`=?;\n", $aItem['active_api'], $aItem['set_name'], $aItem['module'], $aItem['name']);
 
         return $sResult;
     }
