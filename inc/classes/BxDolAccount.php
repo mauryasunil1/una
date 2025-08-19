@@ -603,6 +603,33 @@ class BxDolAccount extends BxDolFactory implements iBxDolSingleton
 
         return BxDolTemplate::getInstance()->parseHtmlByName($sTemplate, $aTmplVars);
     }
+    
+    public function getUnitApi($iAccountId = false, $aParams = array())
+    {
+        if(!$iAccountId)
+            $iAccountId = $this->_iAccountID;
+
+        $sModule = 'system';
+
+        $iAuthorId = 0;
+        $aAuthorData = [];
+        if(($oProfile = BxDolProfile::getInstanceByContentAndType($iAccountId, $sModule)) !== false) {
+            $iAuthorId = $oProfile->id();
+            $aAuthorData = BxDolProfile::getData($iAuthorId);
+        }
+
+        $aInfo = $this->getInfo($iAccountId);
+
+        return [
+            'id' => $aInfo['id'], 
+            'module' => $sModule,
+            'module_title' => $sModule,
+            'added' => $aInfo['added'],
+            'author' => $iAuthorId,
+            'author_data' => $aAuthorData,
+            'title' => $this->getDisplayName($iAccountId),
+        ];
+    }
 
     /**
      * Get picture url
