@@ -99,6 +99,8 @@ Use Mailpit to inspect all emails coming from UNA:
 http://localhost.una.io:8025
 ```
 
+If you use Visual Studio Code then there is already ready launch configuration for debugging via XDebug.
+
 ## License
 
 MIT
