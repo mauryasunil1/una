@@ -3562,7 +3562,8 @@ If it is not enabled then please consider implement this optimization, since it 
     <string name="_sys_menu_item_title_recom_subscriptions"><![CDATA[Who to follow]]></string>    
     <string name="_sys_menu_title_ntfs_submenu"><![CDATA[Notifications]]></string>
     <string name="_sys_menu_set_title_ntfs_submenu"><![CDATA[Notifications]]></string>
-    <string name="_sys_menu_item_title_ntfs_context_invitations"><![CDATA[Context Invitations]]></string>
+    <string name="_sys_menu_item_title_system_ntfs_context_invitations"><![CDATA[Notifications: Context Invitations]]></string>
+    <string name="_sys_menu_item_title_ntfs_context_invitations"><![CDATA[Invitations]]></string>
     <string name="_sys_metatags_mention_added"><![CDATA[<b class="bx-ntfs-content-profile">{owner_name}</b> mentioned <b class="bx-ntfs-content-entry">{entry_caption}</b>]]></string>
     <string name="_sys_mobile_friends"><![CDATA[Friends]]></string>
     <string name="_sys_mobile_info"><![CDATA[Info]]></string>
@@ -3620,7 +3621,7 @@ If it is not enabled then please consider implement this optimization, since it 
     <string name="_sys_page_block_title_recom_friends"><![CDATA[Friend Suggestions]]></string>
     <string name="_sys_page_block_title_sys_recom_subscriptions"><![CDATA[Recommended Subscriptions]]></string>
     <string name="_sys_page_block_title_recom_subscriptions"><![CDATA[Who to follow]]></string>
-    <string name="_sys_page_block_title_ntfs_context_invitations"><![CDATA[Context Invitations]]></string>
+    <string name="_sys_page_block_title_ntfs_context_invitations"><![CDATA[Invitations]]></string>
     <string name="_sys_page_block_title_sys_invitations"><![CDATA[Invitations]]></string>
     <string name="_sys_page_block_title_invitations"><![CDATA[Invitations]]></string>
     <string name="_sys_page_block_title_sys_create_post"><![CDATA[Create Post]]></string>
@@ -3757,7 +3758,7 @@ If it is not enabled then please consider implement this optimization, since it 
     <string name="_sys_page_title_system_recom_subscriptions"><![CDATA[Recommendations: Subscriptions]]></string>
     <string name="_sys_page_title_recom_subscriptions"><![CDATA[Who to follow]]></string>
     <string name="_sys_page_title_system_ntfs_context_invitations"><![CDATA[Notifications: Context Invitations]]></string>
-    <string name="_sys_page_title_ntfs_context_invitations"><![CDATA[Context Invitations]]></string>
+    <string name="_sys_page_title_ntfs_context_invitations"><![CDATA[Invitations]]></string>
     <string name="_sys_page_type_application"><![CDATA[Application]]></string>
     <string name="_sys_page_type_default"><![CDATA[Default]]></string>
     <string name="_sys_page_type_standard"><![CDATA[Standard]]></string>

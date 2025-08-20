@@ -5067,7 +5067,7 @@ INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `tit
 
 -- notifiactions submenu
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `visibility_custom`, `active`, `copyable`, `order`) VALUES
-('sys_ntfs_submenu', 'system', 'context-invitations', '', '_sys_menu_item_title_ntfs_context_invitations', 'page.php?i=context-invitations', '', '', '', '', '', 2147483647, '', 1, 1, 1);
+('sys_ntfs_submenu', 'system', 'context-invitations', '_sys_menu_item_title_system_ntfs_context_invitations', '_sys_menu_item_title_ntfs_context_invitations', 'page.php?i=context-invitations', '', '', 'ticket', '', '', 2147483647, '', 1, 1, 1);
 
 -- studio: account menu
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `editable`, `order`) VALUES
