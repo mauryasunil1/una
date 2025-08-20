@@ -557,21 +557,24 @@ class BxBasePage extends BxDolPage
                 $oMenuSubmenu->setObjectSubmenu($sSubmenu, []);
 
             $a['menu'] = $oMenuSubmenu->getCodeAPI();
-            if($sModule && $sModule != 'system' && ($oModule = BxDolModule::getInstance($sModule))) {
+            if($sModule && $sModule != 'system' && (bx_srv('system', 'is_module_content', [$sModule]) || bx_srv('system', 'is_module_context', [$sModule])) && ($oModule = BxDolModule::getInstance($sModule))) {
                 $CNF = &$oModule->_oConfig->CNF;
+
+                $aMenuAdd = [
+                    'name' => $oModule->getName(),
+                    'title' => BxDolModule::getTitle($oModule->_oConfig->getUri()),
+                    'icon' => !empty($CNF['ICON']) ? $CNF['ICON'] : '',
+                ];
 
                 $sUrlAdd = '';
                 if(($sKey = 'URI_ADD_ENTRY') && !empty($CNF[$sKey]))
                     $sUrlAdd = $CNF[$sKey];
                 if(!$sUrlAdd && ($sKey = 'URI_EDIT_ENTRY') && !empty($CNF[$sKey]))
                     $sUrlAdd = str_replace('edit-', 'create-', $CNF[$sKey]);
+                if($sUrlAdd)
+                    $aMenuAdd['add_url'] = $sUrlAdd;
 
-                $a['menu'] = array_merge($a['menu'], [
-                    'name' => $oModule->getName(),
-                    'title' => BxDolModule::getTitle($oModule->_oConfig->getUri()),
-                    'icon' => !empty($CNF['ICON']) ? $CNF['ICON'] : '',
-                    'add_url' => $sUrlAdd 
-                ]);
+                $a['menu'] = array_merge($a['menu'], $aMenuAdd);
             }
         }
     
