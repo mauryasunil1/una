@@ -2592,6 +2592,7 @@ class BxDolCmts extends BxDolFactory implements iBxDolReplaceable, iBxDolContent
         $aDataApi = array_merge($aData, [
             'cmt_url' => '/' . $this->getViewUrl($aData['cmt_id'], false),
             'author_data' => BxDolProfile::getData($aData['cmt_author_id']),
+            'author_badges' => BxDolProfile::getInstance($aData['cmt_author_id'])->getBadges()
         ]);
 
         $sModule = $this->_aSystem['module'];
