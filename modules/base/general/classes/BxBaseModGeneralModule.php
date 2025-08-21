@@ -3323,9 +3323,16 @@ class BxBaseModGeneralModule extends BxDolModule
         if(empty($aBadges) || !is_array($aBadges))
             return $this->_bIsApi ? [] : '';
 
-        if($this->_bIsApi)
+        if($this->_bIsApi) {
+            foreach($aBadges as &$aBadge)
+                if(($mixedIcon = $aBadge['icon']) && is_numeric($mixedIcon) && (int)$mixedIcon > 0)
+                    $aBadge['icon_url'] = $this->_oTemplate->getIcon($aBadge['icon'], ['wrap_in_tag' => false]);
+                else
+                    $aBadge['icon'] = $mixedIcon;
+
             return $aBadges;
-        
+        }
+
         if($bIsSingle)
             return BxDolService::call('system', 'get_badge', array($aBadges[0], $bIsCompact), 'TemplServices');
 
