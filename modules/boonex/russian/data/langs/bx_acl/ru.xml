@@ -36,6 +36,10 @@
     <string name="_bx_acl_form_price_input_caption"><![CDATA[Название]]></string>
     <string name="_bx_acl_form_price_input_inf_caption"><![CDATA[Название будет показываться на стороне пользователя.]]></string>
     <string name="_bx_acl_form_price_input_err_caption"><![CDATA[Здесь вам необходимо ввести значение.]]></string>
+    <string name="_bx_acl_form_price_input_sys_description"><![CDATA[Описание]]></string>
+    <string name="_bx_acl_form_price_input_description"><![CDATA[Описание]]></string>
+    <string name="_bx_acl_form_price_input_sys_details"><![CDATA[Детали]]></string>
+    <string name="_bx_acl_form_price_input_details"><![CDATA[Детали]]></string>
     <string name="_bx_acl_form_price_input_sys_period"><![CDATA[Период]]></string>
     <string name="_bx_acl_form_price_input_period"><![CDATA[Период]]></string>
     <string name="_bx_acl_form_price_input_inf_period"><![CDATA[Используйте 0 для пожизненного]]></string>
@@ -71,6 +75,8 @@
     <string name="_bx_acl_grid_column_level_id"><![CDATA[Уровень]]></string>
     <string name="_bx_acl_grid_column_name"><![CDATA[Имя]]></string>
     <string name="_bx_acl_grid_column_caption"><![CDATA[Название]]></string>
+    <string name="_bx_acl_grid_column_description"><![CDATA[Описание]]></string>
+    <string name="_bx_acl_grid_column_details"><![CDATA[Детали]]></string>
     <string name="_bx_acl_grid_column_period"><![CDATA[Период]]></string>
     <string name="_bx_acl_grid_column_price"><![CDATA[Цена]]></string>
     <string name="_bx_acl_grid_column_price_value"><![CDATA[{0}{1}]]></string>

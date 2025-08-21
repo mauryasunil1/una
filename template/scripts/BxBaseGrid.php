@@ -650,7 +650,7 @@ class BxBaseGrid extends BxDolGrid
         if ($aField['translatable'])
             $mixedValue = _t($mixedValue);
 
-        $mixedValue = $this->_limitMaxLength($mixedValue, $sKey, $aField, $aRow, $this->_isDisplayPopupOnTextOverflow);
+        $mixedValue = $this->_limitMaxLength([strip_tags($mixedValue), $mixedValue], $sKey, $aField, $aRow, $this->_isDisplayPopupOnTextOverflow);
 
         return $this->$sMethod($mixedValue, $sKey, $aField, $aRow);
     }

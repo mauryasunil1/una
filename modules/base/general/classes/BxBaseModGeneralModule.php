@@ -1700,6 +1700,7 @@ class BxBaseModGeneralModule extends BxDolModule
         $oObject = null;
 
         bx_alert('system', 'get_forms_helper', 0, 0, [
+            'module' => $this->getName(),
             'class' => &$sClass,
             'object' => &$oObject
         ]);

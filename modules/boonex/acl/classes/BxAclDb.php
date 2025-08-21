@@ -97,6 +97,8 @@ class BxAclDb extends BxDolModuleDb
             `tap`.`level_id` AS `level_id`,
             `tap`.`name` AS `name`,
             `tap`.`caption` AS `caption`,
+            `tap`.`description` AS `description`,
+            `tap`.`details` AS `details`,
             `tap`.`period` AS `period`,
             `tap`.`period_unit` AS `period_unit`,
             `tap`.`price` AS `price`,

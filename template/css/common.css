@@ -937,8 +937,7 @@ svg .gray .outer .p2 {
 /* --------------- button at the end of cut string */
 
 .bx-str-limit {
-    margin-left:0.5rem;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 /* --------------- categories */

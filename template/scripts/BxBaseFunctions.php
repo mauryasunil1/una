@@ -316,13 +316,18 @@ class BxBaseFunctions extends BxDolFactory implements iBxDolSingleton
     /**
      * functions for limiting maximal string length
      */
-    function getStringWithLimitedLength($sString, $iWidth = 45, $isPopupOnOverflow = false, $bReturnString = true)
+    function getStringWithLimitedLength($mixedString, $iWidth = 45, $isPopupOnOverflow = false, $bReturnString = true)
     {
-        if (empty($sString) || mb_strlen($sString, 'UTF-8') <= $iWidth)
-            return $bReturnString ? $sString : array($sString);
+        if(is_array($mixedString))
+            list($sStrPlane, $sStrOriginal) = $mixedString;
+        else
+            $sStrPlane = $sStrOriginal = $mixedString;
+
+        if(empty($sStrPlane) || mb_strlen($sStrPlane, 'UTF-8') <= $iWidth)
+            return $bReturnString ? $sStrPlane : [$sStrPlane];
 
         $sResult = '';
-        $aWords = mb_split("[\s\r\n]", $sString);
+        $aWords = mb_split("[\s\r\n]", $sStrPlane);
         $iPosition = 0;
         $iWidthReal = $iWidth - 3;
         $iWidthMin = $iWidth - 15;
@@ -345,15 +350,15 @@ class BxBaseFunctions extends BxDolFactory implements iBxDolSingleton
         // add tripple dot
         if(!$isPopupOnOverflow) {
             $sResult .= '...';
-            return $bReturnString ? $sResult : array($sResult);
+            return $bReturnString ? $sResult : [$sResult];
         }
 
         // add button width popup
         $sId = 'bx-str-limit-' . rand(1, PHP_INT_MAX);
-        $sPopup = '<a class="bx-str-limit" href="javascript:void(0)"  onclick="$(\'#' . $sId . '\').dolPopup({pointer:{el:$(this), offset:\'10 1\'}})"><i class="sys-icon ellipsis-h"></i></a>';
-        $sPopup .= '<div id="' . $sId . '" style="display:none;">' . BxTemplFunctions::getInstance()->transBox('', '<div class="bx-def-padding">'.$sString.'</div>') . '</div>';
+        $sPopup = '<a class="bx-str-limit pl-2" href="javascript:void(0)" onclick="$(\'#' . $sId . '\').dolPopup({pointer:{el:$(this), offset:\'10 1\'}})"><i class="sys-icon ellipsis-h"></i></a>';
+        $sPopup .= BxTemplFunctions::getInstance()->transBox($sId, '<div class="bx-def-padding">' . $sStrOriginal . '</div>', true);
 
-        return $bReturnString ? $sResult . $sPopup : array($sResult, $sPopup);
+        return $bReturnString ? $sResult . $sPopup : [$sResult, $sPopup];
     }
 
     /**
