@@ -353,6 +353,23 @@ EOF;
         if (true !== $mixedRes)
             return $this->dbErrors2ErrorFields($mixedRes);
 
+        $sSqlDir = BX_INSTALL_DIR . 'sql/';
+        if (is_dir($sSqlDir)) {
+            $aFiles = scandir($sSqlDir);
+            foreach ($aFiles as $sFile) {
+                if ($sFile[0] === '.' || $sFile === 'system.sql' || $sFile === 'addon.sql') {
+                    continue;
+                }
+                $sFilePath = $sSqlDir . $sFile;
+                if (is_file($sFilePath)) {
+                    $mixedRes = $oDb->executeSQL($sFilePath, $this->getMarkersForDb($a, $oDb));
+                    if (true !== $mixedRes) {
+                        return $this->dbErrors2ErrorFields($mixedRes);
+                    }
+                }
+            }
+        }
+        
         return array();
     }
 
