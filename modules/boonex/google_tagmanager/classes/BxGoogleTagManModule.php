@@ -43,6 +43,11 @@ class BxGoogleTagManModule extends BxDolModule
                 'account-profiles-count' => $oAccount ? $oAccount->getProfilesNumber() : 0,
                 'keys-secrets-count' => is_array($aKeySecrets) ? count($aKeySecrets) : 0,
             );
+
+            bx_alert($this->getName(), 'get_data_layer', 0, 0, [
+                'data' => &$aDataLayer
+            ]);
+
             $sDataLayer = json_encode($aDataLayer);
 
             return <<<EOF
