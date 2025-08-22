@@ -33,8 +33,49 @@ class BxInvModule extends BxDolModule
     /**
      * ACTION METHODS
      */
+    public function actionGetCode()
+    {
+        $aParams = $this->_prepareParamsGet();
+
+        $this->serviceGetCode($aParams);
+    }
+
+    public function actionGetLink()
+    {
+        $aParams = $this->_prepareParamsGet();
+
+        $this->serviceGetLink($aParams);
+    }
+    
+    public function actionSetSeenMark($Code)
+    {
+        header('Content-Type: image/png');
+        if (isset($Code) && trim($Code) != "")
+            $this->_oDb->updateDateSeenForInvite($Code);
+    }
+
+    /**
+     * SERVICE METHODS
+     */
+    
+    public function serviceGetSafeServices()
+    {
+        return array (
+            'GetBlockInvite' => '',
+            'GetBlockInviteToContext' => '',
+            'GetBlockFormInvite' => '',
+            'GetBlockFormRequest' => '',
+            'GetLink' => '',
+            'GetCode' => '',
+            'GetContextByCode' => ''
+        );
+    }
+
     public function serviceGetCode($aParams)
     {
+        if($this->_bIsApi && is_string($aParams))
+            $aParams = bx_api_get_browse_params($aParams);
+
         $iProfileId = $this->getProfileId();
         $iAccountId = $this->getAccountId($iProfileId);
 
@@ -42,9 +83,14 @@ class BxInvModule extends BxDolModule
         if($mixedAllowed !== true)
             return echoJson(['message' => $mixedAllowed]);
 
+        $iKeyLength = 0;
+        $iKeyLifetime = $this->_oConfig->getKeyLifetime();
+
         $bContextAdmin = false;
-        if(isset($aParams['aj_action'], $aParams['aj_params']) && $aParams['aj_action'] == 'invite_to_context' && ($iContextPid = (int)$aParams['aj_params']) != 0)
+        if(isset($aParams['aj_action'], $aParams['aj_params']) && $aParams['aj_action'] == 'invite_to_context' && ($iContextPid = (int)$aParams['aj_params']) != 0) {
+            $iKeyLength = $this->_oConfig->getContextKeyLength();
             $bContextAdmin = ($oContext = BxDolProfile::getInstance($iContextPid)) !== false && bx_srv($oContext->getModule(), 'is_admin', [$iContextPid, $iProfileId]);
+        }
 
         if(!isAdmin($iAccountId) && !$bContextAdmin && $this->_oConfig->getCountPerUser() <= 0)
             return $this->_bIsApi ? [bx_api_get_msg(_t('_bx_invites_err_limit_reached'))] : echoJson(['message' => _t('_bx_invites_err_limit_reached')]);
@@ -53,7 +99,16 @@ class BxInvModule extends BxDolModule
         if(!$oKeys)
             return $this->_bIsApi ? [bx_api_get_msg(_t('_bx_invites_err_not_available'))] : echoJson(['message' => _t('_bx_invites_err_not_available')]);
 
-        $sKey = $oKeys->getNewKey(false, $this->_oConfig->getKeyLifetime());
+        $aKeyParams = [];
+        if(!empty($aParams['key']))
+            $aKeyParams['key'] = $aParams['key'];
+        if($iKeyLength)
+            $aKeyParams['length'] = $iKeyLength;
+
+        if($aKeyParams)
+            $sKey = $oKeys->getNewKeyExt(false, $iKeyLifetime, $aKeyParams);
+        else
+            $sKey = $oKeys->getNewKey(false, $iKeyLifetime);
 
         $this->getFormObjectInvite()->insert(array_merge([
             'account_id' => $iAccountId,
@@ -111,40 +166,32 @@ class BxInvModule extends BxDolModule
         echoJson(['popup' => $this->_oTemplate->getLinkPopup($sLink)]);
     }
 
-    public function actionGetCode()
+    public function serviceGetContextByCode($sKey, $aParams = [])
     {
-        $aParams = $this->_prepareParamsGet();
+        if($this->_bIsApi && is_string($aParams))
+            $aParams = bx_api_get_browse_params($aParams);
 
-        $this->serviceGetCode($aParams);
-    }
+        $oKeys = BxDolKey::getInstance();
 
-    public function actionGetLink()
-    {
-        $aParams = $this->_prepareParamsGet();
+        $aInvite = $this->_oDb->getInvites(['type' => 'by_key', 'key' => $sKey]);
+        if(empty($aInvite) || !is_array($aInvite) || !$oKeys->isKeyExists($sKey))
+            return ($sMsg = _t('_bx_invites_err_code_not_found')) && $this->_bIsApi ? [bx_api_get_msg($sMsg)] : ['msg' => $sMsg];
 
-        $this->serviceGetLink($aParams);
-    }
-    
-    public function actionSetSeenMark($Code)
-    {
-        header('Content-Type: image/png');
-        if (isset($Code) && trim($Code) != "")
-            $this->_oDb->updateDateSeenForInvite($Code);
-    }
+        $iContextPid = 0;
+        $oContextProfile = false;
+        if($aInvite['aj_action'] != 'invite_to_context' || !($iContextPid = (int)$aInvite['aj_params']) || ($oContextProfile = BxDolProfile::getInstance($iContextPid)) == false)
+            return ($sMsg = _t('_bx_invites_err_context_not_found')) && $this->_bIsApi ? [bx_api_get_msg($sMsg)] : ['msg' => $sMsg];
 
-    /**
-     * SERVICE METHODS
-     */
-    
-    public function serviceGetSafeServices()
-    {
-        return array (
-            'GetBlockInvite' => '',
-            'GetBlockInviteToContext' => '',
-            'GetBlockFormInvite' => '',
-            'GetBlockFormRequest' => '',
-            'GetLink' => '',
-        );
+        if(isset($aParams['initiate']) && (bool)$aParams['initiate'] === true)
+            $this->_oConfig->setKey($sKey);
+
+        return $this->_bIsApi ? BxDolProfile::getData($oContextProfile) : [
+            'module' => $oContextProfile->getModule(),
+            'id' => $oContextProfile->getContentId(),
+            'profile_id' => $iContextPid,
+            'display_name' => $oContextProfile->getDisplayName(),
+            'url' => $oContextProfile->getUrl()
+        ];
     }
 
     /**

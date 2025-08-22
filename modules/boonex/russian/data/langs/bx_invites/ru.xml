@@ -111,7 +111,8 @@
     <string name="_bx_invites_option_enable_request_invite"><![CDATA[Разрешить запросы на приглашение]]></string>
     <string name="_bx_invites_option_requests_email"><![CDATA[Эл. адреса для посылки запросов на приглашение (разделенение запятой)]]></string>
     <string name="_bx_invites_option_enable_reg_by_inv"><![CDATA[Регистрация строго по приглашению]]></string>
-    <string name="_bx_invites_option_context_auto_join"><![CDATA[Включить автоматическое присоединение при использовании «Пригласить в контекст»]]></string>
+    <string name="_bx_invites_option_context_auto_join"><![CDATA[Включить автоматическое присоединение при использовании функции «Пригласить в контекст»]]></string>
+    <string name="_bx_invites_option_context_key_length"><![CDATA[Длина ключа для функции «Пригласить в контекст» (0 - длина по умолчанию)]]></string>
 
 
     <!-- ACL -->
@@ -176,6 +177,7 @@
     <string name="_bx_invites_err_used"><![CDATA[Приглашение не доступно или уже использовано.]]></string>
     <string name="_bx_invites_err_code_not_found"><![CDATA[Код приглашения недействителен.]]></string>
     <string name="_bx_invites_err_code_not_applicable"><![CDATA[Код приглашения не применим.]]></string>
+    <string name="_bx_invites_err_context_not_found"><![CDATA[Код приглашения не связан ни с каким контекстом.]]></string>
     <string name="_bx_invites_err_already_send"><![CDATA[Приглашение уже было отправлено на этот эл. адрес]]></string>
     <string name="_bx_invites_err_already_registed"><![CDATA[Пользователь с таким  эл. адресом уже зарегистрирован. Пожалуйста, воспользуйтесь <a href="{0}">восстановлением пароля</a> чтобы получить доступ к аккаунту.]]></string>
     <string name="_bx_invites_request_status_new"><![CDATA[Новый]]></string>

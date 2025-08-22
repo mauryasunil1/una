@@ -21,6 +21,7 @@ class BxInvConfig extends BxBaseModGeneralConfig
     protected $_sRequestsEmail;
     protected $_bRegistrationByInvitation;
     protected $_bContextAutoJoin;
+    protected $_iContextKeyLength;
 
     /**
      * Constructor
@@ -98,6 +99,7 @@ class BxInvConfig extends BxBaseModGeneralConfig
         $this->_sRequestsEmail = getParam($sOptionPrefix . 'requests_email');
         $this->_bRegistrationByInvitation = getParam($sOptionPrefix . 'enable_reg_by_inv') == 'on';
         $this->_bContextAutoJoin = getParam($sOptionPrefix . 'context_auto_join') == 'on';
+        $this->_iContextKeyLength = (int)getParam($sOptionPrefix . 'context_key_length');
     }
 
     public function getCountPerUser()
@@ -153,6 +155,11 @@ class BxInvConfig extends BxBaseModGeneralConfig
     public function isContextAutoJoin()
     {
         return $this->_bContextAutoJoin;
+    }
+
+    public function getContextKeyLength()
+    {
+        return $this->_iContextKeyLength;
     }
 
     public function getHtmlIds($sKey = '')
