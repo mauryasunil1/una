@@ -650,7 +650,7 @@ class BxBaseGrid extends BxDolGrid
         if ($aField['translatable'])
             $mixedValue = _t($mixedValue);
 
-        $mixedValue = $this->_limitMaxLength([strip_tags($mixedValue), $mixedValue], $sKey, $aField, $aRow, $this->_isDisplayPopupOnTextOverflow);
+        $mixedValue = $this->_limitMaxLength($mixedValue, $sKey, $aField, $aRow, $this->_isDisplayPopupOnTextOverflow);
 
         return $this->$sMethod($mixedValue, $sKey, $aField, $aRow);
     }
@@ -884,9 +884,10 @@ class BxBaseGrid extends BxDolGrid
 
     protected function _limitMaxLength ($mixedValue, $sKey, $aField, $aRow, $isDisplayPopupOnTextOverflow, $bReturnString = true)
     {
-        if ($aField['chars_limit'] > 0)
-            $mixedValue = $this->_oFunctions->getStringWithLimitedLength($mixedValue, $aField['chars_limit'], $isDisplayPopupOnTextOverflow, $bReturnString);
-        return $mixedValue;
+        if((int)$aField['chars_limit'] <= 0)
+            return $mixedValue;
+
+        return $this->_oFunctions->getStringWithLimitedLength([strip_tags($mixedValue), $mixedValue], $aField['chars_limit'], $isDisplayPopupOnTextOverflow, $bReturnString);
     }
 
     protected function _convertAttrs ($aField, $sAttrName, $sClasses = false, $sStyles = false)
