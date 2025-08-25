@@ -90,7 +90,7 @@ class BxDolStudioBuilderPageQuery extends BxDolStudioPageQuery
         $sJoinClause = $sWhereClause = $sGroupClause = $sOrderClause = $sLimitClause = "";
 
         if(!isset($aParams['order']) || empty($aParams['order']))
-           $sOrderClause = "ORDER BY `tp`.`object` ASC";
+           $sOrderClause = "`tp`.`object` ASC";
 
         switch($aParams['type']) {
             case 'by_id':
@@ -138,6 +138,13 @@ class BxDolStudioBuilderPageQuery extends BxDolStudioPageQuery
                 $sWhereClause = " AND `tp`.`module`=:module ";
                 break;
 
+            case 'modules_with_pages':
+                $sSelectClause = "DISTINCT `tm`.*";
+                $sJoinClause = "INNER JOIN `sys_modules` AS `tm` ON `tp`.`module`=`tm`.`name`";
+                $sWhereClause = " AND `tm`.`enabled`='1'";
+                $sOrderClause = "`tm`.`title` ASC";
+                break;
+
             case 'export':
                 $sSelectClause = "`tp`.*";
                 break;
@@ -145,6 +152,9 @@ class BxDolStudioBuilderPageQuery extends BxDolStudioPageQuery
             case 'all':
                 break;
         }
+
+        if(!empty($sOrderClause))
+            $sOrderClause = "ORDER BY " . $sOrderClause;
 
         $aMethod['params'][0] = "SELECT 
                 " . $sSelectClause . "
