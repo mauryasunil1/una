@@ -18,6 +18,7 @@ class BxDolStudioPage extends BxDol
     protected $oDb;
 
     protected $aPage;
+    protected $bPage;
     protected $bPageMultiple;
     protected $sPageUrl;
     protected $sPageSelected;
@@ -46,7 +47,8 @@ class BxDolStudioPage extends BxDol
 
         $this->oDb = BxDolStudioPageQuery::getInstance();
 
-        $this->aPage = array();
+        $this->aPage = [];
+        $this->bPage = false;
         $this->bPageMultiple = false;
         $this->sPageSelected = '';       
 
@@ -88,6 +90,8 @@ class BxDolStudioPage extends BxDol
                 $this->aPage[$aPage['name']] = $aPage;
             }
         }
+
+        $this->bPage = true;
     }
 
     public function getDb()

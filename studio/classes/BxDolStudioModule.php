@@ -42,7 +42,9 @@ class BxDolStudioModule extends BxTemplStudioWidget
         if(is_string($sPage) && !empty($sPage))
             $this->sPage = $sPage;
 
-        $this->sManageUrl = BX_DOL_URL_STUDIO . 'module.php?name=' . $this->aPage['name'];
+        $this->sManageUrl = '';
+        if($this->bPage)
+            $this->sManageUrl = BX_DOL_URL_STUDIO . 'module.php?name=' . $this->aPage['name'];
     }
 
     public static function getObjectInstance($mixedPageName, $sPage = "", $bInit = true)

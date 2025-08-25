@@ -25,6 +25,9 @@ class BxDolStudioWidget extends BxTemplStudioPage
 
         $this->aActions = array();
 
+        if(!$this->bPage)
+            return;
+
         if(!$this->bPageMultiple) {
             $this->sPageRssHelpId = $this->aPage['name'];
 

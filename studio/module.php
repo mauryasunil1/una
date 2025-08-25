@@ -35,7 +35,7 @@ $oTemplate = BxDolStudioTemplate::getInstance();
 
 $sPageCode = $oPage->getPageCode();
 if($sPageCode === false)
-    $oTemplate->displayMsg(($sError = $oPage->getError(false)) !== false ? $sError : '_sys_txt_error_occured', true);
+    $oTemplate->displayMsg(($sError = $oPage->getError(false)) !== false ? $sError : '_sys_txt_error_occured', true, BX_PAGE_DEFAULT, BX_DB_PADDING_NO_CAPTION);
 
 $oTemplate->setPageNameIndex($oPage->getPageIndex());
 $oTemplate->setPageHeader($oPage->getPageHeader());
