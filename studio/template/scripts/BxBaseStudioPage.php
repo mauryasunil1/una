@@ -182,7 +182,7 @@ class BxBaseStudioPage extends BxDolStudioPage
 
     public function getPageCode($sPage = '', $bWrap = true) {
         if(empty($this->aPage) || !is_array($this->aPage)) {
-            $this->setError('_sys_txt_not_found');
+            $this->setError([404, '_sys_request_page_not_found_cpt']);
             return false;
         }
 

@@ -35,6 +35,7 @@ class BxDolStudioPage extends BxDol
 
     protected $aMarkers;
 
+    protected $iError;
     protected $sError;
     
     protected $_bShowHeaderRightSearch;
@@ -66,6 +67,7 @@ class BxDolStudioPage extends BxDol
             'url_studio' => BX_DOL_URL_STUDIO
         );
 
+        $this->iError = 0;
         $this->sError = false;
 
         $this->_bShowHeaderRightSearch = getParam('sys_std_show_header_right_search') == 'on';
@@ -159,14 +161,21 @@ class BxDolStudioPage extends BxDol
         return true;
     }
 
-    public function setError($sError)
+    public function setError($mixedError)
     {
-        $this->sError = $sError;
+        if(is_array($mixedError))
+            list($this->iError, $this->sError) = $mixedError;
+        else
+            $this->sError = $mixedError;
     }
 
     public function getError($bToDisplay = true)
     {
-        return $bToDisplay ? MsgBox(_t($this->sError)) : $this->sError;
+        $sError = $this->sError;
+        if($bToDisplay)
+            $sError = MsgBox(_t($sError));
+
+        return $this->iError ? [$this->iError, $sError]: $sError;
     }
 
     protected function getSystemName($sValue)

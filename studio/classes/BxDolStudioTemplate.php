@@ -166,9 +166,28 @@ class BxDolStudioTemplate extends BxDolTemplate implements iBxDolSingleton
         return $this->parseHtmlByName('breadcrumb.html', array('bx_repeat:items' => $aItems));
     }
 
-    function displayMsg ($s, $bTranslate = false, $iPage = BX_PAGE_DEFAULT, $iDesignBox = BX_DB_CONTENT_ONLY)
+    function displayMsg ($mixed, $bTranslate = false, $iPage = BX_PAGE_DEFAULT, $iDesignBox = BX_DB_CONTENT_ONLY)
     {
-        $sTitle = $bTranslate ? _t($s) : $s;
+        $iCode = 200;
+        $sMessage = '';
+        if(is_array($mixed))
+            list($iCode, $sMessage) = $mixed;
+        else
+            $sMessage = $mixed;
+
+        switch($iCode) {
+            case 403:
+                header('HTTP/1.0 403 Forbidden');
+                header('Status: 403 Forbidden');
+                break;
+
+            case 404:
+                header('HTTP/1.0 404 Not Found');
+                header('Status: 404 Not Found');
+                break;
+        }
+        
+        $sTitle = $bTranslate ? _t($sMessage) : $sMessage;
         $sContent = $this->parseHtmlByName('page_not_found.html', [
             'content' => DesignBoxContent('', MsgBox($sTitle), $iDesignBox)
         ]);
