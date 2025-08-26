@@ -78,7 +78,7 @@ Run UNA and related services:
 docker compose up -d
 ```
 
-Open UNA using the URL below in browser and proceed with the UNA installation
+Open UNA using the URL below in browser and proceed with the UNA installation:
 ```
 http://localhost.una.io
 ```
