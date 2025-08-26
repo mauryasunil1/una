@@ -166,8 +166,11 @@ class BxInvModule extends BxDolModule
         echoJson(['popup' => $this->_oTemplate->getLinkPopup($sLink)]);
     }
 
-    public function serviceGetContextByCode($sKey, $aParams = [])
+    public function serviceGetContextByCode($sKey = false, $aParams = [])
     {
+        if($this->_bIsApi && !$sKey)
+            return [bx_api_get_block('invite_in_context', ['request_url' => 'bx_invites/get_context_by_code/&params[]='])]; 
+
         if($this->_bIsApi && is_string($aParams))
             $aParams = bx_api_get_browse_params($aParams);
 
@@ -175,17 +178,17 @@ class BxInvModule extends BxDolModule
 
         $aInvite = $this->_oDb->getInvites(['type' => 'by_key', 'key' => $sKey]);
         if(empty($aInvite) || !is_array($aInvite) || !$oKeys->isKeyExists($sKey))
-            return ($sMsg = _t('_bx_invites_err_code_not_found')) && $this->_bIsApi ? [bx_api_get_msg($sMsg)] : ['msg' => $sMsg];
+            return ($sMsg = _t('_bx_invites_err_code_not_found')) && $this->_bIsApi ? ['result' => false, 'message' => $sMsg] : ['msg' => $sMsg];
 
         $iContextPid = 0;
         $oContextProfile = false;
         if($aInvite['aj_action'] != 'invite_to_context' || !($iContextPid = (int)$aInvite['aj_params']) || ($oContextProfile = BxDolProfile::getInstance($iContextPid)) == false)
-            return ($sMsg = _t('_bx_invites_err_context_not_found')) && $this->_bIsApi ? [bx_api_get_msg($sMsg)] : ['msg' => $sMsg];
+            return ($sMsg = _t('_bx_invites_err_context_not_found')) && $this->_bIsApi ? ['result' => false, 'message' => $sMsg] : ['msg' => $sMsg];
 
         if(isset($aParams['initiate']) && (bool)$aParams['initiate'] === true)
             $this->_oConfig->setKey($sKey);
 
-        return $this->_bIsApi ? BxDolProfile::getData($oContextProfile) : [
+        return $this->_bIsApi ? ['result' => true, 'data' => BxDolProfile::getData($oContextProfile)] : [
             'module' => $oContextProfile->getModule(),
             'id' => $oContextProfile->getContentId(),
             'profile_id' => $iContextPid,
@@ -692,10 +695,13 @@ class BxInvModule extends BxDolModule
         if(!bx_srv('system', 'is_module_context', [$sContext]))
             return false;
 
+        $bAutoJoin = $this->_oConfig->isContextAutoJoin();
+
         $bResult = false;
-        if($this->_oConfig->isContextAutoJoin())
+        if($bAutoJoin)
             $bResult = bx_srv($sContext, 'add_mutual_connection', [$iContextPid, $iPid]);
-        else
+
+        if(!$bAutoJoin || !$bResult)
             $bResult = bx_srv($sContext, 'add_invitation', [$iContextPid, $iPid]);
 
         return $bResult;

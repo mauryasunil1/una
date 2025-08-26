@@ -89,12 +89,17 @@ class BxInvResponse extends BxDolAlertsResponse
                             break;
                     }
 
-                    if($sRedirectUrl)
+                    if($sRedirectUrl) {
+                        $sRedirectUrl = bx_absolute_url($sRedirectUrl);
+                        if(bx_is_api())
+                            $sRedirectUrl = bx_api_get_relative_url($sRedirectUrl);
+
                         $oAlert->aExtras['form_object']->aInputs['relocate'] = [
                             'name' => 'relocate',
                             'type' => 'hidden',
                             'value' => $sRedirectUrl
                         ];
+                    }
 
                     $bGetCode = true;
                 }

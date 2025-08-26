@@ -162,10 +162,10 @@ class BxDolProfile extends BxDolFactory implements iBxDolProfile
         else
             $oProfile = $mixedProfileId;
 
+        $oAccount = $oProfile->getAccountObject();
+
         $iId = $oProfile->id();
         $sUrl = bx_api_get_relative_url($oProfile->getUrl());
-
-        $oAccount = BxDolAccount::getInstance(getLoggedId());
 
         $aMembershipInfo = BxDolAcl::getInstance()->getMemberMembershipInfo($iId);
 
