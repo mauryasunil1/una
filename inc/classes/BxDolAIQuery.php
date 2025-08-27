@@ -121,11 +121,11 @@ class BxDolAIQuery extends BxDolDb
         return call_user_func_array([$this, $aMethod['name']], $aMethod['params']);
     }
 
-    public function getAutomatorsBy($aParams = [])
+    public function getAutomatorsBy($aParams = [], $bFromCache = true)
     {
         $aMethod = ['name' => 'getAll', 'params' => [0 => 'query']];
         $sSelectClause = "`taa`.*";
-    	$sJoinClause = $sWhereClause = "";
+    	$sPostfix = $sJoinClause = $sWhereClause = "";
 
         switch($aParams['sample']) {
             case 'id':
@@ -147,23 +147,45 @@ class BxDolAIQuery extends BxDolDb
                 $sJoinClause .= " LEFT JOIN `sys_agents_models` AS `tam` ON `taa`.`model_id`=`tam`.`id`";
                 $sWhereClause .= " AND `taa`.`id`=:id";
                 break;
-            
-            case 'events':
+
+            case 'type':
+                $sPostfix .= '_' . $aParams['type'];
+
                 $aMethod['params'][1] = [
+                    'type' => $aParams['type']
+                ];
+
+                $sWhereClause .= " AND `taa`.`type`=:type";
+
+                if(isset($aParams['active'])) {
+                    $iActive = (int)$aParams['active'];
+                    $sPostfix .= '_' . (!$iActive ? 'in' : '') . 'active';
+
+                    $aMethod['params'][1]['active'] = $iActive;
+                    $sWhereClause .= " AND `taa`.`active`=:active";
+                }
+                break;
+
+            case 'events':
+                $aBindings = [
                     'type' => BX_DOL_AI_AUTOMATOR_EVENT,
                     'alert_unit' => $aParams['alert_unit'],
                     'alert_action' => $aParams['alert_action']
                 ];
+                $sPostfix .= '_' . implode('_', $aBindings);
 
+                $aMethod['params'][1] = $aBindings;
                 $sWhereClause .= " AND `taa`.`type`=:type AND `taa`.`alert_unit`=:alert_unit AND `taa`.`alert_action`=:alert_action";
 
                 if(isset($aParams['active'])) {
-                    $aMethod['params'][1]['active'] = (int)$aParams['active'];
+                    $iActive = (int)$aParams['active'];
+                    $sPostfix .= '_' . (!$iActive ? 'in' : '') . 'active';
 
+                    $aMethod['params'][1]['active'] = $iActive;
                     $sWhereClause .= " AND `taa`.`active`=:active";
                 }
                 break;
-                
+
             case 'schedulers':
                 $aMethod['params'][1] = [
                     'type' => BX_DOL_AI_AUTOMATOR_SCHEDULER,
@@ -243,7 +265,10 @@ class BxDolAIQuery extends BxDolDb
             FROM `sys_agents_automators` AS `taa` " . $sJoinClause . "
             WHERE 1" . $sWhereClause;
 
-        return call_user_func_array([$this, $aMethod['name']], $aMethod['params']);
+        if(!$bFromCache || empty($sPostfix))
+            return call_user_func_array([$this, $aMethod['name']], $aMethod['params']);
+
+        return call_user_func_array([$this, 'fromMemory'], array_merge(['sys_automators' . $sPostfix, $aMethod['name']], $aMethod['params']));
     }
 
     public function updateAutomators($aSetClause, $aWhereClause)

@@ -282,6 +282,18 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
         return $oCmts;
     }
 
+    public function hasAutomators($sType, $bActive = null)
+    {
+        $aParams = [
+            'sample' => 'type', 
+            'type' => $sType
+        ];
+        if($bActive !== null)
+            $aParams['active'] = $bActive;
+
+        return ($aAutomators = $this->_oDb->getAutomatorsBy($aParams)) && is_array($aAutomators);
+    }
+
     public function getAutomatorsEvent($sUnit, $sAction)
     {
         if(in_array($sUnit, $this->_aExcludeAlertUnits))
