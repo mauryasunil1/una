@@ -119,13 +119,15 @@
     <!-- ============================================  -->
     <target name="prepare">
         <echo msg="Prepage: installing necessary components" />
-        <exec executable="yarn" dir="${project.basedir}" checkreturn="true" />
-        <exec executable="${php}" dir="${project.basedir}" checkreturn="true">
-            <arg line="${composer} install" />
-        </exec>
-        <exec executable="${php}" dir="${project.basedir}/tests" checkreturn="true">
-            <arg line="${composer} install" />
-        </exec>
+        <parallel threadCount="3">
+            <exec executable="yarn" dir="${project.basedir}" checkreturn="true" />
+            <exec executable="${php}" dir="${project.basedir}" checkreturn="true">
+                <arg line="${composer} install" />
+            </exec>
+            <exec executable="${php}" dir="${project.basedir}/tests" checkreturn="true">
+                <arg line="${composer} install" />
+            </exec>
+        </parallel>
     </target>
 
     <!-- ============================================  -->
