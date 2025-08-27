@@ -58,7 +58,7 @@ class BxAclGridLevels extends BxTemplGrid
 
         if(!$this->_bIsApi) {
             if((float)$mixedValue != 0)
-                $mixedValue = _t('_bx_acl_grid_column_price_value', $aCurrency['sign'], $mixedValue);
+                $mixedValue = _t('_bx_acl_grid_column_price_value', html_entity_decode($aCurrency['sign']), $mixedValue);
             else 
                 $mixedValue = _t('_bx_acl_txt_free');
         }

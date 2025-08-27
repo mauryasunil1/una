@@ -71,7 +71,7 @@ class BxBaseModGroupsGridPrices extends BxTemplGrid
         if((float)$mixedValue != 0) {
             $aCurrency = $this->_oModule->_oConfig->getCurrency();
 
-            $mixedValue = $aCurrency['sign'] . $mixedValue;
+        $mixedValue = html_entity_decode($aCurrency['sign']) . $mixedValue;
         }
         else 
             $mixedValue = _t('_free');
