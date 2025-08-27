@@ -127,7 +127,7 @@
             </exec>
 -->
             <exec executable="${php}" dir="${project.basedir}/tests" checkreturn="true">
-                <arg line="${composer} install" />
+                <arg line="${composer} install -d '${project.basedir}/tests'" />
             </exec>
 <!--        </parallel>-->
     </target>
