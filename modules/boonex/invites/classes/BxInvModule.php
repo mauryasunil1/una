@@ -698,8 +698,8 @@ class BxInvModule extends BxDolModule
         $bAutoJoin = $this->_oConfig->isContextAutoJoin();
 
         $bResult = false;
-        if($bAutoJoin)
-            $bResult = bx_srv($sContext, 'add_mutual_connection', [$iContextPid, $iPid]);
+        if($bAutoJoin && ($oConnection = bx_srv($sContext, 'get_fans_connection_object')) !== false)
+            $bResult = $oConnection->addConnection($iContextPid, $iPid) && $oConnection->addConnection($iPid, $iContextPid);
 
         if(!$bAutoJoin || !$bResult)
             $bResult = bx_srv($sContext, 'add_invitation', [$iContextPid, $iPid]);

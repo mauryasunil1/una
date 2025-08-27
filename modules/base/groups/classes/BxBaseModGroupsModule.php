@@ -213,7 +213,14 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
     {
         return _t($this->_oConfig->CNF['T']['txt_sample_single']);
     }
-    
+
+    public function serviceGetFansConnectionObject()
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        return ($sKey = 'OBJECT_CONNECTIONS') && !empty($CNF[$sKey]) && ($oConnection = BxDolConnection::getObjectInstance($CNF[$sKey])) !== false ? $oConnection : false;
+    }
+
     /**
      * @see iBxDolProfileService::serviceGetParticipatingProfiles
      */ 
