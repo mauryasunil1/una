@@ -176,13 +176,14 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
 
     public function serviceGetBadges($iContentId, $bIsSingle = false, $bIsCompact = false)
     {
-        $mixedBadge = $this->_oTemplate->getBadge($iContentId);
         $mixedBadges = parent::serviceGetBadges($iContentId, $bIsSingle, $bIsCompact);
 
-        if($this->_bIsApi)
-            $mixedBadges[] = $mixedBadge;
-        else
-            $mixedBadges = $mixedBadge . $mixedBadges;
+        if(($mixedBadge = $this->_oTemplate->getBadge($iContentId))) {
+            if($this->_bIsApi)
+                $mixedBadges[] = $mixedBadge;
+            else
+                $mixedBadges = $mixedBadge . $mixedBadges;
+        }
 
         return $mixedBadges;
     }
