@@ -113,6 +113,8 @@ class BxAntispamModuleTest extends BxDolTestCase
     }
 
     /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
      * @dataProvider providerForServiceCheckJoin
      */
     public function testServiceCheckJoin($bIpBlocked, $sDnsblEnable, $sDnsblBehaviour, $bDnsblIpBlacklisted, $bStopForumSpamSpammer, $bResultSetApprove, $bResultEmptyString)
@@ -182,6 +184,8 @@ class BxAntispamModuleTest extends BxDolTestCase
     }
 
     /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
      * @dataProvider providerForServiceCheckLogin
      */
     public function testServiceCheckLogin($bIpBlocked, $sDnsblEnable, $sDnsblBehaviour, $bDnsblIpBlacklisted, $bResultEmptyString)
