@@ -117,45 +117,55 @@ class BxAntispamModuleTest extends BxDolTestCase
      */
     public function testServiceCheckJoin($bIpBlocked, $sDnsblEnable, $sDnsblBehaviour, $bDnsblIpBlacklisted, $bStopForumSpamSpammer, $bResultSetApprove, $bResultEmptyString)
     {
-        // set different options
-        $this->_oModule->_oConfig->setAntispamOption('dnsbl_enable', $sDnsblEnable);
-        $this->_oModule->_oConfig->setAntispamOption('dnsbl_behaviour_join', $sDnsblBehaviour);
+        // save exception handler
+        $previousHandler = set_exception_handler(function () {});
 
-        // first IP address block checking is called
-        $this->_oMockIP->expects($this->once())->method('isIpBlocked')
-            ->with($this->equalTo($this->_sSampleIP))
-            ->will($this->returnValue($bIpBlocked));
+        try {
 
-        if ($bIpBlocked) { // if ip is blocked no other methods should be called
+            // set different options
+            $this->_oModule->_oConfig->setAntispamOption('dnsbl_enable', $sDnsblEnable);
+            $this->_oModule->_oConfig->setAntispamOption('dnsbl_behaviour_join', $sDnsblBehaviour);
 
-            $this->_oMockDNSBlacklists->expects($this->never())->method('dnsbl_lookup_ip');
-            $this->_oMockStopForumSpam->expects($this->never())->method('isSpammer');
+            // first IP address block checking is called
+            $this->_oMockIP->expects($this->once())->method('isIpBlocked')
+                ->with($this->equalTo($this->_sSampleIP))
+                ->will($this->returnValue($bIpBlocked));
 
-        } elseif (!$bIpBlocked) { // if ip is NOT blocked - perform further checks
+            if ($bIpBlocked) { // if ip is blocked no other methods should be called
 
-            if ('on' != $sDnsblEnable) { // DNSBL shouldn't be called if it isn't enabled
                 $this->_oMockDNSBlacklists->expects($this->never())->method('dnsbl_lookup_ip');
-            } elseif ('on' == $sDnsblEnable) {
-/*
-                $this->_oMockDNSBlacklists->expects($this->at(0))->method('dnsbl_lookup_ip')
-                    ->with($this->equalTo(BX_DOL_DNSBL_CHAIN_SPAMMERS), $this->equalTo($this->_sSampleIP))
-                    ->will($this->returnValue($bDnsblIpBlacklisted ? BX_DOL_DNSBL_POSITIVE : BX_DOL_DNSBL_NEGATIVE));
-*/
-                $this->_oMockDNSBlacklists->expects($this->atLeastOnce())->method('dnsbl_lookup_ip');
-            }
-
-            if ('on' == $sDnsblEnable && $bDnsblIpBlacklisted && 'block' == $sDnsblBehaviour) { // StopForumSpam shouldn't be called if DNSBL detected spam
                 $this->_oMockStopForumSpam->expects($this->never())->method('isSpammer');
-            } else {
-                $this->_oMockStopForumSpam->expects($this->once())->method('isSpammer')
-                    ->will($this->returnValue($bStopForumSpamSpammer));
-            }
-        }
 
-        // empty string - no spam detected
-        $bSetApprove = false;
-        $this->assertTrue($bResultEmptyString == ('' == $this->_oModule->serviceCheckJoin($this->_sSampleEmail, $bSetApprove, $this->_sSampleIP)));
-        $this->assertTrue($bResultSetApprove == $bSetApprove);
+            } elseif (!$bIpBlocked) { // if ip is NOT blocked - perform further checks
+
+                if ('on' != $sDnsblEnable) { // DNSBL shouldn't be called if it isn't enabled
+                    $this->_oMockDNSBlacklists->expects($this->never())->method('dnsbl_lookup_ip');
+                } elseif ('on' == $sDnsblEnable) {
+    /*
+                    $this->_oMockDNSBlacklists->expects($this->at(0))->method('dnsbl_lookup_ip')
+                        ->with($this->equalTo(BX_DOL_DNSBL_CHAIN_SPAMMERS), $this->equalTo($this->_sSampleIP))
+                        ->will($this->returnValue($bDnsblIpBlacklisted ? BX_DOL_DNSBL_POSITIVE : BX_DOL_DNSBL_NEGATIVE));
+    */
+                    $this->_oMockDNSBlacklists->expects($this->atLeastOnce())->method('dnsbl_lookup_ip');
+                }
+
+                if ('on' == $sDnsblEnable && $bDnsblIpBlacklisted && 'block' == $sDnsblBehaviour) { // StopForumSpam shouldn't be called if DNSBL detected spam
+                    $this->_oMockStopForumSpam->expects($this->never())->method('isSpammer');
+                } else {
+                    $this->_oMockStopForumSpam->expects($this->once())->method('isSpammer')
+                        ->will($this->returnValue($bStopForumSpamSpammer));
+                }
+            }
+
+            // empty string - no spam detected
+            $bSetApprove = false;
+            $this->assertTrue($bResultEmptyString == ('' == $this->_oModule->serviceCheckJoin($this->_sSampleEmail, $bSetApprove, $this->_sSampleIP)));
+            $this->assertTrue($bResultSetApprove == $bSetApprove);
+            
+        } finally {
+            // restore exception handler
+            set_exception_handler($previousHandler);
+        }
     }
 
     static public function providerForServiceCheckLogin()
