@@ -119,7 +119,7 @@
     <!-- ============================================  -->
     <target name="prepare">
         <echo msg="Prepage: installing necessary components" />
-        <parallel threadCount="3">
+        <parallel threadCount="4">
             <exec executable="yarn" dir="${project.basedir}" checkreturn="true" />
             <exec executable="${php}" dir="${project.basedir}" checkreturn="true">
                 <arg line="${composer} install" />
