@@ -1,0 +1,500 @@
+// Helper function for database operations
+def executeDbQuery(String query, String description = null) {
+    echo "SQL query: ${query} ### ${description}"
+    sh """mysql -u ${DEPLOY_DB_USER} --password=${DEPLOY_DB_PWD} -D ${DEPLOY_DB_NAME} -h ${DEPLOY_DB_HOST} -e "${query}" """
+}
+
+// Helper function for database operations
+def executeDbMultiQuery(String queries, String description = null) {
+    echo "SQL query: ${queries} ### ${description}"
+    sh """mysql -u ${DEPLOY_DB_USER} --password=${DEPLOY_DB_PWD} -D ${DEPLOY_DB_NAME} -h ${DEPLOY_DB_HOST} << 'EOF'
+${queries}
+EOF"""
+}
+
+pipeline {
+    agent any
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        timeout(time: 60, unit: 'MINUTES')
+        timestamps()
+    }
+
+    environment {
+        // Node.js configuration
+        PATH = "/var/lib/jenkins/.nvm/versions/node/v20.19.3/bin:$PATH"
+        
+        // Binary paths
+        PHP = "/usr/bin/php8.3"
+        GIT = "git"
+        CURL = "curl"
+        PHING = "/usr/bin/phing-3.1.0.phar"
+        DOXYGEN = "/usr/bin/doxygen"
+        COMPOSER_PHAR = "/usr/bin/composer.phar"
+        
+        // Modules to install
+        MODULES = "bx_posts,bx_timeline,bx_contact,bx_developer,bx_antispam,bx_convos,bx_organizations,bx_notifications,bx_ocean,bx_ether,bx_accounts,bx_albums,bx_facebook,bx_tricon,bx_oauth,bx_chat_plus,bx_datafox,bx_payment,bx_market,bx_groups,bx_intercom,bx_googlecon,bx_linkedin,bx_twitter,bx_mailchimp,bx_forum,bx_acl,bx_events,bx_files,bx_glossary,bx_googletagman,bx_photos,bx_polls,bx_profiler,bx_quoteofday,bx_smtp,bx_shopify,bx_snipcart,bx_se_migration,bx_spaces,bx_stripe_connect,bx_unacon,bx_videos,bx_charts,bx_dolcon,bx_fontawesome,bx_channels,bx_attendant,bx_massmailer,bx_directory,bx_plyr,bx_ads,bx_decorous,bx_lucid,bx_credits,bx_wiki,bx_tasks,bx_courses,bx_classes,bx_artificer,bx_donations,bx_feedback,bx_help_tours,bx_stream,bx_attendant,bx_messenger,bx_analytics,bx_reputation,bx_ru"
+        
+        // Test install parameters
+        INSTALL_DB_NAME = "mainsite_virtual"
+        INSTALL_DB_USER = "mainsite_una"
+        INSTALL_DB_PWD = "*****"
+        
+        // Package parameters
+        PACKAGE_PUBLISH_DIR = "/var/www/vhosts/mainsite/html/builds"
+        PACKAGE_PUBLISH_LATEST_FILE = "${PACKAGE_PUBLISH_DIR}/latest-file.txt"
+        PACKAGE_PUBLISH_LATEST_DATE = "${PACKAGE_PUBLISH_DIR}/latest-date.txt"
+        PACKAGE_PUBLISH_LATEST_BUILD = "${PACKAGE_PUBLISH_DIR}/latest-build.txt"
+        
+        // Deploy parameters
+        DEPLOY_PATH = "/var/www/vhosts/mainsite/html/test"
+        DEPLOY_HTTP_HOST = "ci.una.io"
+        DEPLOY_HTTP_PATH = "/test/"
+        DEPLOY_DOC_ROOT = "/var/www/vhosts/mainsite/html"
+        DEPLOY_DB_HOST = "127.0.0.1"
+        DEPLOY_DB_NAME = "mainsite_una"
+        DEPLOY_DB_USER = "mainsite_una"
+        DEPLOY_DB_PWD = "*****"
+        
+        // Documentation parameters
+        DOCS_OUTPUT = "/var/www/vhosts/mainsite/html/docs"
+        
+        // Environment flags
+        UNA_HTTPS = "1"
+        
+        // Date stamp for package
+        DSTAMP = sh(script: 'date +"%Y%m%d"', returnStdout: true).trim()
+        ZIPFILE = "UNA-${DSTAMP}-${BUILD_NUMBER}.zip"
+        
+        // Demo users
+        DEMO_USERS_PASS = "*****"
+        DEMO_USERS_SALT = "*****"
+        DEMO_S3_BUCKET = "una-ci"
+        DEMO_S3_ENDPOINT = "us-east-1.linodeobjects.com"
+        DEMO_S3_KEY = "*****"
+        DEMO_S3_SECRET = "*****"
+        DEMO_GOOGLE_MAPS_API_KEY = "*****"
+
+        DEMO_MESSENGER_URL = "https://una.io:5443"
+
+        DEMO_API_OAUTH_ID = "*****"
+        DEMO_API_OAUTH_SECRET = "*****"
+        DEMO_API_KEY = "*****"
+
+        DEMO_SOCKETS_URL = "https://ci.una.io"
+        DEMO_SOCKETS_APP_ID = "neo-ci"
+        DEMO_SOCKETS_KEY = "neo-ci"
+        DEMO_SOCKETS_SECRET = "*****"
+
+        TEST_USER_ADMIN_PWD = "*****"
+        TEST_USER_REGULAR_PWD = "*****"
+        TEST_USER_TOM_PWD = "*****"
+    }
+    
+    stages {
+        stage('Prepare & worspace clean up') {
+            steps {
+                script {
+                    echo "Cleaning workspace before proceeding"
+                    // Clean up workspace
+                    cleanWs(
+                        cleanWhenAborted: true,
+                        cleanWhenFailure: true,
+                        cleanWhenNotBuilt: true,
+                        cleanWhenSuccess: true,
+                        cleanWhenUnstable: true,
+                        deleteDirs: true,
+                        disableDeferredWipeout: true
+                    )
+                    
+                    echo "NodeJS version:"
+                    sh 'node -v'
+                    
+                    echo "Starting UNA CI/CD Pipeline"
+                    echo "Build Number: ${BUILD_NUMBER}"
+                    echo "Package File: ${ZIPFILE}"
+                }
+            }
+        }
+    
+        stage('Clone UNA repository') {
+            steps {
+                git branch: 'master', 
+                    url: 'https://github.com/unacms/UNA/',
+                    credentialsId: '0043feeb-9df7-4494-9b2b-d6c8a1b8ca08'
+            }
+        }
+        
+        stage('Clone additional UNA modules') {
+            parallel {
+                stage('Clone: Media Manager') {
+                    steps {
+                        dir('modules/boonex/media') {
+                            git branch: 'master',
+                                url: 'git@github.com:unacms/media-manager.git',
+                                credentialsId: '0043feeb-9df7-4494-9b2b-d6c8a1b8ca08'
+                        }
+                    }
+                }
+                stage('Clone: Messenger') {
+                    steps {
+                        dir('modules/boonex/messenger') {
+                            git branch: 'master',
+                                url: 'git@github.com:unacms/jot-client-una.git',
+                                credentialsId: '0043feeb-9df7-4494-9b2b-d6c8a1b8ca08'
+                        }
+                    }
+                }
+            }
+        }
+        
+        stage('Install dependencies') {
+            steps {
+                script {
+                    echo "Cleaning some files"
+                    sh '${PHP} ${PHING} clean_install'
+                    
+                    echo "Install PHP and JS dependences"
+                    sh '${PHP} ${PHING} -verbose -Dphp=${PHP} -Dcomposer=${COMPOSER_PHAR} prepare'
+                }
+            }
+        }
+        stage('Test installation') {
+            steps {
+                script {
+                    echo "Setting up permissions"
+                    sh '${PHP} ${PHING} change_permissions'
+                    
+                    echo "Performing installation for testing"
+                    sh '''
+                        ${PHP} ${PHING} -verbose -debug \
+                            -Dphp=${PHP} \
+                            -Ddb_name=${INSTALL_DB_NAME} \
+                            -Ddb_user=${INSTALL_DB_USER} \
+                            -Ddb_password=${INSTALL_DB_PWD} \
+                            -Dmodules="${MODULES}" \
+                            install
+                    '''
+                }
+            }
+        }
+        stage('Unit tests') {
+            steps {
+                script {
+                    echo "Running PHP Unit Tests"
+                    def status = sh(
+                        script: "${PHP} tests/vendor/bin/phpunit -c tests/phpunit.xml",
+                        returnStatus: true
+                    )
+                    echo "PHPUnit exit code: ${status}"
+                }
+            }
+            post {
+                always {
+                    // Publish test results if they exist
+                    archiveArtifacts artifacts: 'logs/junit.xml', allowEmptyArchive: true
+                    junit checksName: 'Unit-Tests', testResults: 'logs/junit.xml'
+                }
+            }
+        }
+        
+        stage('Code Quality Analysis') {
+            steps {
+                script {
+                    echo "Running PHP Copy Paste Detector"
+                    sh '''
+                        find . -type d -name updates -prune -o \
+                               -type d -name plugins -prune -o \
+                               -type d -name plugins_public -prune -o \
+                               -type d -name cache -prune -o \
+                               -type d -name cache_public -prune -o \
+                               -type d -name storage -prune -o \
+                               -type d -name logs -prune -o \
+                               -type d -name tmp -prune -o \
+                               -type d -name samples -prune -o \
+                               -type d -path './tests/vendor' -prune -o \
+                               -type d -path './upgrade' -prune -o \
+                               -type d -path './modules/boonex/membership_pricing' -prune -o \
+                               -type f -name '*.php' ! -name 'header.inc.php' ! -name 'BxTemplStudioFormsField.php' ! -name 'config.php' \
+                               -print | xargs -r ${PHP} -d memory_limit=512M /usr/bin/phpcpd.phar --min-lines 6 --log-pmd logs/phpcpd.xml || true
+                    '''
+                    
+                    echo "Checking log files:"
+                    sh 'ls -la logs/'
+                }
+            }
+            post {
+                always {
+                    // Archive code quality reports
+                    // archiveArtifacts artifacts: 'logs/phpcpd.xml', allowEmptyArchive: true, followSymlinks: false
+                    recordIssues(
+                        sourceCodeRetention: 'LAST_BUILD',
+                        tools: [cpd(pattern: 'logs/phpcpd.xml')]
+                    )
+                }
+            }
+        }
+
+        stage('Package Build') {
+            steps {
+                script {
+                    echo "Creating package: ${ZIPFILE}"
+                    sh '${PHP} ${PHING} -Dpackage_file=${ZIPFILE} package'
+                    sh 'cp "packages/${ZIPFILE}" ${PACKAGE_PUBLISH_DIR}'
+                    
+                    // Update latest build info
+                    sh 'echo ${ZIPFILE} > ${PACKAGE_PUBLISH_LATEST_FILE}'
+                    sh 'date +"%Y.%m.%d" > ${PACKAGE_PUBLISH_LATEST_DATE}'
+                    sh 'echo ${BUILD_NUMBER} > ${PACKAGE_PUBLISH_LATEST_BUILD}'
+                }
+            }
+            post {
+                success {
+                    archiveArtifacts artifacts: "packages/${ZIPFILE}", fingerprint: true
+                }
+            }
+        }
+
+        stage('Deployment') {
+            steps {
+                script {
+                    echo "Cleaning up test site"
+                    sh '"${DEPLOY_PATH}/../../cleanup_test_site.sh"'
+                    
+                    echo "Deploying to test environment"
+                    sh '''
+                        ${PHP} ${PHING} \
+                            -Dphp=${PHP} \
+                            -Ddeploy_path=${DEPLOY_PATH} \
+                            -Dhttp_host=${DEPLOY_HTTP_HOST} \
+                            -Dhttp_path=${DEPLOY_HTTP_PATH} \
+                            -Ddoc_root=${DEPLOY_DOC_ROOT} \
+                            -Ddb_name=${DEPLOY_DB_NAME} \
+                            -Ddb_host=${DEPLOY_DB_HOST} \
+                            -Ddb_user=${DEPLOY_DB_USER} \
+                            -Ddb_password=${DEPLOY_DB_PWD} \
+                            -Dmodules="${MODULES}" \
+                            deploy
+                    '''
+                }
+            }
+        }
+        
+        stage('Database Configuration') {
+            steps {
+                script {
+                    echo "Configuring database for UI tests"
+                    
+                    // Maps API key
+                    executeDbQuery(
+                        "UPDATE sys_options SET value = '${DEMO_GOOGLE_MAPS_API_KEY}' WHERE name = 'sys_maps_api_key'",
+                        "Setting Google Maps API key"
+                    )
+                    
+                    // Messenger server  
+                    executeDbQuery(
+                        "UPDATE sys_options SET value = '${DEMO_MESSENGER_URL}' WHERE name = 'bx_messenger_server_url'",
+                        "Configuring messenger server URL"
+                    )
+                    
+                    // Create test users
+                    echo "Creating test users"
+                    def users = ['user', 'lily', 'eva', 'linda', 'emma', 'karen', 'ella', 'viky', 'mila', 'eric', 'luck', 'jack', 'rob', 'dave', 'tom', 'andy', 'ivan']
+                    
+                    users.each { user ->
+                        executeDbMultiQuery("""
+                            SET sql_mode = '';
+                            INSERT INTO sys_accounts (name, email, email_confirmed, receive_updates, receive_news, password, salt, role, added) VALUES
+                            ('${user}', '${user}@example.com', 1, 0, 0, SHA1(CONCAT(MD5('${DEMO_USERS_PASS}'), '${DEMO_USERS_SALT}')), '${DEMO_USERS_SALT}', 1, UNIX_TIMESTAMP());
+                            SET @iAccountId = LAST_INSERT_ID();
+                            INSERT INTO sys_profiles (account_id, type, content_id, status) VALUES
+                            (@iAccountId, 'system', @iAccountId, 'active');
+                        """, "Creating user: ${user}")
+                    }
+                    
+                    // Storage configuration
+                    echo "Configuring S3 storage"
+                    executeDbQuery(
+                        "UPDATE sys_options SET value = '${DEMO_S3_KEY}' WHERE name = 'sys_storage_s3_access_key'",
+                        "Setting S3 access key"
+                    )
+                    executeDbQuery(
+                        "UPDATE sys_options SET value = '${DEMO_S3_SECRET}' WHERE name = 'sys_storage_s3_secret_key'",
+                        "Setting S3 secret key"
+                    )
+                    executeDbQuery(
+                        "UPDATE sys_options SET value = '${DEMO_S3_BUCKET}' WHERE name = 'sys_storage_s3_bucket'",
+                        "Setting S3 bucket name"
+                    )
+                    executeDbQuery(
+                        "UPDATE sys_options SET value = '${DEMO_S3_ENDPOINT}' WHERE name = 'sys_storage_s3_endpoint'",
+                        "Setting S3 endpoint"
+                    )
+                    executeDbQuery(
+                        "UPDATE sys_objects_storage SET engine = 'S3'",
+                        "Switching storage engine to S3"
+                    )
+                    
+                    // SEO URI rewrites
+                    executeDbQuery(
+                        "INSERT INTO sys_seo_uri_rewrites SET uri_orig = 'view-persons-profile', uri_rewrite = 'u'",
+                        "Adding person profile URL rewrite"
+                    )
+                    executeDbQuery(
+                        "INSERT INTO sys_seo_uri_rewrites SET uri_orig = 'view-organization-profile', uri_rewrite = 'o'",
+                        "Adding organization profile URL rewrite"
+                    )
+                    
+                    // Enable subgroups
+                    executeDbQuery(
+                        "UPDATE sys_objects_privacy SET spaces = 'bx_events,bx_spaces,bx_groups' WHERE object = 'bx_groups_allow_view_to'",
+                        "Enabling subgroups functionality"
+                    )
+                }
+            }
+        }
+        
+        stage('API Configuration') {
+            parallel {
+                stage('Old API Setup') {
+                    steps {
+                        script {
+                            echo "Configuring old OAuth API"
+                            executeDbMultiQuery("""
+                                INSERT INTO bx_oauth_clients (title, client_id, client_secret, redirect_uri, grant_types, scope, parent_id, user_id) VALUES 
+                                ('nextjs', '${DEMO_API_OAUTH_ID}', '${DEMO_API_OAUTH_SECRET}', 'http://app.una.io:3000/', NULL, 'service', 0, 1);
+                                SET @iClientId = LAST_INSERT_ID();
+                                INSERT INTO bx_oauth_allowed_origins (client_id, url) VALUES 
+                                (@iClientId, 'https://ci.una.io:3000');
+                            """, "Setting up OAuth client and allowed origins")
+                        }
+                    }
+                }
+                
+                stage('New API Setup') {
+                    steps {
+                        script {
+                            echo "Configuring new API system"
+                            executeDbMultiQuery("""
+                                INSERT INTO sys_api_keys (title, `key`, `order`) VALUES
+                                ('NextJS', '${DEMO_API_KEY}', 1);
+                                INSERT INTO sys_api_origins (url, `order`) VALUES
+                                ('neo://app', 1),
+                                ('http://localhost:3000', 2),
+                                ('https://neo.vercel.app/', 4),
+                                ('https://neo.so/', 5),
+                                ('http://hihi.com', 6),
+                                ('https://hihi.com', 7),
+                                ('https://neo-ci.una.io', 8);
+                                UPDATE sys_options SET value = 'on' WHERE name = 'sys_api_enable';
+                                UPDATE sys_options SET value = 'on' WHERE name = 'sys_api_access_by_origin';
+                                UPDATE sys_options SET value = 'on' WHERE name = 'sys_api_access_by_key';
+                                UPDATE sys_options SET value = 'on' WHERE name = 'sys_session_auth';
+                            """, "Setting up new API keys, origins and enabling API features")
+                        }
+                    }
+                }
+                
+                stage('Sockets Server Setup') {
+                    steps {
+                        script {
+                            echo "Configuring sockets server"
+                            executeDbMultiQuery("""
+                                UPDATE sys_options SET value = 'sys_sockets_soketi' WHERE name = 'sys_sockets_type';
+                                UPDATE sys_options SET value = '${DEMO_SOCKETS_URL}' WHERE name = 'sys_sockets_url';
+                                UPDATE sys_options SET value = '${DEMO_SOCKETS_APP_ID}' WHERE name = 'sys_sockets_app_id';
+                                UPDATE sys_options SET value = '${DEMO_SOCKETS_KEY}' WHERE name = 'sys_sockets_key';
+                                UPDATE sys_options SET value = '${DEMO_SOCKETS_SECRET}' WHERE name = 'sys_sockets_secret';
+                            """, "Configuring Soketi sockets server settings")
+                        }
+                    }
+                }
+            }
+        }
+        
+        stage('UI Tests') {
+            steps {
+                script {
+                    echo "Creating cache directories"
+                    sh '''
+                        mkdir -p -m 0777 "${DEPLOY_PATH}/cache/CSS"
+                        mkdir -p -m 0777 "${DEPLOY_PATH}/cache/HTML"
+                        mkdir -p -m 0777 "${DEPLOY_PATH}/cache/URI"
+                    '''
+                    dir('una-ui-test3') {
+                        
+                        echo "Clone repository with tests"
+                        git branch: 'main',
+                            url: 'git@github.com:unacms/una-ui-test3.git',
+                            credentialsId: '0043feeb-9df7-4494-9b2b-d6c8a1b8ca08'
+                            
+                        // Create environment file
+                        sh '''
+                            cat > .env.local << EOF
+baseUrl=https://${DEPLOY_HTTP_HOST}${DEPLOY_HTTP_PATH}
+userAdminPwd=${TEST_USER_ADMIN_PWD}
+userRegularPwd=${TEST_USER_REGULAR_PWD}
+userTomPwd=${TEST_USER_TOM_PWD}
+EOF
+                        '''
+                        
+                        echo "Install dependences for UI tests"
+                        sh 'npm install'
+                        sh 'npx playwright install'
+                        
+                        echo "Running Playwright UI Tests"
+                        sh 'npm run test'
+                    }
+                }
+            }
+            post {
+                always {
+                    // Archive test results
+                    archiveArtifacts artifacts: 'una-ui-test3/results/results.xml', allowEmptyArchive: true
+                    junit checksName: 'UI-Tests', testResults: 'una-ui-test3/results/results.xml'
+                }
+            }
+        }
+        
+        // end
+    }
+    
+    post {
+/*
+        always {
+            xunit checksName: 'UI-Tests', thresholds: [
+                    failed(failureNewThreshold: '0', failureThreshold: '0', unstableNewThreshold: '0', unstableThreshold: '0')
+                ], 
+                tools: [
+                    JUnit(excludesPattern: '', pattern: 'una-ui-test3/results/results.xml', stopProcessingIfError: true)
+                ]
+        }
+*/
+        success {
+            echo 'UNA CI/CD Pipeline completed successfully!'
+        }
+        failure {
+            echo 'UNA CI/CD Pipeline failed!'
+            script {
+                emailext(
+                    subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                    body: "Build failed!\nCheck console output at ${env.BUILD_URL}\n\nCommit author: ${env.CHANGE_AUTHOR ?: 'unknown'}",
+                    to: "${env.CHANGE_AUTHOR_EMAIL}"
+                )
+                slackSend(
+                    botUser: true, 
+                    channel: '#unacms', 
+                    color: '#ff4444', 
+                    iconEmoji: '👮', 
+                    message: "Build failed!\nCheck console output at ${env.BUILD_URL}\n\nCommit author: ${env.CHANGE_AUTHOR ?: 'unknown'}", 
+                    notifyCommitters: true, 
+                    tokenCredentialId: 'slack-jenkins-bot-token'
+                )
+            }
+        }
+        unstable {
+            echo 'UNA CI/CD Pipeline completed with test failures!'
+        }
+    }
+}
