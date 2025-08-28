@@ -191,16 +191,13 @@ class BxAclGridAdministration extends BxAclGridLevels
 
         $sContent .=  $oForm->genRow($aInputLevels);
 
-        $aInputSearch = array(
+        $aInputSearch = [
             'type' => 'text',
             'name' => 'keyword',
-            'attrs' => array(
+            'attrs' => [
                 'id' => 'bx-grid-search-' . $this->_sObject,
-            ),
-            'tr_attrs' => array(
-                'style' => 'display:none;'
-            )
-        );
+            ]
+        ];
         $sContent .= $oForm->genRow($aInputSearch);
 
         return $sContent;
