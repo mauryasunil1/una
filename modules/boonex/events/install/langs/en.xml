@@ -133,11 +133,17 @@
     <string name="_bx_events_form_price_display_add"><![CDATA[Add]]></string>
     <string name="_bx_events_form_price_display_edit"><![CDATA[Edit]]></string>
     <string name="_bx_events_form_price_input_sys_id"><![CDATA[ID]]></string>
-    <string name="_bx_events_form_price_input_sys_role_id"><![CDATA[Role ID]]></string>
+    <string name="_bx_events_form_price_input_sys_role_id"><![CDATA[Role]]></string>
+    <string name="_bx_events_form_price_input_role_id"><![CDATA[Role]]></string>
+    <string name="_bx_events_form_price_input_err_role_id"><![CDATA[You need to select a role here.]]></string>
     <string name="_bx_events_form_price_input_sys_name"><![CDATA[Name]]></string>
     <string name="_bx_events_form_price_input_name"><![CDATA[Name]]></string>
     <string name="_bx_events_form_price_input_inf_name"><![CDATA[Unique value which will be used in back end and API calls]]></string>
-    <string name="_bx_events_form_price_input_err_name"><![CDATA[You need to enter a unique value here]]></string>
+    <string name="_bx_events_form_price_input_err_name"><![CDATA[Field's value should be unique and is needed for internal usage.]]></string>
+    <string name="_bx_events_form_price_input_sys_caption"><![CDATA[Caption]]></string>
+    <string name="_bx_events_form_price_input_caption"><![CDATA[Caption]]></string>
+    <string name="_bx_events_form_price_input_inf_caption"><![CDATA[The caption will be used in user end.]]></string>
+    <string name="_bx_events_form_price_input_err_caption"><![CDATA[You need to enter a value here.]]></string>
     <string name="_bx_events_form_price_input_sys_period"><![CDATA[Period]]></string>
     <string name="_bx_events_form_price_input_period"><![CDATA[Period]]></string>
     <string name="_bx_events_form_price_input_inf_period"><![CDATA[Use 0 for lifetime]]></string>
@@ -148,6 +154,8 @@
     <string name="_bx_events_form_price_input_sys_price"><![CDATA[Price]]></string>
     <string name="_bx_events_form_price_input_price"><![CDATA[Price]]></string>
     <string name="_bx_events_form_price_input_inf_price"><![CDATA[Use 0 or leave empty to create free level.]]></string>
+    <string name="_bx_events_form_price_input_sys_default"><![CDATA[Default]]></string>
+    <string name="_bx_events_form_price_input_default"><![CDATA[Default]]></string>
     <string name="_bx_events_form_price_input_sys_do_submit"><![CDATA[Submit]]></string>
     <string name="_bx_events_form_price_input_do_submit"><![CDATA[Submit]]></string>
     <string name="_bx_events_form_price_input_sys_do_cancel"><![CDATA[Cancel]]></string>
@@ -403,7 +411,7 @@
     <string name="_bx_events_menu_item_title_sm_subscribers"><![CDATA[{0} interested]]></string>
 
     <string name="_bx_events_menu_item_title_system_pay_and_join"><![CDATA[Pay & Join]]></string>
-    <string name="_bx_events_menu_item_title_pay_and_join"><![CDATA[Pay & Join]]></string>
+    <string name="_bx_events_menu_item_title_pay_and_join"><![CDATA[Join {0}]]></string>
     <string name="_bx_events_menu_item_title_system_subscriptions"><![CDATA[Following]]></string>
     <string name="_bx_events_menu_item_title_system_subscribe"><![CDATA[Follow]]></string>
     <string name="_bx_events_menu_item_title_subscribe"><![CDATA[Interested]]></string>
@@ -490,9 +498,11 @@
     <string name="_bx_events_popup_title_sn_edit"><![CDATA[Edit Session]]></string>
 
     <string name="_bx_events_grid_column_title_name"><![CDATA[Name]]></string>
+    <string name="_bx_events_grid_column_title_caption"><![CDATA[Caption]]></string>
     <string name="_bx_events_grid_column_title_role_id"><![CDATA[Role]]></string>
     <string name="_bx_events_grid_column_title_period"><![CDATA[Period]]></string>
     <string name="_bx_events_grid_column_title_price"><![CDATA[Price]]></string>
+    <string name="_bx_events_grid_column_title_default_price"><![CDATA[Default]]></string>
     <string name="_bx_events_grid_action_title_add"><![CDATA[Add]]></string>
     <string name="_bx_events_grid_action_title_edit"><![CDATA[Edit]]></string>
     <string name="_bx_events_grid_action_title_delete"><![CDATA[Delete]]></string>

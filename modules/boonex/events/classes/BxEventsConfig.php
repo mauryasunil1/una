@@ -259,6 +259,7 @@ class BxEventsConfig extends BxBaseModGroupsConfig
                 'option_members_mode_multi_roles' => '_bx_events_option_members_mode_multi_roles',
                 'txt_all_entries_in' => '_bx_events_txt_all_entries_in',
             	'form_field_author' => '_bx_events_form_profile_input_author',
+                'menu_item_title_pay_and_join' => '_bx_events_menu_item_title_pay_and_join',
                 'menu_item_title_befriend_sent' => '_bx_events_menu_item_title_befriend_sent',
                 'menu_item_title_unfriend_cancel_request' => '_bx_events_menu_item_title_unfriend_cancel_request',
                 'menu_item_title_befriend_confirm' => '_bx_events_menu_item_title_befriend_confirm',

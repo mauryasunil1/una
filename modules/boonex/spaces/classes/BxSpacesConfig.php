@@ -230,6 +230,7 @@ class BxSpacesConfig extends BxBaseModGroupsConfig
                 'txt_ntfs_timeline_post_common' => '_bx_spaces_txt_ntfs_timeline_post_common',
                 'option_members_mode_multi_roles' => '_bx_spaces_option_members_mode_multi_roles',
                 'form_field_author' => '_bx_spaces_form_entry_input_author',
+                'menu_item_title_pay_and_join' => '_bx_spaces_menu_item_title_pay_and_join',
                 'menu_item_title_befriend_sent' => '_bx_spaces_menu_item_title_befriend_sent',
                 'menu_item_title_unfriend_cancel_request' => '_bx_spaces_menu_item_title_unfriend_cancel_request',
                 'menu_item_title_befriend_confirm' => '_bx_spaces_menu_item_title_befriend_confirm',

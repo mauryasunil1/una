@@ -9,12 +9,12 @@
  */
 
 function BxJobsPrices(oOptions) {
-    BxBaseModJobsPrices.call(this, oOptions);
+    BxBaseModGroupsPrices.call(this, oOptions);
 
     this._sObjName = oOptions.sObjName == undefined ? 'oBxJobsPrices' : oOptions.sObjName;
 }
 
-BxJobsPrices.prototype = Object.create(BxBaseModJobsPrices.prototype);
+BxJobsPrices.prototype = Object.create(BxBaseModGroupsPrices.prototype);
 BxJobsPrices.prototype.constructor = BxJobsPrices;
 
 /** @} */
