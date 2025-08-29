@@ -26,6 +26,21 @@ class BxBaseModGroupsMenuViewActionsAll extends BxBaseModProfileMenuViewActionsA
                 'add' => 'checkAllowedFanAdd', 
                 'remove' => 'checkAllowedFanRemove'
             ];
+
+        if(($iContextPid = $this->_aContentInfo['profile_id']) && $this->_oModule->isPaidJoinByProfile($iContextPid)) {
+            $aDefault = $this->_oModule->_oDb->getPrices(['type' => 'by_profile_id', 'profile_id' => $iContextPid, 'default' => true]);
+            if(empty($aDefault) || !is_array($aDefault)) {
+                $aPrices = $this->_oModule->_oDb->getPrices(['type' => 'by_profile_id', 'profile_id' => $iContextPid]);
+                if(!empty($aPrices) && is_array($aPrices))
+                    $aDefault = reset($aPrices);
+            }
+
+            //TODO: Check markers parsing!
+            if(!empty($aDefault) && is_array($aDefault))
+                $this->addMarkers([
+                    'title_pay_and_join' => _t('_bx_groups_menu_item_title_pay_and_join', $this->_oModule->_oConfig->getPriceTitle($this->_aContentInfo[$CNF['FIELD_AUTHOR']], $aDefault))
+                ]);
+        }
     }
 
     protected function _isContentPublic($iContentId, $aPublicGroups = [])

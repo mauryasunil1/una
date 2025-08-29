@@ -55,9 +55,13 @@ class BxBaseModGroupsConfig extends BxBaseModProfileConfig
         return isset($this->_aHtmlIds[$sKey]) ? $this->_aHtmlIds[$sKey] : '';
     }
 
-    public function getCurrency()
+    public function getCurrency($iAuthorId = 0)
     {
-    	return $this->_aCurrency;
+        if(!$iAuthorId)
+            return $this->_aCurrency;
+
+        $aCurrency = BxDolPayments::getInstance()->getCurrencyInfo($iAuthorId);
+        return !empty($aCurrency) && is_array($aCurrency) ? $aCurrency : $this->_aCurrency;
     }
 
     public function isFans()
@@ -85,11 +89,42 @@ class BxBaseModGroupsConfig extends BxBaseModProfileConfig
         return $this->_bUseCoverAsThumb;
     }
 
+    public function getRolesPurchasable()
+    {
+        $aRoles = parent::getRoles();
+
+        $aResult = [];
+        foreach($aRoles as $iValue => $sTitle)
+            if(!in_array($iValue, [BX_BASE_MOD_GROUPS_ROLE_ADMINISTRATOR, BX_BASE_MOD_GROUPS_ROLE_MODERATOR]))
+                $aResult[$iValue] = $sTitle;
+
+        return $aResult;
+    }
+
     public function getPriceName($sName)
     {
         return uriGenerate($sName, $this->CNF['TABLE_PRICES'], $this->CNF['FIELD_PRICE_NAME'], ['lowercase' => false]);
     }
-    
+
+    public function getPriceTitle($iAuthorId, $aPrice)
+    {
+        $aCurrency = $this->getCurrency($iAuthorId);
+
+        $sPrice = _t_format_currency_ext($aPrice['price'], ['sign' => $aCurrency['sign']]);
+
+        $sResult = '';
+        if(!empty($aPrice['period']) && !empty($aPrice['period_unit'])) {
+            $bPeriods = (int)$aPrice['period'] > 1;
+            $sDuration = ($bPeriods ? $aPrice['period'] . ' ' : '') . _t('_duration_' . $aPrice['period_unit'] . ($bPeriods ? '_pl' : ''));
+
+            $sResult = _t('_price_recurring', $sPrice, $sDuration);
+        }
+        else
+            $sResult = _t('_price_single', $sPrice);
+
+        return $sResult;
+    }
+
     protected function _initUseCoverAsThumb()
     {
         if(($sKey = 'PARAM_USE_COVER_AS_THUMB') && !empty($this->CNF[$sKey]))

@@ -32,7 +32,7 @@ class BxBaseModGroupsGridPrices extends BxTemplGrid
 
         $CNF = $this->_oModule->_oConfig->CNF;
 
-        $this->_aRoles = BxDolFormQuery::getDataItems($CNF['OBJECT_PRE_LIST_ROLES']);
+        $this->_aRoles = $this->_oModule->_oConfig->getRolesPurchasable();
         $this->_aPeriodUnits = BxDolForm::getDataItems($CNF['OBJECT_PRE_LIST_PERIOD_UNITS']);
 
         $this->_iGroupProfileId = 0;
@@ -68,15 +68,27 @@ class BxBaseModGroupsGridPrices extends BxTemplGrid
 
     protected function _getCellPrice($mixedValue, $sKey, $aField, $aRow)
     {
-        if((float)$mixedValue != 0) {
-            $aCurrency = $this->_oModule->_oConfig->getCurrency();
+        $CNF = $this->_oModule->_oConfig->CNF;
 
-        $mixedValue = html_entity_decode($aCurrency['sign']) . $mixedValue;
+        if((float)$mixedValue != 0) {
+            $aCurrency = $this->_oModule->_oConfig->getCurrency($this->_aGroupContentInfo[$CNF['FIELD_AUTHOR']]);
+
+            $mixedValue = html_entity_decode($aCurrency['sign']) . $mixedValue;
         }
         else 
             $mixedValue = _t('_free');
 
         return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
+    }
+
+    protected function _roleIdI2S($iValue)
+    {
+        return $this->_oModule->_oConfig->roleIdI2S($iValue);
+    }
+
+    protected function _roleIdS2I($sValue)
+    {
+        return $this->_oModule->_oConfig->roleIdS2I($sValue);
     }
 
     protected function _getIds()

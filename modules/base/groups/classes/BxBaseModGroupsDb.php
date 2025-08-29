@@ -333,7 +333,7 @@ class BxBaseModGroupsDb extends BxBaseModProfileDb
         $sJoinClause = $sWhereClause = $sOrderClause = $sLimitClause = "";
 
         if(!isset($aParams['order']) || empty($aParams['order']))
-            $sOrderClause = "ORDER BY `tp`.`Order` ASC";
+            $sOrderClause = "ORDER BY `tp`.`order` ASC";
 
         switch($aParams['type']) {
             case 'by_id':
@@ -360,6 +360,12 @@ class BxBaseModGroupsDb extends BxBaseModProfileDb
                 );
 
                 $sWhereClause .= "AND `tp`.`profile_id`=:profile_id";
+
+                if(!empty($aParams['default'])) {
+                    $aMethod['name'] = 'getRow';
+
+                    $sWhereClause .= " AND `tp`.`default`='1'";
+                }
                 break;
 
             case 'by_prpp':
@@ -388,6 +394,11 @@ class BxBaseModGroupsDb extends BxBaseModProfileDb
         ));
     }
 
+    public function updatePrices($aSet, $aWhere)
+    {
+        return (int)$this->query("UPDATE `" . $this->_oConfig->CNF['TABLE_PRICES'] . "` SET " . $this->arrayToSQL($aSet) . "  WHERE " . $this->arrayToSQL($aWhere, " AND ")) > 0;
+    }
+    
     public function deletePrices($aWhere)
     {
         return (int)$this->query("DELETE FROM `" . $this->_oConfig->CNF['TABLE_PRICES'] . "` WHERE " . $this->arrayToSQL($aWhere, " AND ")) > 0;

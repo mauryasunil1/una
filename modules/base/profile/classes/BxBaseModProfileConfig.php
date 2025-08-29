@@ -85,7 +85,17 @@ class BxBaseModProfileConfig extends BxBaseModGeneralConfig
 
         return $this->_aRoles;
     }
-    
+
+    public function roleIdI2S($iValue)
+    {
+        return 'r' . $iValue;
+    }
+
+    public function roleIdS2I($sValue)
+    {
+        return (int)substr($sValue, 1);
+    }
+
     protected function _initRoles()
     {
         if(empty($this->CNF['OBJECT_PRE_LIST_ROLES'])) 

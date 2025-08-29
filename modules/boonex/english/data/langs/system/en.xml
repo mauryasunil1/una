@@ -98,6 +98,8 @@
 	<string name="_Please select value"><![CDATA[Please select a value from the list]]></string>
         <string name="_polls_from"><![CDATA[Polls from: {0}]]></string>
 	<string name="_Preview"><![CDATA[Preview]]></string>
+        <string name="_price_recurring"><![CDATA[{0}/{1}]]></string>
+	<string name="_price_single"><![CDATA[{0}]]></string>
         <string name="_report_comment"><![CDATA[reported as '{0}']]></string>
         <string name="_report_comment_with_note"><![CDATA[reported as '{0}' with a note: {1}]]></string>
         <string name="_report_comment_check_in"><![CDATA[check-in]]></string>
@@ -118,8 +120,8 @@
 	<string name="_report_err_not_enabled"><![CDATA[The feature is not available right now. Please, try again later.]]></string>
 	<string name="_report_err_wrong_type"><![CDATA[Wrong report type.]]></string>
 	<string name="_report_reported_as"><![CDATA[Reported as ]]></string>
-  <string name="_report_reported_by"><![CDATA[Reported by ]]></string>
-  <string name="_report_comments_count"><![CDATA[Comments ({0})]]></string>
+        <string name="_report_reported_by"><![CDATA[Reported by ]]></string>
+        <string name="_report_comments_count"><![CDATA[Comments ({0})]]></string>
 	<string name="_RSS_Feed_Title_Common"><![CDATA[{0} RSS]]></string>
 	<string name="_RSS_Feed_Title_Profile"><![CDATA[{0}'s Recent {1}]]></string>
 	<string name="_Rate"><![CDATA[Rate]]></string>
@@ -2099,6 +2101,14 @@
         <string name="_cmt_rvw_txt_do"><![CDATA[Review]]></string>
         <string name="_copyright"><![CDATA[&copy; {0} Company]]></string>
 	<string name="_delete"><![CDATA[delete]]></string>
+        <string name="_duration_day"><![CDATA[day]]></string>
+        <string name="_duration_day_pl"><![CDATA[days]]></string>
+        <string name="_duration_week"><![CDATA[week]]></string>
+        <string name="_duration_week_pl"><![CDATA[week]]></string>
+        <string name="_duration_month"><![CDATA[month]]></string>
+        <string name="_duration_month_pl"><![CDATA[monthes]]></string>
+        <string name="_duration_year"><![CDATA[year]]></string>
+        <string name="_duration_year_pl"><![CDATA[year]]></string>
 	<string name="_error occured"><![CDATA[Error occurred]]></string>
 	<string name="_from"><![CDATA[from]]></string>
 	<string name="_hidden_comment"><![CDATA[Comment by <b>{0}</b> is hidden.]]></string>
@@ -2517,7 +2527,7 @@ If it is not enabled then please consider implement this optimization, since it 
     <string name="_sys_connect_option_approve"><![CDATA[Always approve profiles when joined using this module]]></string>
     <string name="_sys_connect_option_privacy"><![CDATA[Default privacy for created profiles]]></string>
 
-    <string name="_sys_currency"><![CDATA[{0} {1}]]></string>
+    <string name="_sys_currency"><![CDATA[{0}{1}]]></string>
     <string name="_sys_decline"><![CDATA[Decline]]></string>
     <string name="_sys_designbox_0"><![CDATA[Content]]></string>
     <string name="_sys_designbox_1"><![CDATA[Content + Title + Background]]></string>

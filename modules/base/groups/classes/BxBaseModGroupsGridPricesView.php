@@ -137,7 +137,7 @@ class BxBaseModGroupsGridPricesView extends BxBaseModGroupsGridPrices
 
     protected function _getCellRoleId($mixedValue, $sKey, $aField, $aRow)
     {
-        return parent::_getCellDefault($this->_aRoles[$mixedValue], $sKey, $aField, $aRow);
+        return parent::_getCellDefault(!empty($aRow['caption']) ? $aRow['caption'] : $this->_aRoles[$mixedValue], $sKey, $aField, $aRow);
     }
 
     protected function _getActionChoose ($sType, $sKey, $a, $isSmall = false, $isDisabled = false, $aRow = array())

@@ -591,6 +591,7 @@ class BxBaseModGeneralMenuViewActions extends BxTemplMenuCustom
                 return '';
 
             $this->_oMenuActions->setContentId($this->_iContentId);
+            $this->_oMenuActions->addMarkers($this->getMarkers());
 
             $this->addMarkers($this->_oMenuActions->getMarkers());
         }
