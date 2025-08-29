@@ -268,7 +268,7 @@ INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES
 ('bx_groups_view_actions', 'bx_groups', '_bx_groups_menu_set_title_view_profile_actions', 0);
 
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `submenu_popup`, `visible_for_levels`, `visibility_custom`, `active`, `copyable`, `editable`, `order`) VALUES 
-('bx_groups_view_actions', 'bx_groups', 'join-group-profile', '_bx_groups_menu_item_title_system_pay_and_join', '_bx_groups_menu_item_title_pay_and_join', 'page.php?i=join-group-profile&profile_id={profile_id}', '', '', 'sign-in-alt', '', 0, 2147483647, 'a:3:{s:6:"module";s:9:"bx_groups";s:6:"method";s:22:"is_paid_join_avaliable";s:6:"params";a:1:{i:0;s:12:"{profile_id}";}}', 1, 0, 0, 5),
+('bx_groups_view_actions', 'bx_groups', 'join-group-profile', '_bx_groups_menu_item_title_system_pay_and_join', '{title_pay_and_join}', 'page.php?i=join-group-profile&profile_id={profile_id}', '', '', 'sign-in-alt', '', 0, 2147483647, 'a:3:{s:6:"module";s:9:"bx_groups";s:6:"method";s:22:"is_paid_join_avaliable";s:6:"params";a:1:{i:0;s:12:"{profile_id}";}}', 1, 0, 0, 5),
 ('bx_groups_view_actions', 'bx_groups', 'profile-fan-add', '_bx_groups_menu_item_title_system_become_fan', '{title_add_fan}', 'javascript:void(0)', 'bx_conn_action(this, \'bx_groups_fans\', \'add\', \'{profile_id}\')', '', 'sign-in-alt', '', 0, 2147483647, 'a:3:{s:6:"module";s:9:"bx_groups";s:6:"method";s:22:"is_free_join_avaliable";s:6:"params";a:1:{i:0;s:12:"{profile_id}";}}', 1, 0, 0, 10),
 ('bx_groups_view_actions', 'bx_groups', 'profile-fan-remove', '_bx_groups_menu_item_title_system_leave_group', '{title_remove_fan}', 'javascript:void(0)', 'bx_conn_action(this, \'bx_groups_fans\', \'remove\', \'{profile_id}\')', '', 'sign-out-alt', '', 0, 2147483647, '', 1, 0, 1, 11),
 ('bx_groups_view_actions', 'bx_groups', 'profile-subscribe-add', '_bx_groups_menu_item_title_system_subscribe', '_bx_groups_menu_item_title_subscribe', 'javascript:void(0)', 'bx_conn_action(this, \'sys_profiles_subscriptions\', \'add\', \'{profile_id}\')', '', 'check', '', 0, 2147483647, '', 1, 0, 1, 20),
@@ -304,7 +304,7 @@ INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES
 
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `submenu_popup`, `visible_for_levels`, `visibility_custom`, `active`, `copyable`, `order`) VALUES 
 ('bx_groups_view_actions_all', 'bx_groups', 'join-group-profile', '_bx_groups_menu_item_title_system_pay_and_join', '', '', '', '', '', '', '', 0, 2147483647, '', 1, 0, 5),
-('bx_groups_view_actions_all', 'bx_groups', 'profile-fans', '_bx_groups_menu_item_title_system_fans', '', '', '', '', '', '', '', 0, 2147483647, '', 1, 0, 10),
+('bx_groups_view_actions_all', 'bx_groups', 'profile-fans', '_bx_groups_menu_item_title_system_fans', '', '', '', '', '', '', '', 0, 2147483647, 'a:3:{s:6:"module";s:9:"bx_groups";s:6:"method";s:22:"is_free_join_avaliable";s:6:"params";a:1:{i:0;s:12:"{profile_id}";}}', 1, 0, 10),
 ('bx_groups_view_actions_all', 'bx_groups', 'profile-fan-add', '_bx_groups_menu_item_title_system_become_fan', '', '', '', '', '', '', '', 0, 2147483647, '', 0, 0, 12),
 ('bx_groups_view_actions_all', 'bx_groups', 'profile-fan-remove', '_bx_groups_menu_item_title_system_leave_group', '', '', '', '', '', '', '', 0, 2147483647, '', 0, 0, 14),
 ('bx_groups_view_actions_all', 'bx_groups', 'profile-subscriptions', '_bx_groups_menu_item_title_system_subscriptions', '', '', '', '', '', '', '', 0, 2147483647, '', 1, 0, 30),
@@ -646,16 +646,19 @@ INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon
 
 -- GRIDS: Pricing
 INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `override_class_name`, `override_class_file`) VALUES
-('bx_groups_prices_manage', 'Sql', 'SELECT * FROM `bx_groups_prices` WHERE 1 ', 'bx_groups_prices', 'id', 'order', '', '', 100, NULL, 'start', '', 'period,period_unit,price', '', 'like', '', '', 2147483647, 'BxGroupsGridPricesManage', 'modules/boonex/groups/classes/BxGroupsGridPricesManage.php'),
-('bx_groups_prices_view', 'Sql', 'SELECT * FROM `bx_groups_prices` WHERE 1 ', 'bx_groups_prices', 'id', 'order', '', '', 100, NULL, 'start', '', 'period,period_unit,price', '', 'like', '', '', 2147483647, 'BxGroupsGridPricesView', 'modules/boonex/groups/classes/BxGroupsGridPricesView.php');
+('bx_groups_prices_manage', 'Sql', 'SELECT *, `default` AS `default_price` FROM `bx_groups_prices` WHERE 1 ', 'bx_groups_prices', 'id', 'order', 'active', '', 100, NULL, 'start', '', 'period,period_unit,price', '', 'like', '', '', 2147483647, 'BxGroupsGridPricesManage', 'modules/boonex/groups/classes/BxGroupsGridPricesManage.php'),
+('bx_groups_prices_view', 'Sql', 'SELECT * FROM `bx_groups_prices` WHERE `active`<>''0'' ', 'bx_groups_prices', 'id', 'order', '', '', 100, NULL, 'start', '', 'period,period_unit,price', '', 'like', '', '', 2147483647, 'BxGroupsGridPricesView', 'modules/boonex/groups/classes/BxGroupsGridPricesView.php');
 
 INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `order`) VALUES
-('bx_groups_prices_manage', 'checkbox', '_sys_select', '1%', 0, '', '', 1),
-('bx_groups_prices_manage', 'order', '', '1%', 0, '', '', 2),
-('bx_groups_prices_manage', 'name', '_bx_groups_grid_column_title_name', '38%', 0, 32, '', 3),
-('bx_groups_prices_manage', 'price', '_bx_groups_grid_column_title_price', '20%', 0, 16, '', 4),
-('bx_groups_prices_manage', 'period', '_bx_groups_grid_column_title_period', '20%', 0, 16, '', 5),
-('bx_groups_prices_manage', 'actions', '', '20%', 0, '', '', 6),
+('bx_groups_prices_manage', 'checkbox', '_sys_select', '2%', 0, 0, '', 1),
+('bx_groups_prices_manage', 'order', '', '2%', 0, 0, '', 2),
+('bx_groups_prices_manage', 'switcher', '', '6%', 0, 0, '', 3),
+('bx_groups_prices_manage', 'name', '_bx_groups_grid_column_title_name', '15%', 0, 16, '', 4),
+('bx_groups_prices_manage', 'caption', '_bx_groups_grid_column_title_caption', '20%', 0, 32, '', 5),
+('bx_groups_prices_manage', 'price', '_bx_groups_grid_column_title_price', '15%', 0, 16, '', 6),
+('bx_groups_prices_manage', 'period', '_bx_groups_grid_column_title_period', '15%', 0, 16, '', 7),
+('bx_groups_prices_manage', 'default_price', '_bx_groups_grid_column_title_default_price', '5%', 0, 0, '', 8),
+('bx_groups_prices_manage', 'actions', '', '20%', 0, 0, '', 9),
 
 ('bx_groups_prices_view', 'role_id', '_bx_groups_grid_column_title_role_id', '40%', 0, 32, '', 1),
 ('bx_groups_prices_view', 'price', '_bx_groups_grid_column_title_price', '20%', 0, 16, '', 2),
