@@ -35,10 +35,9 @@ class BxBaseModGroupsMenuViewActionsAll extends BxBaseModProfileMenuViewActionsA
                     $aDefault = reset($aPrices);
             }
 
-            //TODO: Check markers parsing!
             if(!empty($aDefault) && is_array($aDefault))
                 $this->addMarkers([
-                    'title_pay_and_join' => _t('_bx_groups_menu_item_title_pay_and_join', $this->_oModule->_oConfig->getPriceTitle($this->_aContentInfo[$CNF['FIELD_AUTHOR']], $aDefault))
+                    'title_pay_and_join' => _t($CNF['T']['menu_item_title_pay_and_join'], $this->_oModule->_oConfig->getPriceTitle($this->_aContentInfo[$CNF['FIELD_AUTHOR']], $aDefault))
                 ]);
         }
     }
