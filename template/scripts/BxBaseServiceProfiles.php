@@ -885,9 +885,10 @@ class BxBaseServiceProfiles extends BxDol
         if($this->_bIsApi)
             $aParams = bx_api_get_browse_params($aParams);
 
+        $iLoggedId = bx_get_logged_profile_id();
         if(!$iProfileId)
-            $iProfileId = bx_get_logged_profile_id();
-        if(!$iProfileId)
+            $iProfileId = $iLoggedId;
+        if(!$iProfileId || $iProfileId != $iLoggedId)
             return '';
 
         $aParams = array_merge([
