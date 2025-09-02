@@ -674,7 +674,7 @@ class BxPaymentProviderStripeBasic extends BxBaseModPaymentProvider
 
         $aPending = $this->_oModule->_oDb->getOrderPending(['type' => 'order', 'order' => $sSubscriptionId]);
 
-        $aPaid = [];
+        $aPaid = ['amount' => 0, 'currency' => ''];
         if(!empty($oEvent->data->object->charge)) {
             $oCharge = $this->_retrieveCharge($oEvent->data->object->charge);
             if($oCharge)
@@ -683,11 +683,12 @@ class BxPaymentProviderStripeBasic extends BxBaseModPaymentProvider
                     'currency' => $oCharge->currency
                 ];
         }
-        else if(!empty($oEvent->data->object->amount_paid) && !empty($oEvent->data->object->currency))
-            $aPaid = [
-                'amount' => $oEvent->data->object->amount_paid,
-                'currency' => $oEvent->data->object->currency
-            ];            
+        else {
+            if(!empty($oEvent->data->object->amount_paid)) 
+                $aPaid['amount'] = $oEvent->data->object->amount_paid;
+            if(!empty($oEvent->data->object->currency))
+                $aPaid['currency'] = $oEvent->data->object->currency;
+        }
 
         return [!empty($aPending) && is_array($aPending) ? $aPending : $sSubscriptionId, $aPaid];
     }
