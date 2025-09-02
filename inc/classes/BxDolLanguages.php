@@ -281,7 +281,7 @@ class BxDolLanguages extends BxDolFactory implements iBxDolSingleton
         else
             $fPrice = sprintf("%." . $iPrecision . "f", (float)$fPrice);
 
-        return $this->_t('_sys_currency', $sSign, $fPrice);
+        return $this->_t('_sys_currency', html_entity_decode($sSign), $fPrice);
     }
 
     function _t_format_extensions ($mixedExtensions)
