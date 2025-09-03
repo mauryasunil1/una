@@ -38,25 +38,34 @@ BxDolLiveUpdates.prototype.init = function() {
     });
 };
 
+BxDolLiveUpdates.prototype.getSystemsTransient = function() {
+    return this._aSystemsTransient;
+};
+
+BxDolLiveUpdates.prototype.setValue = function(sSystem, mixedValue) {
+    if(sSystem && this._aSystemsActive[sSystem] != undefined && mixedValue)
+        this._aSystemsActive[sSystem] = mixedValue;
+};
+
 BxDolLiveUpdates.prototype.add = function(oData) {
-	if(!oData)
-		return;
+    if(!oData)
+        return;
 
-	if(oData.name != undefined && oData.value != undefined) {
-		if(!this._aSystemsActive[oData.name])
-			this._aSystemsActive[oData.name] = oData.value;
-	
-		if(!this._aSystemsTransient[oData.name])
-			this._aSystemsTransient[oData.name] = 1;
-	}
+    if(oData.name != undefined && oData.value != undefined) {
+        if(!this._aSystemsActive[oData.name])
+            this._aSystemsActive[oData.name] = oData.value;
 
-	if(oData.hash != undefined)
-		this._sHash = oData.hash;
+        if(!this._aSystemsTransient[oData.name])
+            this._aSystemsTransient[oData.name] = 1;
+    }
+
+    if(oData.hash != undefined)
+        this._sHash = oData.hash;
 };
 
 BxDolLiveUpdates.prototype.destroy = function() {
-	if(this._iHandler)
-		clearInterval(this._iHandler);
+    if(this._iHandler)
+        clearInterval(this._iHandler);
 };
 
 BxDolLiveUpdates.prototype.perform = function() {

@@ -94,6 +94,16 @@ BxTimelinePost.prototype.afterFormPostSubmit = function (oForm, oData)
             if(iId <= 0) 
                 return;
 
+            // Refresh value in LiveUpdates
+            if(oLiveUpdates != undefined) {
+                var aSystems = oLiveUpdates.getSystemsTransient();
+                for(var sSystem in aSystems)
+                    if(sSystem.startsWith('bx_timeline')) {
+                        oLiveUpdates.setValue(sSystem, oData.id);
+                        break;
+                    }
+            }
+
             $('.' + $this.sClassView + ':visible').each(function() {
                 var oView = $(this);
                 $this._getPost(oView, iId, jQuery.extend({}, $this._oRequestParams, {view: $this._getView(oView), afps_loading: 1}));

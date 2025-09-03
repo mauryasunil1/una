@@ -3566,7 +3566,6 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
             return false;
 
         $aParams = $this->_prepareParams($aBrowseParams);
-        $aParams['filter'] = BX_TIMELINE_FILTER_OTHER_VIEWER;
         if(($iLiveUpdateLength = $this->_oConfig->getLiveUpdateLength()) != 0)
             $aParams['per_page'] = $iLiveUpdateLength;
 
@@ -5893,11 +5892,7 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
         
         $mixedResult = $this->_oTemplate->getPostBlock($this->_iOwnerId, $aParams);
 
-        /*if (bx_is_api()){
-            $this->actionPost();
-        }
-        */
-        return bx_is_api() ? $mixedResult : [
+        return $this->_bIsApi ? $mixedResult : [
             'content' => $mixedResult
         ];
     }
