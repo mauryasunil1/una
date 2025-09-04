@@ -289,10 +289,17 @@ class BxNtfsTemplate extends BxBaseModNotificationsTemplate
             });
 
             $aEvent['content'] = array_merge($aEvent['content'], $aLinks);
-            return $aEvent;
+            $aEvent['content'] = array_intersect_key($aEvent['content'], array_flip([
+                'entry_url', 'entry_url_api', 'subentry_url', 'subentry_url_api', 'modal_view'
+            ]));
+
+            $aEvent['content_parsed'] = html_entity_decode($aEvent['content_parsed']);
+            return array_intersect_key($aEvent, array_flip([
+                'id', 'content', 'content_parsed', 'date', 'author_data'
+            ]));
         }
 
-        return $this->parseHtmlByName('event.html', array (
+        return $this->parseHtmlByName('event.html', [
             'html_id' => $this->_oConfig->getHtmlIds('view', 'event') . $aEvent['id'],
             'style_prefix' => $this->_oConfig->getPrefix('style'),
             'js_object' => $sJsObject,
@@ -313,7 +320,7 @@ class BxNtfsTemplate extends BxBaseModNotificationsTemplate
                 'condition' => $bClickedIndicator && (!isset($aEvent['clicked']) || (int)$aEvent['clicked'] == 0),
                 'content' => []
             ],
-        ));
+        ]);
     }
 
     public function getNotificationEmail($iRecipient, &$aEvent)
