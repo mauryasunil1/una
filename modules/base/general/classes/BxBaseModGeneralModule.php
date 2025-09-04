@@ -2780,9 +2780,9 @@ class BxBaseModGeneralModule extends BxDolModule
      */
     public function serviceGetNotificationsComment($aEvent)
     {
-    	$CNF = &$this->_oConfig->CNF;
+        $CNF = &$this->_oConfig->CNF;
 
-    	$iContentId = (int)$aEvent['object_id'];
+        $iContentId = (int)$aEvent['object_id'];
         $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
         if(empty($aContentInfo) || !is_array($aContentInfo))
             return [];
@@ -2804,7 +2804,8 @@ class BxBaseModGeneralModule extends BxDolModule
             'entry_summary' => $sEntrySummary,
             'entry_author' => $aContentInfo[$CNF['FIELD_AUTHOR']],
             'subentry_sample' => $CNF['T']['txt_sample_comment_single'],
-            'subentry_url' => bx_absolute_url($oComment->getViewUrl($iCommentId, false), '{bx_url_root}'),
+            'subentry_url' => $oComment->getItemUrl($iCommentId, '{bx_url_root}'),
+            'subentry_url_api' => $oComment->getItemUrlApi($iCommentId, '{bx_url_root}'),
             'subentry_summary' => $oComment->getViewText($iCommentId),
             'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
         ];
@@ -2815,36 +2816,32 @@ class BxBaseModGeneralModule extends BxDolModule
      */
     public function serviceGetNotificationsReply($aEvent)
     {
-    	$CNF = &$this->_oConfig->CNF;
+        $CNF = &$this->_oConfig->CNF;
 
-    	$oComment = BxDolCmts::getObjectInstance($CNF['OBJECT_COMMENTS'], 0, false);
+        $oComment = BxDolCmts::getObjectInstance($CNF['OBJECT_COMMENTS'], 0, false);
         if(!$oComment || !$oComment->isEnabled())
             return [];
 
-    	$iParentId = (int)$aEvent['object_id'];
-        $aParentInfo = $oComment->getQueryObject()->getCommentsBy(array('type' => 'id', 'id' => $iParentId));
+        $iParentId = (int)$aEvent['object_id'];
+        $aParentInfo = $oComment->getQueryObject()->getCommentsBy(['type' => 'id', 'id' => $iParentId]);
         if(empty($aParentInfo) || !is_array($aParentInfo))
             return [];
 
         $iObjectId = (int)$aParentInfo['cmt_object_id'];
         $oComment->init($iObjectId);
-
-        $sParentUrlApi = '';
-        if($this->_bIsApi && getParam('sys_api_comment_notif_link_content') == 'on')
-            $sParentUrlApi = $oComment->getBaseUrl('{bx_url_root}') . '#cid=' . $iParentId;
-
         $iCommentId = (int)$aEvent['subobject_id'];
 
         return [
             'object_id' => $iObjectId,
             'entry_sample' => '_cmt_txt_sample_comment_single',
-            'entry_url' => bx_absolute_url($oComment->getViewUrl($iParentId, false), '{bx_url_root}'),
-            'entry_url_api' => $sParentUrlApi,
+            'entry_url' => $oComment->getItemUrl($iParentId, '{bx_url_root}'),
+            'entry_url_api' => $oComment->getItemUrlApi($iParentId, '{bx_url_root}'),
             'entry_caption' => strmaxtextlen($aParentInfo['cmt_text'], 20, '...'),
             'entry_summary' => $oComment->getViewText($iParentId),
             'entry_author' => (int)$aParentInfo['cmt_author_id'],
             'subentry_sample' => '_cmt_txt_sample_reply_to',
-            'subentry_url' => bx_absolute_url($oComment->getViewUrl($iCommentId, false), '{bx_url_root}'),
+            'subentry_url' => $oComment->getItemUrl($iCommentId, '{bx_url_root}'),
+            'subentry_url_api' => $oComment->getItemUrlApi($iCommentId, '{bx_url_root}'),
             'subentry_summary' => $oComment->getViewText($iCommentId),
             'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
         ];

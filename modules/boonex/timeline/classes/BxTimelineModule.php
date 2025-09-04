@@ -2615,7 +2615,7 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
      */
     public function serviceGetNotificationsComment($aEvent)
     {
-    	$CNF = &$this->_oConfig->CNF;
+        $CNF = &$this->_oConfig->CNF;
 
         $iContent = (int)$aEvent['object_id'];
         $aContent = $this->_oDb->getEvents(array('browse' => 'id', 'value' => $iContent));
@@ -2638,7 +2638,8 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
             'entry_summary' => $sEntrySummary,
             'entry_author' => $aContent['owner_id'],
             'subentry_sample' => $CNF['T']['txt_sample_comment_single'],
-            'subentry_url' => bx_absolute_url($oComment->getViewUrl($iCommentId, false), '{bx_url_root}'),
+            'subentry_url' => $oComment->getItemUrl($iCommentId, '{bx_url_root}'),
+            'subentry_url_api' => $oComment->getItemUrlApi($iCommentId, '{bx_url_root}'),
             'subentry_summary' => $oComment->getViewText($iCommentId),
             'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
         ];
@@ -2677,18 +2678,19 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
 
         $iObjectId = (int)$aParentInfo['cmt_object_id'];
         $oComment->init($iObjectId);
-
         $iCommentId = (int)$aEvent['subobject_id'];
 
         return [
             'object_id' => $iObjectId,
             'entry_sample' => '_cmt_txt_sample_comment_single',
-            'entry_url' => bx_absolute_url($oComment->getViewUrl($iParentId, false), '{bx_url_root}'),
+            'entry_url' => $oComment->getItemUrl($iParentId, '{bx_url_root}'),
+            'entry_url_api' => $oComment->getItemUrlApi($iParentId, '{bx_url_root}'),
             'entry_caption' => strmaxtextlen($aParentInfo['cmt_text'], 20, '...'),
             'entry_summary' => $oComment->getViewText($iParentId),
             'entry_author' => (int)$aParentInfo['cmt_author_id'],
             'subentry_sample' => '_cmt_txt_sample_reply_to',
-            'subentry_url' => bx_absolute_url($oComment->getViewUrl($iCommentId, false), '{bx_url_root}'),
+            'subentry_url' => $oComment->getItemUrl($iCommentId, '{bx_url_root}'),
+            'subentry_url_api' => $oComment->getItemUrlApi($iCommentId, '{bx_url_root}'),
             'subentry_summary' => $oComment->getViewText($iCommentId),
             'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
         ];

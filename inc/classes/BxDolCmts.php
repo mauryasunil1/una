@@ -183,6 +183,7 @@ class BxDolCmts extends BxDolFactory implements iBxDolReplaceable, iBxDolContent
     protected $_sBaseUrl = '';
     protected $_sListAnchor = '';
     protected $_sItemAnchor = '';
+    protected $_sItemAnchorApi = '';
 
     protected $_aSystems = [];
 
@@ -261,6 +262,7 @@ class BxDolCmts extends BxDolFactory implements iBxDolReplaceable, iBxDolContent
 
         $this->_sListAnchor = "cmts-anchor-%s-%d";
         $this->_sItemAnchor = "cmt-anchor-%s-%d-%d";
+        $this->_sItemAnchorApi = "cid=%d";
 
         $this->_oQuery = new BxDolCmtsQuery($this);
 
@@ -539,22 +541,37 @@ class BxDolCmts extends BxDolFactory implements iBxDolReplaceable, iBxDolContent
         return bx_absolute_url($sUrl, $sPrefix);
     }
 
-    public function getListUrl()
+    public function getListUrl($sPrefix = BX_DOL_URL_ROOT)
     {
-        $sBaseUrl = $this->getBaseUrl();
+        $sBaseUrl = $this->getBaseUrl($sPrefix);
         if(empty($sBaseUrl))
             return '';
 
         return $sBaseUrl . $this->getListAnchor(true);
     }
 
-    public function getItemUrl($iItemId)
+    /**
+     * Get URL for view commented content page with anchor to the coment. 
+     * @param integer $iItemId - comment ID.
+     * @param string $sPrefix - URL prefix.
+     * @return string with URL.
+     */
+    public function getItemUrl($iItemId, $sPrefix = BX_DOL_URL_ROOT)
     {
-        $sBaseUrl = $this->getBaseUrl();
+        $sBaseUrl = $this->getBaseUrl($sPrefix);
         if(empty($sBaseUrl))
             return '';
 
         return $sBaseUrl . $this->getItemAnchor($iItemId, true);
+    }
+
+    public function getItemUrlApi($iItemId, $sPrefix = BX_DOL_URL_ROOT)
+    {
+        $sBaseUrl = $this->getBaseUrl($sPrefix);
+        if(empty($sBaseUrl))
+            return '';
+
+        return $sBaseUrl . $this->getItemAnchorApi($iItemId, true);
     }
 
     public function getListAnchor($bWithHash = false)
@@ -565,6 +582,11 @@ class BxDolCmts extends BxDolFactory implements iBxDolReplaceable, iBxDolContent
     public function getItemAnchor($iItemId, $bWithHash = false)
     {
         return ($bWithHash ? '#' : '') . sprintf($this->_sItemAnchor, str_replace('_', '-', $this->getSystemName()), $this->getId(), $iItemId);
+    }
+
+    public function getItemAnchorApi($iItemId, $bWithHash = false)
+    {
+        return ($bWithHash ? '#' : '') . sprintf($this->_sItemAnchorApi, $iItemId);
     }
 
     public function getAttachments($iCmtId)
