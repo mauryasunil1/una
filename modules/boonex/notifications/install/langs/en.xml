@@ -160,11 +160,10 @@
     <string name="_bx_ntfs_txt_object_pending_approval"><![CDATA[<b class="bx-ntfs-content-profile">{owner_name}</b> added a pending approval {entry_sample} <b class="bx-ntfs-content-entry">{entry_caption}</b>]]></string>
     <string name="_bx_ntfs_txt_subobject_added"><![CDATA[<b class="bx-ntfs-content-profile">{owner_name}</b> added a {subentry_sample} <b class="bx-ntfs-content-entry">{entry_caption}</b>]]></string>
     <string name="_bx_ntfs_txt_subobject_added_in_context"><![CDATA[<b class="bx-ntfs-content-profile">{owner_name}</b> has got a {subentry_sample} <b class="bx-ntfs-content-entry">{entry_caption}</b>]]></string>
-
-    <string name="_bx_ntfs_push_new_event_subject"><![CDATA[New on "{0}"]]></string>
+    <string name="_bx_ntfs_txt_new_event_subject"><![CDATA[New on "{0}"]]></string>
 
     <string name="_bx_ntfs_email_new_event"><![CDATA[New notification]]></string>
-    <string name="_bx_ntfs_email_new_event_subject"><![CDATA[{site_name} notification: {subject}]]></string>
+    <string name="_bx_ntfs_email_new_event_subject"><![CDATA[{subject}]]></string>
     <string name="_bx_ntfs_email_new_event_body"><![CDATA[{email_header}
 <p> </p>
 {content}

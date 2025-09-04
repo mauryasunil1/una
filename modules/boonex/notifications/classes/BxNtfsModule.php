@@ -628,7 +628,10 @@ class BxNtfsModule extends BxBaseModNotificationsModule
         $aSettings = &$aNotification['settings'];
 
         $sTemplate = !empty($aSettings['template']) ? $aSettings['template'] : 'bx_notifications_new_event';
-        $aTemplateMarkers = ['subject' => $aNotification['subject'], 'content' => $aNotification['content']];
+        $aTemplateMarkers = [
+            'subject' => !empty($aNotification['subject']) ? $aNotification['subject'] : _t('_bx_ntfs_txt_new_event_subject', getParam('site_title')),
+            'content' => $aNotification['content']
+        ];
         if(!empty($aSettings['markers']) && is_array($aSettings['markers']))
             $aTemplateMarkers = array_merge($aTemplateMarkers, $aSettings['markers']);              
 
@@ -702,7 +705,7 @@ class BxNtfsModule extends BxBaseModNotificationsModule
         if (!$aContent)
             return false;
 
-        $sSubject = !empty($aSettings['subject']) ? $aSettings['subject'] : _t('_bx_ntfs_push_new_event_subject', getParam('site_title'));
+        $sSubject = !empty($aSettings['subject']) ? $aSettings['subject'] : _t('_bx_ntfs_txt_new_event_subject', getParam('site_title'));
 
         return $oPush->send($iProfile, [
             'contents' => [
