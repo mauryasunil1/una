@@ -23,7 +23,12 @@ class BxTimelineCmts extends BxTemplCmts
 
         $this->_aSystem['trigger_field_privacy_view'] = 'object_privacy_view';
     }
-    
+
+    public function geModalViewApi()
+    {
+        return $this->_sModule;
+    }
+
     public function onPostAfter($iCmtId, $aDp = [])
     {
         $CNF = &$this->_oModule->_oConfig->CNF;

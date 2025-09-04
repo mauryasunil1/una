@@ -459,6 +459,11 @@ class BxDolCmts extends BxDolFactory implements iBxDolReplaceable, iBxDolContent
         return $this->_aSystem;
     }
 
+    public function getModule()
+    {
+        return $this->_aSystem['module'];
+    }
+
     public function getStorageObjectName()
     {
     	return $this->_getFormObject()->getStorageObjectName();
@@ -587,6 +592,11 @@ class BxDolCmts extends BxDolFactory implements iBxDolReplaceable, iBxDolContent
     public function getItemAnchorApi($iItemId, $bWithHash = false)
     {
         return ($bWithHash ? '#' : '') . sprintf($this->_sItemAnchorApi, $iItemId);
+    }
+
+    public function geModalViewApi()
+    {
+        return 'default';
     }
 
     public function getAttachments($iCmtId)
