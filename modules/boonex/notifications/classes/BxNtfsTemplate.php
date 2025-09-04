@@ -293,9 +293,15 @@ class BxNtfsTemplate extends BxBaseModNotificationsTemplate
                 'entry_url', 'entry_url_api', 'subentry_url', 'subentry_url_api', 'modal_view'
             ]));
 
-            $aEvent['content_parsed'] = html_entity_decode($aEvent['content_parsed']);
+            if(($sKey = 'content_parsed') && is_array($aEvent[$sKey])) {
+                foreach($aEvent[$sKey] as $sDeliveryType => $sContentParsed)
+                    $aEvent[$sKey][$sDeliveryType] = html_entity_decode($sContentParsed);
+            }
+            else    
+                $aEvent[$sKey] = html_entity_decode($aEvent[$sKey]);
+
             return array_intersect_key($aEvent, array_flip([
-                'id', 'content', 'content_parsed', 'date', 'author_data'
+                'id', 'owner_id', 'content', 'content_parsed', 'date', 'author_data'
             ]));
         }
 
