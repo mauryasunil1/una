@@ -717,6 +717,19 @@ class BxBasePage extends BxDolPage
         return $a;
     }
 
+    public function getPageContentAPI($aBlocks = [])
+    {
+        $sModule = $this->getModule();
+        $sName = $this->_getPageTitle();
+        $sMetaTitle = $this->_getPageMetaTitle();
+
+        return [
+            'module' => $sModule,
+            'title' => $sMetaTitle ? $sMetaTitle : $sName,
+            'elements' => $this->getPageBlocksAPI($aBlocks),
+        ];
+    }
+
     public function getPageBlocksAPI($aBlocks = [])
     {
         $bBlocks = !empty($aBlocks) && is_array($aBlocks);
