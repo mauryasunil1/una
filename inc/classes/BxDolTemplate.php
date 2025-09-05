@@ -1292,7 +1292,7 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
         $bPage = $oPage !== false;
 
         // general meta tags
-        if (!empty($this->aPage['keywords']) && is_array($this->aPage['keywords']))
+        if(!empty($this->aPage['keywords']) && is_array($this->aPage['keywords']))
             $sRet .= '<meta name="keywords" content="' . bx_html_attribute(implode(',', $this->aPage['keywords'])) . '" />';
 
         $sDescription = '';
@@ -1300,13 +1300,15 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
             $sDescription = $this->aPage['description'];
         if(!$sDescription && $bPage)
             $sDescription = $oPage->getMetaDescription();
+        if(!$sDescription)
+            $sDescription = getParam('site_description');
         $bDescription = !empty($sDescription);
 
-        if ($bDescription)
+        if($bDescription)
             $sRet .= '<meta name="description" content="' . bx_html_attribute($sDescription) . '" />';
 
         // location
-        if (!empty($this->aPage['location']) && isset($this->aPage['location']['lat']) && isset($this->aPage['location']['lng']) && isset($this->aPage['location']['country']))
+        if(!empty($this->aPage['location']) && isset($this->aPage['location']['lat']) && isset($this->aPage['location']['lng']) && isset($this->aPage['location']['country']))
             $sRet .= '
                 <meta name="ICBM" content="' . $this->aPage['location']['lat'] . ';' . $this->aPage['location']['lng'] . '" />
                 <meta name="geo.position" content="' . $this->aPage['location']['lat'] . ';' . $this->aPage['location']['lng'] . '" />
