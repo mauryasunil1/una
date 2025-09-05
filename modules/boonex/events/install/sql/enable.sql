@@ -730,7 +730,7 @@ INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable
 ('bx_events_prices_manage', 'price', '_bx_events_grid_column_title_price', '15%', 0, 16, '', 6),
 ('bx_events_prices_manage', 'period', '_bx_events_grid_column_title_period', '15%', 0, 16, '', 7),
 ('bx_events_prices_manage', 'default_price', '_bx_events_grid_column_title_default_price', '5%', 0, 0, '', 8),
-('bx_events_prices_manage', 'actions', '', '20%', 0, 0, '', 9)
+('bx_events_prices_manage', 'actions', '', '20%', 0, 0, '', 9),
 
 ('bx_events_prices_view', 'role_id', '_bx_events_grid_column_title_role_id', '40%', 0, 32, '', 1),
 ('bx_events_prices_view', 'price', '_bx_events_grid_column_title_price', '20%', 0, 16, '', 2),
