@@ -1,4 +1,4 @@
-bx_events_price_add
+
 SET @sStorageEngine = (SELECT `value` FROM `sys_options` WHERE `name` = 'sys_storage_default');
 
 -- TABLE: EVENTS
