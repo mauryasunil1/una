@@ -657,30 +657,33 @@ class BxAlbumsModule extends BxBaseModTextModule
 
     public function serviceGetNotificationsCommentMedia($aEvent)
     {
-    	$CNF = &$this->_oConfig->CNF;
+        $CNF = &$this->_oConfig->CNF;
 
-    	$iMediaId = (int)$aEvent['object_id'];
-    	$aMediaInfo = $this->_oDb->getMediaInfoById($iMediaId);
+        $iMediaId = (int)$aEvent['object_id'];
+        $aMediaInfo = $this->_oDb->getMediaInfoById($iMediaId);
         if(empty($aMediaInfo) || !is_array($aMediaInfo))
-            return array();
+            return [];
 
         $oComment = BxDolCmts::getObjectInstance($CNF['OBJECT_COMMENTS_MEDIA'], $iMediaId);
         if(!$oComment || !$oComment->isEnabled())
-            return array();
+            return [];
 
         $sEntryUrl = bx_absolute_url(BxDolPermalinks::getInstance()->permalink('page.php?i=' . $CNF['URI_VIEW_MEDIA'] . '&id=' . $aMediaInfo['id']), '{bx_url_root}');
         $sEntryCaption = isset($aMediaInfo['title']) ? $aMediaInfo['title'] : _t('_bx_albums_media');
 
-        return array(
+        $iCommentId = (int)$aEvent['subobject_id'];
+
+        return [
             'object_id' => $aMediaInfo['content_id'],
             'entry_sample' => $CNF['T']['txt_media_single'],
             'entry_url' => $sEntryUrl,
             'entry_caption' => $sEntryCaption,
             'entry_author' => $aMediaInfo['author'],
             'subentry_sample' => $CNF['T']['txt_media_comment_single'],
-            'subentry_url' => bx_absolute_url($oComment->getViewUrl((int)$aEvent['subobject_id'], false), '{bx_url_root}'),
+            'subentry_url' => $oComment->getItemUrl($iCommentId, '{bx_url_root}'),
+            'subentry_url_api' => $oComment->getItemUrlApi($iCommentId, '{bx_url_root}'),
             'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
-        );
+        ];
     }
 
     public function serviceGetNotificationsVoteMedia($aEvent)

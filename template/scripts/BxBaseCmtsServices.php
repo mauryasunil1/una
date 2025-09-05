@@ -408,15 +408,21 @@ class BxBaseCmtsServices extends BxDol
 
         $sEntryUrl = '{bx_url_root}' . BxDolPermalinks::getInstance()->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aContentInfo[$CNF['FIELD_ID']]);
         $sEntryCaption = isset($aContentInfo[$CNF['FIELD_TITLE']]) ? $aContentInfo[$CNF['FIELD_TITLE']] : strmaxtextlen($aContentInfo[$CNF['FIELD_TEXT']], 20, '...');
+        $sEntrySummary = isset($aContentInfo[$CNF['FIELD_TEXT']]) ? $aContentInfo[$CNF['FIELD_TEXT']] : '';
 
-        return array(
+        $iCommentId = (int)$aCommentGi['cmt_id'];
+
+        return [
             'entry_sample' => $CNF['T']['txt_sample_single'],
             'entry_url' => $sEntryUrl,
             'entry_caption' => $sEntryCaption,
+            'entry_summary' => $sEntrySummary,
             'subentry_sample' => $CNF['T']['txt_sample_comment_single'],
-            'subentry_url' => '{bx_url_root}' . $oComment->getViewUrl((int)$aCommentGi['cmt_id'], false),
+            'subentry_url' => $oComment->getItemUrl($iCommentId, '{bx_url_root}'),
+            'subentry_url_api' => $oComment->getItemUrlApi($iCommentId, '{bx_url_root}'),
+            'subentry_summary' => $oComment->getViewText($iCommentId),
             'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
-        );
+        ];
     }
 
     /**
