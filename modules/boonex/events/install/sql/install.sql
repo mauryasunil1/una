@@ -1,4 +1,4 @@
-
+bx_events_price_add
 SET @sStorageEngine = (SELECT `value` FROM `sys_options` WHERE `name` = 'sys_storage_default');
 
 -- TABLE: EVENTS
@@ -667,11 +667,11 @@ INSERT INTO `sys_form_display_inputs` (`display_name`, `input_name`, `visible_fo
 ('bx_events_price_edit', 'id', 2147483647, 1, 1),
 ('bx_events_price_edit', 'role_id', 2147483647, 1, 2),
 ('bx_events_price_edit', 'name', 2147483647, 1, 3),
-('bx_groups_price_edit', 'caption', 2147483647, 1, 4),
+('bx_events_price_edit', 'caption', 2147483647, 1, 4),
 ('bx_events_price_edit', 'price', 2147483647, 1, 5),
 ('bx_events_price_edit', 'period', 2147483647, 1, 6),
 ('bx_events_price_edit', 'period_unit', 2147483647, 1, 7),
-('bx_groups_price_edit', 'default', 2147483647, 1, 8),
+('bx_events_price_edit', 'default', 2147483647, 1, 8),
 ('bx_events_price_edit', 'controls', 2147483647, 1, 9),
 ('bx_events_price_edit', 'do_submit', 2147483647, 1, 10),
 ('bx_events_price_edit', 'do_cancel', 2147483647, 1, 11);
