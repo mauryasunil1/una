@@ -1670,12 +1670,18 @@ function bx_redirect_for_external_links (e)
     $(aExclude).each(function () {
         sPattern += ':not([href^="' + this + '"])';
     });
+    if ('undefined' !== typeof(aDolOptions.sys_storage_s3_endpoint) && aDolOptions.sys_storage_s3_endpoint.length)
+        sPattern += ':not([href^="https://' + aDolOptions.sys_storage_s3_endpoint + '"])';
+
     sPattern += ":is([href^='http://'],[href^='https://'])";
 
     if ('undefined' === typeof(e))
         e = $('document');
 
     e.find(sPattern).each(function() {
+        if ($(this).attr('href').match(/s3\.amazonaws\.com/))
+            return;
+            
         $(this).on('contextmenu', function(e) {
             e.preventDefault();
         });
