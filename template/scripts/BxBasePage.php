@@ -545,6 +545,7 @@ class BxBasePage extends BxDolPage
             'menu_bottom' => '',
             'menu_add' => '',
             'config' => $this->_aObject['config_api'],
+            'ts' => time(),
             'elements' => $this->getPageBlocksAPI($aBlocks),
         ];
 
