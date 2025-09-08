@@ -423,6 +423,8 @@ class BxDolConnection extends BxDolFactory implements iBxDolFactoryObject
             $aMessageInitiator = $aMessageContent = [
                 'object' => $this->_sObject, 
                 'action' => 'added',
+                'initiator' => $iInitiator,
+                'content' => $iContent,
             ];
 
             if(bx_is_api()) {
