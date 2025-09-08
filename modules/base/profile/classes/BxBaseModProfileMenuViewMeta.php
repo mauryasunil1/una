@@ -79,8 +79,10 @@ class BxBaseModProfileMenuViewMeta extends BxTemplMenuUnitMeta
 
         $oTemplate = BxDolTemplate::getInstance();
 
+        $iProfileId = $this->_oContentProfile->id();
+
         $oAcl = BxDolAcl::getInstance();
-        $aMembership =  $oAcl->getMemberMembershipInfo($this->_oContentProfile->id());
+        $aMembership =  $oAcl->getMemberMembershipInfo($iProfileId);
         $aLevelInfo =  $oAcl->getMembershipInfo($aMembership['id']);
 
         if($this->_bIsApi)
@@ -89,8 +91,14 @@ class BxBaseModProfileMenuViewMeta extends BxTemplMenuUnitMeta
                 'icon' => $oTemplate->getImage($aLevelInfo['icon'], ['wrap_in_tag' => false])
             ]);
 
-        return $aMembership ? $this->getUnitMetaItemText($oTemplate->parseHtmlByName('menu_meta_item.html', ['icon' => $oTemplate->getImage($aLevelInfo['icon'], array('class' => 'bx-acl-m-thumbnail')), 'caption' => _t($aMembership['name'])])): false;
-                                                                                            
+        $sMembership = '';
+        if($aMembership)
+            $sMembership = $oTemplate->parseHtmlByName('menu_meta_item.html', [
+                'icon' => $oTemplate->getImage($aLevelInfo['icon'], ['class' => 'bx-acl-m-thumbnail']), 
+                'caption' => _t($aMembership['name'])
+            ]);
+
+        return $aMembership ? $this->getUnitMetaItemText($sMembership, ['id' => 'sys-mi-acl-' . $iProfileId]) : false;
     }
     
     protected function _getMenuItemBadges($aItem)

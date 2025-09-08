@@ -117,7 +117,7 @@ class BxAclModule extends BxBaseModGeneralModule
 
         if($this->_bIsApi)
             return [
-                bx_api_get_block('pricing', $oGrid->getCodeAPI(true))
+                bx_api_get_block('pricing', array_merge_recursive($oGrid->getCodeAPI(true), ['settings' => ['unit' => 'cards']]))
             ];
 
         $this->_oTemplate->addCss(['view.css']);

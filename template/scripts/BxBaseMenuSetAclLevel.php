@@ -155,8 +155,21 @@ class BxBaseMenuSetAclLevel extends BxTemplMenu
                 continue;
 
             $iSet += 1;
-            if($bAclCard)
-                $aCards[$iProfileId] = $oAcl->getProfileMembership($iProfileId);
+            if($bAclCard) {
+                $aCards['card_' . $iProfileId] = $oAcl->getProfileMembership($iProfileId);
+
+                if(($aMembership = $oAcl->getMemberMembershipInfo($iProfileId))) {
+                    $aMembershipInfo = $oAcl->getMembershipInfo($aMembership['id']);
+
+                    $sContent = $this->_oTemplate->parseHtmlByName('menu_meta_item.html', [
+                        'icon' => $this->_oTemplate->getImage($aMembershipInfo['icon'], ['class' => 'bx-acl-m-thumbnail']), 
+                        'caption' => _t($aMembership['name'])
+                    ]);
+
+                    $aCards['label_' . $iProfileId] = $this->_oTemplate->parseTag('span', $sContent, ['id' => 'sys-mi-acl-' . $iProfileId]);
+                }
+                
+            }
 
             checkActionModule($iPerformerId, 'set acl level', 'system', true); // perform action
         }

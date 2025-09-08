@@ -2147,6 +2147,45 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
         return '<img src="' . $this->_getInlineData('icon', $sName, BX_DOL_TEMPLATE_CHECK_IN_BOTH, true) . '"' . $sAttrs . ' />';
     }
 
+    function parseTag($sName, $sContent, $aAttrs = [], $aParseParams = [])
+    {
+        if(!is_array($aAttrs))
+            $aAttrs = [];
+
+        $aTags = ['span', 'a', 'button', 'sbutton', 'custom', 'nl', 'extended'];
+
+        $sTmplVarsClass = ''; 
+        $aTmplVarsAttrs = [];
+        foreach($aAttrs as $sKey => $sValue) {
+            if($sKey == 'class')
+                $sTmplVarsClass = $aAttrs[$sKey];
+            else
+                $aTmplVarsAttrs[] = ['key' => $sKey, 'value' => bx_html_attribute($sValue)];
+        }
+
+        $aTemplateVars = $aParseParams['template_vars'] ?? [];
+
+        $aTmplVars = [];
+        foreach($aTags as $sTag) {
+            $aTmplVarsTag = [];
+            $bTmplVarsTag = $sTag == $sName;
+            if($bTmplVarsTag)
+                $aTmplVarsTag = array_merge([
+                    'class' => $sTmplVarsClass,
+                    'content' => $sContent,
+                    'bx_repeat:attrs' => $aTmplVarsAttrs
+                ], $aTemplateVars);
+
+            $aTmplVars['bx_if:' . $sTag] = [
+            	'condition' => $bTmplVarsTag,
+                'content' => $aTmplVarsTag
+            ];
+        }
+
+        $sTemplate = $aParseParams['template_name'] ?? '_tags.html';
+        return $this->parseHtmlByName($sTemplate, $aTmplVars);
+    }
+
     function getCacheFilePrefix($sType)
     {
     	$sResult = '';
