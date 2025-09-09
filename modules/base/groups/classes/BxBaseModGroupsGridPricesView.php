@@ -88,19 +88,24 @@ class BxBaseModGroupsGridPricesView extends BxBaseModGroupsGridPrices
 
         return $this->_bIsApi ? [] : echoJson($aResult);
     }
-    
+
     public function performActionBuy()
     {
         if(!$this->_bIsApi)
             return echoJson([]);
-        
+
         $aIds = $this->_getIds();
-        if($aIds === false)
+        if($aIds === false || !is_array($aIds))
             return [];
 
-        $aResult = $this->_oPayment->addToCart($this->_iSeller, $this->_sModule, array_shift($aIds), 1, true);
-        if(isset($aResult['code']) && (int)$aResult['code'] != 0)
-            return [bx_api_get_msg($aResult['message'])];
+        if(($sDescriptor = array_shift($aIds))) {
+            $aDescriptor = $this->_oPayment->getActiveObject()->_oConfig->descriptorS2A($sDescriptor);
+            if($aDescriptor && is_array($aDescriptor) && (int)$aDescriptor[0] == $this->_iSeller) {
+                $aResult = $this->_oPayment->addToCart($this->_iSeller, $this->_sModule, (int)$aDescriptor[2], 1, true);
+                if(isset($aResult['code']) && (int)$aResult['code'] != 0)
+                    return [bx_api_get_msg($aResult['message'])];
+            }
+        }
 
         return [];
     }
@@ -163,7 +168,9 @@ class BxBaseModGroupsGridPricesView extends BxBaseModGroupsGridPrices
                 'name' => $sKey, 
                 'type' => 'callback', 
                 'on_callback' => 'redirect',
-                'redirect_url' => bx_api_get_relative_url($this->_oPayment->getCartUrl($this->_iSeller))
+                'redirect_url' => bx_api_get_relative_url($this->_oPayment->getCartUrl($this->_iSeller)),
+                'seller_id' => $this->_iSeller,
+                'items' => [$this->_oPayment->getCartItemDescriptor($this->_iSeller, $this->_oModule->_oConfig->getId(), $aRow['id'], 1)],
             ]);
 
         $aJs = $this->_oPayment->getAddToCartJs($this->_iSeller, $this->_sModule, $aRow['id'], 1, true);

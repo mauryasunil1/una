@@ -58,10 +58,14 @@ class BxBaseModGroupsGridPrices extends BxTemplGrid
     {
         $CNF = $this->_oModule->_oConfig->CNF;
 
-        if((int)$mixedValue == 0)
-            $mixedValue = _t('_lifetime');
+        if(!$this->_bIsApi) {
+            if((int)$mixedValue == 0)
+                $mixedValue = _t('_lifetime');
+            else
+                $mixedValue = _t($CNF['T']['txt_n_unit'], $mixedValue, _t($this->_aPeriodUnits[$aRow['period_unit']]));
+        }
         else
-            $mixedValue = _t($CNF['T']['txt_n_unit'], $mixedValue, _t($this->_aPeriodUnits[$aRow['period_unit']]));
+            $mixedValue = ['period' => $mixedValue, 'unit' => $aRow['period_unit']];
 
         return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
     }
@@ -69,14 +73,17 @@ class BxBaseModGroupsGridPrices extends BxTemplGrid
     protected function _getCellPrice($mixedValue, $sKey, $aField, $aRow)
     {
         $CNF = $this->_oModule->_oConfig->CNF;
+        
+        $aCurrency = $this->_oModule->_oConfig->getCurrency($this->_aGroupContentInfo[$CNF['FIELD_AUTHOR']]);
 
-        if((float)$mixedValue != 0) {
-            $aCurrency = $this->_oModule->_oConfig->getCurrency($this->_aGroupContentInfo[$CNF['FIELD_AUTHOR']]);
-
-            $mixedValue = html_entity_decode($aCurrency['sign']) . $mixedValue;
+        if(!$this->_bIsApi) {
+            if((float)$mixedValue != 0)
+                $mixedValue = html_entity_decode($aCurrency['sign']) . $mixedValue;
+            else 
+                $mixedValue = _t('_free');
         }
-        else 
-            $mixedValue = _t('_free');
+        else
+            $mixedValue = ['value' => $mixedValue, 'currency' => $aCurrency['code']];
 
         return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
     }

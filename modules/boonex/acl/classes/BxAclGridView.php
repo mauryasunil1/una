@@ -72,12 +72,17 @@ class BxAclGridView extends BxAclGridLevels
             return echoJson([]);
         
         $aIds = $this->_getIds();
-        if($aIds === false)
+        if($aIds === false || !is_array($aIds))
             return [];
 
-        $aResult = $this->_oPayment->addToCart($this->_iOwner, $this->MODULE, array_shift($aIds), 1, true);
-        if(isset($aResult['code']) && (int)$aResult['code'] != 0)
-            return [bx_api_get_msg($aResult['message'])];
+        if(($sDescriptor = array_shift($aIds))) {
+            $aDescriptor = $this->_oPayment->getActiveObject()->_oConfig->descriptorS2A($sDescriptor);
+            if($aDescriptor && is_array($aDescriptor) && (int)$aDescriptor[0] == $this->_iOwner) {
+                $aResult = $this->_oPayment->addToCart($this->_iOwner, $this->MODULE, (int)$aDescriptor[2], 1, true);
+                if(isset($aResult['code']) && (int)$aResult['code'] != 0)
+                    return [bx_api_get_msg($aResult['message'])];
+            }
+        }
 
         return [];
     }
@@ -149,7 +154,9 @@ class BxAclGridView extends BxAclGridLevels
                 'name' => $sKey, 
                 'type' => 'callback', 
                 'on_callback' => 'redirect',
-                'redirect_url' => bx_api_get_relative_url($this->_oPayment->getCartUrl($this->_iOwner))
+                'redirect_url' => bx_api_get_relative_url($this->_oPayment->getCartUrl($this->_iOwner)),
+                'seller_id' => $this->_iOwner,
+                'items' => [$this->_oPayment->getCartItemDescriptor($this->_iOwner, $this->_oModule->_oConfig->getId(), $aRow['id'], 1)],
             ]);
         
         if($this->_iLogged) {
