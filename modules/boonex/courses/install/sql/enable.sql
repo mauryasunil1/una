@@ -282,6 +282,7 @@ INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES
 ('bx_courses_view_actions_more', 'bx_courses', '_bx_courses_menu_set_title_view_profile_actions_more', 0);
 
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `visibility_custom`, `active`, `copyable`, `order`) VALUES 
+('bx_courses_view_actions_more', 'bx_courses', 'add-course-content', '_bx_courses_menu_item_title_system_add_content', '_bx_courses_menu_item_title_add_content', 'javascript:void(0)', 'bx_menu_popup(''bx_courses_add_content'', this, {}, {profile_id:{profile_id}});', '', 'plus', 'bx_courses_add_content', 2147483647, '', 1, 0, 5),
 ('bx_courses_view_actions_more', 'bx_courses', 'notes', '_sys_menu_item_title_system_va_notes', '_sys_menu_item_title_va_notes', 'javascript:void(0)', 'javascript:bx_get_notes(this,  ''{module_uri}'', {content_id});', '', 'exclamation-triangle', '', 192, '', 1, 0, 20),
 ('bx_courses_view_actions_more', 'bx_courses', 'audit', '_sys_menu_item_title_system_va_audit', '_sys_menu_item_title_va_audit', 'page.php?i=dashboard-audit&module=bx_courses&content_id={content_id}', '', '', 'history', '', 192, '', 1, 0, 30),
 ('bx_courses_view_actions_more', 'bx_courses', 'hide-course-profile', '_bx_courses_menu_item_title_system_hide_profile', '_bx_courses_menu_item_title_hide_profile', 'javascript:void(0);', 'javascript:{js_object}.perform(this, ''hide-course-profile'', {content_id});', '', 'stop-circle', '', 2147483647, '', 1, 0, 35),
@@ -321,6 +322,11 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_courses_view_actions_all', 'bx_courses', 'report', '_sys_menu_item_title_system_va_report', '', '', '', '', '', '', '', 0, 2147483647, '', 1, 0, 270),
 ('bx_courses_view_actions_all', 'bx_courses', 'social-sharing', '_sys_menu_item_title_system_social_sharing', '_sys_menu_item_title_social_sharing', 'javascript:void(0)', 'oBxDolPage.share(this, \'{url_encoded}\')', '', 'share', '', '', 0, 2147483647, '', 1, 0, 300),
 ('bx_courses_view_actions_all', 'bx_courses', 'more-auto', '_sys_menu_item_title_system_va_more_auto', '_sys_menu_item_title_va_more_auto', 'javascript:void(0)', '', '', 'ellipsis-v', '', '', 0, 2147483647, '', 1, 0, 9999);
+
+-- MENU: add content menu for view entry
+
+INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
+('bx_courses_add_content', '_bx_courses_menu_title_add_content', 'sys_add_content_links', 'bx_courses', 6, 0, 1, 'BxCoursesMenuAddContent', 'modules/boonex/courses/classes/BxCoursesMenuAddContent.php');
 
 -- MENU: meta (counters) menu for view entry
 

@@ -275,6 +275,7 @@
     <string name="_bx_jobs_menu_set_title_entries_my"><![CDATA[Задания профиля - Меню]]></string>
     <string name="_bx_jobs_menu_set_title_manage_tools"><![CDATA[Инструменты управления - Подменю]]></string>
     <string name="_bx_jobs_menu_title_manage_tools"><![CDATA[Инструменты управления - Подменю]]></string>
+    <string name="_bx_jobs_menu_title_add_content"><![CDATA[Добавить контент]]></string>
     <string name="_bx_jobs_menu_item_title_system_delete"><![CDATA[Удалить]]></string>
     <string name="_bx_jobs_menu_item_title_delete"><![CDATA[Удалить]]></string>
     <string name="_bx_jobs_menu_item_title_system_delete_with_content"><![CDATA[Удалить вместе с содержимым]]></string>
@@ -305,6 +306,8 @@
     <string name="_bx_jobs_menu_item_title_view_joined_jobs"><![CDATA[Задания]]></string>
     <string name="_bx_jobs_menu_item_title_system_view_fans"><![CDATA[Участники]]></string>
     <string name="_bx_jobs_menu_item_title_view_fans"><![CDATA[Участники]]></string>
+    <string name="_bx_jobs_menu_item_title_system_add_content"><![CDATA[Добавить контент]]></string>
+    <string name="_bx_jobs_menu_item_title_add_content"><![CDATA[Добавить контент]]></string>
     <string name="_bx_jobs_menu_item_title_system_view_manage"><![CDATA[Управление]]></string>
     <string name="_bx_jobs_menu_item_title_view_manage"><![CDATA[Управление]]></string>
     <string name="_bx_jobs_menu_item_title_system_view_profile_comments"><![CDATA[Комментарии]]></string>

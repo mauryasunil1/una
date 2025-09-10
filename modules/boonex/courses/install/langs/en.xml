@@ -260,6 +260,7 @@
     <string name="_bx_courses_menu_set_title_entries_my"><![CDATA[Profile Courses Menu]]></string>
     <string name="_bx_courses_menu_set_title_manage_tools"><![CDATA[Manage Tools Submenu]]></string>
     <string name="_bx_courses_menu_title_manage_tools"><![CDATA[Manage Tools Submenu]]></string>
+    <string name="_bx_courses_menu_title_add_content"><![CDATA[Add Content]]></string>
     <string name="_bx_courses_menu_item_title_system_delete"><![CDATA[Delete]]></string>
     <string name="_bx_courses_menu_item_title_delete"><![CDATA[Delete]]></string>
     <string name="_bx_courses_menu_item_title_system_delete_with_content"><![CDATA[Delete With Content]]></string>
@@ -294,6 +295,8 @@
     <string name="_bx_courses_menu_item_title_view_entries_in_context"><![CDATA[Courses]]></string>
     <string name="_bx_courses_menu_item_title_system_view_fans"><![CDATA[Students]]></string>
     <string name="_bx_courses_menu_item_title_view_fans"><![CDATA[Students]]></string>
+    <string name="_bx_courses_menu_item_title_system_add_content"><![CDATA[Add Content]]></string>
+    <string name="_bx_courses_menu_item_title_add_content"><![CDATA[Add Content]]></string>
     <string name="_bx_courses_menu_item_title_system_view_profile_comments"><![CDATA[Comments]]></string>
     <string name="_bx_courses_menu_item_title_view_profile_comments"><![CDATA[Comments]]></string>
     <string name="_bx_courses_menu_item_title_system_view_profile_info"><![CDATA[Info]]></string>

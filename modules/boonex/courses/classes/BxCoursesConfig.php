@@ -26,6 +26,7 @@ class BxCoursesConfig extends BxBaseModGroupsConfig
             'invite-to-course' => 'checkAllowedInvite',
             'delete-course-profile' => 'checkAllowedDelete',
             'approve-course-profile' => 'checkAllowedApprove',
+            'add-course-content' => 'checkAllowedAddContent',
         ));
 
         $this->CNF = array (

@@ -345,6 +345,7 @@
     <string name="_bx_events_menu_set_title_entries_my"><![CDATA[Profile Events Menu]]></string>
     <string name="_bx_events_menu_set_title_manage_tools"><![CDATA[Manage Tools Submenu]]></string>
     <string name="_bx_events_menu_title_manage_tools"><![CDATA[Manage Tools Submenu]]></string>
+    <string name="_bx_events_menu_title_add_content"><![CDATA[Add Content]]></string>
     <string name="_bx_events_menu_item_title_system_delete"><![CDATA[Delete]]></string>
     <string name="_bx_events_menu_item_title_delete"><![CDATA[Delete]]></string>
     <string name="_bx_events_menu_item_title_system_delete_with_content"><![CDATA[Delete With Content]]></string>
@@ -375,6 +376,8 @@
     <string name="_bx_events_menu_item_title_view_joined_groups"><![CDATA[Events]]></string>
     <string name="_bx_events_menu_item_title_system_view_fans"><![CDATA[Guests]]></string>
     <string name="_bx_events_menu_item_title_view_fans"><![CDATA[Going]]></string>
+    <string name="_bx_events_menu_item_title_system_add_content"><![CDATA[Add Content]]></string>
+    <string name="_bx_events_menu_item_title_add_content"><![CDATA[Add Content]]></string>
     <string name="_bx_events_menu_item_title_system_view_manage"><![CDATA[Manage]]></string>
     <string name="_bx_events_menu_item_title_view_manage"><![CDATA[Manage]]></string>
     <string name="_bx_events_menu_item_title_system_view_profile_comments"><![CDATA[Comments]]></string>

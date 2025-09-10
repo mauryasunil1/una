@@ -25,6 +25,7 @@ class BxEventsConfig extends BxBaseModGroupsConfig
             'invite-to-event' => 'checkAllowedInvite',
             'delete-event-profile' => 'checkAllowedDelete',
             'approve-event-profile' => 'checkAllowedApprove',
+            'add-event-content' => 'checkAllowedAddContent',
             'profile-check-in' =>  'checkAllowedCheckIn',
             'ical-export' => 'checkAllowedIcalExport',
         ));

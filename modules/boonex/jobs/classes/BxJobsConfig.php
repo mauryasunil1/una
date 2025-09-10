@@ -24,6 +24,7 @@ class BxJobsConfig extends BxBaseModGroupsConfig
             'invite-to-job' => 'checkAllowedInvite',
             'delete-job-profile' => 'checkAllowedDelete',
             'approve-job-profile' => 'checkAllowedApprove',
+            'add-job-content' => 'checkAllowedAddContent',
         ));
 
         $this->CNF = array (

@@ -23,6 +23,7 @@ class BxSpacesConfig extends BxBaseModGroupsConfig
             'invite-to-space' => 'checkAllowedInvite',
             'delete-space-profile' => 'checkAllowedDelete',
             'approve-space-profile' => 'checkAllowedApprove',
+            'add-space-content' => 'checkAllowedAddContent',
         ));
 
         $this->CNF = array (

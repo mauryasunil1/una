@@ -23,6 +23,7 @@ class BxGroupsConfig extends BxBaseModGroupsConfig
             'invite-to-group' => 'checkAllowedInvite',
             'delete-group-profile' => 'checkAllowedDelete',
             'approve-group-profile' => 'checkAllowedApprove',
+            'add-group-content' => 'checkAllowedAddContent',
         ));
 
         $this->CNF = array (
