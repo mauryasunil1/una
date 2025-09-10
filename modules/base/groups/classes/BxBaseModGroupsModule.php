@@ -2263,6 +2263,25 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
 
         return $mixedResult;
     }
+    
+    public function checkAllowedAddContent(&$aDataEntry, $isPerformAction = false)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $sErrAccessDenied = _t('_sys_txt_access_denied');
+
+        $sModule = $this->getName();
+        $iProfileId = bx_get_logged_profile_id();
+
+        $aContexts = BxDolService::call($sModule, 'get_participating_profiles', [$iProfileId]);
+        if(!in_array($aDataEntry['profile_id'], $aContexts))
+            return $sErrAccessDenied;
+
+        if(bx_srv($sModule, 'check_allowed_post_in_profile', [$aDataEntry[$CNF['FIELD_ID']]]) !== CHECK_ACTION_RESULT_ALLOWED)
+            return $sErrAccessDenied;
+
+        return CHECK_ACTION_RESULT_ALLOWED;
+    }
 
     /**
      * Note. Is mainly needed for internal usage. Access level is 'public' to allow outer calls from alerts.

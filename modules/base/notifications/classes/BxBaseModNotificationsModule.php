@@ -162,6 +162,11 @@ class BxBaseModNotificationsModule extends BxBaseModGeneralModule
         return $aResults;
     }
 
+    public function serviceCheckAllowedAddInContext($sContextModule)
+    {
+        return _t('_sys_txt_access_denied');
+    }
+
     public function isAllowedView($aEvent, $bPerform = false)
     {
         return true;

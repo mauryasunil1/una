@@ -3457,6 +3457,16 @@ class BxBaseModGeneralModule extends BxDolModule
         return CHECK_ACTION_RESULT_ALLOWED;
     }
 
+    public function serviceCheckAllowedAddInContext($sContextModule)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        if(($sKey = 'OBJECT_PRIVACY_VIEW') && !empty($CNF[$sKey]) && ($oPrivacy = BxDolPrivacy::getObjectInstance($CNF[$sKey])) !== false && !$oPrivacy->isAllowedAddInContext($sContextModule))
+            return _t('_sys_txt_access_denied');
+
+        return CHECK_ACTION_RESULT_ALLOWED;   
+    }
+
     /**
      * @return CHECK_ACTION_RESULT_ALLOWED if access is granted or error message if access is forbidden. So make sure to make strict(===) checking.
      */
