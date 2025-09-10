@@ -266,6 +266,11 @@ blockquote {
     max-width: 65%;
 }
 
+.bx-dbc-notitle .bx-db-menu,
+.bx-media-phone .bx-dbc-notitle .bx-db-menu {
+    max-width: none;
+}
+
 .bx-db-menu-tab {
     margin-left: 5px;
     padding-top: 1px;

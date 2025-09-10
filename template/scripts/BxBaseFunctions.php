@@ -383,16 +383,32 @@ class BxBaseFunctions extends BxDolFactory implements iBxDolSingleton
      * @see BX_DB_PADDING_DEF
      * @see BX_DB_PADDING_NO_CAPTION
      */
-    function designBoxContent ($sTitle, $sContent, $iTemplateNum = BX_DB_DEF, $mixedMenu = false, $mixedButtons = array())
+    function designBoxContent ($sTitle, $sContent, $iTemplateNum = BX_DB_DEF, $mixedMenu = false, $mixedButtons = [])
     {
-        return $this->_oTemplate->parseHtmlByName('designbox_' . (int)$iTemplateNum . '.html', array(
-            'title' => $sTitle,
-            'designbox_content' => $sContent,
-            'caption_item' => $this->designBoxMenu($mixedMenu, $mixedButtons),
-        ));
+        $bNoTitle = in_array($iTemplateNum, [BX_DB_CONTENT_ONLY, BX_DB_PADDING_CONTENT_ONLY, BX_DB_NO_CAPTION, BX_DB_PADDING_NO_CAPTION]);
+        $sMenu = $this->designBoxMenu($mixedMenu, $mixedButtons);
+
+        $aTmplVarsDbMenu = [];
+        if($bNoTitle && $sMenu)
+            $aTmplVarsDbMenu = [
+                'caption_item' => $sMenu
+            ];
+
+        return $this->_oTemplate->parseHtmlByName('designbox_' . (int)$iTemplateNum . '.html', array_merge([
+                'title' => $sTitle,
+                'designbox_content' => $sContent,
+            ], ($bNoTitle ? [
+                'bx_if:show_db_menu' => [
+                    'condition' => !empty($aTmplVarsDbMenu),
+                    'content' => $aTmplVarsDbMenu
+                ]
+            ] : [
+                'caption_item' => $sMenu
+            ]))
+        );
     }
 
-    function designBoxMenu ($mixedMenu, $mixedButtons = array())
+    function designBoxMenu ($mixedMenu, $mixedButtons = [])
     {
         $bUseTabs = is_bool($mixedButtons) && $mixedButtons === true;
 
