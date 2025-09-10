@@ -56,17 +56,24 @@ class BxDolSession extends BxDolFactory implements iBxDolSingleton
         if(!isset($GLOBALS['bxDolClasses'][__CLASS__]))
             $GLOBALS['bxDolClasses'][__CLASS__] = new BxDolSession();
 
-        if(!$GLOBALS['bxDolClasses'][__CLASS__]->getId())
-            $GLOBALS['bxDolClasses'][__CLASS__]->start();
-
         return $GLOBALS['bxDolClasses'][__CLASS__];
     }
 
-    function start()
+    public static function getSessionCookie()
+    {
+        if (isset($_COOKIE[BX_DOL_SESSION_COOKIE]))
+            return bx_process_input($_COOKIE[BX_DOL_SESSION_COOKIE]);
+        return null;
+    }
+    
+    function start($bForceStart = false)
     {
         if (defined('BX_DOL_CRON_EXECUTE') || defined('BX_MANIFEST') || defined('BX_SERVICE_WORKER'))
             return true;
 
+        if (!$bForceStart && $this->getSessionCookie() === null)
+            return true;
+        
         if (getParam('sys_session_auth')) {
             $this->exists($this->sId);
         }
@@ -107,6 +114,9 @@ class BxDolSession extends BxDolFactory implements iBxDolSingleton
 
     function destroy($bDeleteCookies = true)
     {
+        if(empty($this->sId))
+            return;
+
         if ($bDeleteCookies) {
             bx_setcookie(BX_DOL_SESSION_COOKIE, '', time() - 86400, 'auto', '', 'auto', true);
             unset($_COOKIE[BX_DOL_SESSION_COOKIE]);
@@ -120,9 +130,9 @@ class BxDolSession extends BxDolFactory implements iBxDolSingleton
     }
 
     function exists($sId = '')
-    {
-        if(empty($sId) && isset($_COOKIE[BX_DOL_SESSION_COOKIE]))
-            $sId = bx_process_input($_COOKIE[BX_DOL_SESSION_COOKIE]);
+    {        
+        if(empty($sId))
+            $sId = $this->getSessionCookie();
 
         $mixedSession = $this->oDb->exists($sId);
         if($mixedSession === false) 
@@ -143,6 +153,12 @@ class BxDolSession extends BxDolFactory implements iBxDolSingleton
 
     function setUserId($iUserId)
     {
+        if(empty($this->sId))
+            $this->start(true);
+
+        if(empty($this->sId))
+            return;
+
         if (0 == $iUserId && $this->iUserId) { // update last active field when user is logged out
             $this->oDb->updateLastActivityAccount($this->iUserId, time());
         }
@@ -152,13 +168,16 @@ class BxDolSession extends BxDolFactory implements iBxDolSingleton
 
     function getUserId()
     {
+        if(empty($this->sId))
+            $this->start();
+
         return $this->iUserId;
     }
 
     function setValue($sKey, $mixedValue)
     {
         if(empty($this->sId))
-            $this->start();
+            $this->start(true);
 
         $this->aData[$sKey] = $mixedValue;
         $this->save();
@@ -167,7 +186,7 @@ class BxDolSession extends BxDolFactory implements iBxDolSingleton
     function unsetValue($sKey)
     {
         if(empty($this->sId))
-            $this->start();
+            $this->start(true);
 
         unset($this->aData[$sKey]);
 
