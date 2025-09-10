@@ -7,8 +7,8 @@
  * @{
  */
 
-if (!defined('BX_DOL_SESSION_LIFETIME'))
-    define('BX_DOL_SESSION_LIFETIME', 7*24*60*60);
+if (!defined('BX_DOL_SESSION_IDLE_TIMEOUT'))
+    define('BX_DOL_SESSION_IDLE_TIMEOUT', 1*24*60*60);
 if (!defined('BX_DOL_SESSION_SKIP_UPDATE'))
     define('BX_DOL_SESSION_SKIP_UPDATE', 30);
 define('BX_DOL_SESSION_COOKIE', 'memberSession');
@@ -19,6 +19,7 @@ class BxDolSession extends BxDolFactory implements iBxDolSingleton
     protected $sId;
     protected $iUserId;
     protected $aData;
+    protected $iTTL;
 
     protected $bAutoLogout;	//--- Auto logout with broken session
 
@@ -33,8 +34,9 @@ class BxDolSession extends BxDolFactory implements iBxDolSingleton
         $this->sId = '';
         $this->iUserId = 0;
         $this->aData = array();
+        $this->iTTL = 0;
 
-        $this->bAutoLogout = false; // when changing to 'true', it's better to increase BX_DOL_SESSION_LIFETIME to 1 month or so
+        $this->bAutoLogout = false; // when changing to 'true', it maybe you will need to increase BX_DOL_SESSION_IDLE_TIMEOUT
         if (defined('BX_SESSION_AUTO_LOGOUT'))
             $this->bAutoLogout = BX_SESSION_AUTO_LOGOUT;
     }
@@ -103,12 +105,19 @@ class BxDolSession extends BxDolFactory implements iBxDolSingleton
 		if (!$this->sId)
             $this->sId = genRndPwd(32, true);
 
-        $iTime = time() + BX_DOL_SESSION_LIFETIME;
-        if (getParam('sys_session_auth') && $this->isValue('remember_me') && !$this->getValue('remember_me'))
+        if (!isset($_COOKIE[BX_DOL_SESSION_COOKIE]) || $_COOKIE[BX_DOL_SESSION_COOKIE] != $this->sId || $this->isValue('remember_me')) {
             $iTime = 0;
-        bx_setcookie(BX_DOL_SESSION_COOKIE, $this->sId, $iTime, 'auto', '', 'auto', true);
+            if (getParam('sys_session_auth') && $this->isValue('remember_me') && $this->getValue('remember_me'))
+                $iTime = time() + getParam('sys_session_lifetime_in_min') * 60;
+
+            bx_setcookie(BX_DOL_SESSION_COOKIE, $this->sId, $iTime, 'auto', '', 'auto', true);
+            $this->iTTL = $iTime;
+            unset($this->aData['remember_me']);
+        }
 
         $this->save();
+
+
         return true;
     }
 
@@ -129,6 +138,7 @@ class BxDolSession extends BxDolFactory implements iBxDolSingleton
 
         $this->sId = '';
         $this->iUserId = 0;
+        $this->iTTL = 0;
         $this->aData = array();
     }
 
@@ -143,6 +153,7 @@ class BxDolSession extends BxDolFactory implements iBxDolSingleton
 
 		$this->sId = $mixedSession['id'];
 		$this->iUserId = (int)$mixedSession['user_id'];
+        $this->iTTL = (int)$mixedSession['ttl'];
 		$this->aData = unserialize($mixedSession['data']);
 
 		$this->oDb->update($this->sId);		//--- update session's time
@@ -175,6 +186,26 @@ class BxDolSession extends BxDolFactory implements iBxDolSingleton
             $this->start();
 
         return $this->iUserId;
+    }
+
+    function setTTL($iTTL)
+    {
+        if(empty($this->sId))
+            $this->start();
+
+        if(empty($this->sId))
+            return;
+
+        $this->iTTL = $iTTL;
+        $this->save();
+    }
+    
+    function getTTL()
+    {
+        if(empty($this->sId))
+            $this->start();
+
+        return $this->iTTL;
     }
 
     function setValue($sKey, $mixedValue)
@@ -233,6 +264,7 @@ class BxDolSession extends BxDolFactory implements iBxDolSingleton
 
         $this->oDb->save($this->sId, array(
             'user_id' => $this->iUserId,
+            'ttl' => $this->iTTL,
             'data' => serialize($this->aData)
         ));
     }
