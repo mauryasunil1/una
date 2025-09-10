@@ -184,8 +184,8 @@ function bx_logout($bNotify = true)
         unset($_COOKIE['memberPassword']);
     }
 
-    // BxDolSession::getInstance()->destroy();
-    BxDolSession::getInstance()->setUserId(0);
+    BxDolSession::getInstance()->destroy();
+    // BxDolSession::getInstance()->setUserId(0);
 }
 
 function bx_is_remember_me()

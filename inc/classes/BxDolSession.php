@@ -115,6 +115,9 @@ class BxDolSession extends BxDolFactory implements iBxDolSingleton
     function destroy($bDeleteCookies = true)
     {
         if(empty($this->sId))
+            $this->start();
+
+        if(empty($this->sId))
             return;
 
         if ($bDeleteCookies) {
