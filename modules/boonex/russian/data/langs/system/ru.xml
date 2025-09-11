@@ -1107,6 +1107,7 @@
     <string name="_adm_lmi_cpt_badges"><![CDATA[Бейджи]]></string>
     <string name="_adm_lmi_cpt_categories"><![CDATA[Категории]]></string>
     <string name="_adm_lmi_cpt_checkout"><![CDATA[Оплата {checkout_counter}]]></string>
+    <string name="_adm_lmi_ttl_checkout"><![CDATA[Оплата]]></string>
     <string name="_adm_lmi_cpt_cover"><![CDATA[Обложки]]></string>
     <string name="_adm_lmi_cpt_search"><![CDATA[Поиск]]></string>
     <string name="_adm_lmi_cpt_search_forms"><![CDATA[Формы поиска]]></string>
