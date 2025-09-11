@@ -26,7 +26,7 @@ class BxDolSessionQuery extends BxDolDb
     }
     function exists($sId)
     {
-        $aSession = $this->getRow("SELECT `id`, `user_id`, `ttl`, `data` FROM `" . $this->sTable . "` WHERE `id`=:id LIMIT 1", [
+        $aSession = $this->getRow("SELECT * FROM `" . $this->sTable . "` WHERE `id`=:id LIMIT 1", [
             'id' => (string)$sId
         ]);
 
@@ -69,14 +69,16 @@ class BxDolSessionQuery extends BxDolDb
     }
     function deleteExpired()
     {
-        $iTime = time() - BX_DOL_SESSION_IDLE_TIMEOUT;
-        $aRows = $this->getAll("SELECT `user_id`, `date` FROM `" . $this->sTable . "` WHERE ((`date` < :time AND `ttl` = 0) OR (`ttl` != 0 AND `ttl` < :now)) AND `user_id` != 0 ORDER BY `date` DESC LIMIT 50000", ['time' => $iTime, 'now' => time()]);
+        $iIdleUser = time() - BX_DOL_SESSION_IDLE_TIMEOUT;
+        $iIdleGuest = time() - BX_DOL_SESSION_IDLE_TIMEOUT_GUESTS;
+        $aRows = $this->getAll("SELECT `user_id`, `date` FROM `" . $this->sTable . "` WHERE ((`date` < :time AND `ttl` = 0) OR (`ttl` != 0 AND `ttl` < :now)) AND `user_id` != 0 ORDER BY `date` DESC LIMIT 50000", ['time' => $iIdleUser, 'now' => time()]);
 
         foreach ($aRows as $aRow) {
             $this->updateLastActivityAccount($aRow['user_id'], $aRow['date']);
         }
         
-        $iRet = (int)$this->query("DELETE FROM `" . $this->sTable . "` WHERE `date` < :time AND `ttl` = 0", ['time' => $iTime]);
+        $iRet = (int)$this->query("DELETE FROM `" . $this->sTable . "` WHERE `date` < :time AND `ttl` = 0 AND `user_id` = 0", ['time' => $iIdleGuest]);
+        $iRet += (int)$this->query("DELETE FROM `" . $this->sTable . "` WHERE `date` < :time AND `ttl` = 0 AND `user_id` != 0", ['time' => $iIdleUser]);
         $iRet += (int)$this->query("DELETE FROM `" . $this->sTable . "` WHERE `ttl` != 0 AND `ttl` < :now", ['now' => time()]);
         if ($iRet > 10)
             $this->query("OPTIMIZE TABLE `" . $this->sTable . "`");
