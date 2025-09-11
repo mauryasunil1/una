@@ -401,7 +401,7 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `ex
 (@iCategoryId, 'enable_gd', '_adm_stg_cpt_option_enable_gd', 'on', 'checkbox', '', '', '', '', 100),
 (@iCategoryId, 'sys_transcoder_queue_storage', '_adm_stg_cpt_option_sys_transcoder_queue_storage', '', 'checkbox', '', '', '', '', 105),
 (@iCategoryId, 'sys_session_lifetime_in_min', '_adm_stg_cpt_option_sys_session_lifetime_in_min', '129600', 'digit', '', '', '', '', 110),
-(@iCategoryId, 'sys_session_auth', '_adm_stg_cpt_option_sys_session_auth', '', 'checkbox', '', '', '', '', 112),
+(@iCategoryId, 'sys_session_auth', '_adm_stg_cpt_option_sys_session_auth', 'on', 'checkbox', '', '', '', '', 112),
 
 (@iCategoryId, 'sys_account_activation_letter', '_adm_stg_cpt_option_sys_account_activation_letter', '', 'checkbox', '', '', '', '', 120),
 
