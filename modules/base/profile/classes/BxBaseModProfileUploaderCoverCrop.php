@@ -14,6 +14,8 @@ class BxBaseModProfileUploaderCoverCrop extends BxTemplUploaderHTML5
     protected $_sModule;
     protected $_oModule;
 
+    protected $_aOtherImages;
+
     public function __construct ($aObject, $sStorageObject, $sUniqId, $oTemplate)
     {
         if(!empty($this->_sModule) && empty($this->_oModule))
@@ -22,6 +24,12 @@ class BxBaseModProfileUploaderCoverCrop extends BxTemplUploaderHTML5
         parent::__construct($aObject, $sStorageObject, $sUniqId, $oTemplate ? $oTemplate : $this->_oModule->_oTemplate);
 
         $this->_sUploaderFormTemplate = 'uploader_form_crop_cover.html';
+        
+        $CNF = $this->_oModule->_oConfig->CNF;
+
+        $this->_aOtherImages = [$CNF['FIELD_PICTURE']];
+        if(!empty($CNF['FIELD_BADGE']))
+            $this->_aOtherImages[] = $CNF['FIELD_BADGE'];
     }
 
     public function deleteGhostsForProfile($iProfileId, $iContentId = false)
@@ -35,14 +43,13 @@ class BxBaseModProfileUploaderCoverCrop extends BxTemplUploaderHTML5
         $iCount = 0;
 
         $oStorage = BxDolStorage::getObjectInstance($this->_sStorageObject);
-
         $aGhosts = $oStorage->getGhosts($iProfileId, $iContentId, $iContentId ? true : false);
         foreach ($aGhosts as $aFile) {
-
             // for cover image delete only unassigned ghosts and currently set covers
-            if ($aFile['id'] == $aContentInfo[$CNF['FIELD_COVER']] || !in_array($aFile['id'], [$aContentInfo[$CNF['FIELD_BADGE']], $aContentInfo[$CNF['FIELD_PICTURE']]]))
+            if ($aFile['id'] == $aContentInfo[$CNF['FIELD_COVER']] || !in_array($aFile['id'], array_map(function($sField) use ($aContentInfo) {
+                return $aContentInfo[$sField];
+            }, $this->_aOtherImages)))
                 $iCount += $oStorage->deleteFile($aFile['id']);
-
         }
 
         return $iCount;
@@ -68,11 +75,11 @@ class BxBaseModProfileUploaderCoverCrop extends BxTemplUploaderHTML5
         $aContentInfo = $this->_oModule->_oDb->getContentInfoById($iContentId);
         $aResult = array();
         foreach ($a as $aFile) {
-
             // for cover image show only unassigned ghosts and currently set covers
-            if ($aFile['file_id'] == $aContentInfo[$CNF['FIELD_COVER']] || !in_array(aFile['file_id'], [$aContentInfo[$CNF['FIELD_BADGE']], $aContentInfo[$CNF['FIELD_PICTURE']]]))
+            if ($aFile['file_id'] == $aContentInfo[$CNF['FIELD_COVER']] || !in_array($aFile['file_id'], array_map(function($sField) use ($aContentInfo) {
+                return $aContentInfo[$sField];
+            }, $this->_aOtherImages)))
                 $aResult[$aFile['file_id']] = $aFile;
-
         }
 
         if ('array' == $sFormat) {

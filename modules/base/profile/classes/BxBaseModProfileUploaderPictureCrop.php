@@ -13,6 +13,8 @@ class BxBaseModProfileUploaderPictureCrop extends BxTemplUploaderCrop
 {
     protected $_sModule;
     protected $_oModule;
+    
+    protected $_aOtherImages;
 
     public function __construct ($aObject, $sStorageObject, $sUniqId, $oTemplate)
     {
@@ -21,6 +23,11 @@ class BxBaseModProfileUploaderPictureCrop extends BxTemplUploaderCrop
 
         parent::__construct($aObject, $sStorageObject, $sUniqId, $oTemplate);
         
+        $CNF = $this->_oModule->_oConfig->CNF;
+
+        $this->_aOtherImages = [$CNF['FIELD_COVER']];
+        if(!empty($CNF['FIELD_BADGE']))
+            $this->_aOtherImages[] = $CNF['FIELD_BADGE'];
     }
 
     public function deleteGhostsForProfile($iProfileId, $iContentId = false)
@@ -34,14 +41,13 @@ class BxBaseModProfileUploaderPictureCrop extends BxTemplUploaderCrop
         $iCount = 0;
 
         $oStorage = BxDolStorage::getObjectInstance($this->_sStorageObject);
-
         $aGhosts = $oStorage->getGhosts($iProfileId, $iContentId, $iContentId ? true : false);
         foreach ($aGhosts as $aFile) {
-
             // for profile image delete only unassigned ghosts and currently set profile pictures
-            if ($aFile['id'] == $aContentInfo[$CNF['FIELD_PICTURE']] || !in_array($aFile['id'], [$aContentInfo[$CNF['FIELD_BADGE']], $aContentInfo[$CNF['FIELD_COVER']]]))
+            if ($aFile['id'] == $aContentInfo[$CNF['FIELD_PICTURE']] || !in_array($aFile['id'], array_map(function($sField) use ($aContentInfo) {
+                return $aContentInfo[$sField];
+            }, $this->_aOtherImages)))
                 $iCount += $oStorage->deleteFile($aFile['id']);
-
         }
 
         return $iCount;
@@ -69,7 +75,9 @@ class BxBaseModProfileUploaderPictureCrop extends BxTemplUploaderCrop
         foreach ($a as $aFile) {
 
             // for profile pictures show only unassigned ghosts and currently set profile pictures
-            if (($aFile['file_id'] == $aContentInfo[$CNF['FIELD_PICTURE']] || !in_array($aFile['file_id'], [$aContentInfo[$CNF['FIELD_BADGE']], $aContentInfo[$CNF['FIELD_COVER']]])))
+            if (($aFile['file_id'] == $aContentInfo[$CNF['FIELD_PICTURE']] || !in_array($aFile['file_id'], array_map(function($sField) use ($aContentInfo) {
+                return $aContentInfo[$sField];
+            }, $this->_aOtherImages))))
                 $aResult[$aFile['file_id']] = $aFile;            
         }
 
