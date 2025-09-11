@@ -363,13 +363,17 @@ class BxProfiler extends BxDol
         $sTime = $this->_formatTime($this->_getCurrentDelay (), 3);
         if (function_exists('memory_get_usage'))
             $sMemory = $this->_formatBytes(memory_get_usage(true)) . ' of ' . ini_get('memory_limit') . ' allowed';
-
+        $aLoad = sys_getloadavg();
+        $sLoad = implode(',', array_map(function ($f) {
+            return round ($f, 2);
+        }, $aLoad));
         return $this->oTemplate->plank(
             $this->oTemplate->nameValue('Time:', $sTime) .
             (function_exists('memory_get_usage') ? $this->oTemplate->nameValue('Memory:', $sMemory) : '') .
             $this->oTemplate->nameValue('PHP:', phpversion()) .
             $this->oTemplate->nameValue('SAPI:', php_sapi_name()) .
-            $this->oTemplate->nameValue('OS:', php_uname('s r m'))
+            $this->oTemplate->nameValue('OS:', php_uname('s r m')) .
+            $this->oTemplate->nameValue('Avg load:', $sLoad)
         );
     }
 
