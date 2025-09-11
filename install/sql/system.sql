@@ -1384,9 +1384,11 @@ CREATE TABLE IF NOT EXISTS `sys_sessions` (
   `user_id` int(10) unsigned NOT NULL default '0',
   `data` text,
   `date` int(10) unsigned NOT NULL default '0',
+  `ttl` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
-  KEY `date` (`date`)
+  KEY `date` (`date`),
+  KEY `ttl` (`ttl`)
 );
 
 
