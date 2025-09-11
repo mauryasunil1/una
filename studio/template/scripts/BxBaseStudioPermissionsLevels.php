@@ -319,37 +319,6 @@ class BxBaseStudioPermissionsLevels extends BxDolStudioPermissionsLevels
         return  parent::_getActionDefault($sType, $sKey, $a, false, $isDisabled, $aRow);
     }
 
-    protected function _getIconPreview($iId, $sIconImage = '', $sIcon = '')
-    {
-        $bIconImage = !empty($sIconImage);
-		
-        $aIcons = BxTemplFunctions::getInstanceWithTemplate($this->_oTemplate)->getIcon($sIcon);
-        $sIconHtml = $aIcons[2] . $aIcons[3] . $aIcons[4];
-		$bIconHtml = !empty($sIconHtml) && !$bIconImage;
-            
-        return $this->_oTemplate->parseHtmlByName('item_icon_preview.html', array(
-            'id' => $iId,
-            'bx_if:show_icon_empty' => array(
-                'condition' => !$bIconImage && !$bIconHtml,
-                'content' => array()
-            ),
-            'bx_if:show_icon_image' => array(
-                'condition' => $bIconImage,
-                'content' => array(
-                    'js_object' => $this->getJsObject(),
-                    'url' => $sIconImage,
-                    'id' => $iId
-                )
-            ),
-            'bx_if:show_icon_html' => array(
-                'condition' => $bIconHtml,
-                'content' => array(
-                    'icon' => $sIconHtml
-                )
-            )
-        ));
-    }
-
     protected function _getFormObject($sAction, $aLevel = array())
     {
     	bx_import('BxTemplStudioFormView');
