@@ -23,7 +23,7 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `ex
 
 -- STUDIO PAGE & WIDGET
 INSERT INTO `sys_std_pages`(`index`, `name`, `header`, `caption`, `icon`) VALUES
-(3, @sName, '', '', 'bx_ocean@modules/boonex/ocean/|std-pi.png');
+(3, @sName, '_bx_ocean', '_bx_ocean', 'bx_ocean@modules/boonex/ocean/|std-pi.png');
 SET @iPageId = LAST_INSERT_ID();
 
 SET @iParentPageId = (SELECT `id` FROM `sys_std_pages` WHERE `name`='home');

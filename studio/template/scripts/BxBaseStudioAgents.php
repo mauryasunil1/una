@@ -54,6 +54,11 @@ class BxBaseStudioAgents extends BxDolStudioAgents
         return parent::getPageJsCode(array_merge($aOptions, $this->aPageJsOptions), $bWrap);
     }
 
+    public function getPageCaption()
+    {
+        return parent::getPageCaption() . $this->getPageJsCode();
+    }
+
     public function getPageMenu($aMenu = [], $aMarkers = [])
     {
         $sJsObject = $this->getPageJsObject();

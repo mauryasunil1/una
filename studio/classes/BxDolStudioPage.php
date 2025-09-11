@@ -95,6 +95,11 @@ class BxDolStudioPage extends BxDol
 
         $this->bPage = true;
     }
+    
+    public function checkAction()
+    {
+        return false;
+    }
 
     public function getDb()
     {

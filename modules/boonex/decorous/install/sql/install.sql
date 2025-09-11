@@ -433,7 +433,7 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `ex
 
 -- STUDIO PAGE & WIDGET
 INSERT INTO `sys_std_pages`(`index`, `name`, `header`, `caption`, `icon`) VALUES
-(3, @sName, '', '', 'bx_decorous@modules/boonex/decorous/|std-icon.svg');
+(3, @sName, '_bx_decorous', '_bx_decorous', 'bx_decorous@modules/boonex/decorous/|std-icon.svg');
 SET @iPageId = LAST_INSERT_ID();
 
 SET @iParentPageId = (SELECT `id` FROM `sys_std_pages` WHERE `name`='home');

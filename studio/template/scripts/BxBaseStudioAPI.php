@@ -35,15 +35,6 @@ class BxBaseStudioAPI extends BxDolStudioAPI
         );
     }
 
-    public function getPageJsCode($aOptions = array(), $bWrap = true)
-    {
-        $aOptions = array_merge($aOptions, array(
-            'sActionUrl' => BX_DOL_URL_STUDIO . 'api.php'
-        ));
-
-        return parent::getPageJsCode($aOptions, $bWrap);
-    }
-
     public function getPageMenu($aMenu = array(), $aMarkers = array())
     {
         $sJsObject = $this->getPageJsObject();

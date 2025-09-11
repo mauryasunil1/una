@@ -1253,7 +1253,7 @@ INSERT INTO `sys_options_mixes2options` (`option`, `mix_id`, `value`) VALUES
 
 -- STUDIO PAGE & WIDGET
 INSERT INTO `sys_std_pages`(`index`, `name`, `header`, `caption`, `icon`) VALUES
-(3, @sName, '', '', 'bx_protean@modules/boonex/protean/|std-icon.svg');
+(3, @sName, '_bx_protean', '_bx_protean', 'bx_protean@modules/boonex/protean/|std-icon.svg');
 SET @iPageId = LAST_INSERT_ID();
 
 SET @iParentPageId = (SELECT `id` FROM `sys_std_pages` WHERE `name`='home');

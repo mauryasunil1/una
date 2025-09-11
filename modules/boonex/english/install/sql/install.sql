@@ -9,7 +9,7 @@ INSERT INTO `sys_localization_languages`(`Name`, `Flag`, `Title`, `Enabled`) VAL
 -- Studio page and widget.
 --
 INSERT INTO `sys_std_pages`(`index`, `name`, `header`, `caption`, `icon`) VALUES
-(3, @sName, '', '', 'bx_en@modules/boonex/english/|std-icon.svg');
+(3, @sName, '_bx_en', '_bx_en', 'bx_en@modules/boonex/english/|std-icon.svg');
 SET @iPageId = LAST_INSERT_ID();
 
 SET @iParentPageId = (SELECT `id` FROM `sys_std_pages` WHERE `name`='home');

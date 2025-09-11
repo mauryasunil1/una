@@ -52,6 +52,11 @@ class BxBaseStudioPolyglot extends BxDolStudioPolyglot
         return parent::getPageJsCode($aOptions, $bWrap);
     }
 
+    public function getPageCaption()
+    {
+        return parent::getPageCaption() . $this->getPageJsCode();
+    }
+
     public function getPageMenu($aMenu = [], $aMarkers = [])
     {
         if($this->aMenuItems === false)
