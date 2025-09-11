@@ -9,6 +9,8 @@
 
 if (!defined('BX_DOL_SESSION_IDLE_TIMEOUT'))
     define('BX_DOL_SESSION_IDLE_TIMEOUT', 1*24*60*60);
+if (!defined('BX_DOL_SESSION_IDLE_TIMEOUT_GUESTS'))
+    define('BX_DOL_SESSION_IDLE_TIMEOUT_GUESTS', 4*60*60);
 if (!defined('BX_DOL_SESSION_SKIP_UPDATE'))
     define('BX_DOL_SESSION_SKIP_UPDATE', 30);
 define('BX_DOL_SESSION_COOKIE', 'memberSession');
@@ -153,7 +155,7 @@ class BxDolSession extends BxDolFactory implements iBxDolSingleton
 
 		$this->sId = $mixedSession['id'];
 		$this->iUserId = (int)$mixedSession['user_id'];
-        $this->iTTL = (int)$mixedSession['ttl'];
+        $this->iTTL = isset($mixedSession['ttl']) ? (int)$mixedSession['ttl'] : 0;
 		$this->aData = unserialize($mixedSession['data']);
 
 		$this->oDb->update($this->sId);		//--- update session's time

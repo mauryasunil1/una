@@ -90,7 +90,7 @@ class BxOktaConStudioPage extends BxTemplStudioModule
                             $sOutput .= "$row. EMPTY : <b class=\"err\">ERR - input data is empty</b><br />";
                         } else { 
                             $oAccount = BxDolAccount::getInstance(trim($data[$iEmail]));
-                            $oProfile = $oAccount ? BxDolProfile::getInstanceAccountProfile($oAccount->id()) : false;
+                            $oProfile = $oAccount ? BxDolProfile::getInstanceByAccount($oAccount->id()) : false;
                             if (!$oAccount || !$oProfile) {
                                 $sOutput .= "$row. {$data[$iEmail]} : <b class=\"err\">ERR - no matching account or profile was found</b><br />";
                             }
