@@ -104,6 +104,7 @@ class BxEventsConfig extends BxBaseModGroupsConfig
             'URL_MANAGE_ADMINISTRATION' => 'page.php?i=events-administration',
 
             'PARAM_AUTO_APPROVE' => 'bx_events_enable_auto_approve',
+            'PARAM_USE_COVER_AS_THUMB' => 'bx_events_use_cover_as_thumb',
             'PARAM_CHARS_SUMMARY' => 'bx_events_summary_chars',
             'PARAM_NUM_RSS' => 'bx_events_num_rss',
             'PARAM_NUM_CONNECTIONS_QUICK' => 'bx_events_num_connections_quick',

@@ -4,6 +4,8 @@
     <string name="_bx_channels_cmts"><![CDATA[Channels' Comments]]></string>
 
     <string name="_bx_channels_option_default_author"><![CDATA[Default author for automatically created channels]]></string>
+    <string name="_bx_channels_option_use_cover_as_thumb"><![CDATA[Use cover image only]]></string>
+    <string name="_bx_channels_option_use_cover_as_thumb_inf"><![CDATA[After disabling don't forget to activate 'Upload Picture' field in Create/Edit channel forms.]]></string>
     <string name="_bx_channels_option_num_connections_quick"><![CDATA[Number of items in friends block]]></string>
     <string name="_bx_channels_option_per_page_browse"><![CDATA[Number of items per page]]></string>
     <string name="_bx_channels_option_num_rss"><![CDATA[Number of items in RSS feed]]></string>

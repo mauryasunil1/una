@@ -4,6 +4,8 @@
     <string name="_bx_channels_cmts"><![CDATA[Каналы - Комментарии]]></string>
 
     <string name="_bx_channels_option_default_author"><![CDATA[Автор по умолчанию для автоматически создаваемых каналов]]></string>
+    <string name="_bx_channels_option_use_cover_as_thumb"><![CDATA[Использовать только изображение обложки]]></string>
+    <string name="_bx_channels_option_use_cover_as_thumb_inf"><![CDATA[После отключения не забудьте активировать поле «Загрузить изображение» в формах создания/редактирования канала.]]></string>
     <string name="_bx_channels_option_num_connections_quick"><![CDATA[Количество элементов в блоке друзей]]></string>
     <string name="_bx_channels_option_per_page_browse"><![CDATA[Количество элементов на странице]]></string>
     <string name="_bx_channels_option_num_rss"><![CDATA[Количество элементов в ленте RSS]]></string>

@@ -4,6 +4,8 @@
     <string name="_bx_courses_cmts"><![CDATA[Courses' Comments]]></string>
 
     <string name="_bx_courses_option_enable_auto_approve"><![CDATA[Auto approve a course after creation]]></string>
+    <string name="_bx_courses_option_use_cover_as_thumb"><![CDATA[Use cover image only]]></string>
+    <string name="_bx_courses_option_use_cover_as_thumb_inf"><![CDATA[After disabling don't forget to activate 'Upload Picture' field in Create/Edit course forms.]]></string>
     <string name="_bx_courses_option_enable_content"><![CDATA[Enable possibility to add content in a course (experimental)]]></string>
     <string name="_bx_courses_option_content_level_max"><![CDATA[Max level for a node in tree based structure (choose before start making courses)]]></string>
     <string name="_bx_courses_option_content_modules_step"><![CDATA[Modules from which the content can be added in a course as step]]></string>

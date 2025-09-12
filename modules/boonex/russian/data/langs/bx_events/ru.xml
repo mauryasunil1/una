@@ -4,6 +4,8 @@
     <string name="_bx_events_cmts"><![CDATA[События - Комментарии]]></string>
 
     <string name="_bx_events_option_enable_auto_approve"><![CDATA[Автоматически активировать событие после создания]]></string>
+    <string name="_bx_events_option_use_cover_as_thumb"><![CDATA[Использовать только изображение обложки]]></string>
+    <string name="_bx_events_option_use_cover_as_thumb_inf"><![CDATA[После отключения не забудьте активировать поле «Загрузить изображение» в формах создания/редактирования события.]]></string>
     <string name="_bx_events_option_num_connections_quick"><![CDATA[Количество элементов в блоке друзей]]></string>
     <string name="_bx_events_option_per_page_browse"><![CDATA[Количество элементов на странице]]></string>
     <string name="_bx_events_option_num_rss"><![CDATA[Количество элементов в ленте RSS]]></string>

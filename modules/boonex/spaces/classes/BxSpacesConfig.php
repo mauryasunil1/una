@@ -93,6 +93,7 @@ class BxSpacesConfig extends BxBaseModGroupsConfig
 
             'PARAM_AUTO_APPROVE' => 'bx_spaces_enable_auto_approve',
             'PARAM_MULTILEVEL_HIERARCHY' => 'bx_spaces_enable_multilevel_hierarchy',
+            'PARAM_USE_COVER_AS_THUMB' => 'bx_spaces_use_cover_as_thumb',
             'PARAM_NUM_RSS' => 'bx_spaces_num_rss',
             'PARAM_NUM_CONNECTIONS_QUICK' => 'bx_spaces_num_connections_quick',
             'PARAM_SEARCHABLE_FIELDS' => 'bx_spaces_searchable_fields',

@@ -10,21 +10,22 @@ INSERT INTO `sys_options_categories` (`type_id`, `name`, `caption`, `order`)
 VALUES (@iTypeId, 'bx_courses', '_bx_courses', 1);
 SET @iCategId = LAST_INSERT_ID();
 
-INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `type`, `extra`, `check`, `check_error`, `order`) VALUES
-('bx_courses_enable_auto_approve', 'on', @iCategId, '_bx_courses_option_enable_auto_approve', 'checkbox', '', '', '', 0),
-('bx_courses_enable_content', '', @iCategId, '_bx_courses_option_enable_content', 'checkbox', '', '', '', 5),
-('bx_courses_content_level_max', '3', @iCategId, '_bx_courses_option_content_level_max', 'select', '1,2,3', '', '', 6),
-('bx_courses_content_modules_st', '', @iCategId, '_bx_courses_option_content_modules_step', 'list', 'a:2:{s:6:"module";s:10:"bx_courses";s:6:"method";s:30:"get_options_content_modules_st";}', '', '', 7),
-('bx_courses_content_modules_at', '', @iCategId, '_bx_courses_option_content_modules_attachment', 'list', 'a:2:{s:6:"module";s:10:"bx_courses";s:6:"method";s:30:"get_options_content_modules_at";}', '', '', 8),
-('bx_courses_num_connections_quick', '6', @iCategId, '_bx_courses_option_num_connections_quick', 'digit', '', '', '', 10),
-('bx_courses_per_page_browse', '24', @iCategId, '_bx_courses_option_per_page_browse', 'digit', '', '', '', 11),
-('bx_courses_num_rss', '10', @iCategId, '_bx_courses_option_num_rss', 'digit', '', '', '', 12),
-('bx_courses_per_page_browse_showcase', '32', @iCategId, '_sys_option_per_page_browse_showcase', 'digit', '', '', '', 15),
-('bx_courses_per_page_browse_recommended', '10', @iCategId, '_sys_option_per_page_browse_recommended', 'digit', '', '', '', 16),
-('bx_courses_per_page_for_favorites_lists', '5', @iCategId, '_bx_courses_option_per_page_for_favorites_lists', 'digit', '', '', '', 17),
-('bx_courses_searchable_fields', 'name,desc', @iCategId, '_bx_courses_option_searchable_fields', 'list', 'a:2:{s:6:"module";s:10:"bx_courses";s:6:"method";s:21:"get_searchable_fields";}', '', '', 30),
-('bx_courses_members_mode', '', @iCategId, '_bx_courses_option_members_mode', 'select', 'a:2:{s:6:"module";s:10:"bx_courses";s:6:"method";s:24:"get_options_members_mode";}', '', '', 40), 
-('bx_courses_internal_notifications', '', @iCategId, '_bx_courses_option_internal_notifications', 'checkbox', '', '', '', 50);
+INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `info`, `type`, `extra`, `check`, `check_error`, `order`) VALUES
+('bx_courses_enable_auto_approve', 'on', @iCategId, '_bx_courses_option_enable_auto_approve', '', 'checkbox', '', '', '', 0),
+('bx_courses_use_cover_as_thumb', 'on', @iCategId, '_bx_courses_option_use_cover_as_thumb', '_bx_courses_option_use_cover_as_thumb_inf', 'checkbox', '', '', '', 2),
+('bx_courses_enable_content', '', @iCategId, '_bx_courses_option_enable_content', '', 'checkbox', '', '', '', 5),
+('bx_courses_content_level_max', '3', @iCategId, '_bx_courses_option_content_level_max', '', 'select', '1,2,3', '', '', 6),
+('bx_courses_content_modules_st', '', @iCategId, '_bx_courses_option_content_modules_step', '', 'list', 'a:2:{s:6:"module";s:10:"bx_courses";s:6:"method";s:30:"get_options_content_modules_st";}', '', '', 7),
+('bx_courses_content_modules_at', '', @iCategId, '_bx_courses_option_content_modules_attachment', '', 'list', 'a:2:{s:6:"module";s:10:"bx_courses";s:6:"method";s:30:"get_options_content_modules_at";}', '', '', 8),
+('bx_courses_num_connections_quick', '6', @iCategId, '_bx_courses_option_num_connections_quick', '', 'digit', '', '', '', 10),
+('bx_courses_per_page_browse', '24', @iCategId, '_bx_courses_option_per_page_browse', '', 'digit', '', '', '', 11),
+('bx_courses_num_rss', '10', @iCategId, '_bx_courses_option_num_rss', '', 'digit', '', '', '', 12),
+('bx_courses_per_page_browse_showcase', '32', @iCategId, '_sys_option_per_page_browse_showcase', '', 'digit', '', '', '', 15),
+('bx_courses_per_page_browse_recommended', '10', @iCategId, '_sys_option_per_page_browse_recommended', '', 'digit', '', '', '', 16),
+('bx_courses_per_page_for_favorites_lists', '5', @iCategId, '_bx_courses_option_per_page_for_favorites_lists', '', 'digit', '', '', '', 17),
+('bx_courses_searchable_fields', 'name,desc', @iCategId, '_bx_courses_option_searchable_fields', '', 'list', 'a:2:{s:6:"module";s:10:"bx_courses";s:6:"method";s:21:"get_searchable_fields";}', '', '', 30),
+('bx_courses_members_mode', '', @iCategId, '_bx_courses_option_members_mode', '', 'select', 'a:2:{s:6:"module";s:10:"bx_courses";s:6:"method";s:24:"get_options_members_mode";}', '', '', 40), 
+('bx_courses_internal_notifications', '', @iCategId, '_bx_courses_option_internal_notifications', '', 'checkbox', '', '', '', 50);
 
 -- PAGES
 

@@ -68,6 +68,7 @@ class BxCnlConfig extends BxBaseModGroupsConfig
             'URL_MANAGE_ADMINISTRATION' => 'page.php?i=channels-administration',
 
             // some params
+            'PARAM_USE_COVER_AS_THUMB' => 'bx_channels_use_cover_as_thumb',
             'PARAM_DEFAULT_AUTHOR' => 'bx_channels_default_author',
             'PARAM_NUM_RSS' => 'bx_channels_num_rss',
             'PARAM_SEARCHABLE_FIELDS' => 'bx_channels_searchable_fields',

@@ -10,26 +10,27 @@ INSERT INTO `sys_options_categories` (`type_id`, `name`, `caption`, `order`)
 VALUES (@iTypeId, 'bx_events', '_bx_events', 1);
 SET @iCategId = LAST_INSERT_ID();
 
-INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `type`, `extra`, `check`, `check_error`, `order`) VALUES
-('bx_events_enable_auto_approve', 'on', @iCategId, '_bx_events_option_enable_auto_approve', 'checkbox', '', '', '', 0),
-('bx_events_num_connections_quick', '6', @iCategId, '_bx_events_option_num_connections_quick', 'digit', '', '', '', 10),
-('bx_events_per_page_browse', '24', @iCategId, '_bx_events_option_per_page_browse', 'digit', '', '', '', 11),
-('bx_events_num_rss', '10', @iCategId, '_bx_events_option_num_rss', 'digit', '', '', '', 12),
-('bx_events_per_page_browse_showcase', '32', @iCategId, '_sys_option_per_page_browse_showcase', 'digit', '', '', '', 15),
-('bx_events_per_page_browse_recommended', '10', @iCategId, '_sys_option_per_page_browse_recommended', 'digit', '', '', '', 16),
-('bx_events_per_page_for_favorites_lists', '5', @iCategId, '_bx_events_option_per_page_for_favorites_lists', 'digit', '', '', '', 17),
-('bx_events_time_format', 'H:i', @iCategId, '_bx_events_option_time_format', 'digit', '', '', '', 20),
-('bx_events_short_date_format', 'j/n/Y', @iCategId, '_bx_events_option_short_date_format', 'digit', '', '', '', 22),
-('bx_events_datetime_format', 'j/n/Y H:i', @iCategId, '_bx_events_option_datetime_format', 'digit', '', '', '', 23),
-('bx_events_summary_chars', '700', @iCategId, '_bx_events_option_summary_chars', 'digit', '', '', '', 25),
-('bx_events_searchable_fields', 'event_name,event_desc', @iCategId, '_bx_events_option_searchable_fields', 'list', 'a:2:{s:6:"module";s:9:"bx_events";s:6:"method";s:21:"get_searchable_fields";}', '', '', 30),
-('bx_events_members_mode', '', @iCategId, '_bx_events_option_members_mode', 'select', 'a:2:{s:6:"module";s:9:"bx_events";s:6:"method";s:24:"get_options_members_mode";}', '', '', 40),
-('bx_events_public_subscribed_me', 'on', @iCategId, '_bx_events_option_public_subscribed_me', 'checkbox', '', '', '', 50),
-('bx_events_enable_subscribe_wo_join', '', @iCategId, '_bx_events_option_enable_subscribe_wo_join', 'checkbox', '', '', '', 55),
-('bx_events_enable_subscribe_for_past_events', 'on', @iCategId, '_bx_events_option_enable_subscribe_for_past_events', 'checkbox', '', '', '', 57),
-('bx_events_internal_notifications', '', @iCategId, '_bx_events_option_internal_notifications', 'checkbox', '', '', '', 60),
-('bx_events_reminder_interval', '24', @iCategId, '_bx_events_option_reminder_interval', 'select', '24,48', '', '', 70),
-('bx_events_rm_from_timeline_after', '0', @iCategId, '_bx_events_option_rm_from_timeline_after', 'digit', '', '', '', 80);
+INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `info`, `type`, `extra`, `check`, `check_error`, `order`) VALUES
+('bx_events_enable_auto_approve', 'on', @iCategId, '_bx_events_option_enable_auto_approve', '', 'checkbox', '', '', '', 0),
+('bx_events_use_cover_as_thumb', 'on', @iCategId, '_bx_events_option_use_cover_as_thumb', '_bx_events_option_use_cover_as_thumb_inf', 'checkbox', '', '', '', 5),
+('bx_events_num_connections_quick', '6', @iCategId, '_bx_events_option_num_connections_quick', '', 'digit', '', '', '', 10),
+('bx_events_per_page_browse', '24', @iCategId, '_bx_events_option_per_page_browse', '', 'digit', '', '', '', 11),
+('bx_events_num_rss', '10', @iCategId, '_bx_events_option_num_rss', '', 'digit', '', '', '', 12),
+('bx_events_per_page_browse_showcase', '32', @iCategId, '_sys_option_per_page_browse_showcase', '', 'digit', '', '', '', 15),
+('bx_events_per_page_browse_recommended', '10', @iCategId, '_sys_option_per_page_browse_recommended', '', 'digit', '', '', '', 16),
+('bx_events_per_page_for_favorites_lists', '5', @iCategId, '_bx_events_option_per_page_for_favorites_lists', '', 'digit', '', '', '', 17),
+('bx_events_time_format', 'H:i', @iCategId, '_bx_events_option_time_format', '', 'digit', '', '', '', 20),
+('bx_events_short_date_format', 'j/n/Y', @iCategId, '_bx_events_option_short_date_format', '', 'digit', '', '', '', 22),
+('bx_events_datetime_format', 'j/n/Y H:i', @iCategId, '_bx_events_option_datetime_format', '', 'digit', '', '', '', 23),
+('bx_events_summary_chars', '700', @iCategId, '_bx_events_option_summary_chars', '', 'digit', '', '', '', 25),
+('bx_events_searchable_fields', 'event_name,event_desc', @iCategId, '_bx_events_option_searchable_fields', '', 'list', 'a:2:{s:6:"module";s:9:"bx_events";s:6:"method";s:21:"get_searchable_fields";}', '', '', 30),
+('bx_events_members_mode', '', @iCategId, '_bx_events_option_members_mode', '', 'select', 'a:2:{s:6:"module";s:9:"bx_events";s:6:"method";s:24:"get_options_members_mode";}', '', '', 40),
+('bx_events_public_subscribed_me', 'on', @iCategId, '_bx_events_option_public_subscribed_me', '', 'checkbox', '', '', '', 50),
+('bx_events_enable_subscribe_wo_join', '', @iCategId, '_bx_events_option_enable_subscribe_wo_join', '', 'checkbox', '', '', '', 55),
+('bx_events_enable_subscribe_for_past_events', 'on', @iCategId, '_bx_events_option_enable_subscribe_for_past_events', '', 'checkbox', '', '', '', 57),
+('bx_events_internal_notifications', '', @iCategId, '_bx_events_option_internal_notifications', '', 'checkbox', '', '', '', 60),
+('bx_events_reminder_interval', '24', @iCategId, '_bx_events_option_reminder_interval', '', 'select', '24,48', '', '', 70),
+('bx_events_rm_from_timeline_after', '0', @iCategId, '_bx_events_option_rm_from_timeline_after', '', 'digit', '', '', '', 80);
 
 -- PAGES
 

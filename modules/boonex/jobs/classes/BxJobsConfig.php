@@ -99,6 +99,7 @@ class BxJobsConfig extends BxBaseModGroupsConfig
             'URL_MANAGE_ADMINISTRATION' => 'page.php?i=jobs-administration',
 
             'PARAM_AUTO_APPROVE' => 'bx_jobs_enable_auto_approve',
+            'PARAM_USE_COVER_AS_THUMB' => 'bx_jobs_use_cover_as_thumb',
             'PARAM_NUM_RSS' => 'bx_jobs_num_rss',
             'PARAM_NUM_CONNECTIONS_QUICK' => 'bx_jobs_num_connections_quick',
 
