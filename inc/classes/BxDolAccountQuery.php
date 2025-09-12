@@ -272,6 +272,10 @@ class BxDolAccountQuery extends BxDolDb implements iBxDolSingleton
         if ($bResult = $this->_updateField ($iID, 'profile_id', $iProfileId))
             $this->cleanMemory('BxDolProfileQuery::getCurrentProfileByAccount' . $iID);
 
+        // clean acount swither cache
+        bx_content_cache_del("profile_switcher_{$iID}_0");
+        bx_content_cache_del("profile_switcher_{$iID}_1");
+
         return $bResult;
     }
 

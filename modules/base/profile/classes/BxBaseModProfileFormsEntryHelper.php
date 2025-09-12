@@ -134,6 +134,10 @@ class BxBaseModProfileFormsEntryHelper extends BxBaseModGeneralFormsEntryHelper
 
         if(isset($CNF['FIELD_BIRTHDAY']) && isset($aContentInfo[$CNF['FIELD_BIRTHDAY']]))
             $oForm->addTrackFields($CNF['FIELD_BIRTHDAY'], $aContentInfo);
+        if(isset($CNF['FIELD_TITLE']) && isset($aContentInfo[$CNF['FIELD_TITLE']]))
+            $oForm->addTrackFields($CNF['FIELD_TITLE'], $aContentInfo);
+        if(isset($CNF['FIELD_PICTURE']) && isset($aContentInfo[$CNF['FIELD_PICTURE']]))
+            $oForm->addTrackFields($CNF['FIELD_PICTURE'], $aContentInfo);
     }
 
     public function onDataEditAfter ($iContentId, $aContentInfo, $aTrackTextFieldsChanges, $oProfile, $oForm)
@@ -170,6 +174,12 @@ class BxBaseModProfileFormsEntryHelper extends BxBaseModGeneralFormsEntryHelper
         // update content filters
         if(isset($CNF['FIELD_BIRTHDAY']) && $oForm->isTrackFieldChanged($CNF['FIELD_BIRTHDAY']))
             BxDolContentFilter::getInstance()->updateValuesByProfile($oProfile->getInfo());
+
+        // reset profile switcher cache
+        if ($oEditedProfile->id() !== bx_get_logged_profile_id() && $oForm->isTrackFieldChanged($CNF['FIELD_TITLE']) || $oForm->isTrackFieldChanged($CNF['FIELD_PICTURE'])) {
+            bx_content_cache_del("profile_switcher_" . $oEditedProfile->getAccountId() . "_0");
+            bx_content_cache_del("profile_switcher_" . $oEditedProfile->getAccountId() . "_1");
+        }
 
         return '';
     }
