@@ -146,11 +146,17 @@ class BxBaseServiceLogin extends BxDol
      */
     public function serviceLoginForm ($sParams = '', $sForceRelocate = '')
     {
-        if (isLogged() && 'login' == bx_get('i')) {
-            if (!bx_is_api()) {
+        $bApi = bx_is_api();
+
+        if(isLogged() && 'login' == bx_get('i')) {
+            if(!$bApi) {
                 header('Location: ' . BX_DOL_URL_ROOT);
                 exit;
             } 
+            else
+                return [
+                    ['id' => 2, 'type' => 'redirect', 'data' => ['uri' => '/']],
+                ];
         }
 
         $oPemalink = BxDolPermalinks::getInstance();
@@ -182,8 +188,7 @@ class BxBaseServiceLogin extends BxDol
                 $oForm->aInputs['relocate']['value'] = BX_DOL_URL_ROOT;
         }
 
-        if (bx_is_api()) {   
-            
+        if ($bApi) {
             if ($oForm->isSubmittedAndValid()) {
                 $oAccount = BxDolAccount::getInstance(trim($oForm->getCleanValue('ID')));
                 bx_login($oAccount->id(), $oForm->getRememberMe());
