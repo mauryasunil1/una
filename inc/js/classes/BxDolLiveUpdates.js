@@ -19,6 +19,7 @@ function BxDolLiveUpdates(oOptions)
     this._iIndex = 0;
     this._iHandler = 0;
     this._bBusy = false;
+    this._lastInactiveRun = 0;
 
     this.init();
 }
@@ -69,8 +70,23 @@ BxDolLiveUpdates.prototype.destroy = function() {
 };
 
 BxDolLiveUpdates.prototype.perform = function() {
-	if(!this._bServerRequesting || this._bBusy || ('undefined' !== typeof(document.hidden) && document.hidden))
+
+    // if request already in progress, skip
+	if (!this._bServerRequesting || this._bBusy) {
 		return;
+    }
+
+    if ('undefined' !== typeof(document.hidden) && document.hidden) {
+        // when hidden → allow execution only every 2h
+        const now = Date.now();
+        if (now - this._lastInactiveRun < 2 * 60 * 60 * 1000) {
+            return; // not yet 2 hours
+        }
+        this._lastInactiveRun = now;
+    } else {
+        // when visible → reset timer
+        this._lastInactiveRun = 0;
+    }
 
 	var $this = this;
 	var oDate = new Date();
