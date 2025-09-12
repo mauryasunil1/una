@@ -92,6 +92,7 @@ class BxGroupsConfig extends BxBaseModGroupsConfig
             'URL_MANAGE_ADMINISTRATION' => 'page.php?i=groups-administration',
 
             'PARAM_AUTO_APPROVE' => 'bx_groups_enable_auto_approve',
+            'PARAM_USE_COVER_AS_THUMB' => 'bx_groups_use_cover_as_thumb',
             'PARAM_NUM_RSS' => 'bx_groups_num_rss',
             'PARAM_NUM_CONNECTIONS_QUICK' => 'bx_groups_num_connections_quick',
 

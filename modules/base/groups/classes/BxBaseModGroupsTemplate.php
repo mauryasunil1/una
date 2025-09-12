@@ -22,7 +22,6 @@ class BxBaseModGroupsTemplate extends BxBaseModProfileTemplate
     {
         parent::__construct($oConfig, $oDb);
 
-        $this->_bLetterAvatar = false;
         $this->_iUnitCharsSummary = 50;
 
         $this->_sUnitClassWoCover = $this->_sUnitClass; //--- Save default 'Unit' class (from BxBaseModProfileTemplate) as 'Unit W\O Cover' class here.
@@ -31,6 +30,8 @@ class BxBaseModGroupsTemplate extends BxBaseModProfileTemplate
         $this->_sUnitClassWoInfo .= ' bx-base-groups-unit-wo-info'; 
         $this->_sUnitClassWoInfoShowCase .= ' bx-base-groups-unit-wo-info bx-base-groups-unit-wo-info-showcase';
         $this->_sUnitClassShowCase .= ' bx-base-groups-unit-with-cover bx-base-groups-unit-showcase';
+
+        $this->_bLetterAvatar = !$this->_oConfig->isUseCoverAsThumb();
     }
 
     public function addLocationBase()
