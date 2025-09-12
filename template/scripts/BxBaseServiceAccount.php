@@ -536,7 +536,7 @@ class BxBaseServiceAccount extends BxDol
          */
         bx_alert('account', 'after_email_confirmation', $mixedAccountId, false, ['override_result' => &$sUrl]);
         if ($bApi){
-            return  [bx_api_get_block('redirect', ['uri' => bx_api_get_relative_url(BxDolPermalinks::getInstance()->permalink($sUrl)), 'timeout' => 1000])];
+            return  [bx_api_get_block('redirect', ['uri' => bx_api_get_relative_url(BxDolPermalinks::getInstance()->permalink($sUrl))])];
         }
 
         $oTemplate = BxDolTemplate::getInstance();

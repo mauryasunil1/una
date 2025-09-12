@@ -368,7 +368,7 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
         ]);
 
         if($this->_bIsApi)
-            return !empty($sUrl) ? [bx_api_get_block('redirect', ['uri' => bx_api_get_relative_url(BxDolPermalinks::getInstance()->permalink($sUrl)), 'timeout' => 1000])] : [];
+            return !empty($sUrl) ? [bx_api_get_block('redirect', ['uri' => bx_api_get_relative_url(BxDolPermalinks::getInstance()->permalink($sUrl))])] : [];
 
         if($this->_bAjaxMode) {
             echoJson($this->prepareResponse($sUrl, $this->_bAjaxMode, 'redirect'));
@@ -526,7 +526,7 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
         ]);
 
         if($this->_bIsApi)
-            return !empty($sUrl) ? bx_api_get_block('redirect', ['uri' => bx_api_get_relative_url(BxDolPermalinks::getInstance()->permalink($sUrl)), 'timeout' => 1000]) : [];
+            return !empty($sUrl) ? bx_api_get_block('redirect', ['uri' => bx_api_get_relative_url(BxDolPermalinks::getInstance()->permalink($sUrl))]) : [];
 
         $this->_redirectAndExit($sUrl);
     }
@@ -593,7 +593,7 @@ class BxBaseModGeneralFormsEntryHelper extends BxDolProfileForms
         ]);
 
         if($this->_bIsApi)
-            return bx_api_get_block('redirect', ['uri' => bx_api_get_relative_url(BxDolPermalinks::getInstance()->permalink($sUrl)), 'timeout' => 1000]);
+            return bx_api_get_block('redirect', ['uri' => bx_api_get_relative_url(BxDolPermalinks::getInstance()->permalink($sUrl))]);
 
         $this->_redirectAndExit($sUrl, true, $aMarkers);
     }

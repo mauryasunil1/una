@@ -177,9 +177,6 @@ class BxBaseModGroupsFormsEntryHelper extends BxBaseModProfileFormsEntryHelper
         else
             $sUrl = 'page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aContentInfo[$CNF['FIELD_ID']];
 
-        if(bx_is_api())
-            return bx_api_get_block('redirect', ['uri' => '/' . BxDolPermalinks::getInstance()->permalink($sUrl), 'timeout' => 1000]);
-
         /**
          * @hooks
          * @hookdef hook-bx_base_groups-redirect_after_edit '{module_name}', 'redirect_after_edit' - hook to override redirect URL which is used after content changing
@@ -190,6 +187,9 @@ class BxBaseModGroupsFormsEntryHelper extends BxBaseModProfileFormsEntryHelper
             'content' => $aContentInfo,
             'override_result' => &$sUrl,
         ]);
+
+        if($this->_bIsApi)
+            return bx_api_get_block('redirect', ['uri' => bx_api_get_relative_url(BxDolPermalinks::getInstance()->permalink($sUrl))]);
 
         $this->_redirectAndExit($sUrl);
     }
