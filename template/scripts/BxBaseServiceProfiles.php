@@ -1162,16 +1162,29 @@ class BxBaseServiceProfiles extends BxDol
 
     public function serviceAccountProfileSwitcher ($iAccountId = false, $iActiveProfileId = null, $sUrlProfileAction = '', $bShowAll = 0, $sButtonTitle = '', $sProfileTemplate = '')
     {
-    	$oTemplate = BxDolTemplate::getInstance();
+        if (!$iAccountId)
+            $iAccountId = getLoggedId();
 
         $oProfilesQuery = BxDolProfileQuery::getInstance();
-
-        $aProfiles = $oProfilesQuery->getProfilesByAccount($iAccountId ? $iAccountId : getLoggedId());
+        $aProfiles = $oProfilesQuery->getProfilesByAccount($iAccountId);
         if (!$aProfiles)
             return false;
 
         if (null === $iActiveProfileId)
             $iActiveProfileId = bx_get_logged_profile_id();
+        
+        $oTemplate = null;
+        if (!$this->_bIsApi) {
+            $oTemplate = BxDolTemplate::getInstance();
+            $oTemplate->addCss('account.css');
+        }
+
+        $sCacheKey = "profile_switcher_{$iAccountId}_" . ($this->_bIsApi ? 1 : 0);
+        if ($sUrlProfileAction == '' && $bShowAll == 0 && $sButtonTitle == '' && $sProfileTemplate == '') { // cache is enabled only for default params (profile switcher in account popup)
+            $mixedCache = bx_content_cache_get($sCacheKey);
+            if ($mixedCache !== null)
+                return $mixedCache;
+        }
 
         $oModuleDb = BxDolModuleQuery::getInstance();
 
@@ -1247,13 +1260,21 @@ class BxBaseServiceProfiles extends BxDol
         }
 
         if($this->_bIsApi){
-            return [bx_api_get_block ('profile_switcher', ['active_profile_id' => $iActiveProfileId, 'profiles' => $aProfilesData])];
+            $a = [bx_api_get_block ('profile_switcher', ['active_profile_id' => $iActiveProfileId, 'profiles' => $aProfilesData])];
+            if ($sUrlProfileAction == '' && $bShowAll == 0 && $sButtonTitle == '' && $sProfileTemplate == '') {
+                bx_content_cache_set($sCacheKey, $a);
+            }
+            return $a;
         }
         
-        $oTemplate->addCss('account.css');
-        return array(
+        $a = array(
             'content' => $oTemplate->parseHtmlByName('profile_switch_row.html', $aVars),
         );
+        if ($sUrlProfileAction == '' && $bShowAll == 0 && $sButtonTitle == '' && $sProfileTemplate == '') {
+            echoDbgLog('set: ' . $sCacheKey);
+            bx_content_cache_set($sCacheKey, $a);
+        }
+        return $a;
     }
 
     public function serviceAccountProfileSwitcherAll ($iAccountId = false, $iActiveProfileId = null, $sUrlProfileAction = '', $bShowAll = true, $sButtonTitle = '', $sProfileTemplate = '')
