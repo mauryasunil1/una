@@ -15,6 +15,7 @@ class BxBaseFormView extends BxDolForm
     protected static $_isCssJsUiAdded = false;
     protected static $_isCssJsUiSortableAdded = false;
     protected static $_isCssJsMinicolorsAdded = false;
+    protected static $_isCssJsCodeMirrorAdded = false;
     protected static $_isCssJsLabelsAdded = false;
     protected static $_isCssJsTimepickerAdded = false;
     protected static $_isCssJsAddedViewMode = false;
@@ -524,11 +525,13 @@ class BxBaseFormView extends BxDolForm
 
         $sCode = "if(window['" . $sJsObjName . "'] == undefined) window['" . $sJsObjName . "'] = new " . $sJsObjClass . "(" . json_encode(array(
             'sObjName' => $sJsObjName,
+            'sId' => $this->getId(),
             'sName' => $this->getName(),
             'sObject' => isset($this->aParams['object']) ? $this->aParams['object'] : '',
             'sDisplay' => isset($this->aParams['display']) ? $this->aParams['display'] : '',
             'sRootUrl' => BX_DOL_URL_ROOT,
             'aHtmlIds' => $this->_aHtmlIds,
+            'bInitCodeMirror' => self::$_isCssJsCodeMirrorAdded === true,
             'bLeavePageConfirmation' => getParam('sys_form_lpc_enable') == 'on',
             'sTxtLeavePageConfirmation' => _t('_sys_leave_page_confirmation')
         )) . ");";
@@ -1593,6 +1596,10 @@ BLAH;
             $sClassAdd .= ' bx-form-input-html ' . $sUniq;
         }
 
+        if(isset($aInput['code']) && $aInput['code'] && $this->addCodeEditor($aInput['code'], $aInput, $sUniq)){
+            $sClassAdd .= ' bx-form-input-code ' . $sUniq;
+        }
+
         $sValue = isset($aInput['value']) ? bx_process_output((isset($aInput['html']) && $aInput['html']) || (isset($aInput['code']) && $aInput['code']) ? $aInput['value'] : strip_tags($aInput['value']), BX_DATA_TEXT, array('no_process_macros')) : '';
 
         return $this->oTemplate->parseHtmlByName('form_field_textarea.html', [
@@ -1626,6 +1633,13 @@ BLAH;
             return false;
 
         $this->_sCodeAdd .= $oEditor->attachEditor ('#' . $this->aFormAttrs['id'] . ' [name=' . $aInput['name'] . ']', $iViewMode, $this->_bDynamicMode, ['form_id' => $this->aFormAttrs['id'], 'element_name' => $aInput['name'], 'query_params' => $this->getHtmlEditorQueryParams($aInput), 'uniq' => $sUniq]);
+
+        return true;
+    }
+    
+    function addCodeEditor($iViewMode, &$aInput, $sUniq)
+    {
+        $this->addCssJsCodeMirror();
 
         return true;
     }
@@ -2567,6 +2581,17 @@ BLAH;
         $this->_addJs('jquery-minicolors/jquery.minicolors.min.js', "'undefined' === typeof($.minicolors)");
 
         self::$_isCssJsMinicolorsAdded = true;
+    }
+
+    function addCssJsCodeMirror ()
+    {
+        if (self::$_isCssJsCodeMirrorAdded)
+            return;       
+
+        $this->_addCss([BX_DIRECTORY_PATH_PLUGINS_PUBLIC . 'codemirror/|codemirror.css']);
+        $this->_addJs(['codemirror/codemirror.min.js'], "'undefined' === typeof(CodeMirror)");
+
+        self::$_isCssJsCodeMirrorAdded = true;
     }
 
     function addCssJsViewMode ()

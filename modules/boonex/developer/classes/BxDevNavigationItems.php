@@ -182,6 +182,11 @@ class BxDevNavigationItems extends BxTemplStudioNavigationItems
             3 => _t('_adm_nav_txt_block_hidden_on_col_wide'),
             4 => _t('_adm_nav_txt_block_hidden_on_col_full')
         ];
+
+        if(($sKey = 'config_api') && isset($aInputs[$sKey]))
+            $aInputs[$sKey] = array_merge($aInputs[$sKey], [
+                'code' => 1
+            ]);
     }
 }
 /** @} */

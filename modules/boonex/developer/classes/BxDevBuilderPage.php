@@ -62,6 +62,11 @@ class BxDevBuilderPage extends BxTemplStudioBuilderPage
         foreach($aLayouts as $aLayout)
             $oForm->aInputs['layout_id']['values'][] = array('key' => $aLayout['id'], 'value' => _t($aLayout['title']));
 
+        if(($sKey = 'config_api') && isset($oForm->aInputs[$sKey]))
+            $oForm->aInputs[$sKey] = array_merge($oForm->aInputs[$sKey], [
+                'code' => 1
+            ]);
+
         $oForm->initChecker();
         if($oForm->isSubmittedAndValid()) {
             $sObject = $oForm->getCleanValue('object');
@@ -247,6 +252,7 @@ class BxDevBuilderPage extends BxTemplStudioBuilderPage
                 'info' => '',
                 'value' => $this->aPageRebuild['config_api'],
                 'required' => '',
+                'code' => '1',
                 'db' => array (
                     'pass' => 'XssHtml',
                 ),
@@ -443,6 +449,11 @@ class BxDevBuilderPage extends BxTemplStudioBuilderPage
 
         $oForm->aInputs = $this->addInArray($oForm->aInputs, 'visible_for_levels', $this->getBlockContent($aBlock));
 
+        if(($sKey = 'config_api') && isset($oForm->aInputs[$sKey]))
+            $oForm->aInputs[$sKey] = array_merge($oForm->aInputs[$sKey], [
+                'code' => 1
+            ]);
+
         $oForm->aInputs['controls'][0]['value'] = _t('_bx_dev_bp_btn_block_save');
         $oForm->aInputs['controls'][2]['attrs']['onclick'] = $this->getPageJsObject() . ".deleteBlock(" . $aBlock['id'] . ")";
 
@@ -480,6 +491,14 @@ class BxDevBuilderPage extends BxTemplStudioBuilderPage
         $sValue = $oForm->getCleanValue('content');
         $sValue = BxDevFunctions::serializeString($sValue);
         BxDolForm::setSubmittedValue('content', $sValue, $oForm->aFormAttrs['method']);
+    }
+
+    protected function _getPageEditForm()
+    {
+        $oForm = parent::_getPageEditForm();
+        $oForm->addCssJsCodeMirror();
+
+        return $oForm;
     }
 
     protected function _getTmplVarsBlockPanelTop()

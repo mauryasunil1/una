@@ -276,49 +276,9 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
         $sJsObject = $this->getPageJsObject();
         $oTemplate = BxDolStudioTemplate::getInstance();
 
-        $sModule = BX_DOL_STUDIO_MODULE_CUSTOM;
+        $sModule = BX_DOL_STUDIO_MODULE_CUSTOM;        
 
-        $aForm = array(
-            'form_attrs' => array(
-                'id' => 'adm-bp-page-create',
-                'action' => sprintf($this->sPageUrl, $this->sType, $this->sPage) . '&bp_action=' . $this->sActionPageCreate,
-                'method' => 'post'
-            ),
-            'params' => array (
-                'db' => array(
-                    'table' => 'sys_objects_page',
-                    'key' => 'id',
-                    'uri' => '',
-                    'uri_title' => '',
-                    'submit_name' => 'do_submit'
-                ),
-            ),
-            'inputs' => array (
-                'module' => array(
-                    'type' => 'hidden',
-                    'name' => 'module',
-                    'value' => $sModule,
-                    'db' => array (
-                        'pass' => 'Xss',
-                    ),
-                ),
-                'deletable' => array(
-                    'type' => 'hidden',
-                    'name' => 'deletable',
-                    'value' => 1,
-                    'db' => array (
-                        'pass' => 'Int',
-                    ),
-                ),
-                'settings' => array(
-                    'type' => 'custom',
-                    'name' => 'settings',
-                    'content' => $oTemplate->parseHtmlByName('bp_edit_page_form.html', $this->_getTmplVarsPageSettings()),
-                ),
-            )
-        );
-
-        $oForm = new BxTemplStudioFormView($aForm);
+        $oForm = $this->_getPageCreateForm();
         $oForm->initChecker();
 
         if($oForm->isSubmittedAndValid()) {
@@ -328,7 +288,7 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
 
             $sLanguage = BxDolStudioLanguagesUtils::getInstance()->getCurrentLangName(false);
 
-            $sObject = BxDolForm::getSubmittedValue('title-' . $sLanguage, $aForm['form_attrs']['method']);
+            $sObject = BxDolForm::getSubmittedValue('title-' . $sLanguage, $oForm->aFormAttrs['method']);
             $sObject = uriGenerate($sObject, 'sys_objects_page', 'object', ['empty' => 'object']);
 
             $sUri = $oForm->getCleanValue('uri');
@@ -338,7 +298,7 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
             	return ['msg' => _t('_adm_bp_err_page_uri')];
 
             $iVisibleFor = BxDolStudioUtils::getVisibilityValue($oForm->getCleanValue('visible_for'), $oForm->getCleanValue('visible_for_levels'));
-            BxDolForm::setSubmittedValue('visible_for_levels', $iVisibleFor, $aForm['form_attrs']['method']);
+            BxDolForm::setSubmittedValue('visible_for_levels', $iVisibleFor, $oForm->aFormAttrs['method']);
             unset($oForm->aInputs['visible_for']);
 
             $aValsToAdd = [
@@ -359,7 +319,7 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
 
         $sContent = BxTemplStudioFunctions::getInstance()->popupBox($this->aHtmlIds['add_popup_id'], _t('_adm_bp_txt_create_popup'), $oTemplate->parseHtmlByName('bp_add_page.html', array(
             'js_object' => $sJsObject,
-            'form_id' => $aForm['form_attrs']['id'],
+            'form_id' => $oForm->getId(),
             'form' => $oForm->getCode(true)
         )));
 
@@ -371,31 +331,7 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
         $sJsObject = $this->getPageJsObject();
         $oTemplate = BxDolStudioTemplate::getInstance();
 
-        $aForm = array(
-            'form_attrs' => array(
-                'id' => 'adm-bp-page-edit',
-                'action' => sprintf($this->sPageUrl, $this->sType, $this->sPage) . '&bp_action=' . $this->sActionPageEdit,
-                'method' => 'post'
-            ),
-            'params' => array (
-                'db' => array(
-                    'table' => 'sys_objects_page',
-                    'key' => 'id',
-                    'uri' => '',
-                    'uri_title' => '',
-                    'submit_name' => 'do_submit'
-                ),
-            ),
-            'inputs' => array (
-                'settings' => array(
-                    'type' => 'custom',
-                    'name' => 'settings',
-                    'content' => $oTemplate->parseHtmlByName('bp_edit_page_form.html', $this->_getTmplVarsPageSettings($this->aPageRebuild, false)),
-                ),
-            )
-        );
-
-        $oForm = new BxTemplStudioFormView($aForm);
+        $oForm = $this->_getPageEditForm();
         $oForm->initChecker();
 
         if($oForm->isSubmittedAndValid()) {
@@ -407,7 +343,7 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
             $mixedVisibleForLevels = $oForm->getCleanValue('visible_for_levels');
             if($mixedVisibleFor !== false && $mixedVisibleForLevels !== false) {
                 $iVisibleFor = BxDolStudioUtils::getVisibilityValue($mixedVisibleFor, $mixedVisibleForLevels);
-                BxDolForm::setSubmittedValue('visible_for_levels', $iVisibleFor, $aForm['form_attrs']['method']);
+                BxDolForm::setSubmittedValue('visible_for_levels', $iVisibleFor, $oForm->aFormAttrs['method']);
                 unset($oForm->aInputs['visible_for']);
             }
 
@@ -436,7 +372,7 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
 
         $sContent = BxTemplStudioFunctions::getInstance()->popupBox($this->aHtmlIds['edit_popup_id'], _t('_adm_bp_txt_settings_popup'), $oTemplate->parseHtmlByName('bp_edit_page.html', array(
             'js_object' => $sJsObject,
-            'form_id' => $aForm['form_attrs']['id'],
+            'form_id' => $oForm->getId(),
             'form' => $oForm->getCode(true)
         )));
 
@@ -1927,6 +1863,90 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
         $this->oDb->getBlocks(array('type' => 'by_module_to_copy', 'value' => $sModule), $aBlocks, false);
 
         return $aBlocks;
+    }
+
+    protected function _getPageCreateForm()
+    {
+        $oTemplate = BxDolStudioTemplate::getInstance();
+
+        $sForm = 'adm-bp-page-create';
+        $aForm = array(
+            'form_attrs' => array(
+                'id' => $sForm,
+                'name' => $sForm,
+                'action' => sprintf($this->sPageUrl, $this->sType, $this->sPage) . '&bp_action=' . $this->sActionPageCreate,
+                'method' => 'post'
+            ),
+            'params' => array (
+                'db' => array(
+                    'table' => 'sys_objects_page',
+                    'key' => 'id',
+                    'uri' => '',
+                    'uri_title' => '',
+                    'submit_name' => 'do_submit'
+                ),
+                'display' => $sForm
+            ),
+            'inputs' => array (
+                'module' => array(
+                    'type' => 'hidden',
+                    'name' => 'module',
+                    'value' => BX_DOL_STUDIO_MODULE_CUSTOM,
+                    'db' => array (
+                        'pass' => 'Xss',
+                    ),
+                ),
+                'deletable' => array(
+                    'type' => 'hidden',
+                    'name' => 'deletable',
+                    'value' => 1,
+                    'db' => array (
+                        'pass' => 'Int',
+                    ),
+                ),
+                'settings' => array(
+                    'type' => 'custom',
+                    'name' => 'settings',
+                    'content' => $oTemplate->parseHtmlByName('bp_edit_page_form.html', $this->_getTmplVarsPageSettings()),
+                ),
+            )
+        );
+
+        return new BxTemplStudioFormView($aForm);
+    }
+
+    protected function _getPageEditForm()
+    {
+        $oTemplate = BxDolStudioTemplate::getInstance();
+
+        $sForm = 'adm-bp-page-edit';
+        $aForm = array(
+            'form_attrs' => array(
+                'id' => $sForm,
+                'name' => $sForm,
+                'action' => sprintf($this->sPageUrl, $this->sType, $this->sPage) . '&bp_action=' . $this->sActionPageEdit,
+                'method' => 'post'
+            ),
+            'params' => array (
+                'db' => array(
+                    'table' => 'sys_objects_page',
+                    'key' => 'id',
+                    'uri' => '',
+                    'uri_title' => '',
+                    'submit_name' => 'do_submit'
+                ),
+                'display' => $sForm
+            ),
+            'inputs' => array (
+                'settings' => array(
+                    'type' => 'custom',
+                    'name' => 'settings',
+                    'content' => $oTemplate->parseHtmlByName('bp_edit_page_form.html', $this->_getTmplVarsPageSettings($this->aPageRebuild, false)),
+                ),
+            )
+        );
+
+        return new BxTemplStudioFormView($aForm);
     }
 
     protected function _getTmplVarsBlockPanelTop()

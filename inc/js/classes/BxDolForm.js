@@ -12,6 +12,7 @@ function BxDolForm(oOptions)
         return;
 
     this._sObjName = oOptions.sObjName === undefined ? 'oForm' : oOptions.sObjName; // javascript object name, to run current object instance from onTimer
+    this._sId = oOptions.sId; // form HTML ID
     this._sName = oOptions.sName; // form name
     this._sObject = oOptions.sObject; // form object
     this._sDisplay = oOptions.sDisplay; // form display
@@ -29,7 +30,24 @@ function BxDolForm(oOptions)
 
     if(this._bLeavePageConfirmation)
         this.initLeavePageConfirmation();
+
+    if(oOptions.bInitCodeMirror != undefined && oOptions.bInitCodeMirror)
+        this.initCodeMirror();
 }
+
+BxDolForm.prototype.initCodeMirror = function()
+{
+    var oSelector = $('#' + this._sId + ' .bx-form-input-code');
+
+    for(var i = 0; i < oSelector.length; i++) {
+        var e = CodeMirror.fromTextArea(oSelector.get(i), {
+            lineNumbers: true,
+            mode: "htmlmixed",
+            htmlMode: true,
+            matchBrackets: true
+        });
+    }
+};
 
 BxDolForm.prototype.initLeavePageConfirmation = function()
 {
