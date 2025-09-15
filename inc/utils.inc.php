@@ -2820,8 +2820,8 @@ function bx_get_context_workspace($bFromCache = true)
 
 function bx_content_cache_get($sKey, $iTTL = false)
 {
-    // TODO: if (!getParam('sys_content_cache_enable'))
-    //    return null;
+    if (!getParam('sys_content_cache_enable'))
+        return null;
 
     $oCache = bx_content_cache_obj();
     return $oCache->getData('content_' . $sKey . bx_site_hash() . '.php', $iTTL);
@@ -2829,8 +2829,8 @@ function bx_content_cache_get($sKey, $iTTL = false)
 
 function bx_content_cache_set($sKey, $mixedData, $iTTL = false)
 {
-    // TODO: if (!getParam('sys_content_cache_enable'))
-    //    return false;
+    if (!getParam('sys_content_cache_enable'))
+        return false;
 
     $oCache = bx_content_cache_obj();
     return $oCache->setData('content_' . $sKey . bx_site_hash() . '.php', $mixedData, $iTTL);
@@ -2847,7 +2847,7 @@ function bx_content_cache_obj()
     if (isset($GLOBALS['bxCacheContentObj']))
         return $GLOBALS['bxCacheContentObj'];
 
-    $sEngine = 'File';// TODO: $this->getParam('sys_content_cache_engine');
+    $sEngine = getParam('sys_content_cache_engine');
     $oCacheObject = bx_instance('BxDolCache' . $sEngine);
     if(!$oCacheObject->isAvailable())
         $oCacheObject = bx_instance('BxDolCacheFile');
