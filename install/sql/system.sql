@@ -581,6 +581,9 @@ INSERT INTO `sys_options_categories`(`type_id`, `name`, `caption`, `hidden`, `or
 SET @iCategoryId = LAST_INSERT_ID();
 
 INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `extra`, `check`, `check_error`, `order`) VALUES
+(@iCategoryId, 'sys_content_cache_enable', '_adm_stg_cpt_option_sys_content_cache_enable', 'on', 'checkbox', '', '', '', 5),
+(@iCategoryId, 'sys_content_cache_engine', '_adm_stg_cpt_option_sys_content_cache_engine', 'File', 'select', 'File,Memcache,APC,XCache', '', '', 6),
+
 (@iCategoryId, 'sys_db_cache_enable', '_adm_stg_cpt_option_sys_db_cache_enable', 'on', 'checkbox', '', '', '', 10),
 (@iCategoryId, 'sys_db_cache_engine', '_adm_stg_cpt_option_sys_db_cache_engine', 'File', 'select', 'File,Memcache,APC,XCache', '', '', 11),
 
