@@ -852,24 +852,10 @@ BLAH;
         $sClassValue = !empty($aParams['class_value']) ? $aParams['class_value'] : '';
 
         $aTmplVarsIcon = [];
-        if(!empty($aInput['icon'])) {
-            list ($sIcon, $sIconUrl, $sIconA, $sIconHtml) = BxTemplFunctions::getInstanceWithTemplate($this->oTemplate)->getIcon($aInput['icon']);
-
+        if(!empty($aInput['icon']))
             $aTmplVarsIcon = [
-                'bx_if:icon' => [
-                    'condition' => (bool)$sIcon,
-                    'content' => ['icon' => $sIcon],
-                ],
-                'bx_if:icon-html' => [
-                    'condition' => (bool)$sIconHtml,
-                    'content' => ['icon' => $sIconHtml],
-                ],
-                'bx_if:image_inline' => [
-                    'condition' => false,
-                    'content' => ['image' => ''],
-                ]
+                'icon' => $this->genIcon($aInput['icon'])
             ];
-        }
 
         return $this->oTemplate->parseHtmlByName('form_view_row.html', [
             'type' => $aInput['type'], 
@@ -1561,8 +1547,16 @@ BLAH;
         if($aInput['type'] == 'submit')
             $sClassAdd .= ' bx-btn-primary';
 
+        $aTmplVarsIcon = [];
+        if(isset($aInput['icon']) && ($sIcon = $this->genIcon($aInput['icon'])))
+            $aTmplVarsIcon = ['icon' => $sIcon];
+
         return $this->oTemplate->parseHtmlByName('form_field_button.html', [
             'attrs' => bx_convert_array2attrs($aAttrs, $sClassAdd),
+            'bx_if:show_icon' => [
+                'condition' => !empty($aTmplVarsIcon),
+                'content' => $aTmplVarsIcon
+            ],
             'value' => $aInput['value']
         ]);
     }
@@ -2400,6 +2394,29 @@ BLAH;
         return $this->oTemplate->parseHtmlByName('form_field_option_info.html', [
             'input' => $sInput,
             'info' => $sInfo
+        ]);
+    }
+
+    function genIcon($sIcon)
+    {
+        if(!$sIcon)
+            return '';
+
+        list ($sIcon, $sIconUrl, $sIconA, $sIconHtml) = BxTemplFunctions::getInstanceWithTemplate($this->oTemplate)->getIcon($sIcon);
+
+        return $this->oTemplate->parseHtmlByName('form_input_icon.html', [
+            'bx_if:icon' => [
+                'condition' => (bool)$sIcon,
+                'content' => ['icon' => $sIcon],
+            ],
+            'bx_if:icon-html' => [
+                'condition' => (bool)$sIconHtml,
+                'content' => ['icon' => $sIconHtml],
+            ],
+            'bx_if:image_inline' => [
+                'condition' => false,
+                'content' => ['image' => ''],
+            ]
         ]);
     }
 

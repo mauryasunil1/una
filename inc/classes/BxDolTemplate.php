@@ -1982,7 +1982,7 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
             case 'is_profile_page':
                 $sRet = (defined('BX_PROFILE_PAGE')) ? 'true' : 'false';
                 break;
-			case 'system_js_requred':
+            case 'system_js_requred':
                 $sRet = _t('_sys_javascript_requred');
                 break;
             case 'included_css':
@@ -3291,16 +3291,18 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
             return false;
         }
 
-        $aKeys = array_merge($aKeys, array(
+        $aKeys = array_merge($aKeys, [
             "'<bx_menu:([^\s]+) \/>'s",
             "'<bx_url_root />'",
-            "'<bx_url_studio />'"
-        ));
-        $aValues = array_merge($aValues, array(
+            "'<bx_url_studio />'",
+            "'<bx_site_title />'"
+        ]);
+        $aValues = array_merge($aValues, [
             "<?php echo \$this->getMenu('\\1'); ?>",
             BX_DOL_URL_ROOT,
-            BX_DOL_URL_STUDIO
-        ));
+            BX_DOL_URL_STUDIO,
+            getParam('site_title')
+        ]);
 
         //--- Parse Predefined Keys ---//
         $sContent = preg_replace($aKeys, $aValues, $sContent);
