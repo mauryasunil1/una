@@ -2157,17 +2157,17 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
 
         if(($iInitiatorProfile = (int)bx_get_logged_profile_id()) != 0) {
             $iContentProfile = (int)$aEvent['object_owner_id'];
-
-            $sConnection = 'sys_profiles_subscriptions';      
-            if(($oConnection = BxDolConnection::getObjectInstance($sConnection)) !== false && $iInitiatorProfile != $iContentProfile && !$oConnection->isConnected($iInitiatorProfile, $iContentProfile)) {
-                $aEvent['author_actions'][] = [
-                    'type' => 'connections',
-                    'o' => $sConnection,
-                    'a' => 'add',
-                    'iid' => $iInitiatorProfile,
-                    'cid' => $iContentProfile,
-                    'title' => _t('_sys_menu_item_title_sm_subscribe'),
-                ];
+            if($iInitiatorProfile != $iContentProfile && ($oContentProfile = BxDolProfile::getInstance($iContentProfile)) !== false) {
+                $mixedCheckResults = bx_srv($oContentProfile->getModule(), 'check_allowed_with_content', ['subscribe_add', $oContentProfile->getContentId()]);
+                if($mixedCheckResults === CHECK_ACTION_RESULT_ALLOWED)
+                    $aEvent['author_actions'][] = [
+                        'type' => 'connections',
+                        'o' => $this->_oConfig->getObject('conn_subscriptions'),
+                        'a' => 'add',
+                        'iid' => $iInitiatorProfile,
+                        'cid' => $iContentProfile,
+                        'title' => _t('_sys_menu_item_title_sm_subscribe'),
+                    ];
             }
         }
 
