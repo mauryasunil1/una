@@ -534,7 +534,7 @@ class BxBaseFormView extends BxDolForm
             'bInitCodeMirror' => self::$_isCssJsCodeMirrorAdded === true,
             'bLeavePageConfirmation' => getParam('sys_form_lpc_enable') == 'on',
             'sTxtLeavePageConfirmation' => _t('_sys_leave_page_confirmation')
-        )) . ");";
+        )) . "); window['" . $sJsObjName . "'].init();";
 
         return $bWrap ? $this->oTemplate->_wrapInTagJsCode($sCode) : $sCode;
     }

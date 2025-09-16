@@ -19,6 +19,7 @@ function BxDolForm(oOptions)
 
     this._sActionsUri = 'form.php';
     this._sActionsUrl = oOptions.sRootUrl + this._sActionsUri; // actions url address
+    this._bInitCodeMirror = oOptions.bInitCodeMirror == undefined ? false : oOptions.bInitCodeMirror;
     this._bLeavePageConfirmation = oOptions.bLeavePageConfirmation == undefined ? false : oOptions.bLeavePageConfirmation;
     this._sTxtLeavePageConfirmation = oOptions.sTxtLeavePageConfirmation === undefined ? _t('_sys_leave_page_confirmation') : oOptions.sTxtLeavePageConfirmation;
 
@@ -30,10 +31,16 @@ function BxDolForm(oOptions)
 
     if(this._bLeavePageConfirmation)
         this.initLeavePageConfirmation();
-
-    if(oOptions.bInitCodeMirror != undefined && oOptions.bInitCodeMirror)
-        this.initCodeMirror();
 }
+
+/**
+ * Note. Is called anytime a form was loaded, even if previously created object of the form is used.
+ */
+BxDolForm.prototype.init = function()
+{
+    if(this._bInitCodeMirror)
+        this.initCodeMirror();
+};
 
 BxDolForm.prototype.initCodeMirror = function()
 {
@@ -47,6 +54,12 @@ BxDolForm.prototype.initCodeMirror = function()
             matchBrackets: true
         });
     }
+};
+
+BxDolForm.prototype.refreshCodeMirror = function() {
+    $('.CodeMirror').each(function() {
+        this.CodeMirror.refresh();
+    });
 };
 
 BxDolForm.prototype.initLeavePageConfirmation = function()
