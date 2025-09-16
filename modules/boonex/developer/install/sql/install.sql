@@ -527,7 +527,7 @@ INSERT INTO `sys_form_inputs` (`object`, `module`, `name`, `value`, `values`, `c
 ('bx_developer_nav_item', @sName, 'link', '', '', 0, 'text', '_bx_dev_nav_txt_sys_items_link', '_bx_dev_nav_txt_items_link', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
 ('bx_developer_nav_item', @sName, 'onclick', '', '', 0, 'text', '_bx_dev_nav_txt_sys_items_onclick', '_bx_dev_nav_txt_items_onclick', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
 ('bx_developer_nav_item', @sName, 'target', '', '', 0, 'text', '_bx_dev_nav_txt_sys_items_target', '_bx_dev_nav_txt_items_target', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
-('bx_developer_nav_item', @sName, 'icon', '', '', 0, 'text', '_bx_dev_nav_txt_sys_items_icon', '_bx_dev_nav_txt_items_icon', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
+('bx_developer_nav_item', @sName, 'icon', '', '', 0, 'textarea', '_bx_dev_nav_txt_sys_items_icon', '_bx_dev_nav_txt_items_icon', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
 ('bx_developer_nav_item', @sName, 'addon', '', '', 0, 'textarea', '_bx_dev_nav_txt_sys_items_addon', '_bx_dev_nav_txt_items_addon', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
 ('bx_developer_nav_item', @sName, 'submenu_object', '', '', 0, 'text', '_bx_dev_nav_txt_sys_items_submenu_object', '_bx_dev_nav_txt_items_submenu_object', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
 ('bx_developer_nav_item', @sName, 'submenu_popup', '1', '', 0, 'switcher', '_bx_dev_nav_txt_sys_items_submenu_popup', '_bx_dev_nav_txt_items_submenu_popup', '', 0, 0, 0, '', '', '', '', '', '', 'Int', '', 0, 0),

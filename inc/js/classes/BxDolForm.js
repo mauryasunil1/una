@@ -47,11 +47,13 @@ BxDolForm.prototype.initCodeMirror = function()
     var oSelector = $('#' + this._sId + ' .bx-form-input-code');
 
     for(var i = 0; i < oSelector.length; i++) {
-        var e = CodeMirror.fromTextArea(oSelector.get(i), {
+        CodeMirror.fromTextArea(oSelector.get(i), {
             lineNumbers: true,
             mode: "htmlmixed",
             htmlMode: true,
             matchBrackets: true
+        }).on('blur', function(oEditor) {
+            oEditor.save();
         });
     }
 };

@@ -268,6 +268,11 @@ class BxDevNavigationMenus extends BxTemplStudioNavigationMenus
         $this->oDb->getTemplates(array('type' => 'all'), $aTemplates, false);
         foreach($aTemplates as $aTemplate)
             $aInputs['template_id']['values'][] = array('key' => $aTemplate['id'], 'value' => _t($aTemplate['title']));
+
+        if(($sKey = 'config_api') && isset($aInputs[$sKey]))
+            $aInputs[$sKey] = array_merge($aInputs[$sKey], [
+                'code' => 1
+            ]);
     }
 
     protected function _isDeletable(&$aRow)
