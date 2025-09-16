@@ -29,7 +29,10 @@ class BxDolApiConfig
         $sResult .= $this->_getQueriesMenusConfigApi();
         
         $sResult .= "\n\n\n";
-        
+
+        /*
+         * TODO: Don't include active_api for triggers (menu items, page blocks)
+         */
         $sResult .= "-- \n-- To copy 'Active API':\n-- ";
         $sResult .= $this->_getQueriesPagesActiveApi();
         $sResult .= $this->_getQueriesMenusActiveApi();
