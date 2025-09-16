@@ -13,9 +13,8 @@ INSERT INTO `sys_menu_templates` (`id`, `template`, `title`, `visible`) VALUES
 (ROUND(RAND()*(9999 - 1000) + 1000), 'menu_sidebar_site.html', '_bx_artificer_menu_template_title_sidebar_site', 1);
 SET @iTemplId = (SELECT `id` FROM `sys_menu_templates` WHERE `template`='menu_sidebar_site.html' AND `title`='_bx_artificer_menu_template_title_sidebar_site' LIMIT 1);
 
-INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
-('bx_artificer_sidebar_site', '_bx_artificer_menu_title_sidebar_site', 'sys_site', @sName, @iTemplId, 0, 1, 'BxTemplMenuSidebarSite', '');
-
+INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `cache`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
+('bx_artificer_sidebar_site', '_bx_artificer_menu_title_sidebar_site', 'sys_site', @sName, @iTemplId, 'per_acl', 0, 1, 'BxTemplMenuSidebarSite', '');
 
 -- ALERTS
 INSERT INTO `sys_alerts_handlers` (`name`, `class`, `file`, `service_call`) VALUES 

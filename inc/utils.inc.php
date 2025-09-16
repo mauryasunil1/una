@@ -2824,7 +2824,7 @@ function bx_content_cache_get($sKey, $iTTL = false)
         return null;
 
     $oCache = bx_content_cache_obj();
-    return $oCache->getData('content_' . $sKey . bx_site_hash() . '.php', $iTTL);
+    return $oCache->getData('content_' . $sKey . '_' . bx_site_hash() . '.php', $iTTL);
 }
 
 function bx_content_cache_set($sKey, $mixedData, $iTTL = false)
@@ -2833,13 +2833,13 @@ function bx_content_cache_set($sKey, $mixedData, $iTTL = false)
         return false;
 
     $oCache = bx_content_cache_obj();
-    return $oCache->setData('content_' . $sKey . bx_site_hash() . '.php', $mixedData, $iTTL);
+    return $oCache->setData('content_' . $sKey . '_' . bx_site_hash() . '.php', $mixedData, $iTTL);
 }
 
 function bx_content_cache_del($sKey)
 {
     $oCache = bx_content_cache_obj();
-    return $oCache->delData('content_' . $sKey . bx_site_hash() . '.php');
+    return $oCache->delData('content_' . $sKey . '_' . bx_site_hash() . '.php');
 }
 
 function bx_content_cache_obj()

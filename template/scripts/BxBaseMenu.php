@@ -53,71 +53,111 @@ class BxBaseMenu extends BxDolMenu
      */
     public function getCode ()
     {
+        $bCacheUsed = false;
+        $sRet = '';
         $sMenuTitle = isset($this->_aObject['title']) ? _t($this->_aObject['title']) : 'Menu-' . rand(0, PHP_INT_MAX);
         if (isset($GLOBALS['bx_profiler'])) $GLOBALS['bx_profiler']->beginMenu($sMenuTitle);
 
-        /**
-         * @hooks
-         * @hookdef hook-menu-get_code_before 'menu', 'get_code_before' - hook before menu output
-         * - $unit_name - equals `menu`
-         * - $action - equals `get_code_before` 
-         * - $object_id - not used 
-         * - $sender_id - not used 
-         * - $extra_params - array of additional params with the following array keys:
-         *      - `object_name` - menu object name
-         *      - `object_array` - menu object array
-         *      - `object` - menu object
-         *      - `override_result` - menu code
-         * @hook @ref hook-menu-get_code_before
-         */
-        $mixedRes = null;
-        bx_alert('menu', 'get_code_before', 0, 0, [
-            'object_name' => $this->_sObject, 
-            'object_array' => $this->_aObject, 
-            'object' => $this, 
-            'override_result' => &$mixedRes,
-        ]);
-        if ($mixedRes !== null) {
-            if (isset($GLOBALS['bx_profiler'])) $GLOBALS['bx_profiler']->endMenu($sMenuTitle);
-            return $mixedRes;
+        $sCacheKey = '';
+        $mixedCache = null;
+        // Use cache only if:
+        //  - cache mode is set, AND
+        //  - it's not disabled (`off`), AND
+        //  - it's not "guest cache" while a user is logged in
+        if (isset($this->_aObject['cache']) && !($this->_aObject['cache'] == 'off' || ($this->_aObject['cache'] == 'guest' && isLogged()))) {
+            switch ($this->_aObject['cache']) {
+                case 'global': // one cache for everyone
+                case 'guest': // one cache for guests only
+                    $sCacheKey = "menu_{$this->_sObject}";
+                    break;                
+                case 'per_user': // separate cache for each user
+                    $sCacheKey = "menu_{$this->_sObject}_p" . bx_get_logged_profile_id();
+                    break;                
+                case 'per_acl': // separate cache for each ACL
+                    $aAcl = BxDolAcl::getInstance()->getMemberMembershipInfo(bx_get_logged_profile_id());
+                    $sCacheKey = "menu_{$this->_sObject}" . "_acl" . $aAcl['id'];
+                    break;
+                default:
+                    trigger_error("Unknown cache mode for menu ({$this->_sObject}): {$this->_aObject['cache']}", E_USER_ERROR);
+                    break;
+            }            
+            $mixedCache = bx_content_cache_get($sCacheKey);
+        }
+        if ($mixedCache !== null) {
+            if ($mixedCache)
+                $this->_addJsCss();
+            $bCacheUsed = true;
+            $sRet = $mixedCache;
+        }
+        else {
+
+            /**
+             * @hooks
+             * @hookdef hook-menu-get_code_before 'menu', 'get_code_before' - hook before menu output
+             * - $unit_name - equals `menu`
+             * - $action - equals `get_code_before` 
+             * - $object_id - not used 
+             * - $sender_id - not used 
+             * - $extra_params - array of additional params with the following array keys:
+             *      - `object_name` - menu object name
+             *      - `object_array` - menu object array
+             *      - `object` - menu object
+             *      - `override_result` - menu code
+             * @hook @ref hook-menu-get_code_before
+             */
+            $mixedRes = null;
+            bx_alert('menu', 'get_code_before', 0, 0, [
+                'object_name' => $this->_sObject, 
+                'object_array' => $this->_aObject, 
+                'object' => $this, 
+                'override_result' => &$mixedRes,
+            ]);
+            if ($mixedRes !== null) {            
+                $sRet = $mixedRes;
+            }
+            else {
+                if(!$this->_iPageType)
+                    $this->_iPageType = BxDolTemplate::getInstance()->getPageType();
+
+                $s = '';
+                $aVars = $this->_getTemplateVars ();
+                if (!empty($aVars['bx_repeat:menu_items'])) {
+                    $this->_addJsCss();
+                    $s = $this->_getCode($this->_aObject['template'], $aVars);
+                }
+
+                /**
+                 * @hooks
+                 * @hookdef hook-menu-get_code_after 'menu', 'get_code_after' - hook after menu output
+                 * - $unit_name - equals `menu`
+                 * - $action - equals `get_code_after` 
+                 * - $object_id - not used 
+                 * - $sender_id - not used 
+                 * - $extra_params - array of additional params with the following array keys:
+                 *      - `object_name` - menu object name
+                 *      - `object_array` - menu object array
+                 *      - `object` - menu object
+                 *      - `override_result` - menu code
+                 * @hook @ref hook-menu-get_code_after
+                 */
+                $mixedRes = null;
+                bx_alert('menu', 'get_code_after', 0, 0, [
+                    'object_name' => $this->_sObject, 
+                    'object_array' => $this->_aObject, 
+                    'object' => $this, 
+                    'vars' => $aVars,
+                    'override_result' => &$s,
+                ]);
+                $sRet = $s;
+            }
+
+            if ($sCacheKey)
+                bx_content_cache_set($sCacheKey, $sRet);
         }
 
-        if(!$this->_iPageType)
-            $this->_iPageType = BxDolTemplate::getInstance()->getPageType();
-
-        $s = '';
-        $aVars = $this->_getTemplateVars ();
-        if (!empty($aVars['bx_repeat:menu_items'])) {
-            $this->_addJsCss();
-            $s = $this->_getCode($this->_aObject['template'], $aVars);
-        }
-
-        /**
-         * @hooks
-         * @hookdef hook-menu-get_code_after 'menu', 'get_code_after' - hook after menu output
-         * - $unit_name - equals `menu`
-         * - $action - equals `get_code_after` 
-         * - $object_id - not used 
-         * - $sender_id - not used 
-         * - $extra_params - array of additional params with the following array keys:
-         *      - `object_name` - menu object name
-         *      - `object_array` - menu object array
-         *      - `object` - menu object
-         *      - `override_result` - menu code
-         * @hook @ref hook-menu-get_code_after
-         */
-        $mixedRes = null;
-        bx_alert('menu', 'get_code_after', 0, 0, [
-            'object_name' => $this->_sObject, 
-            'object_array' => $this->_aObject, 
-            'object' => $this, 
-            'vars' => $aVars,
-            'override_result' => &$s,
-        ]);
-
-        if (isset($GLOBALS['bx_profiler'])) $GLOBALS['bx_profiler']->endMenu($sMenuTitle);
-
-        return $s;
+        if (isset($GLOBALS['bx_profiler'])) $GLOBALS['bx_profiler']->endMenu($sMenuTitle, $this->_aObject['cache'] ?? 'undefined', $bCacheUsed);
+        
+        return $sRet;
     }
 
     /**
