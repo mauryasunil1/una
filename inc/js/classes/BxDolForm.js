@@ -56,12 +56,6 @@ BxDolForm.prototype.initCodeMirror = function()
     }
 };
 
-BxDolForm.prototype.refreshCodeMirror = function() {
-    $('.CodeMirror').each(function() {
-        this.CodeMirror.refresh();
-    });
-};
-
 BxDolForm.prototype.initLeavePageConfirmation = function()
 {
     var $this = this;
