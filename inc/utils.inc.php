@@ -2861,4 +2861,21 @@ function bx_content_cache_obj()
     return $GLOBALS['bxCacheContentObj'] = $oCacheObject;
 }
 
+function bx_mem_cache_get($sKey)
+{
+    if(isset($GLOBALS['glMemCache']) && array_key_exists($sKey, $GLOBALS['glMemCache']) && !defined('BX_DOL_INSTALL') && !defined('BX_DOL_CRON_EXECUTE'))
+        return $GLOBALS['glMemCache'][$sKey];
+
+    return null;
+}
+
+function bx_mem_cache_set($sKey, $mixedData)
+{
+    if(!isset($GLOBALS['glMemCache']))
+        $GLOBALS['glMemCache'] = [];
+
+    return $GLOBALS['glMemCache'][$sKey] = $mixedData;
+}
+
+
 /** @} */
