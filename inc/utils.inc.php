@@ -2842,6 +2842,12 @@ function bx_content_cache_del($sKey)
     return $oCache->delData('content_' . $sKey . '_' . bx_site_hash() . '.php');
 }
 
+function bx_content_cache_del_by_prefix($sPrefix)
+{
+    $oCache = bx_content_cache_obj();
+    return $oCache->removeAllByPrefix('content_' . $sPrefix);
+}
+
 function bx_content_cache_obj()
 {
     if (isset($GLOBALS['bxCacheContentObj']))
