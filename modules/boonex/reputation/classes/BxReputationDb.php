@@ -162,6 +162,13 @@ class BxReputationDb extends BxBaseModNotificationsDb
         return call_user_func_array([$this, $aMethod['name']], $aMethod['params']);
     }
 
+    public function getLevelOrderMax()
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        return (int)$this->getOne("SELECT MAX(`order`) FROM `" . $CNF['TABLE_LEVELS'] . "` WHERE 1");
+    }
+
     public function insertProfile($iProfileId, $iContextId, $iPoints)
     {
         $CNF = &$this->_oConfig->CNF;
@@ -257,14 +264,19 @@ class BxReputationDb extends BxBaseModNotificationsDb
         return $aProfile && isset($aProfile['points']) ? (int)$aProfile['points'] : 0;
     }
 
-    public function insertProfilesLevels($aSet)
+    public function insertProfilesLevels($iProfileId, $iContextId, $iLevelId, $iDate = 0)
     {
         $CNF = &$this->_oConfig->CNF;
 
-        if(!isset($aSet['date']))
-            $aSet['date'] = time();
+        if(!$iDate)
+            $iDate = time();
 
-        return $this->query("INSERT INTO `" . $CNF['TABLE_PROFILES_LEVELS'] . "` SET " . $this->arrayToSQL($aSet));
+        return $this->query("INSERT INTO `" . $CNF['TABLE_PROFILES_LEVELS'] . "` (`profile_id`, `context_id`, `level_id`, `date`) VALUES (:profile_id, :context_id, :level_id, :date) ON DUPLICATE KEY UPDATE `date`=:date", [
+            'profile_id' => $iProfileId,
+            'context_id' => $iContextId,
+            'level_id' => $iLevelId,
+            'date' => $iDate
+        ]);
     }
 
     public function deleteProfilesLevels($aParams)

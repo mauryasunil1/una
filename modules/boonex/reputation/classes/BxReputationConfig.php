@@ -44,6 +44,7 @@ class BxReputationConfig extends BxBaseModNotificationsConfig
             'OBJECT_FORM_LEVEL' => 'bx_reputation_level',
             'OBJECT_FORM_LEVEL_DISPLAY_ADD' => 'bx_reputation_level_add',
             'OBJECT_FORM_LEVEL_DISPLAY_EDIT' => 'bx_reputation_level_edit',
+            'OBJECT_MENU_SUBMENU' => 'bx_reputation_submenu',
             'OBJECT_GRID_HANDLERS' => 'bx_reputation_handlers',
             'OBJECT_GRID_LEVELS' => 'bx_reputation_levels',
 

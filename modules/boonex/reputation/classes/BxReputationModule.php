@@ -213,9 +213,10 @@ class BxReputationModule extends BxBaseModNotificationsModule
 
         return true; 
     }
-    
+
     public function assignLevels($iProfileId, $iContextId)
     {
+        $bMultilevel = $this->_oConfig->isMultilevel();
         $iProfilePoints = $this->_oDb->getProfilePoints($iProfileId, $iContextId);
 
         $aLevels = $this->_oDb->getLevels([
@@ -223,7 +224,6 @@ class BxReputationModule extends BxBaseModNotificationsModule
             'points' => $iProfilePoints
         ]);
 
-        $bMultilevel = $this->_oConfig->isMultilevel();
         if($bMultilevel)
             $this->_oDb->deleteProfilesLevelsByPoints($iProfileId, $iContextId, $iProfilePoints);
 
@@ -239,11 +239,7 @@ class BxReputationModule extends BxBaseModNotificationsModule
                     'context_id' => $iContextId
                 ]);
 
-            $this->_oDb->insertProfilesLevels([
-                'profile_id' => $iProfileId, 
-                'context_id' => $iContextId,
-                'level_id' => $iLevelId
-            ]);
+            $this->_oDb->insertProfilesLevels($iProfileId, $iContextId, $iLevelId);
         }
     }
 

@@ -48,27 +48,37 @@
     <string name="_bx_reputation_form_input_err"><![CDATA[Поле обязательно. Пожалуйста, заполните его.]]></string>
 
     <!-- Pages -->
-    <string name="_bx_reputation_page_block_title_actions"><![CDATA[Действия]]></string>
-    <string name="_bx_reputation_page_block_title_levels"><![CDATA[Уровни]]></string>
     <string name="_bx_reputation_page_title_sys_leaderboard"><![CDATA[Таблица лидеров]]></string>
     <string name="_bx_reputation_page_title_leaderboard"><![CDATA[Таблица лидеров]]></string>
     <string name="_bx_reputation_page_block_title_leaderboard_week"><![CDATA[7 дней]]></string>
     <string name="_bx_reputation_page_block_title_leaderboard_month"><![CDATA[30 дней]]></string>
     <string name="_bx_reputation_page_block_title_leaderboard_all_time"><![CDATA[За все время)]]></string>
+    <string name="_bx_reputation_page_title_sys_history"><![CDATA[История баллов]]></string>
+    <string name="_bx_reputation_page_title_history"><![CDATA[Мои баллы]]></string>
     <string name="_bx_reputation_page_block_title_system_summary"><![CDATA[Сводка]]></string>
     <string name="_bx_reputation_page_block_title_summary"><![CDATA[Сводка]]></string>
     <string name="_bx_reputation_page_block_title_summary_own"><![CDATA[Вы]]></string>
-    <string name="_bx_reputation_page_title_sys_history"><![CDATA[История баллов]]></string>
-    <string name="_bx_reputation_page_title_history"><![CDATA[История]]></string>
     <string name="_bx_reputation_page_block_title_history"><![CDATA[История]]></string>
+    <string name="_bx_reputation_page_title_sys_info"><![CDATA[Информация о баллах]]></string>
+    <string name="_bx_reputation_page_title_info"><![CDATA[О баллах]]></string>
+    <string name="_bx_reputation_page_block_title_levels"><![CDATA[Уровни]]></string>
+    <string name="_bx_reputation_page_block_title_actions"><![CDATA[Действия]]></string>
     <string name="_bx_reputation_page_block_title_system_widget"><![CDATA[Виджет (только для API)]]></string>
     <string name="_bx_reputation_page_block_title_widget"><![CDATA[Виджет]]></string>
 
     <!-- Menus -->
+    <string name="_bx_reputation_menu_title_submenu"><![CDATA[Репутация - Подменю]]></string>
+    <string name="_bx_reputation_menu_set_title_submenu"><![CDATA[Репутация - Подменю]]></string>
+    <string name="_bx_reputation_menu_item_title_system_leaderboard"><![CDATA[Таблица лидеров]]></string>
+    <string name="_bx_reputation_menu_item_title_leaderboard"><![CDATA[Лучшие участники]]></string>
+    <string name="_bx_reputation_menu_item_title_system_points_history"><![CDATA[История очков]]></string>
+    <string name="_bx_reputation_menu_item_title_points_history"><![CDATA[Мои баллы]]></string>
+    <string name="_bx_reputation_menu_item_title_system_points_info"><![CDATA[Информация о баллах]]></string>
+    <string name="_bx_reputation_menu_item_title_points_info"><![CDATA[О баллах]]></string>
     <string name="_bx_reputation_menu_item_title_system_leaderboard"><![CDATA[Таблица лидеров]]></string>
     <string name="_bx_reputation_menu_item_title_leaderboard"><![CDATA[Таблица лидеров]]></string>
-    <string name="_bx_reviews_menu_item_title_handlers"><![CDATA[Обработчики]]></string>
-    <string name="_bx_reviews_menu_item_title_levels"><![CDATA[Уровни]]></string>
+    <string name="_bx_reputation_menu_item_title_handlers"><![CDATA[Обработчики]]></string>
+    <string name="_bx_reputation_menu_item_title_levels"><![CDATA[Уровни]]></string>
 
     <!-- Grids -->
     <string name="_bx_reputation_grid_column_title_hdr_active"><![CDATA[Активные]]></string>

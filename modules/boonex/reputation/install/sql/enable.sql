@@ -20,7 +20,7 @@ INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `type`, `e
 
 -- PAGE: leaderboard
 INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `uri`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
-('bx_reputation_leaderboard', '_bx_reputation_page_title_sys_leaderboard', '_bx_reputation_page_title_leaderboard', @sName, 8, 2147483647, 1, 'leaderboard', 'page.php?i=leaderboard', '', '', '', 0, 1, 0, '', '');
+('bx_reputation_leaderboard', '_bx_reputation_page_title_sys_leaderboard', '_bx_reputation_page_title_leaderboard', @sName, 8, 2147483647, 1, 'leaderboard', 'page.php?i=leaderboard', '', '', '', 0, 1, 0, 'BxReputationPageBrowse', 'modules/boonex/reputation/classes/BxReputationPageBrowse.php');
 
 INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`) VALUES
 ('bx_reputation_leaderboard', 2, @sName, '_bx_reputation_page_block_title_leaderboard_week', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:21:"get_block_leaderboard";s:6:"params";a:2:{i:0;i:0;i:1;i:7;}}', 0, 1, 1),
@@ -29,11 +29,19 @@ INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title`, `designb
 
 -- PAGE: history
 INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `uri`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
-('bx_reputation_history', '_bx_reputation_page_title_sys_history', '_bx_reputation_page_title_history', @sName, 13, 2147483647, 1, 'points-history', 'page.php?i=points-history', '', '', '', 0, 1, 0, '', '');
+('bx_reputation_history', '_bx_reputation_page_title_sys_history', '_bx_reputation_page_title_history', @sName, 13, 2147483647, 1, 'points-history', 'page.php?i=points-history', '', '', '', 0, 1, 0, 'BxReputationPageBrowse', 'modules/boonex/reputation/classes/BxReputationPageBrowse.php');
 
 INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`) VALUES
 ('bx_reputation_history', 2, @sName, '_bx_reputation_page_block_title_summary', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:17:"get_block_summary";}', 0, 1, 1),
 ('bx_reputation_history', 3, @sName, '_bx_reputation_page_block_title_history', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:17:"get_block_history";}', 0, 1, 1);
+
+-- PAGE: info
+INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `uri`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
+('bx_reputation_info', '_bx_reputation_page_title_sys_info', '_bx_reputation_page_title_info', @sName, 13, 2147483647, 1, 'points-info', 'page.php?i=points-info', '', '', '', 0, 1, 0, 'BxReputationPageBrowse', 'modules/boonex/reputation/classes/BxReputationPageBrowse.php');
+
+INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`) VALUES
+('bx_reputation_info', 2, @sName, '_bx_reputation_page_block_title_levels', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:16:"get_block_levels";}', 0, 1, 1),
+('bx_reputation_info', 3, @sName, '_bx_reputation_page_block_title_actions', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:17:"get_block_actions";}', 0, 1, 1);
 
 -- PAGES: add page block on home
 SET @iPBCellHome = 2;
@@ -49,10 +57,20 @@ INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title_system`, `
 -- PAGE: service blocks
 SET @iBlockOrder = (SELECT `order` FROM `sys_pages_blocks` WHERE `object` = '' AND `cell_id` = 0 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `active`, `active_api`, `order`) VALUES 
-('', 0, @sName, '', '_bx_reputation_page_block_title_actions', 13, 2147483647, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:17:"get_block_actions";}', 0, 1, 1, 0, IFNULL(@iBlockOrder, 0) + 1),
-('', 0, @sName, '', '_bx_reputation_page_block_title_levels', 13, 2147483647, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:16:"get_block_levels";}', 0, 1, 1, 0, IFNULL(@iBlockOrder, 0) + 2),
-('', 0, @sName, '_bx_reputation_page_block_title_system_widget', '_bx_reputation_page_block_title_widget', 13, 2147483647, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:16:"get_block_widget";}', 0, 1, 0, 1, IFNULL(@iBlockOrder, 0) + 3);
+('', 0, @sName, '_bx_reputation_page_block_title_system_widget', '_bx_reputation_page_block_title_widget', 13, 2147483647, 'service', 'a:2:{s:6:"module";s:13:"bx_reputation";s:6:"method";s:16:"get_block_widget";}', 0, 1, 0, 1, IFNULL(@iBlockOrder, 0) + 1);
 
+
+-- MENU: module sub-menu
+INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
+('bx_reputation_submenu', '_bx_reputation_menu_title_submenu', 'bx_reputation_submenu', 'bx_reputation', 8, 0, 1, '', '');
+
+INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES 
+('bx_reputation_submenu', 'bx_reputation', '_bx_reputation_menu_set_title_submenu', 0);
+
+INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
+('bx_reputation_submenu', 'bx_reputation', 'leaderboard', '_bx_reputation_menu_item_title_system_leaderboard', '_bx_reputation_menu_item_title_leaderboard', 'page.php?i=leaderboard', '', '', '', '', 2147483647, 1, 1, 1),
+('bx_reputation_submenu', 'bx_reputation', 'points-history', '_bx_reputation_menu_item_title_system_points_history', '_bx_reputation_menu_item_title_points_history', 'page.php?i=points-history', '', '', '', '', 2147483647, 1, 1, 2),
+('bx_reputation_submenu', 'bx_reputation', 'points-info', '_bx_reputation_menu_item_title_system_points_info', '_bx_reputation_menu_item_title_points_info', 'page.php?i=points-info', '', '', '', '', 2147483647, 1, 1, 3);
 
 -- MENU: add to site menu
 SET @iSiteMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_site' AND `active` = 1 AND `order` < 9999 ORDER BY `order` DESC LIMIT 1);

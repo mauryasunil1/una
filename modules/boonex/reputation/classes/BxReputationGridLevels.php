@@ -48,7 +48,10 @@ class BxReputationGridLevels extends BxTemplGrid
 
         $oForm->initChecker();
         if($oForm->isSubmittedAndValid()) {
-            $aValsToAdd = ['date' => time()];
+            $aValsToAdd = [
+                'order' => $this->_oModule->_oDb->getLevelOrderMax() + 1, 
+                'date' => time()
+            ];
 
             $iLevel = $oForm->insert($aValsToAdd);
             if(!$iLevel)

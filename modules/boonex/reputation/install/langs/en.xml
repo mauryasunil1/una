@@ -51,27 +51,37 @@
     <string name="_bx_reputation_form_input_err"><![CDATA[The field is essential. Please, fill it in.]]></string>
 
     <!-- Pages -->
-    <string name="_bx_reputation_page_block_title_actions"><![CDATA[Actions]]></string>
-    <string name="_bx_reputation_page_block_title_levels"><![CDATA[Levels]]></string>
     <string name="_bx_reputation_page_title_sys_leaderboard"><![CDATA[Leaderboard]]></string>
     <string name="_bx_reputation_page_title_leaderboard"><![CDATA[Leaderboard]]></string>
     <string name="_bx_reputation_page_block_title_leaderboard_week"><![CDATA[7 day]]></string>
     <string name="_bx_reputation_page_block_title_leaderboard_month"><![CDATA[30-day]]></string>
     <string name="_bx_reputation_page_block_title_leaderboard_all_time"><![CDATA[All-time]]></string>
+    <string name="_bx_reputation_page_title_sys_history"><![CDATA[Points history]]></string>
+    <string name="_bx_reputation_page_title_history"><![CDATA[My Points]]></string>
     <string name="_bx_reputation_page_block_title_system_summary"><![CDATA[Summary]]></string>
     <string name="_bx_reputation_page_block_title_summary"><![CDATA[Summary]]></string>
     <string name="_bx_reputation_page_block_title_summary_own"><![CDATA[You]]></string>
-    <string name="_bx_reputation_page_title_sys_history"><![CDATA[Points history]]></string>
-    <string name="_bx_reputation_page_title_history"><![CDATA[History]]></string>
     <string name="_bx_reputation_page_block_title_history"><![CDATA[History]]></string>
+    <string name="_bx_reputation_page_title_sys_info"><![CDATA[Points Info]]></string>
+    <string name="_bx_reputation_page_title_info"><![CDATA[About Points]]></string>
+    <string name="_bx_reputation_page_block_title_levels"><![CDATA[Levels]]></string>
+    <string name="_bx_reputation_page_block_title_actions"><![CDATA[Actions]]></string>
     <string name="_bx_reputation_page_block_title_system_widget"><![CDATA[Widget (for API only)]]></string>
     <string name="_bx_reputation_page_block_title_widget"><![CDATA[Widget]]></string>
 
     <!-- Menus -->
+    <string name="_bx_reputation_menu_title_submenu"><![CDATA[Reputation Submenu]]></string>
+    <string name="_bx_reputation_menu_set_title_submenu"><![CDATA[Reputation Submenu]]></string>
+    <string name="_bx_reputation_menu_item_title_system_leaderboard"><![CDATA[Leaderboard]]></string>
+    <string name="_bx_reputation_menu_item_title_leaderboard"><![CDATA[Top Members]]></string>
+    <string name="_bx_reputation_menu_item_title_system_points_history"><![CDATA[Points History]]></string>
+    <string name="_bx_reputation_menu_item_title_points_history"><![CDATA[My Points]]></string>
+    <string name="_bx_reputation_menu_item_title_system_points_info"><![CDATA[Points Info]]></string>
+    <string name="_bx_reputation_menu_item_title_points_info"><![CDATA[About Points]]></string>
     <string name="_bx_reputation_menu_item_title_system_leaderboard"><![CDATA[Leaderboard]]></string>
     <string name="_bx_reputation_menu_item_title_leaderboard"><![CDATA[Leaderboard]]></string>
-    <string name="_bx_reviews_menu_item_title_handlers"><![CDATA[Handlers]]></string>
-    <string name="_bx_reviews_menu_item_title_levels"><![CDATA[Levels]]></string>
+    <string name="_bx_reputation_menu_item_title_handlers"><![CDATA[Handlers]]></string>
+    <string name="_bx_reputation_menu_item_title_levels"><![CDATA[Levels]]></string>
 
     <!-- Grids -->
     <string name="_bx_reputation_grid_column_title_hdr_active"><![CDATA[Active]]></string>

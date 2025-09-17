@@ -84,7 +84,8 @@ CREATE TABLE IF NOT EXISTS `bx_reputation_profiles_levels` (
   `context_id` int(11) NOT NULL default '0',
   `level_id` int(11) NOT NULL DEFAULT '0',
   `date` int(11) NOT NULL default '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `level` (`profile_id`, `context_id`, `level_id`)
 );
 
 

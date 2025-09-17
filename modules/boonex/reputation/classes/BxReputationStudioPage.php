@@ -18,8 +18,8 @@ class BxReputationStudioPage extends BxBaseModNotificationsStudioPage
         parent::__construct($sModule, $mixedPageName, $sPage);
 
         $this->aMenuItems = array_merge($this->aMenuItems, [
-            'handlers' => ['name' => 'manage', 'icon' => 'cogs', 'title' => '_bx_reviews_menu_item_title_handlers'],
-            'levels' => ['name' => 'levels', 'icon' => 'cogs', 'title' => '_bx_reviews_menu_item_title_levels'],
+            'handlers' => ['name' => 'manage', 'icon' => 'wrench', 'title' => '_bx_reputation_menu_item_title_handlers'],
+            'levels' => ['name' => 'levels', 'icon' => 'user-tag', 'title' => '_bx_reputation_menu_item_title_levels'],
         ]);
     }
 
@@ -46,7 +46,7 @@ class BxReputationStudioPage extends BxBaseModNotificationsStudioPage
                         continue;
 
                     foreach($aProfiles as $aProfile)
-                        if($this->_oModule->_oDb->insertProfilesLevels(['profile_id' => $aProfile['profile_id'], 'level_id' => $aLevel['id']]))
+                        if($this->_oModule->_oDb->insertProfilesLevels($aProfile['profile_id'], $aProfile['context_id'], $aLevel['id']))
                             $iUpdated++;
                 }
 
