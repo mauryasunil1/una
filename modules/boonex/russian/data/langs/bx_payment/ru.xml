@@ -90,6 +90,7 @@
     <string name="_bx_payment_menu_item_title_admt_addon_counter2_caption"><![CDATA[задерж.]]></string>
 
     <string name="_bx_payment_menu_title_cart_submenu"><![CDATA[Подменю корзины]]></string>
+    <string name="_bx_payment_menu_title_public_cart_submenu"><![CDATA[Корзины]]></string>
     <string name="_bx_payment_menu_set_title_cart_submenu"><![CDATA[Подменю корзины]]></string>
     <string name="_bx_payment_menu_item_title_system_cart"><![CDATA[Оплата]]></string>
     <string name="_bx_payment_menu_item_title_cart"><![CDATA[Оплата]]></string>

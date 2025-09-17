@@ -302,8 +302,8 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 
 -- MENU: module sub-menu
 
-INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
-('bx_posts_submenu', '_bx_posts_menu_title_submenu', 'bx_posts_submenu', 'bx_posts', 8, 0, 1, '', '');
+INSERT INTO `sys_objects_menu`(`object`, `title`, `title_public`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
+('bx_posts_submenu', '_bx_posts_menu_title_submenu', '_bx_posts_menu_title_public_submenu', 'bx_posts_submenu', 'bx_posts', 8, 0, 1, '', '');
 
 INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES 
 ('bx_posts_submenu', 'bx_posts', '_bx_posts_menu_set_title_submenu', 0);

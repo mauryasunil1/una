@@ -265,6 +265,7 @@
     <string name="_bx_forum_form_attach_link_input_do_cancel"><![CDATA[Закрыть]]></string>
 
     <string name="_bx_forum_menu_title_submenu"><![CDATA[Форум - Подменю]]></string>
+    <string name="_bx_forum_menu_title_public_submenu"><![CDATA[Обсуждения]]></string>
     <string name="_bx_forum_menu_set_title_submenu"><![CDATA[Форум - Подменю]]></string>
     <string name="_bx_forum_menu_item_title_system_create_entry"><![CDATA[Обсуждение]]></string>
     <string name="_bx_forum_menu_item_title_create_entry"><![CDATA[Обсуждение]]></string>

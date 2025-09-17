@@ -89,6 +89,7 @@
     <string name="_bx_payment_menu_item_title_admt_addon_counter2_caption"><![CDATA[overdue]]></string>
 
     <string name="_bx_payment_menu_title_cart_submenu"><![CDATA[Cart Submenu]]></string>
+    <string name="_bx_payment_menu_title_public_cart_submenu"><![CDATA[Carts]]></string>
     <string name="_bx_payment_menu_set_title_cart_submenu"><![CDATA[Cart Submenu]]></string>
     <string name="_bx_payment_menu_item_title_system_cart"><![CDATA[Checkout]]></string>
     <string name="_bx_payment_menu_item_title_cart"><![CDATA[Checkout]]></string>

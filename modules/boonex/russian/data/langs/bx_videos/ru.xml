@@ -168,6 +168,7 @@
     <string name="_bx_videos_menu_set_title_view_entry"><![CDATA[Видео - Действия]]></string>
     <string name="_bx_videos_menu_title_view_entry"><![CDATA[Видео - Действия]]></string>
     <string name="_bx_videos_menu_title_submenu"><![CDATA[Видео - Подменю]]></string>
+    <string name="_bx_videos_menu_title_public_submenu"><![CDATA[Видео]]></string>
     <string name="_bx_videos_menu_set_title_submenu"><![CDATA[Видео - Подменю]]></string>
     <string name="_bx_videos_menu_item_title_system_create_entry"><![CDATA[Видео]]></string>
     <string name="_bx_videos_menu_item_title_create_entry"><![CDATA[Видео]]></string>

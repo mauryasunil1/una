@@ -224,7 +224,8 @@
     <string name="_bx_groups_page_block_title_sys_recom_fans"><![CDATA[Рекомендуемые группы (Вступить)]]></string>
     <string name="_bx_groups_page_block_title_recom_fans"><![CDATA[Группы для вступления]]></string>
 
-  <string name="_bx_groups_menu_title_submenu"><![CDATA[Группы - Подменю]]></string>
+    <string name="_bx_groups_menu_title_submenu"><![CDATA[Группы - Подменю]]></string>
+    <string name="_bx_groups_menu_title_public_submenu"><![CDATA[Группы]]></string>
     <string name="_bx_groups_menu_set_title_submenu"><![CDATA[Группы - Подменю]]></string>
     <string name="_bx_groups_menu_set_title_view_profile_actions"><![CDATA[Группа - Действия]]></string>
     <string name="_bx_groups_menu_title_view_profile_actions"><![CDATA[Группа - Действия]]></string>

@@ -334,6 +334,7 @@
     <string name="_bx_events_page_block_title_cover_block"><![CDATA[Cover]]></string>
     
     <string name="_bx_events_menu_title_submenu"><![CDATA[Events Submenu]]></string>
+    <string name="_bx_events_menu_title_public_submenu"><![CDATA[Events]]></string>
     <string name="_bx_events_menu_set_title_submenu"><![CDATA[Events Submenu]]></string>
     <string name="_bx_events_menu_set_title_view_profile_actions"><![CDATA[Event Actions]]></string>
     <string name="_bx_events_menu_title_view_profile_actions"><![CDATA[Event Actions]]></string>

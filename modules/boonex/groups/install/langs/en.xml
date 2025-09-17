@@ -229,6 +229,7 @@
 
 
     <string name="_bx_groups_menu_title_submenu"><![CDATA[Groups Submenu]]></string>
+    <string name="_bx_groups_menu_title_public_submenu"><![CDATA[Groups]]></string>
     <string name="_bx_groups_menu_set_title_submenu"><![CDATA[Groups Submenu]]></string>
     <string name="_bx_groups_menu_set_title_view_profile_actions"><![CDATA[Group Actions]]></string>
     <string name="_bx_groups_menu_title_view_profile_actions"><![CDATA[Group Actions]]></string>
