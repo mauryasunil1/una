@@ -105,10 +105,12 @@ class BxBaseStudioNavigationMenus extends BxDolStudioNavigationMenus
             }
             unset($oForm->aInputs['set_title']);
 
-            if($oForm->update($aMenu['id']) !== false)
+            if($oForm->update($aMenu['id']) !== false) {
+                bx_content_cache_del_by_prefix('menu_' . $aMenu['object']); 
                 $aRes = array('grid' => $this->getCode(false), 'blink' => $aMenu['id']);
-            else
+            } else {
                 $aRes = array('msg' => _t('_adm_nav_err_menus_edit'));
+            }
 
             echoJson($aRes);
         }

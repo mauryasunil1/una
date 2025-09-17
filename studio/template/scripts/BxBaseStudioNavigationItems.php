@@ -79,11 +79,12 @@ class BxBaseStudioNavigationItems extends BxDolStudioNavigationItems
 
             bx_import('BxDolStudioUtils');
             $iId = (int)$oForm->insert(array('module' => BX_DOL_STUDIO_MODULE_CUSTOM, 'name' => $sName, 'active' => 1, 'order' => $this->oDb->getItemOrderMax($this->sSet) + 1));
-            if($iId != 0)
+            if($iId != 0) {
+                $this->onMenuItemsChanged();
                 $aRes = array('grid' => $this->getCode(false), 'blink' => $iId);
-            else
+            } else {
                 $aRes = array('msg' => _t('_adm_nav_err_items_create'));
-
+            }
             echoJson($aRes);
         }
         else {
@@ -153,11 +154,12 @@ class BxBaseStudioNavigationItems extends BxDolStudioNavigationItems
             if($sTarget === false && !in_array($aItem['target'], array('', '_blank')))
                 unset($oForm->aInputs['target']);
 
-            if($oForm->update($aItem['id']) !== false)
+            if($oForm->update($aItem['id']) !== false) {
+                $this->onMenuItemsChanged();
                 $aRes = array('grid' => $this->getCode(false), 'blink' => $aItem['id']);
-            else
+            } else {
                 $aRes = array('msg' => _t('_adm_nav_err_items_edit'));
-
+            }
             echoJson($aRes);
         }
         else {
@@ -198,7 +200,17 @@ class BxBaseStudioNavigationItems extends BxDolStudioNavigationItems
             $iAffected++;
         }
 
+        if ($iAffected)
+            $this->onMenuItemsChanged(); 
+
         echoJson($iAffected ? array('grid' => $this->getCode(false), 'blink' => $aIdsAffected) : array('msg' => _t('_adm_nav_err_items_delete')));
+    }
+
+    public function performActionReorder()
+    {        
+        $mixed = parent::performActionReorder();
+        $this->onMenuItemsChanged();
+        return $mixed;
     }
 
     public function performActionShowTo()
@@ -295,11 +307,12 @@ class BxBaseStudioNavigationItems extends BxDolStudioNavigationItems
         $oForm->initChecker();
 
         if($oForm->isSubmittedAndValid()) {
-            if($oForm->updateWithVisibility($aItem['id']) !== false)
+            if($oForm->updateWithVisibility($aItem['id']) !== false) {
+                $this->onMenuItemsChanged();
                 $aRes = array('grid' => $this->getCode(false), 'blink' => $aItem['id']);
-            else
+            } else {
                 $aRes = array('msg' => _t('_adm_nav_err_items_show_to'));
-
+            }
             echoJson($aRes);
         }
         else {
@@ -339,8 +352,10 @@ class BxBaseStudioNavigationItems extends BxDolStudioNavigationItems
                 exit;
             }
 
-        if($this->oDb->updateItem($aItem['id'], array('icon' => '')) !== false)
+        if($this->oDb->updateItem($aItem['id'], array('icon' => '')) !== false) {
+            $this->onMenuItemsChanged();
             echoJson(array('grid' => $this->getCode(false), 'blink' => $iId, 'preview' => $this->_getIconPreview($aItem['id']), 'eval' => $this->getJsObject() . ".onDeleteIcon(oData)"));
+        }
     }
 
     public function getJsObject()
@@ -1008,6 +1023,20 @@ class BxBaseStudioNavigationItems extends BxDolStudioNavigationItems
     protected function _isDeletable(&$aRow)
     {
     	return $aRow['module'] != BX_DOL_STUDIO_MODULE_SYSTEM;
+    }
+
+    protected function onMenuItemsChanged()
+    {
+        bx_alert('system', 'menu_items_changed', 0, 0, array(
+            'set' => $this->sSet
+        ));
+
+        // clear all menus cache related to the current set
+        $aMenus = [];
+        $this->oDb->getMenus(array('type' => 'by_set_name', 'value' => $this->sSet), $aMenus, false);
+        foreach($aMenus as $aMenu) {
+            bx_content_cache_del_by_prefix('menu_' . $aMenu['object']);
+        }        
     }
 }
 

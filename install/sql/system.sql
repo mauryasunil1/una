@@ -4827,7 +4827,7 @@ INSERT INTO `sys_objects_menu` (`object`, `title`, `set_name`, `module`, `templa
 ('sys_studio_account_popup', '_sys_menu_title_studio_account_popup', 'sys_studio_account_popup', 'system', 4, 0, 1, 'BxTemplStudioMenuAccountPopup', '');
 
 UPDATE `sys_objects_menu` SET `cache` = 'per_acl' WHERE `object` IN('sys_site', 'sys_account_notifications', 'sys_add_content', 'sys_toolbar_site', 'sys_footer', 'sys_site_submenu', 'sys_homepage_submenu', 'sys_homepage', 'sys_application', 'sys_site_in_panel');
-UPDATE `sys_objects_menu` SET `cache` = 'sys_site' WHERE `object` IN('sys_toolbar_member');
+UPDATE `sys_objects_menu` SET `cache` = 'per_user' WHERE `object` IN('sys_toolbar_member');
 
 CREATE TABLE IF NOT EXISTS `sys_menu_sets` (
   `set_name` varchar(64) NOT NULL,
