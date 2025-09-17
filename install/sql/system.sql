@@ -4765,6 +4765,7 @@ CREATE TABLE IF NOT EXISTS `sys_objects_menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `object` varchar(64) NOT NULL,
   `title` varchar(255) NOT NULL,
+  `title_public` varchar(255) NOT NULL,
   `set_name` varchar(64) NOT NULL,
   `module` varchar(32) NOT NULL,
   `template_id` int(11) NOT NULL,

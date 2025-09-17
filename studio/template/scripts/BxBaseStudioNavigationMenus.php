@@ -270,6 +270,17 @@ class BxBaseStudioNavigationMenus extends BxDolStudioNavigationMenus
                         'error' => _t('_adm_nav_err_menus_title'),
                     ),
                 ),
+                'title_public' => array(
+                    'type' => 'text_translatable',
+                    'name' => 'title_public',
+                    'caption' => _t('_adm_nav_txt_menus_title_public'),
+                    'info' => '',
+                    'value' => $aMenu['title_public'] ?? '',
+                    'required' => '0',
+                    'db' => array (
+                        'pass' => 'Xss',
+                    )
+                ),
                 'set_name' => array(
                     'type' => 'select',
                     'name' => 'set_name',

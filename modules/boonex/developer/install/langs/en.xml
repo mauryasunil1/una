@@ -273,8 +273,10 @@
     <string name="_bx_dev_nav_txt_sys_menus_module"><![CDATA[Module]]></string>
     <string name="_bx_dev_nav_txt_menus_module"><![CDATA[Module]]></string>
     <string name="_bx_dev_nav_err_menus_module"><![CDATA[You need to select a module]]></string>
-    <string name="_bx_dev_nav_txt_sys_menus_title"><![CDATA[Title]]></string>
-    <string name="_bx_dev_nav_txt_menus_title"><![CDATA[Title]]></string>
+    <string name="_bx_dev_nav_txt_sys_menus_title"><![CDATA[System Title]]></string>
+    <string name="_bx_dev_nav_txt_sys_menus_title_public"><![CDATA[Title]]></string>
+    <string name="_bx_dev_nav_txt_menus_title"><![CDATA[System Title]]></string>
+    <string name="_bx_dev_nav_txt_menus_title_public"><![CDATA[Title]]></string>
     <string name="_bx_dev_nav_err_menus_title"><![CDATA[You need to enter a value here]]></string>
     <string name="_bx_dev_nav_txt_sys_menus_set_name"><![CDATA[Set]]></string>
     <string name="_bx_dev_nav_txt_menus_set_name"><![CDATA[Set]]></string>

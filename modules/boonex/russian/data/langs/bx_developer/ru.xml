@@ -273,8 +273,10 @@
     <string name="_bx_dev_nav_txt_sys_menus_module"><![CDATA[Модуль]]></string>
     <string name="_bx_dev_nav_txt_menus_module"><![CDATA[Модуль]]></string>
     <string name="_bx_dev_nav_err_menus_module"><![CDATA[Нужно выбрать модуль]]></string>
-    <string name="_bx_dev_nav_txt_sys_menus_title"><![CDATA[Заголовок]]></string>
-    <string name="_bx_dev_nav_txt_menus_title"><![CDATA[Заголовок]]></string>
+    <string name="_bx_dev_nav_txt_sys_menus_title"><![CDATA[Системный Заголовок]]></string>
+    <string name="_bx_dev_nav_txt_sys_menus_title_public"><![CDATA[Заголовок]]></string>
+    <string name="_bx_dev_nav_txt_menus_title"><![CDATA[Системный Заголовок]]></string>
+    <string name="_bx_dev_nav_txt_menus_title_public"><![CDATA[Заголовок]]></string>
     <string name="_bx_dev_nav_err_menus_title"><![CDATA[Здесь нужно ввести значение]]></string>
     <string name="_bx_dev_nav_txt_sys_menus_set_name"><![CDATA[Набор]]></string>
     <string name="_bx_dev_nav_txt_menus_set_name"><![CDATA[Набор]]></string>

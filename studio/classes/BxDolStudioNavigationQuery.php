@@ -21,6 +21,7 @@ class BxDolStudioNavigationQuery extends BxDolDb
             `tm`.`id` AS `id`,
             `tm`.`object` AS `object`,
             `tm`.`title` AS `title`,
+            `tm`.`title_public` AS `title_public`,
             `tm`.`set_name` AS `set_name`,
             `tm`.`module` AS `module`,
             `tm`.`template_id` AS `template_id`,

@@ -173,7 +173,8 @@ class BxBaseMenu extends BxDolMenu
             $aItems = $aVars['bx_repeat:menu_items'];
 
         return [
-            'object' => $this->_sObject, 
+            'object' => $this->_sObject,
+            'title' => _t($this->_aObject['title_public']),
             'config' => $this->_aObject['config_api'],
             'persistent' => $this->_aObject['persistent'],
             'params' => $this->getContentParams(),
@@ -189,6 +190,7 @@ class BxBaseMenu extends BxDolMenu
     {
         return [
             'object' => $this->_sObject, 
+            'title' => _t($this->_aObject['title_public']),
             'params' => $this->getContentParams()
         ];
     }
