@@ -415,36 +415,38 @@ pipeline {
         
         stage('UI Tests') {
             steps {
-                script {
-                    echo "Creating cache directories"
-                    sh '''
-                        mkdir -p -m 0777 "${DEPLOY_PATH}/cache/CSS"
-                        mkdir -p -m 0777 "${DEPLOY_PATH}/cache/HTML"
-                        mkdir -p -m 0777 "${DEPLOY_PATH}/cache/URI"
-                    '''
-                    dir('una-ui-test3') {
-                        
-                        echo "Clone repository with tests"
-                        git branch: 'main',
-                            url: 'git@github.com:unacms/una-ui-test3.git',
-                            credentialsId: '0043feeb-9df7-4494-9b2b-d6c8a1b8ca08'
-                            
-                        // Create environment file
+                timeout(time: 6, unit: 'MINUTES') {
+                    script {
+                        echo "Creating cache directories"
                         sh '''
-                            cat > .env.local << EOF
+                            mkdir -p -m 0777 "${DEPLOY_PATH}/cache/CSS"
+                            mkdir -p -m 0777 "${DEPLOY_PATH}/cache/HTML"
+                            mkdir -p -m 0777 "${DEPLOY_PATH}/cache/URI"
+                        '''
+                        dir('una-ui-test3') {
+                        
+                            echo "Clone repository with tests"
+                            git branch: 'main',
+                                url: 'git@github.com:unacms/una-ui-test3.git',
+                                credentialsId: '0043feeb-9df7-4494-9b2b-d6c8a1b8ca08'
+                            
+                            // Create environment file
+                            sh '''
+                                cat > .env.local << EOF
 baseUrl=https://${DEPLOY_HTTP_HOST}${DEPLOY_HTTP_PATH}
 userAdminPwd=${TEST_USER_ADMIN_PWD}
 userRegularPwd=${TEST_USER_REGULAR_PWD}
 userTomPwd=${TEST_USER_TOM_PWD}
 EOF
-                        '''
+                            '''
                         
-                        echo "Install dependences for UI tests"
-                        sh 'npm install'
-                        sh 'npx playwright install'
+                            echo "Install dependences for UI tests"
+                            sh 'npm install'
+                            sh 'npx playwright install'
                         
-                        echo "Running Playwright UI Tests"
-                        sh 'npm run test'
+                            echo "Running Playwright UI Tests"
+                            sh 'npm run test'
+                        }
                     }
                 }
             }
