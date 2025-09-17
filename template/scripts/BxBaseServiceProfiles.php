@@ -1271,7 +1271,6 @@ class BxBaseServiceProfiles extends BxDol
             'content' => $oTemplate->parseHtmlByName('profile_switch_row.html', $aVars),
         );
         if ($sUrlProfileAction == '' && $bShowAll == 0 && $sButtonTitle == '' && $sProfileTemplate == '') {
-            echoDbgLog('set: ' . $sCacheKey);
             bx_content_cache_set($sCacheKey, $a);
         }
         return $a;

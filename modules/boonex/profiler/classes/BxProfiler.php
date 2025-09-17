@@ -341,14 +341,16 @@ class BxProfiler extends BxDol
         $this->_aMenus[$sName]['begin'] = microtime ();
     }
 
-    function endMenu ($sName)
+    function endMenu ($sName, $sCacheType = '', $bCacheUsed = false)
     {
         if (!isset($this->_aMenus[$sName]))
             return;
         $iTime = $this->_calcTime ($this->_aMenus[$sName]['begin']);
         unset ($this->_aMenus[$sName]['begin']);
         $this->_aMenus[$sName]['time'] = $this->_formatTime($iTime);
-        $this->_aMenus[$sName]['raw_time'] = $iTime;
+        $this->_aMenus[$sName]['raw_time'] = $iTime;        
+        $this->_aMenus[$sName]['cache type'] = $sCacheType;
+        $this->_aMenus[$sName]['cache used'] = $bCacheUsed ? 'yes' : 'no';
     }
 
     function _getCurrentDelay ()

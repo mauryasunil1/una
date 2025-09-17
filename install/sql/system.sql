@@ -4770,6 +4770,7 @@ CREATE TABLE IF NOT EXISTS `sys_objects_menu` (
   `template_id` int(11) NOT NULL,
   `config_api` text NOT NULL,
   `persistent` tinyint(4) NOT NULL DEFAULT '0',
+  `cache` enum('off','guest','global','per_user','per_user_auto') NOT NULL DEFAULT 'off',
   `deletable` tinyint(4) NOT NULL DEFAULT '1',
   `active` tinyint(4) NOT NULL DEFAULT '0',
   `override_class_name` varchar(255) NOT NULL,
@@ -4824,6 +4825,8 @@ INSERT INTO `sys_objects_menu` (`object`, `title`, `set_name`, `module`, `templa
 
 ('sys_studio_account_popup', '_sys_menu_title_studio_account_popup', 'sys_studio_account_popup', 'system', 4, 0, 1, 'BxTemplStudioMenuAccountPopup', '');
 
+UPDATE `sys_objects_menu` SET `cache` = 'per_acl' WHERE `object` IN('sys_site', 'sys_account_notifications', 'sys_add_content', 'sys_toolbar_site', 'sys_footer', 'sys_site_submenu', 'sys_homepage_submenu', 'sys_homepage', 'sys_application', 'sys_site_in_panel');
+UPDATE `sys_objects_menu` SET `cache` = 'sys_site' WHERE `object` IN('sys_toolbar_member');
 
 CREATE TABLE IF NOT EXISTS `sys_menu_sets` (
   `set_name` varchar(64) NOT NULL,
