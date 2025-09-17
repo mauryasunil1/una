@@ -4770,7 +4770,7 @@ CREATE TABLE IF NOT EXISTS `sys_objects_menu` (
   `template_id` int(11) NOT NULL,
   `config_api` text NOT NULL,
   `persistent` tinyint(4) NOT NULL DEFAULT '0',
-  `cache` enum('off','guest','global','per_user','per_user_auto') NOT NULL DEFAULT 'off',
+  `cache` enum('off','guest','global','per_user','per_acl') NOT NULL DEFAULT 'off',
   `deletable` tinyint(4) NOT NULL DEFAULT '1',
   `active` tinyint(4) NOT NULL DEFAULT '0',
   `override_class_name` varchar(255) NOT NULL,
