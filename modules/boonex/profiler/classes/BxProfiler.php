@@ -335,6 +335,11 @@ class BxProfiler extends BxDol
             $this->logSqlQuery ($iTime, $this->_aQueries[$this->_sQueryIndex], $oStmt);
     }
 
+    function isMenu($sName)
+    {
+        return isset($this->_aMenus[$sName]);
+    }
+
     function beginMenu ($sName)
     {
         $this->_aMenus[$sName]['name'] = $sName;
