@@ -1789,7 +1789,7 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
      * @return CHECK_ACTION_RESULT_ALLOWED if access is granted or error message if access is forbidden.
      */
     public function checkAllowedViewProfileImage ($aDataEntry, $isPerformAction = false)
-    {        
+    {
         $CNF = &$this->_oConfig->CNF;
 
         $sCacheKey = $this->getName() . ':' . __CLASS__ . ':checkAllowedViewProfileImage:' . $aDataEntry[$CNF['FIELD_ID']];
@@ -1798,7 +1798,7 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
             return $mixedRet;
 
         // check privacy
-        
+
         if (empty($CNF['OBJECT_PRIVACY_VIEW']) || isAdmin() || CHECK_ACTION_RESULT_ALLOWED === $this->checkAllowedEditAnyEntry()) {
             $mixedRet = CHECK_ACTION_RESULT_ALLOWED;
         } 
