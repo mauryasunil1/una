@@ -31,3 +31,41 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_polls_search' AN
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_polls_manage' AND `module`='bx_polls' AND `title_system`='_bx_polls_page_block_title_system_manage' AND `title`='_bx_polls_page_block_title_manage';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_polls_administration' AND `module`='bx_polls' AND `title_system`='_bx_polls_page_block_title_system_manage_administration' AND `title`='_bx_polls_page_block_title_manage';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_persons_view_profile' AND `module`='bx_polls' AND `title_system`='_bx_polls_page_block_title_sys_my_entries' AND `title`='_bx_polls_page_block_title_my_entries';
+
+
+-- MENUS:
+
+-- MENUS: config_api
+
+-- MENUS: active_api
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_homepage' AND `module`='bx_polls' AND `name`='polls-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_add_content_links' AND `module`='bx_polls' AND `name`='create-poll';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_stats' AND `module`='bx_polls' AND `name`='profile-stats-my-polls';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_account_dashboard_manage_tools' AND `module`='bx_polls' AND `name`='polls-administration';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_view' AND `module`='bx_polls' AND `name`='edit-poll';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_view' AND `module`='bx_polls' AND `name`='delete-poll';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_view' AND `module`='bx_polls' AND `name`='approve';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_view_actions' AND `module`='bx_polls' AND `name`='edit-poll';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_view_actions' AND `module`='bx_polls' AND `name`='delete-poll';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_view_actions' AND `module`='bx_polls' AND `name`='approve';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_view_actions' AND `module`='bx_polls' AND `name`='view';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_view_actions' AND `module`='bx_polls' AND `name`='reaction';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_view_actions' AND `module`='bx_polls' AND `name`='score';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_view_actions' AND `module`='bx_polls' AND `name`='favorite';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_view_actions' AND `module`='bx_polls' AND `name`='feature';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_view_actions' AND `module`='bx_polls' AND `name`='repost';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_view_actions' AND `module`='bx_polls' AND `name`='report';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_view_actions' AND `module`='bx_polls' AND `name`='notes';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_view_actions' AND `module`='bx_polls' AND `name`='audit';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_view_actions' AND `module`='bx_polls' AND `name`='social-sharing';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_view_actions' AND `module`='bx_polls' AND `name`='more-auto';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_my' AND `module`='bx_polls' AND `name`='create-poll';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_submenu' AND `module`='bx_polls' AND `name`='polls-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_submenu' AND `module`='bx_polls' AND `name`='polls-popular';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_submenu' AND `module`='bx_polls' AND `name`='polls-top';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_submenu' AND `module`='bx_polls' AND `name`='polls-search';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_submenu' AND `module`='bx_polls' AND `name`='polls-manage';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_snippet_meta' AND `module`='bx_polls' AND `name`='date';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_snippet_meta' AND `module`='bx_polls' AND `name`='comments';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_snippet_meta' AND `module`='bx_polls' AND `name`='author';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_polls_snippet_meta' AND `module`='bx_polls' AND `name`='actions';

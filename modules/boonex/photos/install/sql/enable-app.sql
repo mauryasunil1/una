@@ -40,3 +40,38 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_photos_search' A
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_photos_manage' AND `module`='bx_photos' AND `title_system`='_bx_photos_page_block_title_system_manage' AND `title`='_bx_photos_page_block_title_manage';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_photos_administration' AND `module`='bx_photos' AND `title_system`='_bx_photos_page_block_title_system_manage_administration' AND `title`='_bx_photos_page_block_title_manage';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_persons_view_profile' AND `module`='bx_photos' AND `title_system`='_bx_photos_page_block_title_sys_my_entries' AND `title`='_bx_photos_page_block_title_my_entries';
+
+
+-- MENUS:
+
+-- MENUS: config_api
+
+-- MENUS: active_api
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_homepage' AND `module`='bx_photos' AND `name`='photos-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_stats' AND `module`='bx_photos' AND `name`='profile-stats-my-photos';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_account_dashboard_manage_tools' AND `module`='bx_photos' AND `name`='photos-administration';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_view' AND `module`='bx_photos' AND `name`='edit-photo';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_view' AND `module`='bx_photos' AND `name`='delete-photo';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_view' AND `module`='bx_photos' AND `name`='approve';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_view_actions' AND `module`='bx_photos' AND `name`='edit-photo';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_view_actions' AND `module`='bx_photos' AND `name`='delete-photo';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_view_actions' AND `module`='bx_photos' AND `name`='approve';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_view_actions' AND `module`='bx_photos' AND `name`='view';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_view_actions' AND `module`='bx_photos' AND `name`='reaction';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_view_actions' AND `module`='bx_photos' AND `name`='score';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_view_actions' AND `module`='bx_photos' AND `name`='favorite';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_view_actions' AND `module`='bx_photos' AND `name`='feature';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_view_actions' AND `module`='bx_photos' AND `name`='repost';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_view_actions' AND `module`='bx_photos' AND `name`='report';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_view_actions' AND `module`='bx_photos' AND `name`='notes';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_view_actions' AND `module`='bx_photos' AND `name`='audit';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_view_actions' AND `module`='bx_photos' AND `name`='social-sharing';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_view_actions' AND `module`='bx_photos' AND `name`='more-auto';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_my' AND `module`='bx_photos' AND `name`='create-photo';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_submenu' AND `module`='bx_photos' AND `name`='photos-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_submenu' AND `module`='bx_photos' AND `name`='photos-popular';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_submenu' AND `module`='bx_photos' AND `name`='photos-top';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_submenu' AND `module`='bx_photos' AND `name`='photos-search';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_submenu' AND `module`='bx_photos' AND `name`='photos-manage';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_snippet_meta' AND `module`='bx_photos' AND `name`='rating';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_photos_snippet_meta' AND `module`='bx_photos' AND `name`='comments';

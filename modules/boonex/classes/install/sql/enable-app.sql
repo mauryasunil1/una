@@ -22,3 +22,41 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_classes_view_ent
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_classes_context' AND `module`='bx_classes' AND `title_system`='_bx_classes_page_block_title_sys_entries_in_context' AND `title`='_bx_classes_page_block_title_entries_in_context';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_classes_manage' AND `module`='bx_classes' AND `title_system`='_bx_classes_page_block_title_system_manage' AND `title`='_bx_classes_page_block_title_manage';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_classes_administration' AND `module`='bx_classes' AND `title_system`='_bx_classes_page_block_title_system_manage_administration' AND `title`='_bx_classes_page_block_title_manage';
+
+
+-- MENUS:
+
+-- MENUS: config_api
+
+-- MENUS: active_api
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_stats' AND `module`='bx_classes' AND `name`='profile-stats-manage-classes';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_entry_attachments' AND `module`='bx_classes' AND `name`='photo_html5';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_entry_attachments' AND `module`='bx_classes' AND `name`='video_html5';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_entry_attachments' AND `module`='bx_classes' AND `name`='video_record_video';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_entry_attachments' AND `module`='bx_classes' AND `name`='sound_html5';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_entry_attachments' AND `module`='bx_classes' AND `name`='file_html5';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_entry_attachments' AND `module`='bx_classes' AND `name`='poll';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_entry_attachments' AND `module`='bx_classes' AND `name`='add-link';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_view' AND `module`='bx_classes' AND `name`='complete-class';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_view' AND `module`='bx_classes' AND `name`='edit-class';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_view' AND `module`='bx_classes' AND `name`='delete-class';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_view' AND `module`='bx_classes' AND `name`='approve';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_view_actions' AND `module`='bx_classes' AND `name`='complete-class';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_view_actions' AND `module`='bx_classes' AND `name`='edit-class';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_view_actions' AND `module`='bx_classes' AND `name`='delete-class';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_view_actions' AND `module`='bx_classes' AND `name`='approve';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_view_actions' AND `module`='bx_classes' AND `name`='set-badges';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_view_actions' AND `module`='bx_classes' AND `name`='view';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_view_actions' AND `module`='bx_classes' AND `name`='reaction';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_view_actions' AND `module`='bx_classes' AND `name`='score';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_view_actions' AND `module`='bx_classes' AND `name`='favorite';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_view_actions' AND `module`='bx_classes' AND `name`='feature';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_view_actions' AND `module`='bx_classes' AND `name`='repost';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_view_actions' AND `module`='bx_classes' AND `name`='report';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_view_actions' AND `module`='bx_classes' AND `name`='notes';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_view_actions' AND `module`='bx_classes' AND `name`='audit';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_view_actions' AND `module`='bx_classes' AND `name`='social-sharing';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_view_actions' AND `module`='bx_classes' AND `name`='more-auto';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_snippet_meta' AND `module`='bx_classes' AND `name`='date';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_snippet_meta' AND `module`='bx_classes' AND `name`='date-start';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_classes_snippet_meta' AND `module`='bx_classes' AND `name`='date-end';

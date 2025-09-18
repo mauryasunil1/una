@@ -20,3 +20,30 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_channels_adminis
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_channels_view_profile' AND `module`='bx_timeline' AND `title_system`='_bx_timeline_page_block_title_system_post_profile' AND `title`='_bx_timeline_page_block_title_post_profile';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_channels_view_profile' AND `module`='system' AND `title_system`='_sys_page_block_title_sys_create_post_context' AND `title`='_sys_page_block_title_create_post_context';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_channels_view_profile' AND `module`='bx_timeline' AND `title_system`='_bx_timeline_page_block_title_system_view_profile' AND `title`='_bx_timeline_page_block_title_view_profile';
+
+
+-- MENUS:
+
+-- MENUS: config_api
+
+-- MENUS: active_api
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_site' AND `module`='bx_channels' AND `name`='channels-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_homepage' AND `module`='bx_channels' AND `name`='channels-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_account_dashboard_manage_tools' AND `module`='bx_channels' AND `name`='channels-administration';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_followings' AND `module`='bx_channels' AND `name`='channels';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_channels_view_actions' AND `module`='bx_channels' AND `name`='profile-subscribe-add';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_channels_view_actions' AND `module`='bx_channels' AND `name`='profile-actions-more';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_channels_view_actions_more' AND `module`='bx_channels' AND `name`='delete-channel-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_channels_view_actions_all' AND `module`='bx_channels' AND `name`='profile-subscribe-add';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_channels_view_actions_all' AND `module`='bx_channels' AND `name`='profile-subscribe-remove';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_channels_submenu' AND `module`='bx_channels' AND `name`='channels-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_channels_submenu' AND `module`='bx_channels' AND `name`='channels-top';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_channels_submenu' AND `module`='bx_channels' AND `name`='channels-toplevel';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_channels_submenu' AND `module`='bx_channels' AND `name`='channels-search';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_channels_submenu' AND `module`='bx_channels' AND `name`='channels-administration';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_channels_snippet_meta' AND `module`='bx_channels' AND `name`='members';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_channels_snippet_meta' AND `module`='bx_channels' AND `name`='subscribers';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_channels_snippet_meta' AND `module`='bx_channels' AND `name`='nl';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_channels_snippet_meta' AND `module`='bx_channels' AND `name`='subscribe';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_channels_snippet_meta' AND `module`='bx_channels' AND `name`='unsubscribe';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_channels_menu_manage_tools' AND `module`='bx_channels' AND `name`='delete';

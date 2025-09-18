@@ -44,3 +44,43 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_ads_offers' AND 
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_ads_offers' AND `module`='bx_ads' AND `title_system`='' AND `title`='_bx_ads_page_block_title_offers';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_ads_offers_all' AND `module`='bx_ads' AND `title_system`='' AND `title`='_bx_ads_page_block_title_offers_all';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_persons_view_profile' AND `module`='bx_ads' AND `title_system`='_bx_ads_page_block_title_sys_my_entries' AND `title`='_bx_ads_page_block_title_my_entries';
+
+
+-- MENUS:
+
+-- MENUS: config_api
+
+-- MENUS: active_api
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_homepage' AND `module`='bx_ads' AND `name`='ads-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_add_content_links' AND `module`='bx_ads' AND `name`='create-ad';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_stats' AND `module`='bx_ads' AND `name`='profile-stats-my-ads';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_account_dashboard_manage_tools' AND `module`='bx_ads' AND `name`='ads-administration';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_entry_attachments' AND `module`='bx_ads' AND `name`='photo_html5';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_entry_attachments' AND `module`='bx_ads' AND `name`='video_html5';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_entry_attachments' AND `module`='bx_ads' AND `name`='record_video';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_entry_attachments' AND `module`='bx_ads' AND `name`='file_html5';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_entry_attachments' AND `module`='bx_ads' AND `name`='poll';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_view' AND `module`='bx_ads' AND `name`='interested';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_view' AND `module`='bx_ads' AND `name`='add-to-cart';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_view' AND `module`='bx_ads' AND `name`='make-offer';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_view' AND `module`='bx_ads' AND `name`='view-offers';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_view' AND `module`='bx_ads' AND `name`='edit-ad';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_view' AND `module`='bx_ads' AND `name`='delete-ad';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_view' AND `module`='bx_ads' AND `name`='approve';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_view' AND `module`='bx_ads' AND `name`='shipped';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_view' AND `module`='bx_ads' AND `name`='received';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_view_actions' AND `module`='bx_ads' AND `name`='edit-ad';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_view_actions' AND `module`='bx_ads' AND `name`='delete-ad';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_view_actions' AND `module`='bx_ads' AND `name`='received';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_my' AND `module`='bx_ads' AND `name`='create-ad';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_submenu' AND `module`='bx_ads' AND `name`='ads-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_submenu' AND `module`='bx_ads' AND `name`='ads-popular';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_submenu' AND `module`='bx_ads' AND `name`='ads-categories';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_submenu' AND `module`='bx_ads' AND `name`='ads-search';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_submenu' AND `module`='bx_ads' AND `name`='ads-manage';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_snippet_meta' AND `module`='bx_ads' AND `name`='date';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_snippet_meta' AND `module`='bx_ads' AND `name`='author';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_snippet_meta' AND `module`='bx_ads' AND `name`='category';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_snippet_meta' AND `module`='bx_ads' AND `name`='price';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_licenses_submenu' AND `module`='bx_ads' AND `name`='ads-licenses-administration';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_ads_licenses_submenu' AND `module`='bx_ads' AND `name`='ads-licenses';

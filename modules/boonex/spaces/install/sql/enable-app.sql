@@ -37,3 +37,53 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_spaces_favorites
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_spaces_favorites' AND `module`='bx_spaces' AND `title_system`='' AND `title`='_bx_spaces_page_block_title_favorites_entries_actions';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_spaces_view_profile' AND `module`='system' AND `title_system`='_sys_page_block_title_sys_create_post_context' AND `title`='_sys_page_block_title_create_post_context';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_spaces_view_profile' AND `module`='bx_timeline' AND `title_system`='_bx_timeline_page_block_title_system_view_profile' AND `title`='_bx_timeline_page_block_title_view_profile';
+
+
+-- MENUS:
+
+-- MENUS: config_api
+
+-- MENUS: active_api
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_site' AND `module`='bx_spaces' AND `name`='spaces-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_homepage' AND `module`='bx_spaces' AND `name`='spaces-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_add_content_links' AND `module`='bx_spaces' AND `name`='create-space-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_stats' AND `module`='bx_spaces' AND `name`='profile-stats-my-spaces';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_followings' AND `module`='bx_spaces' AND `name`='spaces';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_account_dashboard_manage_tools' AND `module`='bx_spaces' AND `name`='spaces-administration';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions' AND `module`='bx_spaces' AND `name`='join-space-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions' AND `module`='bx_spaces' AND `name`='profile-fan-add';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions' AND `module`='bx_spaces' AND `name`='profile-subscribe-add';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions' AND `module`='bx_spaces' AND `name`='profile-fan-remove';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions' AND `module`='bx_spaces' AND `name`='profile-subscribe-remove';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions_more' AND `module`='bx_spaces' AND `name`='edit-space-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions_more' AND `module`='bx_spaces' AND `name`='edit-space-pricing';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions_more' AND `module`='bx_spaces' AND `name`='delete-space-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions_all' AND `module`='bx_spaces' AND `name`='join-space-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions_all' AND `module`='bx_spaces' AND `name`='profile-fan-add';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions_all' AND `module`='bx_spaces' AND `name`='profile-fan-remove';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions_all' AND `module`='bx_spaces' AND `name`='profile-subscribe-add';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions_all' AND `module`='bx_spaces' AND `name`='profile-subscribe-remove';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions_all' AND `module`='bx_spaces' AND `name`='profile-set-badges';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions_all' AND `module`='bx_spaces' AND `name`='view';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions_all' AND `module`='bx_spaces' AND `name`='feature';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_actions_all' AND `module`='bx_spaces' AND `name`='report';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_meta' AND `module`='bx_spaces' AND `name`='members';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_meta' AND `module`='bx_spaces' AND `name`='subscribers';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_meta' AND `module`='bx_spaces' AND `name`='views';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_meta' AND `module`='bx_spaces' AND `name`='votes';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_meta' AND `module`='bx_spaces' AND `name`='comments';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_my' AND `module`='bx_spaces' AND `name`='create-space-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_submenu' AND `module`='bx_spaces' AND `name`='spaces-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_submenu' AND `module`='bx_spaces' AND `name`='spaces-top';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_submenu' AND `module`='bx_spaces' AND `name`='view-space-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_submenu' AND `module`='bx_spaces' AND `name`='space-profile-info';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_view_submenu' AND `module`='bx_spaces' AND `name`='space-fans';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_snippet_meta' AND `module`='bx_spaces' AND `name`='subscribers';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_snippet_meta' AND `module`='bx_spaces' AND `name`='nl';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_snippet_meta' AND `module`='bx_spaces' AND `name`='join-paid';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_snippet_meta' AND `module`='bx_spaces' AND `name`='join';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_snippet_meta' AND `module`='bx_spaces' AND `name`='leave';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_snippet_meta' AND `module`='bx_spaces' AND `name`='subscribe';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_snippet_meta' AND `module`='bx_spaces' AND `name`='unsubscribe';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_menu_manage_tools' AND `module`='bx_spaces' AND `name`='clear-reports';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_spaces_menu_manage_tools' AND `module`='bx_spaces' AND `name`='delete';

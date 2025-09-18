@@ -28,3 +28,36 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_glossary_search'
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_glossary_manage' AND `module`='bx_glossary' AND `title_system`='_bx_glossary_page_block_title_system_manage' AND `title`='_bx_glossary_page_block_title_manage';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_glossary_administration' AND `module`='bx_glossary' AND `title_system`='_bx_glossary_page_block_title_system_manage_administration' AND `title`='_bx_glossary_page_block_title_manage';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_persons_view_profile' AND `module`='bx_glossary' AND `title_system`='_bx_glossary_page_block_title_sys_my_entries' AND `title`='_bx_glossary_page_block_title_my_entries';
+
+
+-- MENUS:
+
+-- MENUS: config_api
+
+-- MENUS: active_api
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_stats' AND `module`='bx_glossary' AND `name`='profile-stats-my-glossary';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_view' AND `module`='bx_glossary' AND `name`='edit-glossary';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_view' AND `module`='bx_glossary' AND `name`='delete-glossary';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_view' AND `module`='bx_glossary' AND `name`='approve';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_view_actions' AND `module`='bx_glossary' AND `name`='edit-glossary';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_view_actions' AND `module`='bx_glossary' AND `name`='delete-glossary';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_view_actions' AND `module`='bx_glossary' AND `name`='approve';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_view_actions' AND `module`='bx_glossary' AND `name`='view';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_view_actions' AND `module`='bx_glossary' AND `name`='reaction';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_view_actions' AND `module`='bx_glossary' AND `name`='score';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_view_actions' AND `module`='bx_glossary' AND `name`='favorite';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_view_actions' AND `module`='bx_glossary' AND `name`='feature';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_view_actions' AND `module`='bx_glossary' AND `name`='repost';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_view_actions' AND `module`='bx_glossary' AND `name`='report';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_view_actions' AND `module`='bx_glossary' AND `name`='notes';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_view_actions' AND `module`='bx_glossary' AND `name`='audit';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_view_actions' AND `module`='bx_glossary' AND `name`='social-sharing';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_view_actions' AND `module`='bx_glossary' AND `name`='more-auto';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_my' AND `module`='bx_glossary' AND `name`='create-glossary';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_submenu' AND `module`='bx_glossary' AND `name`='glossary-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_submenu' AND `module`='bx_glossary' AND `name`='glossary-popular';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_submenu' AND `module`='bx_glossary' AND `name`='glossary-top';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_submenu' AND `module`='bx_glossary' AND `name`='glossary-search';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_submenu' AND `module`='bx_glossary' AND `name`='glossary-manage';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_snippet_meta' AND `module`='bx_glossary' AND `name`='date';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_glossary_snippet_meta' AND `module`='bx_glossary' AND `name`='author';

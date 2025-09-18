@@ -37,3 +37,60 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_persons_search' 
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_persons_manage' AND `module`='bx_persons' AND `title_system`='_bx_persons_page_block_title_system_manage' AND `title`='_bx_persons_page_block_title_manage';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_persons_administration' AND `module`='bx_persons' AND `title_system`='_bx_persons_page_block_title_system_manage_administration' AND `title`='_bx_persons_page_block_title_manage';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_persons_profile_subscriptions1' AND `module`='bx_persons' AND `title_system`='_bx_persons_page_block_title_system_profile_subscriptions' AND `title`='_bx_persons_page_block_title_profile_subscriptions';
+
+-- MENUS:
+
+-- MENUS: config_api
+
+-- MENUS: active_api
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_homepage' AND `module`='bx_persons' AND `name`='persons-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_add_profile_links' AND `module`='bx_persons' AND `name`='create-persons-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_stats' AND `module`='bx_persons' AND `name`='profile-stats-friend-requests';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_stats' AND `module`='bx_persons' AND `name`='profile-stats-manage-profiles';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_stats' AND `module`='bx_persons' AND `name`='profile-stats-favorite-persons';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_stats' AND `module`='bx_persons' AND `name`='profile-stats-subscriptions';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_stats' AND `module`='bx_persons' AND `name`='profile-stats-subscribed-me';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_stats' AND `module`='bx_persons' AND `name`='profile-stats-relations';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_stats' AND `module`='bx_persons' AND `name`='profile-stats-related-me';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_followings' AND `module`='bx_persons' AND `name`='persons';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_actions' AND `module`='bx_persons' AND `name`='profile-friend-add';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_actions' AND `module`='bx_persons' AND `name`='profile-subscribe-add';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_actions' AND `module`='bx_persons' AND `name`='profile-set-acl-level';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_actions' AND `module`='bx_persons' AND `name`='profile-set-badges';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_actions' AND `module`='bx_persons' AND `name`='profile-actions-more';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_actions_more' AND `module`='bx_persons' AND `name`='edit-persons-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_actions_more' AND `module`='bx_persons' AND `name`='edit-persons-badge';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_actions_more' AND `module`='bx_persons' AND `name`='delete-persons-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_actions_more' AND `module`='bx_persons' AND `name`='delete-persons-account';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_actions_all' AND `module`='bx_persons' AND `name`='profile-friend-add';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_actions_all' AND `module`='bx_persons' AND `name`='profile-friend-remove';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_actions_all' AND `module`='bx_persons' AND `name`='profile-subscribe-add';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_actions_all' AND `module`='bx_persons' AND `name`='profile-subscribe-remove';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_actions_all' AND `module`='bx_persons' AND `name`='profile-set-acl-level';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_actions_all' AND `module`='bx_persons' AND `name`='profile-set-badges';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_actions_all' AND `module`='bx_persons' AND `name`='feature';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_meta' AND `module`='bx_persons' AND `name`='membership';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_meta' AND `module`='bx_persons' AND `name`='badges';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_meta' AND `module`='bx_persons' AND `name`='friends';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_meta' AND `module`='bx_persons' AND `name`='subscribers';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_meta' AND `module`='bx_persons' AND `name`='views';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_meta' AND `module`='bx_persons' AND `name`='votes';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_meta' AND `module`='bx_persons' AND `name`='comments';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_submenu' AND `module`='bx_persons' AND `name`='persons-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_submenu' AND `module`='bx_persons' AND `name`='persons-active';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_submenu' AND `module`='bx_persons' AND `name`='persons-online';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_submenu' AND `module`='bx_persons' AND `name`='persons-search';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_submenu' AND `module`='bx_persons' AND `name`='persons-manage';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_submenu' AND `module`='bx_persons' AND `name`='view-persons-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_submenu' AND `module`='bx_persons' AND `name`='persons-profile-info';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_submenu' AND `module`='bx_persons' AND `name`='persons-profile-friends';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_view_submenu' AND `module`='bx_persons' AND `name`='persons-profile-subscriptions';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_snippet_meta' AND `module`='bx_persons' AND `name`='befriend';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_snippet_meta' AND `module`='bx_persons' AND `name`='subscribe';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_snippet_meta' AND `module`='bx_persons' AND `name`='ignore-befriend';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_snippet_meta' AND `module`='bx_persons' AND `name`='ignore-subscribe';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_snippet_meta' AND `module`='bx_persons' AND `name`='unfriend';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_snippet_meta' AND `module`='bx_persons' AND `name`='unsubscribe';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_menu_manage_tools' AND `module`='bx_persons' AND `name`='clear-reports';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_menu_manage_tools' AND `module`='bx_persons' AND `name`='manage-cf';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_persons_menu_manage_tools' AND `module`='bx_persons' AND `name`='delete-with-content';

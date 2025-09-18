@@ -35,3 +35,70 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_posts_search' AN
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_posts_search' AND `module`='bx_posts' AND `title_system`='' AND `title`='_bx_posts_page_block_title_search_results';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_posts_manage' AND `module`='bx_posts' AND `title_system`='_bx_posts_page_block_title_system_manage' AND `title`='_bx_posts_page_block_title_manage';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_posts_administration' AND `module`='bx_posts' AND `title_system`='_bx_posts_page_block_title_system_manage_administration' AND `title`='_bx_posts_page_block_title_manage';
+
+-- PAGES: menus_api
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_homepage' AND `module`='bx_posts' AND `name`='posts-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_add_content_links' AND `module`='bx_posts' AND `name`='create-post';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_entry_attachments' AND `module`='bx_posts' AND `name`='photo_html5';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_entry_attachments' AND `module`='bx_posts' AND `name`='video_html5';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_entry_attachments' AND `module`='bx_posts' AND `name`='video_record_video';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_entry_attachments' AND `module`='bx_posts' AND `name`='sound_html5';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_entry_attachments' AND `module`='bx_posts' AND `name`='file_html5';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_entry_attachments' AND `module`='bx_posts' AND `name`='poll';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_entry_attachments' AND `module`='bx_posts' AND `name`='add-link';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view' AND `module`='bx_posts' AND `name`='edit-post';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view' AND `module`='bx_posts' AND `name`='delete-post';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view' AND `module`='bx_posts' AND `name`='approve';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view_actions' AND `module`='bx_posts' AND `name`='edit-post';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view_actions' AND `module`='bx_posts' AND `name`='delete-post';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view_actions' AND `module`='bx_posts' AND `name`='comment';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view_actions' AND `module`='bx_posts' AND `name`='reaction';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view_actions' AND `module`='bx_posts' AND `name`='score';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view_actions' AND `module`='bx_posts' AND `name`='favorite';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view_actions' AND `module`='bx_posts' AND `name`='feature';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view_actions' AND `module`='bx_posts' AND `name`='report';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_my' AND `module`='bx_posts' AND `name`='create-post';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_submenu' AND `module`='bx_posts' AND `name`='posts-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_submenu' AND `module`='bx_posts' AND `name`='posts-popular';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_submenu' AND `module`='bx_posts' AND `name`='posts-manage';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_snippet_meta' AND `module`='bx_posts' AND `name`='author';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_snippet_meta' AND `module`='bx_posts' AND `name`='date';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_stats' AND `module`='bx_posts' AND `name`='profile-stats-my-posts';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_account_dashboard_manage_tools' AND `module`='bx_posts' AND `name`='posts-administration';
+
+
+-- MENUS:
+
+-- MENUS: config_api
+
+-- MENUS: active_api
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_site' AND `module`='bx_posts' AND `name`='posts-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_homepage' AND `module`='bx_posts' AND `name`='posts-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_add_content_links' AND `module`='bx_posts' AND `name`='create-post';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_create_post' AND `module`='bx_posts' AND `name`='create-post';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_stats' AND `module`='bx_posts' AND `name`='profile-stats-my-posts';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_account_dashboard_manage_tools' AND `module`='bx_posts' AND `name`='posts-administration';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_entry_attachments' AND `module`='bx_posts' AND `name`='photo_html5';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_entry_attachments' AND `module`='bx_posts' AND `name`='video_html5';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_entry_attachments' AND `module`='bx_posts' AND `name`='video_record_video';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_entry_attachments' AND `module`='bx_posts' AND `name`='sound_html5';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_entry_attachments' AND `module`='bx_posts' AND `name`='file_html5';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_entry_attachments' AND `module`='bx_posts' AND `name`='poll';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_entry_attachments' AND `module`='bx_posts' AND `name`='add-link';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view' AND `module`='bx_posts' AND `name`='edit-post';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view' AND `module`='bx_posts' AND `name`='delete-post';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view' AND `module`='bx_posts' AND `name`='approve';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view_actions' AND `module`='bx_posts' AND `name`='edit-post';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view_actions' AND `module`='bx_posts' AND `name`='delete-post';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view_actions' AND `module`='bx_posts' AND `name`='comment';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view_actions' AND `module`='bx_posts' AND `name`='reaction';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view_actions' AND `module`='bx_posts' AND `name`='score';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view_actions' AND `module`='bx_posts' AND `name`='favorite';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view_actions' AND `module`='bx_posts' AND `name`='feature';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_view_actions' AND `module`='bx_posts' AND `name`='report';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_my' AND `module`='bx_posts' AND `name`='create-post';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_submenu' AND `module`='bx_posts' AND `name`='posts-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_submenu' AND `module`='bx_posts' AND `name`='posts-popular';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_submenu' AND `module`='bx_posts' AND `name`='posts-manage';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_snippet_meta' AND `module`='bx_posts' AND `name`='author';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_posts_snippet_meta' AND `module`='bx_posts' AND `name`='date';

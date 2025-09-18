@@ -20,3 +20,29 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_courses_home' AN
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_joined_courses' AND `module`='bx_courses' AND `title_system`='' AND `title`='_bx_courses_page_block_title_joined_entries';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_courses_manage' AND `module`='bx_courses' AND `title_system`='_bx_courses_page_block_title_system_manage' AND `title`='_bx_courses_page_block_title_manage';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_courses_joined' AND `module`='bx_courses' AND `title_system`='_bx_courses_page_block_title_sys_entries_of_author' AND `title`='_bx_courses_page_block_title_entries_of_author';
+
+
+-- MENUS:
+
+-- MENUS: config_api
+
+-- MENUS: active_api
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_homepage' AND `module`='bx_courses' AND `name`='courses-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_account_dashboard_manage_tools' AND `module`='bx_courses' AND `name`='courses-administration';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_courses_view_actions_more' AND `module`='bx_courses' AND `name`='edit-course-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_courses_view_actions_more' AND `module`='bx_courses' AND `name`='edit-course-content';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_courses_view_actions_more' AND `module`='bx_courses' AND `name`='delete-course-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_courses_view_actions_all' AND `module`='bx_courses' AND `name`='profile-fan-add';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_courses_view_actions_all' AND `module`='bx_courses' AND `name`='profile-fan-remove';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_courses_submenu' AND `module`='bx_courses' AND `name`='courses-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_courses_submenu' AND `module`='bx_courses' AND `name`='courses-joined';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_courses_view_submenu' AND `module`='bx_courses' AND `name`='view-course-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_courses_view_submenu' AND `module`='bx_courses' AND `name`='course-profile-info';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_courses_view_submenu' AND `module`='bx_courses' AND `name`='course-fans';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_courses_snippet_meta' AND `module`='bx_courses' AND `name`='comments';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_courses_snippet_meta' AND `module`='bx_courses' AND `name`='join';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_courses_view_actions' AND `module`='bx_convos' AND `name`='convos-compose';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_courses_snippet_meta' AND `module`='bx_courses' AND `name`='reports';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_courses_snippet_meta' AND `module`='bx_courses' AND `name`='pass';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_courses_view_actions_more' AND `module`='bx_courses' AND `name`='hide-course-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_courses_view_actions_more' AND `module`='bx_courses' AND `name`='unhide-course-profile';

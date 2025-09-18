@@ -32,3 +32,37 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_videos_search' A
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_videos_manage' AND `module`='bx_videos' AND `title_system`='_bx_videos_page_block_title_system_manage' AND `title`='_bx_videos_page_block_title_manage';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_videos_administration' AND `module`='bx_videos' AND `title_system`='_bx_videos_page_block_title_system_manage_administration' AND `title`='_bx_videos_page_block_title_manage';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_persons_view_profile' AND `module`='bx_videos' AND `title_system`='_bx_videos_page_block_title_sys_my_entries' AND `title`='_bx_videos_page_block_title_my_entries';
+
+
+-- MENUS:
+
+-- MENUS: config_api
+
+-- MENUS: active_api
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_site' AND `module`='bx_videos' AND `name`='videos-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_homepage' AND `module`='bx_videos' AND `name`='videos-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_add_content_links' AND `module`='bx_videos' AND `name`='create-video';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_stats' AND `module`='bx_videos' AND `name`='profile-stats-my-videos';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_account_dashboard_manage_tools' AND `module`='bx_videos' AND `name`='videos-administration';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_view' AND `module`='bx_videos' AND `name`='edit-video';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_view' AND `module`='bx_videos' AND `name`='delete-video';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_view' AND `module`='bx_videos' AND `name`='approve';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_view_actions' AND `module`='bx_videos' AND `name`='edit-video';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_view_actions' AND `module`='bx_videos' AND `name`='delete-video';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_view_actions' AND `module`='bx_videos' AND `name`='approve';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_view_actions' AND `module`='bx_videos' AND `name`='view';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_view_actions' AND `module`='bx_videos' AND `name`='reaction';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_view_actions' AND `module`='bx_videos' AND `name`='score';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_view_actions' AND `module`='bx_videos' AND `name`='favorite';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_view_actions' AND `module`='bx_videos' AND `name`='feature';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_view_actions' AND `module`='bx_videos' AND `name`='repost';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_view_actions' AND `module`='bx_videos' AND `name`='report';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_my' AND `module`='bx_videos' AND `name`='create-video';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_submenu' AND `module`='bx_videos' AND `name`='videos-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_submenu' AND `module`='bx_videos' AND `name`='videos-popular';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_submenu' AND `module`='bx_videos' AND `name`='videos-top';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_submenu' AND `module`='bx_videos' AND `name`='videos-search';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_submenu' AND `module`='bx_videos' AND `name`='videos-manage';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_snippet_meta' AND `module`='bx_videos' AND `name`='date';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_snippet_meta' AND `module`='bx_videos' AND `name`='rating';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_videos_snippet_meta' AND `module`='bx_videos' AND `name`='author';

@@ -32,3 +32,48 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_forum_search' AN
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_forum_manage' AND `module`='bx_forum' AND `title_system`='_bx_forum_page_block_title_system_manage' AND `title`='_bx_forum_page_block_title_manage';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_forum_administration' AND `module`='bx_forum' AND `title_system`='_bx_forum_page_block_title_system_manage_administration' AND `title`='_bx_forum_page_block_title_manage';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_organizations_view_profile' AND `module`='bx_forum' AND `title_system`='_bx_forum_page_block_title_sys_my_entries' AND `title`='_bx_forum_page_block_title_my_entries';
+
+-- MENUS:
+
+-- MENUS: config_api
+
+-- MENUS: active_api
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_site' AND `module`='bx_forum' AND `name`='discussions-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_homepage' AND `module`='bx_forum' AND `name`='discussions-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_add_content_links' AND `module`='bx_forum' AND `name`='create-discussion';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_create_post' AND `module`='bx_forum' AND `name`='create-discussion';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_stats' AND `module`='bx_forum' AND `name`='profile-stats-my-forum';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_account_dashboard_manage_tools' AND `module`='bx_forum' AND `name`='discussions-administration';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_entry_attachments' AND `module`='bx_forum' AND `name`='photo_html5';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_entry_attachments' AND `module`='bx_forum' AND `name`='video_html5';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_entry_attachments' AND `module`='bx_forum' AND `name`='video_record_video';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_entry_attachments' AND `module`='bx_forum' AND `name`='file_html5';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_entry_attachments' AND `module`='bx_forum' AND `name`='poll';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_entry_attachments' AND `module`='bx_forum' AND `name`='add-link';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_view' AND `module`='bx_forum' AND `name`='resolve-discussion';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_view' AND `module`='bx_forum' AND `name`='stick-discussion';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_view' AND `module`='bx_forum' AND `name`='lock-discussion';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_view' AND `module`='bx_forum' AND `name`='hide-discussion';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_view' AND `module`='bx_forum' AND `name`='approve';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_view' AND `module`='bx_forum' AND `name`='more';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_view_more' AND `module`='bx_forum' AND `name`='unresolve-discussion';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_view_more' AND `module`='bx_forum' AND `name`='unstick-discussion';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_view_more' AND `module`='bx_forum' AND `name`='unlock-discussion';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_view_more' AND `module`='bx_forum' AND `name`='unhide-discussion';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_view_more' AND `module`='bx_forum' AND `name`='edit-discussion';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_view_more' AND `module`='bx_forum' AND `name`='delete-discussion';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_view_actions' AND `module`='bx_forum' AND `name`='edit-discussion';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_view_actions' AND `module`='bx_forum' AND `name`='delete-discussion';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_my' AND `module`='bx_forum' AND `name`='create-discussion';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_submenu' AND `module`='bx_forum' AND `name`='discussions-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_submenu' AND `module`='bx_forum' AND `name`='discussions-search';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_submenu' AND `module`='bx_forum' AND `name`='discussions-manage';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_snippet_meta_main' AND `module`='bx_forum' AND `name`='score';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_snippet_meta_main' AND `module`='bx_forum' AND `name`='comments';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_snippet_meta_main' AND `module`='bx_forum' AND `name`='status';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_snippet_meta_counters' AND `module`='bx_forum' AND `name`='views';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_snippet_meta_counters' AND `module`='bx_forum' AND `name`='votes';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_snippet_meta_counters' AND `module`='bx_forum' AND `name`='comments';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_snippet_meta_reply' AND `module`='bx_forum' AND `name`='reply-author';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_snippet_meta_reply' AND `module`='bx_forum' AND `name`='reply-date';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_forum_snippet_meta_reply' AND `module`='bx_forum' AND `name`='reply-text';

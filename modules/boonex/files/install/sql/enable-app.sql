@@ -32,3 +32,47 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_files_search' AN
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_files_search' AND `module`='bx_files' AND `title_system`='' AND `title`='_bx_files_page_block_title_search_results';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_files_manage' AND `module`='bx_files' AND `title_system`='_bx_files_page_block_title_system_manage' AND `title`='_bx_files_page_block_title_manage';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_files_administration' AND `module`='bx_files' AND `title_system`='_bx_files_page_block_title_system_manage_administration' AND `title`='_bx_files_page_block_title_manage';
+
+
+-- MENUS:
+
+-- MENUS: config_api
+
+-- MENUS: active_api
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_stats' AND `module`='bx_files' AND `name`='profile-stats-my-files';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view' AND `module`='bx_files' AND `name`='download-file';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view' AND `module`='bx_files' AND `name`='edit-file';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view' AND `module`='bx_files' AND `name`='delete-file';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view' AND `module`='bx_files' AND `name`='approve';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_actions' AND `module`='bx_files' AND `name`='download-file';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_actions' AND `module`='bx_files' AND `name`='edit-file';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_actions' AND `module`='bx_files' AND `name`='delete-file';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_actions' AND `module`='bx_files' AND `name`='approve';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_actions' AND `module`='bx_files' AND `name`='view';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_actions' AND `module`='bx_files' AND `name`='reaction';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_actions' AND `module`='bx_files' AND `name`='score';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_actions' AND `module`='bx_files' AND `name`='favorite';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_actions' AND `module`='bx_files' AND `name`='feature';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_actions' AND `module`='bx_files' AND `name`='repost';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_actions' AND `module`='bx_files' AND `name`='report';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_actions' AND `module`='bx_files' AND `name`='notes';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_actions' AND `module`='bx_files' AND `name`='audit';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_actions' AND `module`='bx_files' AND `name`='social-sharing';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_actions' AND `module`='bx_files' AND `name`='more-auto';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_inline' AND `module`='bx_files' AND `name`='bookmark';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_inline' AND `module`='bx_files' AND `name`='download-file';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_inline' AND `module`='bx_files' AND `name`='delete-file-quick';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_inline' AND `module`='bx_files' AND `name`='move-to';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_inline' AND `module`='bx_files' AND `name`='edit-title';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_inline' AND `module`='bx_files' AND `name`='preview';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_inline' AND `module`='bx_files' AND `name`='report';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_view_inline' AND `module`='bx_files' AND `name`='more-auto';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_my' AND `module`='bx_files' AND `name`='create-file';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_submenu' AND `module`='bx_files' AND `name`='files-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_submenu' AND `module`='bx_files' AND `name`='files-popular';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_submenu' AND `module`='bx_files' AND `name`='files-top';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_submenu' AND `module`='bx_files' AND `name`='files-search';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_submenu' AND `module`='bx_files' AND `name`='files-manage';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_snippet_meta' AND `module`='bx_files' AND `name`='date';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_snippet_meta' AND `module`='bx_files' AND `name`='size';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_files_snippet_meta' AND `module`='bx_files' AND `name`='author';

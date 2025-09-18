@@ -18,3 +18,25 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_jobs_manage_item
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_jobs_top' AND `module`='bx_jobs' AND `title_system`='' AND `title`='_bx_jobs_page_block_title_top_profiles';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_jobs_view_profile' AND `module`='system' AND `title_system`='_sys_page_block_title_sys_create_post_context' AND `title`='_sys_page_block_title_create_post_context';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_jobs_view_profile' AND `module`='bx_timeline' AND `title_system`='_bx_timeline_page_block_title_system_view_profile' AND `title`='_bx_timeline_page_block_title_view_profile';
+
+
+-- MENUS:
+
+-- MENUS: config_api
+
+-- MENUS: active_api
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_homepage' AND `module`='bx_jobs' AND `name`='jobs-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_account_dashboard_manage_tools' AND `module`='bx_jobs' AND `name`='jobs-administration';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_jobs_view_actions_more' AND `module`='bx_jobs' AND `name`='job-manage';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_jobs_view_actions_more' AND `module`='bx_jobs' AND `name`='edit-job-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_jobs_view_actions_more' AND `module`='bx_jobs' AND `name`='job-questionnaire';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_jobs_view_actions_more' AND `module`='bx_jobs' AND `name`='invite-to-job';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_jobs_view_actions_more' AND `module`='bx_jobs' AND `name`='delete-job-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_jobs_view_actions_all' AND `module`='bx_jobs' AND `name`='join-job-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_jobs_view_actions_all' AND `module`='bx_jobs' AND `name`='profile-fan-add';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_jobs_submenu' AND `module`='bx_jobs' AND `name`='jobs-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_jobs_submenu' AND `module`='bx_jobs' AND `name`='jobs-top';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_jobs_submenu' AND `module`='bx_jobs' AND `name`='jobs-joined';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_jobs_view_submenu' AND `module`='bx_jobs' AND `name`='view-job-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_jobs_view_submenu' AND `module`='bx_jobs' AND `name`='job-profile-info';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_jobs_view_submenu' AND `module`='bx_jobs' AND `name`='job-fans';

@@ -34,3 +34,49 @@ UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_groups_view_prof
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_groups_view_profile' AND `module`='bx_timeline' AND `title_system`='_bx_timeline_page_block_title_system_view_profile' AND `title`='_bx_timeline_page_block_title_view_profile';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_groups_fans' AND `module`='bx_groups' AND `title_system`='_bx_groups_page_block_title_system_fans' AND `title`='_bx_groups_page_block_title_fans_link';
 UPDATE `sys_pages_blocks` SET `active_api`=1 WHERE `object`='bx_groups_manage_item' AND `module`='bx_groups' AND `title_system`='_bx_groups_page_block_title_system_fans_manage' AND `title`='_bx_groups_page_block_title_fans_link';
+
+
+-- MENUS:
+
+-- MENUS: config_api
+
+-- MENUS: active_api
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_site' AND `module`='bx_groups' AND `name`='groups-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_homepage' AND `module`='bx_groups' AND `name`='groups-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_add_content_links' AND `module`='bx_groups' AND `name`='create-group-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_stats' AND `module`='bx_groups' AND `name`='profile-stats-my-groups';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_profile_followings' AND `module`='bx_groups' AND `name`='groups';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='sys_account_dashboard_manage_tools' AND `module`='bx_groups' AND `name`='groups-administration';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions' AND `module`='bx_groups' AND `name`='join-group-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions' AND `module`='bx_groups' AND `name`='profile-fan-add';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions' AND `module`='bx_groups' AND `name`='profile-subscribe-add';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions' AND `module`='bx_groups' AND `name`='profile-set-badges';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions' AND `module`='bx_groups' AND `name`='profile-actions-more';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions_more' AND `module`='bx_groups' AND `name`='edit-group-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions_more' AND `module`='bx_groups' AND `name`='invite-to-group';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions_more' AND `module`='bx_groups' AND `name`='delete-group-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions_all' AND `module`='bx_groups' AND `name`='join-group-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions_all' AND `module`='bx_groups' AND `name`='profile-fan-add';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions_all' AND `module`='bx_groups' AND `name`='profile-fan-remove';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions_all' AND `module`='bx_groups' AND `name`='profile-subscribe-add';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions_all' AND `module`='bx_groups' AND `name`='profile-subscribe-remove';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_actions_all' AND `module`='bx_groups' AND `name`='report';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_meta' AND `module`='bx_groups' AND `name`='members';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_meta' AND `module`='bx_groups' AND `name`='views';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_meta' AND `module`='bx_groups' AND `name`='votes';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_meta' AND `module`='bx_groups' AND `name`='comments';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_my' AND `module`='bx_groups' AND `name`='create-group-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_submenu' AND `module`='bx_groups' AND `name`='groups-home';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_submenu' AND `module`='bx_groups' AND `name`='groups-top';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_submenu' AND `module`='bx_groups' AND `name`='groups-search';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_submenu' AND `module`='bx_groups' AND `name`='groups-joined';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_submenu' AND `module`='bx_groups' AND `name`='groups-manage';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_submenu' AND `module`='bx_groups' AND `name`='view-group-profile';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_view_submenu' AND `module`='bx_groups' AND `name`='group-fans';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_snippet_meta' AND `module`='bx_groups' AND `name`='join-paid';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_snippet_meta' AND `module`='bx_groups' AND `name`='join';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_snippet_meta' AND `module`='bx_groups' AND `name`='leave';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_snippet_meta' AND `module`='bx_groups' AND `name`='subscribe';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_snippet_meta' AND `module`='bx_groups' AND `name`='unsubscribe';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_menu_manage_tools' AND `module`='bx_groups' AND `name`='clear-reports';
+UPDATE `sys_menu_items` SET `active_api`=1 WHERE `set_name`='bx_groups_menu_manage_tools' AND `module`='bx_groups' AND `name`='delete';
