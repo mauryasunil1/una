@@ -20,6 +20,8 @@ bx_import('BxDolAcl');
  */
 class BxBaseModGeneralModule extends BxDolModule
 {
+    protected static $_aMemCacheData = [];
+
     protected $_bIsApi;
     protected $_iProfileId;
     protected $_aSearchableNamesExcept;
@@ -3663,7 +3665,7 @@ class BxBaseModGeneralModule extends BxDolModule
     }
 
     protected function _serviceCheckAllowedViewForProfile ($aDataEntry, $isPerformAction, $iProfileId)
-    {
+    {        
         $CNF = &$this->_oConfig->CNF;
 
         if(!$iProfileId)
@@ -3672,23 +3674,32 @@ class BxBaseModGeneralModule extends BxDolModule
         if(empty($aDataEntry) || !is_array($aDataEntry))
             return _t('_sys_txt_not_found');
 
-        // moderator and owner always have access
-        if(!empty($iProfileId) && (abs($aDataEntry[$CNF['FIELD_AUTHOR']]) == (int)$iProfileId || $this->_isModeratorForProfile($isPerformAction, $iProfileId)))
+        if(!empty($iProfileId) && abs($aDataEntry[$CNF['FIELD_AUTHOR']]) == (int)$iProfileId)
             return CHECK_ACTION_RESULT_ALLOWED;
 
-        // check ACL
-        $aCheck = checkActionModule($iProfileId, 'view entry', $this->getName(), $isPerformAction);
-        if($aCheck[CHECK_ACTION_RESULT] !== CHECK_ACTION_RESULT_ALLOWED)
-            return $aCheck[CHECK_ACTION_MESSAGE];
+        // below goes mem cached response for current page load
 
-        // check privacy
-        if(!empty($CNF['OBJECT_PRIVACY_VIEW'])) {
-            $oPrivacy = BxDolPrivacy::getObjectInstance($CNF['OBJECT_PRIVACY_VIEW']);
-            if ($oPrivacy && !$oPrivacy->check($aDataEntry[$CNF['FIELD_ID']], $iProfileId))
-                return _t('_sys_access_denied_to_private_content');
+        $sCacheKey = $this->getName() . ':' . __CLASS__ . ':_checkAllowedViewForProfile:' . $aDataEntry[$CNF['FIELD_ID']] . ':' . $iProfileId;        
+        $mixedRet = bx_mem_cache_get($sCacheKey);
+        if (null !== $mixedRet)
+            return $mixedRet;
+
+        $mixedRet = CHECK_ACTION_RESULT_ALLOWED;
+
+        if (empty($iProfileId) || !$this->_isModeratorForProfile($isPerformAction, $iProfileId)) { // skip checking if moderator
+            $aCheck = checkActionModule($iProfileId, 'view entry', $this->getName(), $isPerformAction); 
+            if ($aCheck[CHECK_ACTION_RESULT] !== CHECK_ACTION_RESULT_ALLOWED) { // check ACL
+                $mixedRet = $aCheck[CHECK_ACTION_MESSAGE];
+            } elseif(!empty($CNF['OBJECT_PRIVACY_VIEW'])) { // check privacy
+                $oPrivacy = BxDolPrivacy::getObjectInstance($CNF['OBJECT_PRIVACY_VIEW']);
+                if ($oPrivacy && !$oPrivacy->check($aDataEntry[$CNF['FIELD_ID']], $iProfileId))
+                    $mixedRet = _t('_sys_access_denied_to_private_content');
+            }
         }
 
-        return CHECK_ACTION_RESULT_ALLOWED;
+        bx_mem_cache_set($sCacheKey, $mixedRet);
+
+        return $mixedRet;
     }
 
     public function _serviceBrowse ($sMode, $aParams = false, $iDesignBox = BX_DB_PADDING_DEF, $bDisplayEmptyMsg = false, $bAjaxPaginate = true, $sClassSearchResult = 'SearchResult')

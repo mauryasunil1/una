@@ -1639,11 +1639,20 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
         if(empty($aDataEntry) || !is_array($aDataEntry))
             return _t('_sys_txt_not_found');
 
+        $sCacheKey = $this->getName() . ':' . __CLASS__ . ':serviceCheckAllowedViewForProfile:' . $aDataEntry['id'] . ':' . $iProfileId;
+        $mixedRet = bx_mem_cache_get($sCacheKey);
+        if (null !== $mixedRet)
+            return $mixedRet;
+        
         $oProfile = BxDolProfile::getInstanceByContentAndType($aDataEntry[$this->_oConfig->CNF['FIELD_ID']], $this->getName());
         if ($oProfile && $oProfile->id() == $iProfileId)
-            return CHECK_ACTION_RESULT_ALLOWED;
+            $mixedRet = CHECK_ACTION_RESULT_ALLOWED;
+        else
+            $mixedRet = parent::serviceCheckAllowedViewForProfile ($aDataEntry, $isPerformAction, $iProfileId);
 
-        return parent::serviceCheckAllowedViewForProfile ($aDataEntry, $isPerformAction, $iProfileId);
+        bx_mem_cache_set($sCacheKey, $mixedRet);
+
+        return $mixedRet;
     }
 
     /**
@@ -1780,18 +1789,29 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
      * @return CHECK_ACTION_RESULT_ALLOWED if access is granted or error message if access is forbidden.
      */
     public function checkAllowedViewProfileImage ($aDataEntry, $isPerformAction = false)
-    {
+    {        
         $CNF = &$this->_oConfig->CNF;
 
+        $sCacheKey = $this->getName() . ':' . __CLASS__ . ':checkAllowedViewProfileImage:' . $aDataEntry[$CNF['FIELD_ID']];
+        $mixedRet = bx_mem_cache_get($sCacheKey);
+        if (null !== $mixedRet)
+            return $mixedRet;
+
         // check privacy
-        if (empty($CNF['OBJECT_PRIVACY_VIEW']) || isAdmin() || CHECK_ACTION_RESULT_ALLOWED === $this->checkAllowedEditAnyEntry())
-            return CHECK_ACTION_RESULT_ALLOWED;
+        
+        if (empty($CNF['OBJECT_PRIVACY_VIEW']) || isAdmin() || CHECK_ACTION_RESULT_ALLOWED === $this->checkAllowedEditAnyEntry()) {
+            $mixedRet = CHECK_ACTION_RESULT_ALLOWED;
+        } 
+        elseif (($oPrivacy = BxDolPrivacy::getObjectInstance($CNF['OBJECT_PRIVACY_VIEW'])) && !$oPrivacy->check($aDataEntry[$CNF['FIELD_ID']]) && !$oPrivacy->isPartiallyVisible($aDataEntry[$CNF['FIELD_ALLOW_VIEW_TO']])) {
+            $mixedRet = _t('_sys_access_denied_to_private_content');
+        }
+        else {
+            $mixedRet = CHECK_ACTION_RESULT_ALLOWED;
+        }
 
-        $oPrivacy = BxDolPrivacy::getObjectInstance($CNF['OBJECT_PRIVACY_VIEW']);
-        if ($oPrivacy && !$oPrivacy->check($aDataEntry[$CNF['FIELD_ID']]) && !$oPrivacy->isPartiallyVisible($aDataEntry[$CNF['FIELD_ALLOW_VIEW_TO']]))
-            return _t('_sys_access_denied_to_private_content');
+        bx_mem_cache_set($sCacheKey, $mixedRet);
 
-        return CHECK_ACTION_RESULT_ALLOWED;
+        return $mixedRet;
     }
 
     /**
