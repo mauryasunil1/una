@@ -3452,10 +3452,12 @@
     <string name="_sys_menu_template_title_vertical_more_less"><![CDATA[Вертикальное меню с больше/меньше]]></string>
     <string name="_sys_menu_template_title_profile_stats"><![CDATA[Статистика профиля - Меню]]></string>
     <string name="_sys_menu_title_account_dashboard"><![CDATA[Панель аккаунта - Меню]]></string>
+    <string name="_sys_menu_title_public_account_dashboard"><![CDATA[Панель инструментов]]></string>
     <string name="_sys_menu_title_account_dashboard_manage_tools"><![CDATA[Панель аккаунта - Меню инструментов управления]]></string>
     <string name="_sys_menu_title_account_notifications"><![CDATA[Аккаунт - Меню с уведомлениями]]></string>
     <string name="_sys_menu_title_account_popup"><![CDATA[Аккаунт - Всплывающее меню]]></string>
     <string name="_sys_menu_title_account_settings"><![CDATA[Аккаунт - Меню настроек]]></string>
+    <string name="_sys_menu_title_public_account_settings"><![CDATA[Настройки]]></string>
     <string name="_sys_menu_title_add_content"><![CDATA[Добавить содержимое - Меню]]></string>
     <string name="_sys_menu_title_add_profile"><![CDATA[Добавить профиль - Меню]]></string>
     <string name="_sys_menu_title_add_profile_vertical"><![CDATA[Добавить профиль - Меню вертикальное]]></string>
@@ -3469,6 +3471,7 @@
     <string name="_sys_menu_title_application"><![CDATA[Навигация в режиме 'Приложение']]></string>
     <string name="_sys_menu_title_homepage"><![CDATA[Меню на главной странице]]></string>
     <string name="_sys_menu_title_homepage_submenu"><![CDATA[Подменю на главной странице]]></string>
+    <string name="_sys_menu_title_public_homepage_submenu"><![CDATA[Исследовать]]></string>
     <string name="_sys_menu_set_title_homepage_submenu"><![CDATA[Подменю на главной странице]]></string>
     <string name="_sys_menu_item_title_system_explore"><![CDATA[Открытия]]></string>
     <string name="_sys_menu_item_title_explore"><![CDATA[Открытия]]></string>
@@ -3526,6 +3529,7 @@
     <string name="_sys_menu_item_title_inherited"><![CDATA[Унаследованный]]></string>
     <string name="_sys_menu_item_title_disabled"><![CDATA[Отключенный]]></string>
     <string name="_sys_menu_title_con_submenu"><![CDATA[Связи]]></string>
+    <string name="_sys_menu_title_public_con_submenu"><![CDATA[Связи]]></string>
     <string name="_sys_menu_set_title_con_submenu"><![CDATA[Связи]]></string>
     <string name="_sys_menu_item_title_con_friends"><![CDATA[Все друзья]]></string>
     <string name="_sys_menu_item_title_con_friend_requests"><![CDATA[Хотят дружить]]></string>
@@ -3605,6 +3609,7 @@
 	<string name="_sys_page_block_title_sys_create_post_public"><![CDATA[Создать публикацию (публично)]]></string>
 	<string name="_sys_page_block_title_create_post_public"><![CDATA[Добавить...]]></string>
 	<string name="_sys_page_block_title_dashboard"><![CDATA[Панель]]></string>
+        <string name="_sys_page_block_title_dashboard_api"><![CDATA[Панель (только для App-а)]]></string>
         <string name="_sys_page_block_title_homepage_menu"><![CDATA[Меню модулей с содержимым]]></string>
         <string name="_sys_page_block_title_homepage_splash"><![CDATA[Заставка]]></string>
 	<string name="_sys_page_block_title_forgot_password"><![CDATA[Забыли пароль]]></string>

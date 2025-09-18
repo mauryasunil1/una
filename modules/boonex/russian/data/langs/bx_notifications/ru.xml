@@ -12,6 +12,7 @@
     <string name="_bx_ntfs_page_block_title_settings"><![CDATA[Уведомления]]></string>
 
     <string name="_bx_ntfs_menu_title_submenu"><![CDATA[Уведомления - Подменю]]></string>
+    <string name="_bx_ntfs_menu_title_public_submenu"><![CDATA[Уведомления]]></string>
     <string name="_bx_ntfs_menu_set_title_submenu"><![CDATA[Уведомления - Подменю]]></string>
     <string name="_bx_ntfs_menu_item_title_system_notifications_all"><![CDATA[Все уведомления]]></string>
     <string name="_bx_ntfs_menu_item_title_notifications_all"><![CDATA[Все уведомления]]></string>

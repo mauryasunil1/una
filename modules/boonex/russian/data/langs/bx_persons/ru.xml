@@ -196,6 +196,7 @@
     <string name="_bx_persons_page_block_title_cover_block"><![CDATA[Обложка]]></string>
 
     <string name="_bx_persons_menu_title_submenu"><![CDATA[Персоны - Подменю]]></string>
+    <string name="_bx_persons_menu_title_public_submenu"><![CDATA[Персоны]]></string>
     <string name="_bx_persons_menu_set_title_submenu"><![CDATA[Персоны - Подменю]]></string>
     <string name="_bx_persons_menu_set_title_view_profile_actions"><![CDATA[Персоны - Действия]]></string>
     <string name="_bx_persons_menu_title_view_profile_actions"><![CDATA[Персоны - Действия]]></string>
