@@ -77,6 +77,11 @@ class BxReputationDb extends BxBaseModNotificationsDb
                     $sWhereClause .= ' AND `date` >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL :days DAY))';
                 }
 
+                if(isset($aParams['username']) && $aParams['username'] !== false) {
+                    $aIds = $this->_getProfileIdByTerm($aParams['username']);
+                    $sWhereClause .= ' AND `owner_id` IN (' . $this->implode_escape($aIds) . ')';
+                }
+
                 $sGroupClause = '`owner_id`';
                 $sOrderClause = '`points` DESC';
                 $sLimitClause = '0, ' . (int)$aParams['limit'];
@@ -216,6 +221,11 @@ class BxReputationDb extends BxBaseModNotificationsDb
                     $aMethod['params'][3]['context_id'] = $aParams['context_id'];
 
                     $sWhereClause .= ' AND `context_id` = :context_id';
+                }
+
+                if(isset($aParams['username']) && $aParams['username'] !== false) {
+                    $aIds = $this->_getProfileIdByTerm($aParams['username']);
+                    $sWhereClause .= ' AND `profile_id` IN (' . $this->implode_escape($aIds) . ')';
                 }
 
                 $sOrderClause = '`trp`.`points` DESC';
@@ -363,6 +373,17 @@ class BxReputationDb extends BxBaseModNotificationsDb
 
         $aMethod['params'][0] = "SELECT " . $sSelectClause . " FROM `{$this->_sTableHandlers}` WHERE 1 " . $sWhereClause . " " . $sOrderClause . " " . $sLimitClause;
         return call_user_func_array(array($this, $aMethod['name']), $aMethod['params']);
+    }
+
+    private function _getProfileIdByTerm($sUsername)
+    {
+        $aIds = [];
+
+        $aProfiles = bx_srv('system', 'profiles_search', [$sUsername, BX_DOL_INT_MAX], 'TemplServiceProfiles');
+        if(!empty($aProfiles) && is_array($aProfiles))
+            $aIds = array_column($aProfiles, 'value');
+
+        return $aIds;
     }
 }
 

@@ -240,26 +240,32 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
         ]);
     }
 
-    public function getBlockLeaderboard($iContextId = 0, $iDays = 0, $iLimit = 0)
+    public function getBlockLeaderboard($aParams)
     {
         $CNF = &$this->_oConfig->CNF;
 
-        $iContextId = (int)$iContextId;
-        $iDays = (int)$iDays;
-        $iLimit = $iLimit ? (int)$iLimit : (int)getParam($CNF['PARAM_LEADERBOARD_LIMIT']);
+        $iContextId = $aParams['context_id'] ?? 0;
+        $iDays = $aParams['days'] ?? 0;
+        $sUsername = !empty($aParams['username']) ? $aParams['username'] : false;
+        $iLimit = !empty($aParams['limit']) ? (int)$aParams['limit'] : (int)getParam($CNF['PARAM_LEADERBOARD_LIMIT']);
         $bGrowth = $iDays > 0;
+
+        $sName = $aParams['name'] ?? $iContextId . '-' . $iDays;
+        $bFilters = $aParams['filters'] ?? false;
 
         if($bGrowth) 
             $aItems = $this->_oDb->getEvents([
                 'sample' => 'stats', 
                 'context_id' => $iContextId ?: false,
-                'days' => $iDays, 
+                'days' => $iDays,
+                'username' => $sUsername,
                 'limit' => $iLimit
             ]);
         else
             $aItems = $this->_oDb->getProfiles([
                 'sample' => 'stats',
                 'context_id' => $iContextId,
+                'username' => $sUsername,
                 'limit' => $iLimit
             ]);
 
@@ -278,10 +284,87 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
                 'profiles' => $aTmplVarsProfiles
             ];
 
+        $aResult = [
+            'content' => $this->parseHtmlByName('block_leaderboard.html', [
+                'html_id' => $this->_oConfig->getHtmlIds('leaderboard') . $sName,
+                'bx_repeat:profiles' => $aTmplVarsProfiles
+            ])
+        ];
+
+        if($bFilters) {
+            $this->addJs(['leaderboard.js']);
+
+            $aResult['content'] .= $this->getJsCode('leaderboard', [
+                'sName' => $sName,
+                'iContextId' => $iContextId,
+                'oRequestParams' => ['days' => $iDays]
+            ]);
+
+            $aResult['buttons'] = [
+                ['title' => _t('_bx_reputation_txt_filters'), 'href' => 'javascript:void(0)', 'onclick' => 'javascript:' . $this->_oConfig->getJsObject('leaderboard') . '.changeLeaderboardFilters(this)']
+            ];
+        }
+
         $this->addCss(['main.css']);
-        return $this->parseHtmlByName('block_leaderboard.html', [
-            'bx_repeat:profiles' => $aTmplVarsProfiles
+        return $aResult;
+    }
+    
+    public function getLeaderboardFilters($aParams)
+    {
+        $sJsObject = $this->_oConfig->getJsObject('leaderboard');
+
+        $aForm = [
+            'form_attrs' => [
+                'name' => $this->_oConfig->getName() . '_filters',
+            ],
+            'inputs' => [
+                'days' => [
+                    'name' => 'days',
+                    'type' => 'select',
+                    'caption' => _t('_bx_reputation_form_filters_input_days'),
+                    'values' => [
+                        ['key' => 0, 'value' => _t('_bx_reputation_form_filters_input_days_0')],
+                        ['key' => 7, 'value' => _t('_bx_reputation_form_filters_input_days_7')],
+                        ['key' => 30, 'value' => _t('_bx_reputation_form_filters_input_days_30')]
+                    ],
+                    'value' => 0,
+                ],
+                'username' => [
+                    'name' => 'username',
+                    'type' => 'text',
+                    'caption' => _t('_bx_reputation_form_filters_input_username'),
+                    'value' => '',
+                ],
+                'controls' => [
+                    'name' => 'controls',
+                    'type' => 'input_set',
+                    [
+                        'name' => 'apply',
+                        'type' => 'button',
+                        'value' => _t('_bx_reputation_form_filters_input_do_apply'),
+                        'attrs' => ['onclick' => $sJsObject . '.onFiltersApply(this)']
+                    ],
+                    [
+                        'name' => 'reset',
+                        'type' => 'button',
+                        'value' => _t('_bx_reputation_form_filters_input_do_reset'),
+                        'attrs' => ['onclick' => $sJsObject . '.onFiltersReset(this)', 'class' => 'bx-def-margin-sec-left']
+                    ]
+                ],
+            ]
+        ];
+        $oForm = new BxTemplFormView($aForm);
+
+        if($this->_bIsApi)
+            return $oForm->getCodeApi();
+
+        $sViewFiltersPopupId = $this->_oConfig->getHtmlIds('filters_popup');
+        $sViewFiltersPopupContent = $this->parseHtmlByName('popup_filters.html', [
+            'js_object' => $sJsObject,
+            'content' => $oForm->genRows()
         ]);
+
+        return BxTemplFunctions::getInstance()->transBox($sViewFiltersPopupId, $sViewFiltersPopupContent, true);
     }
 }
 

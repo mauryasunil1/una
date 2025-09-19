@@ -60,19 +60,25 @@ class BxReputationConfig extends BxBaseModNotificationsConfig
         ];
 
         $this->_aJsClasses = [
+            'leaderboard' => 'BxReputationLeaderboard',
             'handlers' => 'BxReputationHandlers',
             'levels' => 'BxReputationLevels',
         ];
 
         $this->_aJsObjects = [
+            'leaderboard' => 'oBxReputationLeaderboard',
             'handlers' => 'oBxReputationHandlers',
             'levels' => 'oBxReputationLevels',
         ];
 
         $sHtmlPrefix = str_replace('_', '-', $this->_sName);
         $this->_aHtmlIds = [
-            'handler_popup' => $sHtmlPrefix . '-handler-popup',
-            'level_popup' => $sHtmlPrefix . '-level-popup',
+            'general' => [
+                'leaderboard' =>  $sHtmlPrefix . '-leaderboard-',
+                'filters_popup' => $sHtmlPrefix . '-filters-popup',
+                'handler_popup' => $sHtmlPrefix . '-handler-popup',
+                'level_popup' => $sHtmlPrefix . '-level-popup',
+            ]
         ];
 
         $this->_aHandlerFields = ['group', 'type', 'alert_unit', 'alert_action', 'points_active', 'points_passive'];

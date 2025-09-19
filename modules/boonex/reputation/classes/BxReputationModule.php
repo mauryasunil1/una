@@ -41,6 +41,40 @@ class BxReputationModule extends BxBaseModNotificationsModule
     	]);
     }
 
+    public function actionGetLeaderboard()
+    {
+        $aParams = $this->_prepareParamsGet();
+
+        $aContent = $this->_oTemplate->getBlockLeaderboard($aParams);
+        if(empty($aContent['content']))
+            return echoJson([]);
+
+        echoJson([
+            'code' => 0, 
+            'content' => $aContent['content'],
+        ]);
+    }
+
+    public function actionGetLeaderboardFilters()
+    {
+        $aParams = $this->_prepareParamsGet();
+
+        $sContent = $this->_oTemplate->getLeaderboardFilters($aParams);
+        if(empty($sContent))
+            return echoJson([]);
+
+        echoJson([
+            'code' => 0,
+            'popup' => [
+                'html' => $sContent,
+                'options' => [
+                    'closeOnOuterClick' => true,
+                    'removeOnClose' => false,
+                ]
+            ],
+        ]);
+    }
+
     /**
      * SERVICE METHODS
      */
@@ -119,9 +153,13 @@ class BxReputationModule extends BxBaseModNotificationsModule
         return $this->_oTemplate->getBlockHistory($iProfileId, $iContextId, $iStart, $iLimit);
     }
 
-    public function serviceGetBlockLeaderboard($iContextId = 0, $iDays = 0)
+    public function serviceGetBlockLeaderboard($iContextId = 0, $iDays = 0, $bFilters = false)
     {
-        $mixedResult = $this->_oTemplate->getBlockLeaderboard($iContextId, $iDays);
+        $mixedResult = $this->_oTemplate->getBlockLeaderboard([
+            'context_id' => (int)$iContextId, 
+            'days' => (int)$iDays,
+            'filters' => (bool)$bFilters
+        ]);
 
         return !$this->_bIsApi ? $mixedResult : [
             bx_api_get_block('reputation_leaderboard', $mixedResult)
@@ -275,6 +313,32 @@ class BxReputationModule extends BxBaseModNotificationsModule
     public function  getActionTitle($sAction)
     {
         return _t('_bx_reputation_txt_aa_' . $sAction);
+    }
+
+    protected function _prepareParamsGet($mParams = false)
+    {
+        $aKeys = ['name', 'context_id', 'days', 'username', 'start', 'per_page'];
+
+        $aParams = [];
+        if(!empty($mParams) && is_array($mParams))
+            foreach($aKeys as $sKey)
+                $aParams[$sKey] = isset($mParams[$sKey]) ? $mParams[$sKey] : false;
+        else
+            foreach($aKeys as $sKey)
+                $aParams[$sKey] = bx_get($sKey);
+
+        $aParams['name'] = $aParams['name'] !== false ? bx_process_input($aParams['name']) : '';
+        $aParams['context_id'] = $aParams['context_id'] !== false ? bx_process_input($aParams['context_id'], BX_DATA_INT) : 0;
+
+        $aParams['days'] = $aParams['days'] !== false ? bx_process_input($aParams['days'], BX_DATA_INT) : 0;
+        $aParams['username'] = $aParams['username'] !== false ? bx_process_input($aParams['username']) : '';
+
+        $aParams['start'] = $aParams['start'] !== false ? bx_process_input($aParams['start'], BX_DATA_INT) : 0;
+        $aParams['per_page'] = $aParams['per_page'] !== false ? bx_process_input($aParams['per_page'], BX_DATA_INT) : 12;
+
+        return array_merge($aParams, [
+            'dynamic_mode' => true,
+        ]);
     }
 }
 
