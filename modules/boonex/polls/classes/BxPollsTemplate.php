@@ -130,22 +130,8 @@ class BxPollsTemplate extends BxBaseModTextTemplate
 
         $sSubentries = $this->$sMethod($aData);
 
-        $sTmplVarsMenu = '';
-        if(($oMenu = $this->_getGetBlockMenu($aData, $sMenuItem)) !== '') {
-            $sMenu = str_replace('_', '-', $this->_oConfig->getName()) . '-menu-db';
-            $sMenuId = $sMenu . '-' . $aData['salt'];        
-
-            $sTmplVarsMenu = BxTemplFunctions::getInstance()->designBoxMenu($oMenu, [[
-                 'menu' => [
-                     'id' => $sMenuId, 
-                     'class' => $sMenu, 
-                     'onclick' => "bx_menu_popup_inline('#" . $sMenuId . "', this)"
-                 ]
-             ]]);
-        }
-
         $aTmplVars = array_merge($aTmplVars, array(
-            'menu' => $sTmplVarsMenu,
+            'menu' => 'delete',
             'bx_if:show_subentries' => array(
                 'condition' => !empty($sSubentries),
                 'content' => array(
@@ -156,7 +142,7 @@ class BxPollsTemplate extends BxBaseModTextTemplate
 
         return array(
             'content' => $this->parseHtmlByName('entry-text-subentries.html', $aTmplVars),
-            'menu' => $oMenu
+            'menu' => $this->_getGetBlockMenu($aData, $sMenuItem)
         );
     }
 
