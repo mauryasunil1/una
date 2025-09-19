@@ -53,11 +53,13 @@ class BxBaseMenu extends BxDolMenu
      */
     public function getCode ()
     {
-        $bCacheUsed = false;
-        $sRet = '';
         $sMenuTitle = isset($this->_aObject['title']) ? _t($this->_aObject['title']) : 'Menu-' . rand(0, PHP_INT_MAX);
+        if (isset($GLOBALS['bx_profiler']) && $GLOBALS['bx_profiler']->isMenu($sMenuTitle))
+            $sMenuTitle .= rand(0, PHP_INT_MAX);
         if (isset($GLOBALS['bx_profiler'])) $GLOBALS['bx_profiler']->beginMenu($sMenuTitle);
-
+        
+        $sRet = '';
+        $bCacheUsed = false;
         $sCacheKey = '';
         $mixedCache = null;
         // Use cache only if:

@@ -591,6 +591,10 @@ class BxBaseModGeneralFormEntry extends BxTemplFormView
         if(($iContextNid = $this->getCleanValue('context_nid')) !== false)
             $this->_processContextAfterAdd($iContentId, $iContextNid, (int)$this->getCleanValue('context_usage'));
 
+        // invalidate menu profile stats cache
+        if (isset($aContentInfo[$CNF['FIELD_AUTHOR']]));
+            bx_content_cache_del("menu_sys_profile_stats_p" . $iAuthor);
+
         return $iContentId;
     }
 
@@ -819,6 +823,10 @@ class BxBaseModGeneralFormEntry extends BxTemplFormView
         // delete db record
         
         BxDolFormQuery::removeFormField($this->id, $iContentId);
+
+        // invalidate menu profile stats cache
+        if (isset($aContentInfo[$CNF['FIELD_AUTHOR']]));
+            bx_content_cache_del("menu_sys_profile_stats_p" . $aContentInfo[$CNF['FIELD_AUTHOR']]);
 
         return parent::delete($iContentId);
     }

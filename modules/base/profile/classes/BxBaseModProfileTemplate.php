@@ -56,13 +56,15 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
      */
     function unit ($aData, $isCheckPrivateContent = true, $mixedTemplate = false, $aParams = [])
     {
+        $CNF = &$this->_oConfig->CNF;
+
         list($sTemplate) = is_array($mixedTemplate) ? $mixedTemplate : array($mixedTemplate);
 
         if(!empty($aParams['template_name']))
             $sTemplate = $aParams['template_name'];
         if(empty($sTemplate))
             $sTemplate = $this->_sUnitDefault;
-        
+
         /**
          * Allow use separate template for private profiles. 
          * These templates will be used if privacy field "Visible to" don't allow to view content.
@@ -77,8 +79,42 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
             }
         }
 
-        $aVars = $this->unitVars($aData, $isCheckPrivateContent, $mixedTemplate, $aParams);
-        
+        // check visibility
+        $isAllowedViewCoverImage = ($oModule->checkAllowedViewCoverImage($aData) === CHECK_ACTION_RESULT_ALLOWED);
+        $isAllowedViewProfileImage = ($oModule->checkAllowedViewProfileImage($aData) === CHECK_ACTION_RESULT_ALLOWED);
+        $isProfilePublic = $this->isProfilePublic($aData);
+        $bPublic = $isCheckPrivateContent && !empty($CNF['OBJECT_PRIVACY_VIEW']) ? $isProfilePublic : true;
+
+        // prepare params
+        $aParams = array_merge($aParams, [
+            'is_allowed_view_cover_img' => $isAllowedViewCoverImage, 
+            'is_allowed_view_profile_img' => $isAllowedViewProfileImage, 
+            'is_profile_public' => $isProfilePublic,
+        ]);
+
+        // try to get template variables from cache
+        $sCacheKey = 'sprofile_unit_vars:' . $oModule->getName() . (int)$aData[$CNF['FIELD_ID']] . ':' . $sTemplate . ':avci' . ($isAllowedViewCoverImage ? '1' : '0') . ':avpi' . ($isAllowedViewProfileImage ? '1' : '0') . ':pp' . ($isProfilePublic ? '1' : '0');
+        $aVars = bx_content_cache_get($sCacheKey);
+        if (null === $aVars) {
+            // get template variables if not found in cache
+            $aVars = $this->unitVars($aData, $isCheckPrivateContent, $mixedTemplate, $aParams);
+            bx_content_cache_set($sCacheKey, $aVars);
+        }
+
+        // get snippet menu
+        $aTmplVarsMeta = array();
+        if(substr($sTemplate, 0, 8) != 'unit_wo_') {
+            $iProfile = $aData['profile_id'] ?? false;
+            if($iProfile === false) {
+                $oProfile = BxDolProfile::getInstanceByContentAndType((int)$aData[$CNF['FIELD_ID']], $this->MODULE);
+                $iProfile = $oProfile->id();
+            }
+            $aTmplVarsMeta = $this->getSnippetMenuVars ($iProfile, $bPublic, $aParams);
+        }
+        // snippet meta menu is never cached
+        $aVars['bx_if:meta']['condition'] = !empty($aTmplVarsMeta);
+        $aVars['bx_if:meta']['content'] = $aTmplVarsMeta;
+
         $aExtras = [
             'module' => $oModule->getName(),
             'data' => $aData,
@@ -192,8 +228,8 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
         $oModule = $this->getModule();
         $iContentId = (int)$aData[$CNF['FIELD_ID']];
 
-        $bPublic = $isCheckPrivateContent && !empty($CNF['OBJECT_PRIVACY_VIEW']) ? $this->isProfilePublic($aData) : true;
-
+        $bPublic = $isCheckPrivateContent && !empty($CNF['OBJECT_PRIVACY_VIEW']) ? ($aParams['is_profile_public'] ?? false) : true;
+        
         $oProfile = BxDolProfile::getInstanceByContentAndType($iContentId, $this->MODULE);
         $iProfile = $oProfile->id();
 
@@ -211,7 +247,7 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
         }
 
         $sCoverUrl = '';
-        if(!$isCheckPrivateContent || $oModule->checkAllowedViewCoverImage($aData) === CHECK_ACTION_RESULT_ALLOWED)
+        if(!$isCheckPrivateContent || ($aParams['is_allowed_view_cover_img'] ?? false))
             $sCoverUrl = $this->urlCoverUnit($aData, false);
         $bCoverUrl = !empty($sCoverUrl);
 
@@ -221,7 +257,7 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
             $sCoverUrl = $this->getImageUrl('cover.svg');
 
         $sThumbUrl = '';
-        if($this->_isUnitThumb($aData, $sTemplate) && (!$isCheckPrivateContent || $oModule->checkAllowedViewProfileImage($aData) === CHECK_ACTION_RESULT_ALLOWED))
+        if($this->_isUnitThumb($aData, $sTemplate) && (!$isCheckPrivateContent || ($aParams['is_allowed_view_profile_img'] ?? false)))
             $sThumbUrl = $this->_getUnitThumbUrl($sTemplateSize, $aData, false);
         $bThumbUrl = !empty($sThumbUrl);
 
@@ -252,10 +288,6 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
             'badges' => $oModule->serviceGetBadges($iContentId, false, true),
             'thumb_url' => $bThumbUrl ? $sThumbUrl : $this->getImageUrl('no-picture-thumb.png'),
         );
-
-        $aTmplVarsMeta = array();
-        if(substr($sTemplate, 0, 8) != 'unit_wo_')
-            $aTmplVarsMeta = $this->getSnippetMenuVars ($iProfile, $bPublic, $aParams);
         
         $sCoverData = isset($aData['cover_data']) ? $aData['cover_data'] : '';
 
@@ -286,8 +318,8 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
             'module_name' => _t($CNF['T']['txt_sample_single']),
             'ts' => $aData[$CNF['FIELD_ADDED']],
             'bx_if:meta' => array(
-                'condition' => !empty($aTmplVarsMeta),
-                'content' => $aTmplVarsMeta
+                'condition' => !empty($aParams['snippet_menu_vars']),
+                'content' => $aParams['snippet_menu_vars'] ?? [],
             ),
             'text' => $sText,
             'summary' => $sSummary,

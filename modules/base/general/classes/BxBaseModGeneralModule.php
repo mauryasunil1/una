@@ -20,8 +20,6 @@ bx_import('BxDolAcl');
  */
 class BxBaseModGeneralModule extends BxDolModule
 {
-    protected static $_aMemCacheData = [];
-
     protected $_bIsApi;
     protected $_iProfileId;
     protected $_aSearchableNamesExcept;
@@ -3665,7 +3663,7 @@ class BxBaseModGeneralModule extends BxDolModule
     }
 
     protected function _serviceCheckAllowedViewForProfile ($aDataEntry, $isPerformAction, $iProfileId)
-    {        
+    {
         $CNF = &$this->_oConfig->CNF;
 
         if(!$iProfileId)
