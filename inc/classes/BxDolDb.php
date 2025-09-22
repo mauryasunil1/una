@@ -780,26 +780,17 @@ class BxDolDb extends BxDolFactory implements iBxDolSingleton
         if (!$sKey)
             return false;
 
-        if ($bFromCache && $this->isParamInCache($sKey)) {
-            return self::$_aParams[$sKey];
+        if ($bFromCache) {
+            return $this->isParamInCache($sKey) ? self::$_aParams[$sKey] : false;
         } else {
-            return false;
-            /*
-            // TODO: remove DB calls from this method, since it is used in many places, 
-            //       also all settings must be in cache and there should be no need to
-            //       call DB if param is not in cache
             $sQuery = $this->prepare("SELECT `tmo`.`value` AS `value` FROM `sys_options_mixes2options` AS `tmo` INNER JOIN `sys_options_mixes` AS `tm` ON `tmo`.`mix_id`=`tm`.`id` AND `tm`.`active`='1' WHERE `tmo`.`option`=? LIMIT 1", $sKey);
-            $mixedValue = $this->getOne($sQuery);
-            if($mixedValue !== false)
-                return $mixedValue;
-
-            $sQuery = $this->prepare("SELECT `value` FROM `sys_options` WHERE `name` = ? LIMIT 1", $sKey);            
             $s = $this->getOne($sQuery);
             if($s === false) {
-                trigger_error('Unknown parameter: ' . $sKey, E_USER_ERROR);
+                $sQuery = $this->prepare("SELECT `value` FROM `sys_options` WHERE `name` = ? LIMIT 1", $sKey);            
+                $s = $this->getOne($sQuery);
             }
+            self::$_aParams[$sKey] = $s; // cache it
             return $s;
-            */
         }
     }
 
