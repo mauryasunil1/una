@@ -44,7 +44,7 @@ BxReputationLeaderboard.prototype.changeLeaderboardFilters = function(oLink, oRe
     this.loadingInButton(oLink, true);
 
     jQuery.get (
-        this._sActionsUrl + 'get_leaderboard_filters',
+        this._sActionsUrl + 'get_filters_leaderboard',
         oData,
         function(oResponse) {
             if(oLink)
@@ -88,6 +88,18 @@ BxReputationLeaderboard.prototype.onFiltersApply = function(oSource)
 
 BxReputationLeaderboard.prototype.onFiltersReset = function(oSource)
 {
+    var oFilters = $(oSource).parents('.bx-reputation-filters:first');
+    
+    //--- Reset duration
+    var oDays = oFilters.find("select[name='days']");
+    if(oDays.length)
+        oDays.val('d-' + this._oRequestParams.days);
+
+    //--- Reset username
+    var oUsername = oFilters.find("input[name='username']");
+    if(oUsername.length)
+        oUsername.val('');
+
     this._getData(oSource, this._oRequestParams);
 };
 

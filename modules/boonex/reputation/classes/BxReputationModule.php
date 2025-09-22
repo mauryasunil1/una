@@ -45,21 +45,14 @@ class BxReputationModule extends BxBaseModNotificationsModule
     {
         $aParams = $this->_prepareParamsGet();
 
-        $aContent = $this->_oTemplate->getBlockLeaderboard($aParams);
-        if(empty($aContent['content']))
-            return echoJson([]);
-
-        echoJson([
-            'code' => 0, 
-            'content' => $aContent['content'],
-        ]);
+        return echoJson($this->serviceGetLeaderboard($aParams));
     }
 
-    public function actionGetLeaderboardFilters()
+    public function actionGetFiltersLeaderboard()
     {
         $aParams = $this->_prepareParamsGet();
 
-        $sContent = $this->_oTemplate->getLeaderboardFilters($aParams);
+        $sContent = $this->_oTemplate->getFiltersLeaderboard($aParams);
         if(empty($sContent))
             return echoJson([]);
 
@@ -81,6 +74,7 @@ class BxReputationModule extends BxBaseModNotificationsModule
     public function serviceGetSafeServices()
     {
         return array_merge(parent::serviceGetSafeServices(), [
+            'GetLeaderboard' => '',
             'GetBlockActions' => '',
             'GetBlockLevels' => '',
             'GetBlockLeaderboard' => '',
@@ -99,6 +93,21 @@ class BxReputationModule extends BxBaseModNotificationsModule
             'sample' => 'profile_id', 
             'profile_id' => $iProfileId
         ]);
+    }
+
+    public function serviceGetLeaderboard($mixedParams)
+    {
+        if($this->_bIsApi && is_string($mixedParams))
+            $mixedParams = bx_api_get_browse_params($mixedParams);
+
+        $aResult = $this->_oTemplate->getBlockLeaderboard($mixedParams);
+        if($this->_bIsApi)
+            return $aResult;
+
+        return !empty($aResult['content']) ? [
+            'code' => 0, 
+            'content' => $aResult['content'],
+        ] : [];
     }
 
     public function serviceGetBlockActions($iStart = 0, $iLimit = 0)
@@ -330,7 +339,7 @@ class BxReputationModule extends BxBaseModNotificationsModule
         $aParams['name'] = $aParams['name'] !== false ? bx_process_input($aParams['name']) : '';
         $aParams['context_id'] = $aParams['context_id'] !== false ? bx_process_input($aParams['context_id'], BX_DATA_INT) : 0;
 
-        $aParams['days'] = $aParams['days'] !== false ? bx_process_input($aParams['days'], BX_DATA_INT) : 0;
+        $aParams['days'] = $aParams['days'] !== false ? bx_process_input(str_replace('d-', '', $aParams['days']), BX_DATA_INT) : 0;
         $aParams['username'] = $aParams['username'] !== false ? bx_process_input($aParams['username']) : '';
 
         $aParams['start'] = $aParams['start'] !== false ? bx_process_input($aParams['start'], BX_DATA_INT) : 0;

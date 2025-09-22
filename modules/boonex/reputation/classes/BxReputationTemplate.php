@@ -279,10 +279,13 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
                 ];
 
         if($this->_bIsApi)
-            return [
+            return array_merge([
                 'days' => $iDays,
-                'profiles' => $aTmplVarsProfiles
-            ];
+                'profiles' => $aTmplVarsProfiles,
+            ], $bFilters ? [
+                'request_url' => '/api.php?r=' . $this->_oConfig->getName() . '/get_leaderboard/&params[]=',
+                'filter_form' => ['name' => 'filterform', 'data' => $this->getLeaderboardFilters($aParams)]
+            ] : []);
 
         $aResult = [
             'content' => $this->parseHtmlByName('block_leaderboard.html', [
@@ -308,8 +311,8 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
         $this->addCss(['main.css']);
         return $aResult;
     }
-    
-    public function getLeaderboardFilters($aParams)
+
+    public function getFiltersLeaderboard($aParams)
     {
         $sJsObject = $this->_oConfig->getJsObject('leaderboard');
 
@@ -323,9 +326,9 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
                     'type' => 'select',
                     'caption' => _t('_bx_reputation_form_filters_input_days'),
                     'values' => [
-                        ['key' => 0, 'value' => _t('_bx_reputation_form_filters_input_days_0')],
-                        ['key' => 7, 'value' => _t('_bx_reputation_form_filters_input_days_7')],
-                        ['key' => 30, 'value' => _t('_bx_reputation_form_filters_input_days_30')]
+                        ['key' => 'd-0', 'value' => _t('_bx_reputation_form_filters_input_days_0')],
+                        ['key' => 'd-7', 'value' => _t('_bx_reputation_form_filters_input_days_7')],
+                        ['key' => 'd-30', 'value' => _t('_bx_reputation_form_filters_input_days_30')]
                     ],
                     'value' => 0,
                 ],
