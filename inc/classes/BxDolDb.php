@@ -702,7 +702,7 @@ class BxDolDb extends BxDolFactory implements iBxDolSingleton
         bx_show_service_unavailable_error_and_exit($sOutput);
     }
 
-    protected function isParamInCache($sKey)
+    public function isParamInCache($sKey)
     {
         return is_array(self::$_aParams) && isset(self::$_aParams[$sKey]);
     }
@@ -712,7 +712,7 @@ class BxDolDb extends BxDolFactory implements iBxDolSingleton
         if ($bForceCacheInvalidate)
             $this->cacheParamsClear();
 
-        self::$_aParams = $this->fromCache(self::$_sParamsCacheName, 'getPairs', "SELECT `name`, `value` FROM `sys_options`", "name", "value");
+        self::$_aParams = $this->getPairs("SELECT `name`, `value` FROM `sys_options`", "name", "value");
 
         list($sTmplCode, $sTmplName) = BxDolTemplate::retrieveCode();
         if(!empty($sTmplCode) && !empty($sTmplName)) {
@@ -720,10 +720,11 @@ class BxDolDb extends BxDolFactory implements iBxDolSingleton
             if(is_array($sTmplCode))
                 list($sTmplCode, $iTmplMix) = $sTmplCode;
 
-            if(empty($iTmplMix))
+            $bMixesDiabled = ($GLOBALS['glMixesDisabled'] ?? false);
+            if(empty($iTmplMix) && !$bMixesDiabled)
                 $iTmplMix = (int)$this->getParam($sTmplName . '_default_mix');
 
-            if(!empty($iTmplMix)) {
+            if(!empty($iTmplMix) && !$bMixesDiabled) {
                 $sCacheNameMixed = self::$_sParamsCacheNameMixed . $sTmplCode .  '_' . $iTmplMix;
                 if($bForceCacheInvalidateMixed)
                     $this->cacheParamsClear($sCacheNameMixed);
@@ -748,8 +749,10 @@ class BxDolDb extends BxDolFactory implements iBxDolSingleton
 
     public function cacheParamsClear($sCacheName = '')
     {
-        if(empty($sCacheName))
+        if(empty($sCacheName)) {
+            self::$_aParams = [];
             $sCacheName = self::$_sParamsCacheName;
+        }
 
         return $this->cleanCache($sCacheName);
     }
@@ -780,13 +783,23 @@ class BxDolDb extends BxDolFactory implements iBxDolSingleton
         if ($bFromCache && $this->isParamInCache($sKey)) {
             return self::$_aParams[$sKey];
         } else {
+            return false;
+            /*
+            // TODO: remove DB calls from this method, since it is used in many places, 
+            //       also all settings must be in cache and there should be no need to
+            //       call DB if param is not in cache
             $sQuery = $this->prepare("SELECT `tmo`.`value` AS `value` FROM `sys_options_mixes2options` AS `tmo` INNER JOIN `sys_options_mixes` AS `tm` ON `tmo`.`mix_id`=`tm`.`id` AND `tm`.`active`='1' WHERE `tmo`.`option`=? LIMIT 1", $sKey);
             $mixedValue = $this->getOne($sQuery);
             if($mixedValue !== false)
                 return $mixedValue;
 
-            $sQuery = $this->prepare("SELECT `value` FROM `sys_options` WHERE `name` = ? LIMIT 1", $sKey);
-            return $this->getOne($sQuery);
+            $sQuery = $this->prepare("SELECT `value` FROM `sys_options` WHERE `name` = ? LIMIT 1", $sKey);            
+            $s = $this->getOne($sQuery);
+            if($s === false) {
+                trigger_error('Unknown parameter: ' . $sKey, E_USER_ERROR);
+            }
+            return $s;
+            */
         }
     }
 
@@ -800,7 +813,7 @@ class BxDolDb extends BxDolFactory implements iBxDolSingleton
         $bResult = (int)$this->query($sQuery) > 0;
 
         // renew params cache
-        $bResult &= $this->cacheParams(true, !empty($iMixId));
+        self::$_aParams[$sKey] = $mixedValue;
 
         return $bResult;
     }

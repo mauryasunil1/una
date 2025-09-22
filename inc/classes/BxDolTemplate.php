@@ -358,13 +358,11 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
             $aModule = BxDolModuleQuery::getInstance()->getModuleByUri($sCode);
             if(empty($aModule) || !is_array($aModule) || (int)$aModule['enabled'] != 1 || !file_exists(BX_DIRECTORY_PATH_MODULES . $aModule['path'] . 'data/template/'))
                 return false;
-
-            $oConfig = new BxDolModuleConfig($aModule);
-
+            
             $aResult = array(
-                $oConfig->getUri(), //--- Template module's URI is used as template Code. 
-                $oConfig->getName(),
-                $oConfig->getDirectory()
+                $aModule['uri'], //--- Template module's URI is used as template Code.
+                $aModule['name'],
+                $aModule['path'],
             );
 
             if(!$bSetCookie || bx_get('preview'))
@@ -415,7 +413,14 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
         if(!is_array($aResult[0]))
             $aResult[0] = array($aResult[0]);
 
-        $iMixDefault = !empty($aResult[1]) ? (int)getParam($aResult[1] . '_default_mix') : 0;
+        $iMixDefault = 0;        
+        if (!empty($aResult[1])) {
+            if (!BxDolDb::getInstance()->isParamInCache($aResult[1] . '_default_mix')) {
+                $GLOBALS['glMixesDisabled'] = true; // disable mixes, if template doesn't support mixes
+            } else {
+                $iMixDefault = (int)getParam($aResult[1] . '_default_mix');
+            }
+        }
 
         //--- Check selected mix in COOKIE(the lowest priority) ---//
         $iMix = !empty($_COOKIE[$sMixKey]) ? (int)$_COOKIE[$sMixKey] : 0;
