@@ -76,7 +76,7 @@ BxReputationLeaderboard.prototype.onFiltersApply = function(oSource)
     //--- Apply duration
     var oDays = oFilters.find("select[name='days']");
     if(oDays.length)
-        oRequestParams.days = parseInt(oDays.val());
+        oRequestParams.days = parseInt(oDays.val().replace('d-', ''));
 
     //--- Apply username
     var oUsername = oFilters.find("input[name='username']");

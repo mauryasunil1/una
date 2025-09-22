@@ -284,13 +284,19 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
                 'profiles' => $aTmplVarsProfiles,
             ], $bFilters ? [
                 'request_url' => '/api.php?r=' . $this->_oConfig->getName() . '/get_leaderboard/&params[]=',
-                'filter_form' => ['name' => 'filterform', 'data' => $this->getLeaderboardFilters($aParams)]
+                'filter_form' => ['name' => 'filterform', 'data' => $this->getFiltersLeaderboard($aParams)]
             ] : []);
 
         $aResult = [
             'content' => $this->parseHtmlByName('block_leaderboard.html', [
                 'html_id' => $this->_oConfig->getHtmlIds('leaderboard') . $sName,
-                'bx_repeat:profiles' => $aTmplVarsProfiles
+                'bx_repeat:profiles' => $aTmplVarsProfiles,
+                'bx_if:show_empty' => [
+                    'condition' => !$aTmplVarsProfiles,
+                    'content' => [
+                        'empty' => MsgBox(_t('_Empty'))
+                    ]
+                ]
             ])
         ];
 
