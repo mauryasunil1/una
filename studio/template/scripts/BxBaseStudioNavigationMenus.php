@@ -56,11 +56,12 @@ class BxBaseStudioNavigationMenus extends BxDolStudioNavigationMenus
             unset($oForm->aInputs['set_title']);
 
             $iId = (int)$oForm->insert(array('object' => $sObject, 'module' => BX_DOL_STUDIO_MODULE_CUSTOM, 'deletable' => 1, 'active' => 1));
-            if($iId != 0)
+            if($iId != 0) {
+                $this->onMenuChanged($sObject);
                 $aRes = array('grid' => $this->getCode(false), 'blink' => $iId);
-            else
+            } else {
                 $aRes = array('msg' => _t('_adm_nav_err_menus_create'));
-
+            }
             echoJson($aRes);
         }
         else {
@@ -106,7 +107,7 @@ class BxBaseStudioNavigationMenus extends BxDolStudioNavigationMenus
             unset($oForm->aInputs['set_title']);
 
             if($oForm->update($aMenu['id']) !== false) {
-                bx_content_cache_del_by_prefix('menu_' . $aMenu['object']); 
+                $this->onMenuChanged($aMenu['object']);
                 $aRes = array('grid' => $this->getCode(false), 'blink' => $aMenu['id']);
             } else {
                 $aRes = array('msg' => _t('_adm_nav_err_menus_edit'));
@@ -144,6 +145,8 @@ class BxBaseStudioNavigationMenus extends BxDolStudioNavigationMenus
                 continue;
 
             BxDolStudioLanguagesUtils::getInstance()->deleteLanguageString($aMenu['title']);
+
+            $this->onMenuChanged($aMenu['object']);            
 
             $aIdsAffected[] = $iId;
             $iAffected++;
@@ -419,6 +422,13 @@ class BxBaseStudioNavigationMenus extends BxDolStudioNavigationMenus
     protected function _isDeletable(&$aRow)
     {
     	return (int)$aRow['deletable'] != 0;
+    }
+
+    protected function onMenuChanged($sObject)
+    {
+        bx_content_cache_del_by_prefix('menu_' . $sObject); 
+        $this->oDb->cleanCache('sys_menus');
+        $this->oDb->cleanCache('sys_menu_objects');
     }
 }
 

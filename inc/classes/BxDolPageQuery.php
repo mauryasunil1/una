@@ -35,21 +35,26 @@ class BxDolPageQuery extends BxDolDb
     static public function getPageObjectNameByURI($sURI, $sModule = false, $bSearchRedirects = false)
     {
         $oDb = BxDolDb::getInstance();
-        $a = array('uri' => $sURI);
-        $sQuery = "SELECT `object` FROM `sys_objects_page` WHERE `uri` = :uri";
+        $sObject = false;
         if ($sModule) {
-            $a['module'] = $sModule;
-            $sQuery .= " AND `module` = :module";
+            $sObject = $oDb->getOne("SELECT `object` FROM `sys_objects_page` WHERE `uri` = :uri AND `module` = :module", ['uri' => $sURI, 'module' => $sModule]);
+        } 
+        else {
+            $aUri2Object = $oDb->fromCache('sys_pages_uri_object_map', 'getPairs', "SELECT `uri`, `object` FROM `sys_objects_page`", 'uri', 'object');
+            if (isset($aUri2Object[$sURI]))
+                $sObject = $aUri2Object[$sURI];
         }
-        $sObject = $oDb->getOne($sQuery, $a);
 
         if ($bSearchRedirects && !$sObject) {
-            $sQuery = "SELECT `p`.`object` FROM `sys_objects_page` AS `p` INNER JOIN `sys_seo_uri_rewrites` AS `r` ON (`p`.`uri` = `r`.`uri_orig`) WHERE `r`.`uri_rewrite` = :uri";
             if ($sModule) {
-                $a['module'] = $sModule;
-                $sQuery .= " AND `module` = :module";
+                $sQuery = "SELECT `p`.`object` FROM `sys_objects_page` AS `p` INNER JOIN `sys_seo_uri_rewrites` AS `r` ON (`p`.`uri` = `r`.`uri_orig`) WHERE `r`.`uri_rewrite` = :uri AND `module` = :module";
+                $sObject = $oDb->getOne($sQuery, ['uri' => $sURI, 'module' => $sModule]);
             }
-            $sObject = $oDb->getOne($sQuery, $a);
+            else {
+                $aUriRewrite2Object = $oDb->fromCache('sys_pages_urirewrite_object_map', 'getPairs', "SELECT `r`.`uri_rewrite`, `p`.`object` FROM `sys_objects_page` AS `p` INNER JOIN `sys_seo_uri_rewrites` AS `r` ON (`p`.`uri` = `r`.`uri_orig`)", 'uri_rewrite', 'object');
+                if (isset($aUriRewrite2Object[$sURI]))
+                    $sObject = $aUriRewrite2Object[$sURI];
+            }            
         }
 
         return $sObject;

@@ -311,10 +311,12 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
             $this->onSavePage($oForm, $aValsToAdd);
 
             $iId = (int)$oForm->insert($aValsToAdd);
-            if($iId != 0)
+            if($iId != 0) {
+                $this->onPageChanged($oForm, $aValsToAdd);
                 return ['eval' => $sJsObject . '.onCreatePage(\'' . $sModule . '\', \'' . $sObject . '\')'];
-            else
+            } else {
                 return ['msg' => _t('_adm_bp_err_page_create')];
+            }
         }
 
         $sContent = BxTemplStudioFunctions::getInstance()->popupBox($this->aHtmlIds['add_popup_id'], _t('_adm_bp_txt_create_popup'), $oTemplate->parseHtmlByName('bp_add_page.html', array(
@@ -350,6 +352,7 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
             $this->onSavePage($oForm, $this->aPageRebuild);
 
             if($oForm->update($this->aPageRebuild['id'])) {
+                $this->onPageChanged($oForm, $this->aPageRebuild);
                 $iLevelId = $oForm->getCleanValue('layout_id');
                 if(!empty($iLevelId) && $iLevelId != $this->aPageRebuild['layout_id']) {
                     $aLayoutOld = array();
@@ -399,6 +402,7 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
         if($this->oDb->deletePages(array('type' => 'by_object', 'value' => $this->sPage))) {
             $oLangauge->deleteLanguageString($this->aPageRebuild['title_system']);
             $oLangauge->deleteLanguageString($this->aPageRebuild['title']);
+            $this->onPageChanged(null, $this->aPageRebuild);
             return array('eval' => 'window.parent.location.href = "' . sprintf($this->sTypeUrl, $this->sType) . '";');
         }
 
@@ -2078,6 +2082,12 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
                 break;
         }
         return $aBlock;
+    }
+
+    protected function onPageChanged($oForm, $aPage)
+    {
+        $this->oDb->cleanCache('sys_pages_uri_object_map');
+        $this->oDb->cleanCache('sys_pages_urirewrite_object_map');
     }
 }
 
