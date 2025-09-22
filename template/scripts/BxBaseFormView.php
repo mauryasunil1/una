@@ -387,6 +387,9 @@ class BxBaseFormView extends BxDolForm
         
         foreach ($this->aInputs as $key => &$aInput) {
             if (!isset($aInput['visible_for_levels']) || self::isVisible($aInput)) {
+                $aInput['info'] = strip_tags($aInput['info']);
+                $aInput['error'] = strip_tags($aInput['error']);
+
                 if (isset($aInput['type']) && 'files' == $aInput['type']){
                     $oStorage = BxDolStorage::getObjectInstance($aInput['storage_object']);
                     $aInput['ext_allow'] = $oStorage->getObjectData()['ext_allow'];
@@ -409,17 +412,17 @@ class BxBaseFormView extends BxDolForm
                         }
                     }
                 }
-                
+
                 if (isset($aInput['type']) && 'custom' == $aInput['type']){
                     $sCustomMethod = 'genCustomInput' . $this->_genMethodName($aInput['name']);
                     if (method_exists($this, $sCustomMethod))
                          $aInput = $this->$sCustomMethod($aInput);
                 }
-                
+
                 if (isset($aInput['type']) && 'block_header' == $aInput['type']){
                     $aInput['name'] = $key;
                 }
-                
+
                 if (isset($aInput['type']) && 'block_header' == $aInput['type']){
                     $aInput['name'] = $key;
                 }
