@@ -80,6 +80,7 @@
 
     <!-- Menus -->
     <string name="_bx_reputation_menu_title_submenu"><![CDATA[Reputation Submenu]]></string>
+    <string name="_bx_reputation_menu_title_public_submenu"><![CDATA[Reputation]]></string>
     <string name="_bx_reputation_menu_set_title_submenu"><![CDATA[Reputation Submenu]]></string>
     <string name="_bx_reputation_menu_item_title_system_leaderboard"><![CDATA[Leaderboard]]></string>
     <string name="_bx_reputation_menu_item_title_leaderboard"><![CDATA[Top Members]]></string>

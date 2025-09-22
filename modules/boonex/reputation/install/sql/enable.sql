@@ -62,8 +62,8 @@ INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `t
 
 
 -- MENU: module sub-menu
-INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
-('bx_reputation_submenu', '_bx_reputation_menu_title_submenu', 'bx_reputation_submenu', 'bx_reputation', 8, 0, 1, '', '');
+INSERT INTO `sys_objects_menu`(`object`, `title`, `title_public`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
+('bx_reputation_submenu', '_bx_reputation_menu_title_submenu', '_bx_reputation_menu_title_public_submenu', 'bx_reputation_submenu', 'bx_reputation', 8, 0, 1, '', '');
 
 INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES 
 ('bx_reputation_submenu', 'bx_reputation', '_bx_reputation_menu_set_title_submenu', 0);
