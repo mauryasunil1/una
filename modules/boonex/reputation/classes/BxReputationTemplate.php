@@ -336,7 +336,7 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
                         ['key' => 'd-7', 'value' => _t('_bx_reputation_form_filters_input_days_7')],
                         ['key' => 'd-30', 'value' => _t('_bx_reputation_form_filters_input_days_30')]
                     ],
-                    'value' => 0,
+                    'value' => 'd-0',
                 ],
                 'username' => [
                     'name' => 'username',
@@ -364,8 +364,11 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
         ];
         $oForm = new BxTemplFormView($aForm);
 
-        if($this->_bIsApi)
+        if($this->_bIsApi) {
+            unset($oForm->aInputs['controls']);
+
             return $oForm->getCodeApi();
+        }
 
         $sViewFiltersPopupId = $this->_oConfig->getHtmlIds('filters_popup');
         $sViewFiltersPopupContent = $this->parseHtmlByName('popup_filters.html', [

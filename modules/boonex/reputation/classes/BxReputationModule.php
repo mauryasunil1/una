@@ -98,7 +98,7 @@ class BxReputationModule extends BxBaseModNotificationsModule
     public function serviceGetLeaderboard($mixedParams)
     {
         if($this->_bIsApi && is_string($mixedParams))
-            $mixedParams = bx_api_get_browse_params($mixedParams);
+            $mixedParams = $this->_prepareParamsGet(bx_api_get_browse_params($mixedParams));
 
         $aResult = $this->_oTemplate->getBlockLeaderboard($mixedParams);
         if($this->_bIsApi)

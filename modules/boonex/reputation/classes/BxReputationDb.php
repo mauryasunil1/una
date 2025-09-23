@@ -11,12 +11,14 @@
 
 class BxReputationDb extends BxBaseModNotificationsDb
 {
+    protected $_bIsApi;
     protected $_oConfig;
 
     public function __construct(&$oConfig)
     {
         parent::__construct($oConfig);
 
+        $this->_bIsApi = bx_is_api();
         $this->_oConfig = $oConfig;
     }
 
@@ -381,7 +383,7 @@ class BxReputationDb extends BxBaseModNotificationsDb
 
         $aProfiles = bx_srv('system', 'profiles_search', [$sUsername, BX_DOL_INT_MAX], 'TemplServiceProfiles');
         if(!empty($aProfiles) && is_array($aProfiles))
-            $aIds = array_column($aProfiles, 'value');
+            $aIds = array_column($aProfiles, $this->_bIsApi ? 'id' : 'value');
 
         return $aIds;
     }
