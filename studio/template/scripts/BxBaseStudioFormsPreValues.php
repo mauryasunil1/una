@@ -190,11 +190,12 @@ class BxBaseStudioFormsPreValues extends BxDolStudioFormsPreValues
             }
 
             $iId = (int)$oForm->insert($aAdd);
-            if($iId != 0)
+            if($iId != 0) {
+                $this->onDataListChanged($oForm->getCleanValue('Key'));
                 $aRes = array('grid' => $this->getCode(false), 'blink' => $iId);
-            else
+            } else {
                 $aRes = array('msg' => _t('_adm_form_err_pre_values_create'));
-
+            }
             echoJson($aRes);
         }
         else {
@@ -377,11 +378,12 @@ class BxBaseStudioFormsPreValues extends BxDolStudioFormsPreValues
                 }
             }
 
-            if($oForm->update($aValue['id'], $aAdd) !== false)
+            if($oForm->update($aValue['id'], $aAdd) !== false) {
+                $this->onDataListChanged($this->sList);
                 $aRes = array('grid' => $this->getCode(false), 'blink' => $aValue['id']);
-            else
+            } else {
                 $aRes = array('msg' => _t('_adm_form_err_pre_values_edit'));
-
+            }
             echoJson($aRes);
         } 
         else {
@@ -394,6 +396,13 @@ class BxBaseStudioFormsPreValues extends BxDolStudioFormsPreValues
 
             echoJson(array('popup' => array('html' => $sContent, 'options' => array('closeOnOuterClick' => false))));
         }
+    }
+
+    public function performActionReorder()
+    {        
+        $mixed = parent::performActionReorder();
+        $this->onDataListChanged($this->sList);
+        return $mixed;
     }
 
     public function performActionDelete()
@@ -418,6 +427,8 @@ class BxBaseStudioFormsPreValues extends BxDolStudioFormsPreValues
 
             if((int)$this->_delete($iId) <= 0)
                 continue;
+
+            $this->onDataListChanged($this->sList);
 
             $oLanguage->deleteLanguageString($aValue['lkey']);
             $oLanguage->deleteLanguageString($aValue['lkey2']);
@@ -561,6 +572,12 @@ class BxBaseStudioFormsPreValues extends BxDolStudioFormsPreValues
     protected function canUseForSet($mixedValue)
     {
         return is_numeric($mixedValue) && (int)$mixedValue >= 1 && (int)$mixedValue <= BX_DOL_STUDIO_FIELD_PRE_VALUE_INT_MAX;
+    }
+
+    protected function onDataListChanged($sKey)
+    {
+        $this->oDb->cleanCache('sys_form_pre_values_with_key_' . $sKey);
+        $this->oDb->cleanCache('sys_form_pre_values_' . $sKey);
     }
 }
 
