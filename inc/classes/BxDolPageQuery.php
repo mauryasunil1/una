@@ -24,12 +24,12 @@ class BxDolPageQuery extends BxDolDb
     static public function getPageObject ($sObject)
     {
         $oDb = BxDolDb::getInstance();
-        $sQuery = $oDb->prepare("SELECT `o`.*, `l`.`template`, `l`.`cells_number` FROM `sys_objects_page` AS `o` INNER JOIN `sys_pages_layouts` AS `l` ON (`l`.`id` = `o`.`layout_id`) WHERE `o`.`object` = ?", $sObject);
-        $aObject = $oDb->getRow($sQuery);
-        if (!$aObject || !is_array($aObject))
-            return false;
 
-        return $aObject;
+        $a = $oDb->fromCache('sys_pages_objects_data', 'getAllWithKey', "SELECT `o`.*, `l`.`template`, `l`.`cells_number` FROM `sys_objects_page` AS `o` INNER JOIN `sys_pages_layouts` AS `l` ON (`l`.`id` = `o`.`layout_id`)", 'object');
+        if (isset($a[$sObject]))
+            return $a[$sObject];
+
+        return false;
     }
 
     static public function getPageObjectNameByURI($sURI, $sModule = false, $bSearchRedirects = false)
@@ -106,9 +106,10 @@ class BxDolPageQuery extends BxDolDb
 
     static public function getPageType($iId)
     {
-        return BxDolDb::getInstance()->getRow("SELECT * FROM `sys_pages_types` WHERE `id`=:id LIMIT 1", [
-            'id' => $iId
-        ]);
+        $aPageTypes = BxDolDb::getInstance()->fromCache('pages_types', 'getAllWithKey', "SELECT * FROM `sys_pages_types`", 'id');
+        if(isset($aPageTypes[$iId]))
+            return $aPageTypes[$iId];
+        return false;
     }
 
     static public function getPageTypes()
@@ -188,7 +189,7 @@ class BxDolPageQuery extends BxDolDb
     static public function getSeoUriRewrites()
     {
         $oDb = BxDolDb::getInstance();
-        return $oDb->fromMemory('sys_seo_uri_rewrites', 'getPairs', 'SELECT `uri_orig`, `uri_rewrite` FROM `sys_seo_uri_rewrites`', 'uri_orig', 'uri_rewrite');
+        return $oDb->fromCache('sys_seo_uri_rewrites', 'getPairs', 'SELECT `uri_orig`, `uri_rewrite` FROM `sys_seo_uri_rewrites`', 'uri_orig', 'uri_rewrite');
     }
 
     static public function getSeoLink($sModule, $sPageUri, $aCond = [])

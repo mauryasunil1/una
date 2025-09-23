@@ -15,7 +15,7 @@ class BxDolEmbedQuery extends BxDolFactoryObjectQuery
 {
     static public function getObject($sObject)
     {
-        return parent::getObjectFromTable($sObject, 'sys_objects_embeds');
+        return parent::getObjectFromTable($sObject, 'sys_objects_embeds', true);
     }
 
     static public function getObjects ()

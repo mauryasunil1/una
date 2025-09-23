@@ -2086,6 +2086,7 @@ class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
 
     protected function onPageChanged($oForm, $aPage)
     {
+        $this->oDb->cleanCache('sys_pages_objects_data');
         $this->oDb->cleanCache('sys_pages_uri_object_map');
         $this->oDb->cleanCache('sys_pages_urirewrite_object_map');
     }
