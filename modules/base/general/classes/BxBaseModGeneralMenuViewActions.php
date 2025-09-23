@@ -138,6 +138,12 @@ class BxBaseModGeneralMenuViewActions extends BxTemplMenuCustom
         if(empty($this->_oMenuSocialSharing)) 
             $this->_initMenuSocialSharing();
 
+        if(($mixedResult = $this->_rewriteMenuItem($aItem)) !== false)
+            return $mixedResult;
+
+        if($this->_bIsApi)
+            return $aItem;
+
         $aItem['class_wrp'] = 'bx-base-general-entity-action' . (!empty($aItem['class_wrp']) ? ' ' . $aItem['class_wrp'] : '');
 
         if($this->_bShowAsButton)
@@ -146,10 +152,15 @@ class BxBaseModGeneralMenuViewActions extends BxTemplMenuCustom
         if(!$this->_bShowTitle)
             $aItem['bx_if:title']['condition'] = false;
 
-        if($this->_bIsApi)
-            return $aItem;
-        else
-            return parent::_getMenuItemDefault ($aItem);
+        return parent::_getMenuItemDefault ($aItem);
+    }
+
+    protected function _getMenuItemDefaultApi($aItem)
+    {
+        if(($mixedResult = $this->_rewriteMenuItem($aItem)) !== false)
+            return $mixedResult;
+
+        return parent::_getMenuItemDefaultApi($aItem);
     }
 
     protected function _getMenuItemView($aItem, $aParams = array())
@@ -655,6 +666,15 @@ class BxBaseModGeneralMenuViewActions extends BxTemplMenuCustom
             return $aItem;
         else
             return $this->_getMenuItemDefault($aItem);
+    }
+
+    protected function _rewriteMenuItem($aItem, $aExtrasAddon = [])
+    {
+        return parent::_rewriteMenuItem($aItem, [
+            'module' => $this->_sModule,
+            'content_id' => $this->_iContentId,
+            'content_data' => $this->_aContentInfo,
+        ]);
     }
 }
 
