@@ -27,13 +27,10 @@ class BxDolConnectionQuery extends BxDolDb
 
     static public function getConnectionObject ($sObject)
     {
-        $oDb = BxDolDb::getInstance();
-        $sQuery = $oDb->prepare("SELECT * FROM `sys_objects_connection` WHERE `object` = ?", $sObject);
-        $aObject = $oDb->getRow($sQuery);
-        if (!$aObject || !is_array($aObject))
-            return false;
-
-        return $aObject;
+        $a = BxDolDb::getInstance()->fromCache('sys_objects_connection', 'getAllWithKey', "SELECT * FROM `sys_objects_connection`", 'object');
+        if ($a && isset($a[$sObject]))
+            return $a[$sObject];
+        return false;
     }
 
     public function getCommonContentSQLParts ($sContentTable, $sContentField, $iInitiator1, $iInitiator2, $isMutual = false)

@@ -275,7 +275,7 @@ class BxBaseMenu extends BxDolMenu
      */
     protected function getMenuItemsRaw ()
     {
-        if($this->_bMultilevel)
+        if($this->isMultilevel())
             return $this->_oQuery->getMenuItemsHierarchy();
         else 
             return $this->_oQuery->getMenuItems();
@@ -423,7 +423,7 @@ class BxBaseMenu extends BxDolMenu
         );
 
         $aTmplVarsSubitems = array('subitems' => '');
-        $bTmplVarsSubitems = $this->_bMultilevel && !empty($a['subitems']);
+        $bTmplVarsSubitems = $this->isMultilevel() && !empty($a['subitems']);
         if($bTmplVarsSubitems) {
             $sClassCollpsed = 'bx-mi-collapsed';
             if(($iCollapsed = $this->getUserChoiceCollapsedSubmenu($a)) !== false)

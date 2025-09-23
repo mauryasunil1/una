@@ -183,7 +183,7 @@ class BxDolMenuQuery extends BxDolDb
 
     public function isSetMultilevel($sName)
     {
-        $sSql = $this->prepare("SELECT COUNT(*) FROM `sys_menu_items` WHERE `set_name`=? AND `parent_id`<>'0' LIMIT 1", $sName);
+        $sSql = $this->prepare("SELECT 1 FROM `sys_menu_items` WHERE `set_name` = ? AND `parent_id` != '0' LIMIT 1", $sName);
         return (int)$this->getOne($sSql) > 0;
     }
 }
