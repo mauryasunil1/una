@@ -13,6 +13,8 @@ SET @iCategId = LAST_INSERT_ID();
 INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `type`, `extra`, `check`, `check_error`, `order`) VALUES
 ('bx_fontawesome_option_icons_style', 'default', @iCategId, '_bx_fontawesome_option_icons_style', 'select', 'default,light,duotone', '', '', 10);
 
+UPDATE `sys_options` SET `value` = 'bx_fontawesome' WHERE `name` = 'sys_iconset_default';
+
 
 -- Alerts
 
@@ -24,8 +26,6 @@ INSERT INTO `sys_alerts` (`unit`, `action`, `handler_id`) VALUES
 ('system', 'save_setting', @iHandlerId);
 
 -- CSS Loader
-
-UPDATE `sys_options` SET `value` = 'modules/boonex/fontawesome/template/css/|icons.css' WHERE `name` = 'sys_css_icons_default';
 
 INSERT INTO `sys_preloader` (`module`, `type`, `content`, `active`) VALUES
 ('bx_fontawesome', 'css_system', 'modules/boonex/fontawesome/template/css/|fonts-all.css', 1),

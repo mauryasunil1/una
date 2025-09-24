@@ -1,3 +1,6 @@
+-- ICONSET
+DELETE FROM `sys_objects_iconset` WHERE `object`='bx_fontawesome';
+
 
 -- Studio page and widget
 DELETE FROM `tp`, `tw`, `twb`, `tpw` 
