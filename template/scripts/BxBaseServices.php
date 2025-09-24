@@ -134,8 +134,14 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
         $sResult = '';
 
         switch($sName) {
-            case 'icons':
-                $sResult = getParam('sys_css_icons_default');
+            case 'icons_css':
+                if(($sCss = BxDolIconset::getObjectInstance()->getPreloaderCss()) !== false)
+                    $sResult = $sCss;
+                break;
+
+            case 'icons_js':
+                if(($sJs = BxDolIconset::getObjectInstance()->getPreloaderJs()) !== false)
+                    $sResult = $sJs;
                 break;
 
             case 'tailwind':
