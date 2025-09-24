@@ -24,7 +24,7 @@ class BxTimelineMenuFeeds extends BxTemplMenu
 
         parent::__construct($aObject, $this->_oModule->_oTemplate);
 
-        $this->_bMultilevel = true;
+        $this->_isMultilevel = true;
         $this->_bDisplayAddons = true;
     }
 
@@ -106,7 +106,7 @@ class BxTimelineMenuFeeds extends BxTemplMenu
             'js_object' => $this->_sJsObject,
             'style_prefix' => $this->_sStylePrefix,
             'bx_if:show_toggle' => [
-                'condition' => $this->_bMultilevel && !empty($a['subitems']),
+                'condition' => $this->isMultilevel() && !empty($a['subitems']),
                 'content' => [
                     'js_object' => $this->_sJsObject,
                     'style_prefix' => $this->_sStylePrefix,

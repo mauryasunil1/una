@@ -217,10 +217,11 @@ class BxDolFormQuery extends BxDolDb
             $sUseValues = BX_DATA_VALUES_DEFAULT;
 
         $sQuery = $oDb->prepare("SELECT `Value`, `LKey`, `LKey2`, `Data` FROM `sys_form_pre_values` WHERE `Key` = ? ORDER BY `Order` ASC", $sKey);
-        if($sUseValues == BX_DATA_VALUES_ALL)
-            return $oDb->getAllWithKey($sQuery, 'Value');
+        if($sUseValues == BX_DATA_VALUES_ALL) {
+            return $oDb->fromCache('sys_form_pre_values_with_key_' . $sKey, 'getAllWithKey', $sQuery, 'Value');
+        }
 
-        $a = $oDb->getAll($sQuery);
+        $a = $oDb->fromCache('sys_form_pre_values_' . $sKey, 'getAll', $sQuery);
 
         $iMaxValue = 0;
         if ($isUseForSet)

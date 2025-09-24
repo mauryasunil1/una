@@ -100,7 +100,7 @@ class BxDolMenu extends BxDolFactory implements iBxDolFactoryObject, iBxDolRepla
     protected $_oQuery;
     protected $_oPermalinks;
     protected $_aMarkers = array();
-    protected $_bMultilevel = false;
+    protected $_isMultilevel = null;
 
     protected $_sSessionKeyCollapsed;
 
@@ -127,9 +127,7 @@ class BxDolMenu extends BxDolFactory implements iBxDolFactoryObject, iBxDolRepla
         $this->_sObject = isset($aObject['object']) ? $aObject['object'] : 'bx-menu-obj-' . time() . rand(0, PHP_INT_MAX);
         $this->_aObject = $aObject;
         $this->_oQuery = new BxDolMenuQuery($this->_aObject);
-        $this->_oPermalinks = BxDolPermalinks::getInstance();
-
-        $this->_bMultilevel = !empty($this->_aObject['set_name']) && $this->_oQuery->isSetMultilevel($this->_aObject['set_name']);
+        $this->_oPermalinks = BxDolPermalinks::getInstance();        
 
         $this->_sSessionKeyCollapsed = 'bx_menu_collapsed_';
 
@@ -492,6 +490,14 @@ class BxDolMenu extends BxDolFactory implements iBxDolFactoryObject, iBxDolRepla
         return true;
     }
     
+    protected function isMultilevel ()
+    {
+        if ($this->_isMultilevel !== null)
+            return $this->_isMultilevel;
+
+        $this->_isMultilevel = !empty($this->_aObject['set_name']) && $this->_oQuery->isSetMultilevel($this->_aObject['set_name']);
+    }
+
     protected function _getVisibilityClass($a)
     {
         $aHiddenOn = array(
