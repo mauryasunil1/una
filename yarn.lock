@@ -1804,10 +1804,10 @@ html-entities@~1.4.0:
   resolved "https://registry.yarnpkg.com/html-entities/-/html-entities-1.4.0.tgz#cfbd1b01d2afaf9adca1b10ae7dffab98c71d2dc"
   integrity sha512-8nxjcBcd8wovbeKx7h3wTji4e6+rhaVuPNpMqwWgnHh+N9ToqsCs6XztWRBPQ+UtzsoMAdKZtUENoVzU/EMtZA==
 
-htmx.org@^2.0.6:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/htmx.org/-/htmx.org-2.0.6.tgz#42573483c72112e7e332dfe93043cd0eb32cda01"
-  integrity sha512-7ythjYneGSk3yCHgtCnQeaoF+D+o7U2LF37WU3O0JYv3gTZSicdEFiI/Ai/NJyC5ZpYJWMpUb11OC5Lr6AfAqA==
+htmx.org@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/htmx.org/-/htmx.org-2.0.7.tgz#991571e009a2ea4cb60e7af8bb4c1c8c0de32ecd"
+  integrity sha512-YiJqF3U5KyO28VC5mPfehKJPF+n1Gni+cupK+D69TF0nm7wY6AXn3a4mPWIikfAXtl1u1F1+ZhSCS7KT8pVmqA==
 
 http-cache-semantics@^4.1.1:
   version "4.2.0"
