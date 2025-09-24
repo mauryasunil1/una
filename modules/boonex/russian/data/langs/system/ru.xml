@@ -643,6 +643,8 @@
 	<string name="_adm_dbd_txt_su_system_media"><![CDATA[Системные медиа]]></string>
         <string name="_adm_dbd_txt_c_select"><![CDATA[Выбрать...]]></string>
 	<string name="_adm_dbd_txt_c_clear_all"><![CDATA[Очистить весь кэш]]></string>
+	<string name="_adm_dbd_txt_c_content"><![CDATA[Содержимое страниц]]></string>
+	<string name="_adm_dbd_txt_c_clear_content"><![CDATA[Очистить кэш содержимого страниц]]></string>
 	<string name="_adm_dbd_txt_c_db"><![CDATA[БД]]></string>
 	<string name="_adm_dbd_txt_c_clear_db"><![CDATA[Очистить кэш БД]]></string>
 	<string name="_adm_dbd_txt_c_template"><![CDATA[Тема]]></string>
