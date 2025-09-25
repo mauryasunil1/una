@@ -63,6 +63,20 @@ class BxBaseTemplateServices extends BxDol
 
         return $sResult;
     }
+
+    public function serviceGetInjectionStudio($sName)
+    {
+        $sResult = '';
+
+        switch($sName) {
+            case 'footer':
+                if(($sCode = BxDolIconset::getObjectInstance()->getCode()) !== false)
+                    $sResult = $sCode;
+                break;
+        }
+
+        return $sResult;
+    }
 }
 
 /** @} */

@@ -2152,6 +2152,9 @@ CREATE TABLE `sys_injections_admin` (
   PRIMARY KEY (`id`)
 );
 
+INSERT INTO `sys_injections_admin`(`name`, `page_index`, `key`, `type`, `data`, `replace`, `active`) VALUES
+('sys_footer', 0, 'injection_footer', 'service', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:20:"get_injection_studio";s:6:"params";a:1:{i:0;s:6:"footer";}s:5:"class";s:21:"TemplTemplateServices";}', 0, 1);
+
 -- --------------------------------------------------------
 
 

@@ -295,7 +295,7 @@ class BxBaseMenu extends BxDolMenu
                 'title' => _t($a['title']),
                 'info' => isset($a['info']) ? _t($a['info']) : '',
                 'link' => isset($a['link']) ? $a['link'] : '',
-                'icon' => $sIcon ? $sIcon : ($sIconHtml ? $sIconHtml : ''),
+                'icon' => $sIcon ? bx_gen_method_name($sIcon, ['_', '-']) : ($sIconHtml ? $sIconHtml : ''),
                 'image' => $sIconUrl ? $sIconUrl : '',
                 'submenu' => !empty($a['submenu_object']) ? $a['submenu_object'] : '',
                 'addon' => $this->_bDisplayAddons ? $this->_getMenuAddon($a) : '',
