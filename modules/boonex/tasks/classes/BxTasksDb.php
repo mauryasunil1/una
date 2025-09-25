@@ -49,18 +49,16 @@ class BxTasksDb extends BxBaseModTextDb
     {
         $CNF = &$this->_oConfig->CNF;
 
-        $aBindings = [
-            $CNF['FIELD_ALLOW_VIEW_TO'] => $iContextId,
-            $CNF['FIELD_TASKLIST'] => $iListId
-        ];
-
         $sWhereClause = " AND `" . $CNF['FIELD_ALLOW_VIEW_TO'] . "` = :" . $CNF['FIELD_ALLOW_VIEW_TO'] . " AND `" . $CNF['FIELD_TASKLIST'] . "` = :" . $CNF['FIELD_TASKLIST'];
 
         $oCf = BxDolContentFilter::getInstance();
         if($oCf->isEnabled())
             $sWhereClause .= $oCf->getSQLParts($CNF['TABLE_ENTRIES'], $CNF['FIELD_CF']);
 
-        return $this->getAll("SELECT * FROM `" . $CNF['TABLE_ENTRIES'] . "` WHERE 1" . $sWhereClause, $aBindings);
+        return $this->getAll("SELECT * FROM `" . $CNF['TABLE_ENTRIES'] . "` WHERE 1" . $sWhereClause, [
+            $CNF['FIELD_ALLOW_VIEW_TO'] => $iContextId,
+            $CNF['FIELD_TASKLIST'] => $iListId
+        ]);
     }
 	
     public function getEntriesByDate($sDateFrom, $sDateTo, $aSQLPart = array())

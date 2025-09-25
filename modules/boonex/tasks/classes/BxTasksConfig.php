@@ -19,6 +19,7 @@ class BxTasksConfig extends BxBaseModTextConfig
         $aMenuItems2Methods = array (
             'approve' => 'checkAllowedApprove',
             'edit-task' => 'checkAllowedEdit',
+            'edit-task-state' => 'checkAllowedManage',
             'delete-task' => 'checkAllowedDelete',
         );
 
@@ -42,6 +43,9 @@ class BxTasksConfig extends BxBaseModTextConfig
             'FIELD_TITLE' => 'title',
             'FIELD_TEXT' => 'text',
             'FIELD_TEXT_ID' => 'post-text',
+            'FIELD_TYPE' => 'type',
+            'FIELD_PRIORITY' => 'priority',
+            'FIELD_STATE' => 'state',
             'FIELD_CATEGORY' => 'cat',
             'FIELD_MULTICAT' => 'multicat',
             'FIELD_ALLOW_VIEW_TO' => 'allow_view_to',
@@ -122,18 +126,17 @@ class BxTasksConfig extends BxBaseModTextConfig
             'OBJECT_COMMENTS' => 'bx_tasks',
             'OBJECT_NOTES' => 'bx_tasks_notes',
             'OBJECT_CATEGORY' => 'bx_tasks_cats',
-			'OBJECT_CONNECTION' => 'bx_tasks_assignments',
+            'OBJECT_CONNECTION' => 'bx_tasks_assignments',
             'OBJECT_PRIVACY_VIEW' => 'bx_tasks_allow_view_to',
             'OBJECT_FORM_ENTRY' => 'bx_tasks',
             'OBJECT_FORM_ENTRY_DISPLAY_VIEW' => 'bx_tasks_entry_view',
             'OBJECT_FORM_ENTRY_DISPLAY_ADD' => 'bx_tasks_entry_add',
             'OBJECT_FORM_ENTRY_DISPLAY_EDIT' => 'bx_tasks_entry_edit',
+            'OBJECT_FORM_ENTRY_DISPLAY_EDIT_STATE' => 'bx_tasks_entry_edit_state',
             'OBJECT_FORM_ENTRY_DISPLAY_DELETE' => 'bx_tasks_entry_delete',
-			
             'OBJECT_FORM_LIST_ENTRY' => 'bx_tasks_list',
             'OBJECT_FORM_LIST_ENTRY_DISPLAY_ADD' => 'bx_tasks_list_entry_add',
             'OBJECT_FORM_LIST_ENTRY_DISPLAY_EDIT' => 'bx_tasks_list_entry_edit',
-			
             'OBJECT_MENU_ENTRY_ATTACHMENTS' => 'bx_tasks_entry_attachments', // attachments menu in create/edit forms
             'OBJECT_MENU_ACTIONS_VIEW_ENTRY' => 'bx_tasks_view', // actions menu on view entry page
             'OBJECT_MENU_ACTIONS_VIEW_ENTRY_ALL' => 'bx_tasks_view_actions', // all actions menu on view entry page
@@ -148,9 +151,12 @@ class BxTasksConfig extends BxBaseModTextConfig
             'OBJECT_UPLOADERS' => array('bx_tasks_simple', 'bx_tasks_html5'),
             'OBJECT_CONTENT_INFO' => 'bx_tasks',
             'OBJECT_CMTS_CONTENT_INFO' => 'bx_tasks_cmts',
+            'OBJECT_PRE_LIST_TYPES' => 'bx_tasks_types',
+            'OBJECT_PRE_LIST_PRIORITIES' => 'bx_tasks_priorities',
+            'OBJECT_PRE_LIST_STATES' => 'bx_tasks_states',
             
             'BADGES_AVALIABLE' => true,
-			'COOKIE_SETTING_KEY' => 'bx_tasks_filters',
+            'COOKIE_SETTING_KEY' => 'bx_tasks_filters',
 
             // menu items which visibility depends on custom visibility checking
             'MENU_ITEM_TO_METHOD' => array (
@@ -213,13 +219,13 @@ class BxTasksConfig extends BxBaseModTextConfig
         $this->_aJsClasses = array_merge($this->_aJsClasses, array(
             'manage_tools' => 'BxTasksManageTools',
             'categories' => 'BxDolCategories',
-			'tasks' => 'BxTasksView'
+            'tasks' => 'BxTasksView'
         ));
 
         $this->_aJsObjects = array_merge($this->_aJsObjects, array(
             'manage_tools' => 'oBxTasksManageTools',
             'categories' => 'oBxDolCategories',
-			'tasks' => 'oBxTasksView'
+            'tasks' => 'oBxTasksView'
         ));
 
         $this->_aGridObjects = array(
@@ -228,6 +234,11 @@ class BxTasksConfig extends BxBaseModTextConfig
         );
 
         $this->_bAttachmentsInTimeline = true;
+    }
+
+    public function isCompleted($iState)
+    {
+        return in_array($iState, [BX_TASKS_STATE_CANCELLED, BX_TASKS_STATE_DUPLICATE, BX_TASKS_STATE_DONE]);
     }
 }
 

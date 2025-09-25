@@ -9,8 +9,16 @@
  */
 
 /**
- * Tasks module
+ * Task states
  */
+define('BX_TASKS_STATE_BACBLOG', 1);
+define('BX_TASKS_STATE_TODO', 2);
+define('BX_TASKS_STATE_IN_PROGRESS', 3);
+define('BX_TASKS_STATE_IN_REVIEW', 4);
+define('BX_TASKS_STATE_CANCELLED', 5);
+define('BX_TASKS_STATE_DUPLICATE', 6);
+define('BX_TASKS_STATE_DONE', 7);
+
 class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService 
 {
     function __construct(&$aModule)
@@ -178,45 +186,82 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         ));
     }
 	
-	public function actionProcessTaskForm($iContextId, $iListId)
+    public function actionProcessTaskForm($iContextId, $iListId)
     {
-        if (!$this->isAllowAdd(-$iContextId))
+        if(!$this->isAllowAdd(-$iContextId))
             return;
         
-		$CNF = &$this->_oConfig->CNF;
-		$oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_ENTRY'], $CNF['OBJECT_FORM_ENTRY_DISPLAY_ADD']);
-		
-		$oForm->aFormAttrs['action'] = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'process_task_form/' . $iContextId . '/' . $iListId . '/';
-		if (!$oForm)
+        $CNF = &$this->_oConfig->CNF;
+
+        $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_ENTRY'], $CNF['OBJECT_FORM_ENTRY_DISPLAY_ADD']);
+        $oForm->aFormAttrs['action'] = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'process_task_form/' . $iContextId . '/' . $iListId . '/';
+        if(!$oForm)
             return '';
-		
-		$oForm->initChecker();
-		
+
+        $oForm->initChecker();
         if($oForm->isSubmittedAndValid()) {
-			$aValsToAdd[$CNF['FIELD_ALLOW_VIEW_TO']] = $iContextId;
-			$aValsToAdd[$CNF['FIELD_TASKLIST']] = $iListId;
-			$iContentId = $oForm->insert($aValsToAdd);
-			$this->onPublished($iContentId);
-			
-			return echoJson(array(
-				 'eval' => $this->_oConfig->getJsObject('tasks') . '.reloadData(oData, ' . $iContextId . ')',
-			));
+            $iContentId = $oForm->insert([$CNF['FIELD_ALLOW_VIEW_TO'] => $iContextId, $CNF['FIELD_TASKLIST'] => $iListId]);
+
+            $this->onPublished($iContentId);
+
+            return echoJson([
+                'eval' => $this->_oConfig->getJsObject('tasks') . '.reloadData(oData, ' . $iContextId . ')',
+            ]);
         }
-        else {	
-			$sContent = $this->_oTemplate->parseHtmlByName('popup_form.html', array(
-				'form_id' => $oForm->getId(),
-				'form' => $oForm->getCode(true)
-			));
+        else {
+            $sContent = $this->_oTemplate->parseHtmlByName('popup_form.html', [
+                'form_id' => $oForm->getId(),
+                'form' => $oForm->getCode(true)
+            ]);
 																	 
-			if (!$oForm->isSubmitted()){
-				echo $sContent;
-				return;
-			}
-            return echoJson(array('form' => $sContent, 'form_id' => $oForm->getId()));;
+            if (!$oForm->isSubmitted()) {
+                echo $sContent;
+                return;
+            }
+
+            return echoJson(['form' => $sContent, 'form_id' => $oForm->getId()]);
         }
-	}
-	
-	public function actionCalendarData()
+    }
+
+    public function actionProcessTaskFormEditState($iContentId)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
+        if(!$this->isAllowAdd(abs($aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']])))
+            return '';
+
+        $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_ENTRY'], $CNF['OBJECT_FORM_ENTRY_DISPLAY_EDIT_STATE']);
+        $oForm->aFormAttrs['action'] = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'process_task_form_edit_state/' . $iContentId . '/';
+        if(!$oForm)
+            return '';
+
+        $oForm->initChecker($aContentInfo);
+        if($oForm->isSubmittedAndValid()) {
+            $iState = $oForm->getCleanValue($CNF['FIELD_STATE']);
+            if(!$oForm->update($iContentId, [$CNF['FIELD_COMPLETED'] => (int)$this->_oConfig->isCompleted($iState)]))
+                return echoJson(['msg' => _t('_bx_tasks_txt_err_cannot_perform_action')]);
+
+            return echoJson([
+                'eval' => $this->_oConfig->getJsObject('tasks') . '.reload(oData)',
+            ]);
+        }
+        else {
+            $sContent = $this->_oTemplate->parseHtmlByName('popup_form.html', [
+                'form_id' => $oForm->getId(),
+                'form' => $oForm->getCode(true)
+            ]);
+																	 
+            if (!$oForm->isSubmitted()) {
+                echo $sContent;
+                return;
+            }
+
+            return echoJson(['form' => $sContent, 'form_id' => $oForm->getId()]);
+        }
+    }
+
+    public function actionCalendarData()
     {
         // check permissions
         $aSQLPart = array();
@@ -389,32 +434,38 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         return $aResult;
     }
 
+    public function serviceCheckAllowedManage($iContentId)
+    {
+        if(!$this->isAllowManage($iContentId))
+            return false;
+
+        return true; 
+    }
+
+    public function serviceCheckAllowedComplete($iContentId)
+    {
+        if(!$this->serviceCheckAllowedManage($iContentId))
+            return false;
+
+        return !$this->isCompleted($iContentId);
+    }
+    
+    public function serviceCheckAllowedUncomplete($iContentId)
+    {
+        if(!$this->serviceCheckAllowedManage($iContentId))
+            return false;
+
+        return $this->isCompleted($iContentId);
+    }
+
     public function serviceIsCompleted($iContentId)
     {
-        if (!$this->serviceIsAllowManage($iContentId))
-            return false;
-        
-        $CNF = &$this->_oConfig->CNF;
-
-        $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
-        return $aContentInfo[$CNF['FIELD_COMPLETED']] ? false: true;
+        return $this->isCompleted($iContentId);
     }
-    
+
     public function serviceIsUncompleted($iContentId)
     {
-        if (!$this->serviceIsAllowManage($iContentId))
-            return false;
-        
-		$CNF = &$this->_oConfig->CNF;
-		$aContentInfo = $this->_oDb->getContentInfoById($iContentId);
-        return $aContentInfo[$CNF['FIELD_COMPLETED']] ? true : false;
-    }
-    
-    public function serviceIsAllowManage($iContentId)
-    {
-        if (!$this->isAllowManage($iContentId))
-            return false;
-        return true; 
+        return !$this->isCompleted($iContentId);
     }
     
     public function serviceIsAllowBadges($iContentId)
@@ -427,38 +478,39 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         
         return true; 
     }
-	
-	public function serviceEntityAssignments($iContentId = 0, $bAsArray = false)
-	{
-		if (!$iContentId)
+
+    public function serviceEntityAssignments($iContentId = 0, $bAsArray = false)
+    {
+        if(!$iContentId)
             $iContentId = bx_process_input(bx_get('id'), BX_DATA_INT);
-        if (!$iContentId)
+        if(!$iContentId)
             return false;
 
-		$mixedResult = BxDolConnection::getObjectInstance($this->_oConfig->CNF['OBJECT_CONNECTION'])->getConnectedInitiators($iContentId);
-        if(!$bAsArray) {
-			$s = '';
-            foreach ($mixedResult as $mixedProfile) {
-				$bProfile = is_array($mixedProfile);
+        $CNF = &$this->_oConfig->CNF;
 
-				$oProfile = BxDolProfile::getInstance($bProfile ? (int)$mixedProfile['id'] : (int)$mixedProfile);
-				if(!$oProfile)
-					continue;
+        $aProfiles = BxDolConnection::getObjectInstance($CNF['OBJECT_CONNECTION'])->getConnectedInitiators($iContentId);
+        if($bAsArray)
+            return $aProfiles;
 
-				$aUnitParams = array('template' => array('name' => 'unit', 'size' => 'thumb'));
+        $sResult = '';
+        foreach ($aProfiles as $mixedProfile) {
+            $bProfile = is_array($mixedProfile);
 
-				if($bProfile && is_array($mixedProfile['info']))
-					$aUnitParams['template']['vars'] = $mixedProfile['info'];
+            $oProfile = BxDolProfile::getInstance($bProfile ? (int)$mixedProfile['id'] : (int)$mixedProfile);
+            if(!$oProfile)
+                continue;
 
-				$s .= $oProfile->getUnit(0, $aUnitParams);
-			}
-			$mixedResult = $s;
-			
-            if (!$mixedResult)
-                return MsgBox(_t('_sys_txt_empty'));
+            $aUnitParams = array('template' => array('name' => 'unit', 'size' => 'thumb'));
+            if($bProfile && is_array($mixedProfile['info']))
+                $aUnitParams['template']['vars'] = $mixedProfile['info'];
+
+            $sResult .= $oProfile->getUnit(0, $aUnitParams);
         }
 
-        return $mixedResult;
+        if(!$sResult)
+            $sResult = MsgBox(_t('_sys_txt_empty'));
+
+        return $sResult;
     }
 	
     public function serviceCheckAllowedCommentsTask($iContentId, $sObjectComments) 
@@ -471,7 +523,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         return parent::serviceCheckAllowedCommentsTask($iContentId, $sObjectComments);
     }
 	
-	public function serviceCheckAllowedCommentsView($iContentId, $sObjectComments) 
+    public function serviceCheckAllowedCommentsView($iContentId, $sObjectComments) 
     {
         $CNF = &$this->_oConfig->CNF;
         $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
@@ -513,166 +565,46 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         return $o->display($sTemplate);
     }
 	
-	public function serviceGetCalendarEntries($iProfileId)
+    public function serviceGetCalendarEntries($iProfileId)
     {
-		$CNF = &$this->_oConfig->CNF;
+        $CNF = &$this->_oConfig->CNF;
         $oConn = BxDolConnection::getObjectInstance($CNF['OBJECT_CONNECTION']);
         $aData = $oConn->getConnectedInitiators($iProfileId);
-		$aData2 = array(0);
-        foreach($aData as $iProfileId2){
+        $aData2 = array(0);
+        foreach($aData as $iProfileId2) {
             $oProfile = BxDolProfile::getInstance($iProfileId2);
             array_push($aData2, $oProfile->getContentId());
         }
         $aSQLPart['where'] = " AND " . $CNF['TABLE_ENTRIES'] . ".`" . $CNF['FIELD_ID'] . "` IN(" . implode(',', $aData2) . ")";
         return $this->_oDb->getEntriesByDate(bx_get('start'), bx_get('end'), null, $aSQLPart);
-	}
+    }
 	
     public function serviceBrowseContext ($iProfileId = 0, $aParams = array())
     {
-		if(!$iProfileId)
+        if(!$iProfileId)
             $iProfileId = bx_process_input(bx_get('profile_id'), BX_DATA_INT);
         if(!$iProfileId)
             return '';
+
         return $this->serviceBrowseTasks (-$iProfileId, $aParams);
     }
 	
     public function serviceBrowseTasks ($iContextId = 0, $aParams = array())
     {
-        if(!$this->isAllowView(-$iContextId))
+        $_iContextId = abs($iContextId);
+
+        if(!$this->isAllowView($_iContextId))
             return;  
 
-        if(!($oProfileContext = BxDolProfile::getInstance(-$iContextId)) || $oProfileContext->checkAllowedProfileView(-$iContextId) !== CHECK_ACTION_RESULT_ALLOWED)
+        if(!($oProfileContext = BxDolProfile::getInstance($_iContextId)) || $oProfileContext->checkAllowedProfileView($_iContextId) !== CHECK_ACTION_RESULT_ALLOWED)
             return false;
 
-        $CNF = &$this->_oConfig->CNF;
-
-        $this->_oTemplate->addCssJs();
-        $aVars = array();
-        $aLists = $this->_oDb->getLists($iContextId);
-        $aListsVars = array();
-        $oConn = BxDolConnection::getObjectInstance($CNF['OBJECT_CONNECTION']);
-
-        $aFilterValues = array();
-        if (isset($_COOKIE[$CNF['COOKIE_SETTING_KEY']]))
-                $aFilterValues = json_decode($_COOKIE[$CNF['COOKIE_SETTING_KEY']], true);
-
-        $bAllowAdd = $this->isAllowAdd(-$iContextId);
-        $bAllowManage = $this->isAllowManageByContext(-$iContextId);
-        
-        foreach($aLists as $aList) {
-			$aTasks = $this->_oDb->getTasks($iContextId, $aList['id']);
-			$aTasksVars = array();
-			foreach($aTasks as $aTask) {
-				$aMembers = $oConn->getConnectedInitiators($aTask[$CNF['FIELD_ID']]);
-				$aMembersVars = array();
-				foreach($aMembers as $iMember) {
-					$oProfile = BxDolProfile::getInstance($iMember);
-                    if($oProfile && !($oProfile instanceof BxDolProfileUndefined))
-					   $aMembersVars[] = array('info' => $oProfile->getUnit(0, array('template' => 'unit_wo_info')));
-				}
-				$aTasksVars[] = array(
-					'id' => $aTask[$CNF['FIELD_ID']],
-					'title' => bx_process_output($aTask[$CNF['FIELD_TITLE']]),
-					'created' => bx_time_js($aTask[$CNF['FIELD_ADDED']]),
-					'class' => $aTask[$CNF['FIELD_COMPLETED']] == 1 ? 'completed' : 'uncompleted',
-					'due' => $aTask[$CNF['FIELD_DUEDATE']] > 0 ? bx_time_js($aTask[$CNF['FIELD_DUEDATE']]) : '',
-					'bx_repeat:members' => $aMembersVars,
-					'badges' => $this->serviceGetBadges($aTask[$CNF['FIELD_ID']], true),
-					'url' => bx_absolute_url(BxDolPermalinks::getInstance()->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aTask[$CNF['FIELD_ID']])),
-					'object' => $this->_oConfig->getJsObject('tasks'),
-                    'bx_if:allow_manage' => array(
-				        'condition' => $bAllowManage,
-				        'content' => array(
-                            'id' => $aTask[$CNF['FIELD_ID']],
-                            'object' => $this->_oConfig->getJsObject('tasks'),
-                            'checked' => $aTask[$CNF['FIELD_COMPLETED']] == 1 ? 'checked' : '',
-                        )
-			        ),
-                    'bx_if:deny_manage' => array(
-				        'condition' => !$bAllowManage,
-				        'content' => array(
-                            'id' => $aTask[$CNF['FIELD_ID']],
-                            'checked' => $aTask[$CNF['FIELD_COMPLETED']] == 1 ? 'checked' : '',
-                        )
-			        ),
-				);
-			}
-            
-			$sClass = $sCompleted = $sAll = "";
-			if (isset($aFilterValues[$aList[$CNF['FIELD_ID']]])){
-				$sClass = $aFilterValues[$aList[$CNF['FIELD_ID']]];
-				if ($sClass == 'completed')
-					$sCompleted= 'selected';
-				if ($sClass == 'all')
-					$sAll = 'selected';
-			}
-            
-			$aListsVars[] = array(
-               'bx_if:allow_edit_list' => array(
-				    'condition' => $bAllowAdd,
-				    'content' => array(
-                        'title' => $aList[$CNF['FIELD_TITLE']],
-                        'context_id' => $iContextId,
-                        'list_id' => $aList[$CNF['FIELD_ID']],
-                        'object' => $this->_oConfig->getJsObject('tasks'),
-                    )
-			    ),
-               'bx_if:allow_add' => array(
-				    'condition' => $bAllowAdd,
-				    'content' => array(
-                        'context_id' => $iContextId,
-                        'list_id' => $aList[$CNF['FIELD_ID']],
-                        'object' => $this->_oConfig->getJsObject('tasks'),
-                    )
-			    ),
-                'bx_if:allow_delete_list' => array(
-				    'condition' => $bAllowManage,
-				    'content' => array(
-                        'context_id' => $iContextId,
-                        'list_id' => $aList[$CNF['FIELD_ID']],
-                        'object' => $this->_oConfig->getJsObject('tasks'),
-                    )
-			    ),
-                'bx_if:deny_edit_list' => array(
-				    'condition' => !$bAllowAdd,
-				    'content' => array(
-                        'title' => $aList[$CNF['FIELD_TITLE']],
-                    )
-			    ),
-				'id' => $aList['id'],
-				'bx_repeat:tasks' =>  $aTasksVars,
-				'context_id' => $iContextId,
-				'list_id' => $aList[$CNF['FIELD_ID']],
-				'object' => $this->_oConfig->getJsObject('tasks'),
-				'class' => $sClass,
-				'completed' => $sCompleted,
-				'all' => $sAll,
-			);
-		}
-		
-		$aVars = array(
-			'bx_repeat:task_lists' => $aListsVars,
-			'bx_if:allow_add_list' => array(
-				'condition' => $bAllowAdd,
-				'content' => array(
-                    'context_id' => $iContextId,
-                    'object' => $this->_oConfig->getJsObject('tasks'),
-                )
-			),
-		);
-		
-		$this->_oTemplate->addJs(array(
-			'jquery-ui/jquery-ui.min.js',
-			'tasks.js',
-            'modules/base/general/js/|forms.js'
-    	));
-		
-		return $this->_oTemplate->getJsCode('tasks', array('t_confirm_block_deletion' => _t('_bx_tasks_confirm_tasklist_deletion'))) . $this->_oTemplate->parseHtmlByName('browse_tasks.html', $aVars);
+        return $this->_oTemplate->getEntriesList($iContextId);
     }
 	
     /**
-    * Common methods
-    */
+     * Common methods
+     */
     public function onExpired($iContentId)
     {
         $CNF = &$this->_oConfig->CNF;
@@ -706,24 +638,23 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         }
     }
     
-    function isAllowView($iContextId)
+    public function isAllowView($iContextId)
     {
-        if(!($oProfileContext = BxDolProfile::getInstance($iContextId)) || $oProfileContext->checkAllowedProfileView($iContextId) !== CHECK_ACTION_RESULT_ALLOWED)
+        if(!($oContext = BxDolProfile::getInstance($iContextId)) || $oContext->checkAllowedProfileView($iContextId) !== CHECK_ACTION_RESULT_ALLOWED)
             return false;
 
         return true;
     }
 
-    function isAllowAdd($iContextId)
+    public function isAllowAdd($iContextId)
     {
-        $oProfileContext = BxDolProfile::getInstance($iContextId);
-        $mixedResult = $oProfileContext->checkAllowedPostInProfile($iContextId);
-        if($mixedResult !== CHECK_ACTION_RESULT_ALLOWED)
+        if(!($oContext = BxDolProfile::getInstance($iContextId)) || $oContext->checkAllowedPostInProfile($iContextId) !== CHECK_ACTION_RESULT_ALLOWED)
             return false;
+
         return true;
     }
-    
-    function isAllowManageByContext($iContextId)
+
+    public function isAllowManageByContext($iContextId)
     {
         if(isAdmin())
             return true;
@@ -731,30 +662,46 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         $oProfileContext = BxDolProfile::getInstance($iContextId);
         if(BxDolService::call($oProfileContext->getModule(), 'is_admin', array($iContextId)))
             return true;
+        
+        return false;
     }
     
-    function isAllowManage($iContentId)
+    public function isAllowManage($mixedContent)
     {
         $CNF = &$this->_oConfig->CNF;
-        
-        $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
-        $bRv = $this->isAllowManageByContext(-$aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]);
-        if ($bRv)
-            return $bRv;
-        
-        if ($aContentInfo[$CNF['FIELD_AUTHOR']] == bx_get_logged_profile_id())
+
+        $aContentInfo = !is_array($mixedContent) ? $this->_oDb->getContentInfoById((int)$mixedContent) : $mixedContent;
+        if($this->checkAllowedEdit($aContentInfo) === CHECK_ACTION_RESULT_ALLOWED)
             return true;
-       
-        $oConnection = BxDolConnection::getObjectInstance($CNF['OBJECT_CONNECTION']);
-        if($oConnection) {
-            $aProfileIds = $oConnection->getConnectedContent($iContentId);
-            if(!empty($aProfileIds) && is_array($aProfileIds)){
-                if (in_array(bx_get_logged_profile_id(), $aProfileIds))
-                    return true;
-            }
+
+        if($this->isAllowManageByContext(abs($aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']])))
+            return true;
+
+        if(($oConnection = BxDolConnection::getObjectInstance($CNF['OBJECT_CONNECTION'])) !== false) {
+            $iLoggedId = bx_get_logged_profile_id();
+            $aProfileIds = $oConnection->getConnectedInitiators($aContentInfo[$CNF['FIELD_ID']]);
+            if(!empty($aProfileIds) && is_array($aProfileIds) && in_array($iLoggedId, $aProfileIds))
+                return true;
         }
 
         return false;
+    }
+
+    /**
+     * @return CHECK_ACTION_RESULT_ALLOWED if access is granted or error message if access is forbidden. So make sure to make strict(===) checking.
+     */
+    public function checkAllowedManage ($aDataEntry, $isPerformAction = false)
+    {
+        return $this->isAllowManage($aDataEntry) ? CHECK_ACTION_RESULT_ALLOWED : _t('_sys_txt_access_denied');
+    }
+
+    public function isCompleted($iContentId)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
+
+        return (bool)$aContentInfo[$CNF['FIELD_COMPLETED']];
     }
 }
 

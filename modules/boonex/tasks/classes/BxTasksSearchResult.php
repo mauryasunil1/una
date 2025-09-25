@@ -24,9 +24,9 @@ class BxTasksSearchResult extends BxBaseModTextSearchResult
             'searchFields' => array(),
             'restriction' => array(
                 'author' => array('value' => '', 'field' => 'author', 'operator' => '='),
-        		'featured' => array('value' => '', 'field' => 'featured', 'operator' => '<>'),
-        		'status' => array('value' => 'active', 'field' => 'status', 'operator' => '='),
-        		'statusAdmin' => array('value' => 'active', 'field' => 'status_admin', 'operator' => '='),
+                'featured' => array('value' => '', 'field' => 'featured', 'operator' => '<>'),
+                'status' => array('value' => 'active', 'field' => 'status', 'operator' => '='),
+                'statusAdmin' => array('value' => 'active', 'field' => 'status_admin', 'operator' => '='),
             ),
             'paginate' => array('perPage' => getParam('bx_tasks_per_page_browse'), 'start' => 0),
             'sorting' => 'last',

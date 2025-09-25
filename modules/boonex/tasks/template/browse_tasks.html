@@ -31,7 +31,7 @@
             </div>
             <bx_repeat:tasks>
                 <div class="bx-def-padding-sec  bx-def-border-bottom  bx-tasks-task bx-tasks-task-__class__">
-                    <div class="bx-tasks-task-checkbox bx-def-padding-sec-right">
+                    <div class="bx-tasks-task-checkbox pr-2">
                         <bx_if:allow_manage>
                             <input id="checkbox__id__" type="checkbox" __checked__ class="promoted-input-checkbox" onclick="__object__.setCompleted(__id__, this)">
                         </bx_if:allow_manage>
@@ -41,10 +41,12 @@
                         <label for="checkbox__id__"></label>
                     </div>
 
-                    <a href="__url__" class="bx-def-padding-sec-right bx-tasks-task-name" title="__title__">__title__</a>
-
-                    <span class="bx-def-font-small bx-def-font-grayed bx-def-padding-sec-right">__created__</span>
-                    <span class="bx-def-font-small bx-task-due-date bx-def-padding-sec-right">__due__</span>
+                    <a href="__url__" class="bx-tasks-task-name pr-2" title="__title__">__title__</a>
+                    <span class="bx-def-font-small bx-def-font-grayed pr-2">__created__</span>
+                    <span class="bx-def-font-small bx-def-font-grayed pr-2">__type__</span>
+                    <span class="bx-def-font-small col-green1 pr-2">__priority__</span>
+                    <span class="bx-task-due-date bx-def-font-small col-red1 pr-2">__due__</span>
+                    <span class="bx-def-font-small bx-def-font-grayed pr-2">__state__</span>
                     __badges__
                     <div class="bx-tasks-members">
                         <bx_repeat:members>

@@ -17,6 +17,7 @@
     <string name="_bx_tasks_form_entry"><![CDATA[Tasks]]></string>
     <string name="_bx_tasks_form_entry_display_add"><![CDATA[Add Task]]></string>
     <string name="_bx_tasks_form_entry_display_edit"><![CDATA[Edit Task]]></string>
+    <string name="_bx_tasks_form_entry_display_edit_state"><![CDATA[Edit Task's State]]></string>
     <string name="_bx_tasks_form_entry_display_delete"><![CDATA[Delete Task]]></string>
     <string name="_bx_tasks_form_entry_display_view"><![CDATA[View Task]]></string>
     <string name="_bx_tasks_form_entry_input_author"><![CDATA[Author]]></string>
@@ -30,9 +31,16 @@
     <string name="_bx_tasks_form_entry_input_do_cancel_edit"><![CDATA[Cancel]]></string>
     <string name="_bx_tasks_form_entry_input_sys_controls"><![CDATA[Controls]]></string>
     <string name="_bx_tasks_form_entry_input_sys_controls_edit"><![CDATA[Controls (Edit form)]]></string>
+    <string name="_bx_tasks_form_entry_input_sys_controls_edit_popup"><![CDATA[Controls (Edit form in popup)]]></string>
     <string name="_bx_tasks_form_entry_input_sys_title"><![CDATA[Title]]></string>
     <string name="_bx_tasks_form_entry_input_title"><![CDATA[Title]]></string>
     <string name="_bx_tasks_form_entry_input_title_err"><![CDATA[Title is essential. Please, fill in this field]]></string>
+    <string name="_bx_tasks_form_entry_input_sys_type"><![CDATA[Type]]></string>
+    <string name="_bx_tasks_form_entry_input_type"><![CDATA[Type]]></string>
+    <string name="_bx_tasks_form_entry_input_sys_priority"><![CDATA[Priority]]></string>
+    <string name="_bx_tasks_form_entry_input_priority"><![CDATA[Priority]]></string>
+    <string name="_bx_tasks_form_entry_input_sys_state"><![CDATA[State]]></string>
+    <string name="_bx_tasks_form_entry_input_state"><![CDATA[State]]></string>
     <string name="_bx_tasks_form_entry_input_sys_cat"><![CDATA[Category]]></string>
     <string name="_bx_tasks_form_entry_input_cat"><![CDATA[Category]]></string>
     <string name="_bx_tasks_form_entry_input_cat_err"><![CDATA[Please select category]]></string>
@@ -69,21 +77,21 @@
     <string name="_bx_tasks_form_entry_input_sys_allow_comments"><![CDATA[Allow comments]]></string>
     <string name="_bx_tasks_form_entry_input_allow_comments"><![CDATA[Allow comments]]></string>
 	
-	<string name="_bx_tasks_form_entry_input_sys_tasks_list"><![CDATA[Task list]]></string>
-	<string name="_bx_tasks_form_entry_input_tasks_list"><![CDATA[Task list]]></string>
-	<string name="_bx_tasks_form_profile_input_sys_initial_members"><![CDATA[Assign to]]></string>
-	<string name="_bx_tasks_form_profile_input_initial_members"><![CDATA[Assign to]]></string>
-	<string name="_bx_tasks_form_entry_input_sys_date_due_date"><![CDATA[Due date]]></string>
-	<string name="_bx_tasks_form_entry_input_date_due_date"><![CDATA[Due date]]></string>
-	
-	<string name="_bx_tasks_form_list_entry"><![CDATA[Tasklists]]></string>
-	<string name="_bx_tasks_form_list_entry_display_add"><![CDATA[Add Tasklist]]></string>
-	<string name="_bx_tasks_form_list_entry_display_edit"><![CDATA[Edit Tasklist]]></string>
-	<string name="_bx_tasks_form_list_entry_input_do_submit"><![CDATA[Submit]]></string>
-	<string name="_bx_tasks_form_list_entry_input_sys_do_submit"><![CDATA[Submit]]></string>
-	<string name="_bx_tasks_form_list_entry_input_sys_title"><![CDATA[Title]]></string>
-	<string name="_bx_tasks_form_list_entry_input_title"><![CDATA[Title]]></string>
-	<string name="_bx_tasks_form_list_entry_input_title_err"><![CDATA[Title is essential. Please, fill in this field]]></string>
+    <string name="_bx_tasks_form_entry_input_sys_tasks_list"><![CDATA[Task list]]></string>
+    <string name="_bx_tasks_form_entry_input_tasks_list"><![CDATA[Task list]]></string>
+    <string name="_bx_tasks_form_profile_input_sys_initial_members"><![CDATA[Assign to]]></string>
+    <string name="_bx_tasks_form_profile_input_initial_members"><![CDATA[Assign to]]></string>
+    <string name="_bx_tasks_form_entry_input_sys_date_due_date"><![CDATA[Due date]]></string>
+    <string name="_bx_tasks_form_entry_input_date_due_date"><![CDATA[Due date]]></string>
+
+    <string name="_bx_tasks_form_list_entry"><![CDATA[Tasklists]]></string>
+    <string name="_bx_tasks_form_list_entry_display_add"><![CDATA[Add Tasklist]]></string>
+    <string name="_bx_tasks_form_list_entry_display_edit"><![CDATA[Edit Tasklist]]></string>
+    <string name="_bx_tasks_form_list_entry_input_do_submit"><![CDATA[Submit]]></string>
+    <string name="_bx_tasks_form_list_entry_input_sys_do_submit"><![CDATA[Submit]]></string>
+    <string name="_bx_tasks_form_list_entry_input_sys_title"><![CDATA[Title]]></string>
+    <string name="_bx_tasks_form_list_entry_input_title"><![CDATA[Title]]></string>
+    <string name="_bx_tasks_form_list_entry_input_title_err"><![CDATA[Title is essential. Please, fill in this field]]></string>
 
     <string name="_bx_tasks_category_form_entry"><![CDATA[Categories Form]]></string>
     <string name="_bx_tasks_category_display_add"><![CDATA[Add category]]></string>
@@ -93,12 +101,12 @@
     <string name="_bx_tasks_category_form_entry_input_value_err"><![CDATA[Value is essential. Please, fill in this field]]></string>
     <string name="_bx_tasks_lmi_cpt_categories"><![CDATA[Categories]]></string>
 
-  <string name="_bx_tasks_acl_action_create_entry"><![CDATA[Create Task]]></string>
+    <string name="_bx_tasks_acl_action_create_entry"><![CDATA[Create Task]]></string>
     <string name="_bx_tasks_acl_action_delete_entry"><![CDATA[Delete Task]]></string>
     <string name="_bx_tasks_acl_action_view_entry"><![CDATA[View Task]]></string>
     <string name="_bx_tasks_acl_action_set_thumb"><![CDATA[Set Task Header Image]]></string>
     <string name="_bx_tasks_acl_action_edit_any_entry"><![CDATA[Edit Any Task]]></string>
-	<string name="_bx_tasks_acl_action_delete_any_entry"><![CDATA[Delete Any Task]]></string>
+    <string name="_bx_tasks_acl_action_delete_any_entry"><![CDATA[Delete Any Task]]></string>
 
     <string name="_bx_tasks_page_title_sys_create_entry"><![CDATA[New Task]]></string>
     <string name="_bx_tasks_page_title_create_entry"><![CDATA[New Task]]></string>
@@ -129,10 +137,10 @@
     <string name="_bx_tasks_page_block_title_recent_entries_view_full"><![CDATA[Latest Tasks (Full View)]]></string>
     <string name="_bx_tasks_page_block_title_entry_social_sharing"><![CDATA[Share]]></string>
     <string name="_bx_tasks_page_block_title_entry_author"><![CDATA[Author]]></string>
-	<string name="_bx_tasks_page_block_title_entry_assignments"><![CDATA[Assignments]]></string>
+    <string name="_bx_tasks_page_block_title_entry_assignments"><![CDATA[Assignments]]></string>
     <string name="_bx_tasks_page_block_title_entry_actions"><![CDATA[Actions]]></string>
     <string name="_bx_tasks_page_block_title_entry_comments"><![CDATA[Comments]]></string>
-	<string name="_bx_tasks_page_block_title_entry_reports"><![CDATA[Reports]]></string>
+    <string name="_bx_tasks_page_block_title_entry_reports"><![CDATA[Reports]]></string>
     <string name="_bx_tasks_page_block_title_entry_comments_link"><![CDATA[Comments to <a href="{entry_link}">{title}</a>]]></string>
     <string name="_bx_tasks_page_block_title_entry_attachments"><![CDATA[Attachments]]></string>
     <string name="_bx_tasks_page_block_title_entry_all_actions"><![CDATA[All Actions]]></string>
@@ -187,10 +195,10 @@
     <string name="_bx_tasks_page_block_title_featured_entries_view_showcase"><![CDATA[Featured Tasks]]></string>
     <string name="_bx_tasks_page_block_title_sys_entry_context"><![CDATA[Posted in]]></string>
     <string name="_bx_tasks_page_block_title_entry_context"><![CDATA[Posted in]]></string>
-	<string name="_bx_tasks_page_block_title_sys_calendar_in_context"><![CDATA[Calendar]]></string>
-	<string name="_bx_tasks_page_block_title_calendar_in_context"><![CDATA[Calendar]]></string>
-	<string name="_bx_tasks_page_block_title_sys_calendar_of_author"><![CDATA[Calendar]]></string>
-	<string name="_bx_tasks_page_block_title_calendar_of_author"><![CDATA[Calendar]]></string>
+    <string name="_bx_tasks_page_block_title_sys_calendar_in_context"><![CDATA[Calendar]]></string>
+    <string name="_bx_tasks_page_block_title_calendar_in_context"><![CDATA[Calendar]]></string>
+    <string name="_bx_tasks_page_block_title_sys_calendar_of_author"><![CDATA[Calendar]]></string>
+    <string name="_bx_tasks_page_block_title_calendar_of_author"><![CDATA[Calendar]]></string>
 
     <string name="_bx_tasks_menu_title_entry_attachments"><![CDATA[Form Attachments]]></string>
     <string name="_bx_tasks_menu_set_title_entry_attachments"><![CDATA[Form Attachments]]></string>
@@ -217,6 +225,8 @@
     <string name="_bx_tasks_menu_item_title_create_entry"><![CDATA[Task]]></string>
     <string name="_bx_tasks_menu_item_title_system_edit_entry"><![CDATA[Edit]]></string>
     <string name="_bx_tasks_menu_item_title_edit_entry"><![CDATA[Edit]]></string>
+    <string name="_bx_tasks_menu_item_title_system_edit_entry_state"><![CDATA[Edit State]]></string>
+    <string name="_bx_tasks_menu_item_title_edit_entry_state"><![CDATA[Edit State]]></string>
     <string name="_bx_tasks_menu_item_title_system_delete_entry"><![CDATA[Delete]]></string>
     <string name="_bx_tasks_menu_item_title_delete_entry"><![CDATA[Delete]]></string>
     <string name="_bx_tasks_menu_item_title_system_view_entry"><![CDATA[View Task]]></string>
@@ -281,6 +291,24 @@
     <string name="_bx_tasks_search_extended"><![CDATA[Tasks Search]]></string>
     <string name="_bx_tasks_search_extended_cmts"><![CDATA[Tasks Comments Search]]></string>
 
+    <string name="_bx_tasks_pre_lists_types"><![CDATA[Types]]></string>
+    <string name="_bx_tasks_type_1"><![CDATA[Bug]]></string>
+    <string name="_bx_tasks_type_2"><![CDATA[Feature]]></string>
+    <string name="_bx_tasks_type_3"><![CDATA[Chore]]></string>
+    <string name="_bx_tasks_pre_lists_priorities"><![CDATA[Priorities]]></string>
+    <string name="_bx_tasks_priority_1"><![CDATA[Urgent]]></string>
+    <string name="_bx_tasks_priority_2"><![CDATA[High]]></string>
+    <string name="_bx_tasks_priority_3"><![CDATA[Medium]]></string>
+    <string name="_bx_tasks_priority_4"><![CDATA[Low]]></string>
+    <string name="_bx_tasks_priority_5"><![CDATA[No Priority]]></string>
+    <string name="_bx_tasks_pre_lists_states"><![CDATA[States]]></string>
+    <string name="_bx_tasks_state_1"><![CDATA[Backlog]]></string>
+    <string name="_bx_tasks_state_2"><![CDATA[Todo]]></string>
+    <string name="_bx_tasks_state_3"><![CDATA[In Progress]]></string>
+    <string name="_bx_tasks_state_4"><![CDATA[In Review]]></string>
+    <string name="_bx_tasks_state_5"><![CDATA[Cancelled]]></string>
+    <string name="_bx_tasks_state_6"><![CDATA[Duplicate]]></string>
+    <string name="_bx_tasks_state_7"><![CDATA[Done]]></string>
     <string name="_bx_tasks_pre_lists_cats"><![CDATA[Task categories]]></string>
     <string name="_bx_tasks_cat_Animals_Pets"><![CDATA[Animals & Pets]]></string>
     <string name="_bx_tasks_cat_Architecture"><![CDATA[Architecture]]></string>
@@ -329,7 +357,6 @@
     <string name="_bx_tasks_txt_processing_awaiting"><![CDATA[Scheduled for publishing as soon as video conversion is complete.]]></string>
     <string name="_bx_tasks_txt_processing_failed"><![CDATA[Task isn't published because video conversion failed, edit video to fix the issue.]]></string>
     <string name="_bx_tasks_txt_scheduled_awaiting"><![CDATA[Task publishing date is {date_publish_uf}]]></string>
-	
     <string name="_bx_tasks_txt_new_task_list"><![CDATA[New TaskList]]></string>
     <string name="_bx_tasks_txt_new_task"><![CDATA[New Task]]></string>
     <string name="_bx_tasks_txt_filter_all"><![CDATA[All Tasks]]></string>
@@ -338,6 +365,7 @@
     <string name="_bx_tasks_txt_err_cannot_perform_action"><![CDATA[Cannot perform action. Please report.]]></string>
     <string name="_bx_tasks_confirm_tasklist_deletion"><![CDATA[You will delete all tasks that are contained in this tasklist. Are you sure?]]></string>
   
+    <string name="_bx_tasks_txt_err_cannot_perform_action"><![CDATA[Cannot perform action. Please report.]]></string>
     <string name="_bx_tasks_txt_msg_status_hidden"><![CDATA[This task was hidden.]]></string>
     <string name="_bx_tasks_txt_msg_status_pending"><![CDATA[This task is pending approval.]]></string>
 
