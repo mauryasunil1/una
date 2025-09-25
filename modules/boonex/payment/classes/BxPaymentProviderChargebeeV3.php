@@ -283,7 +283,7 @@ class BxPaymentProviderChargebeeV3 extends BxPaymentProviderChargebee
             $iError = $oException->getCode();
             $sError = $oException->getMessage();
 
-            $this->log('Get Portal Error: ' . $sError . '(' . $iError . ')');
+            $this->log('Get Portal Error: ' . $sError . '(' . $iError . ')', '', BX_LOG_ERR);
 
             return false;
     	}

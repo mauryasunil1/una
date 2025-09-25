@@ -42,7 +42,7 @@ class BxElsApi extends BxDol
             return $this->api($sQuery, array('query' => array('simple_query_string' => array('query' => $sTerm))));
         } 
         else {
-            $this->log('ERROR: searchSimple - search without specifying particular module(type) isn\'t supported');
+            $this->log('ERROR: searchSimple - search without specifying particular module(type) isn\'t supported', '', BX_LOG_ERR);
         }
     }
 
@@ -58,7 +58,7 @@ class BxElsApi extends BxDol
             return $this->api($sQuery, $aQuery);
         }
         else {
-            $this->log('ERROR: searchExtended - search without specifying particular module(type) isn\'t supported');
+            $this->log('ERROR: searchExtended - search without specifying particular module(type) isn\'t supported', BX_LOG_ERR);
         }
     }
 
@@ -174,7 +174,7 @@ class BxElsApi extends BxDol
         $sHttpCode = 200;
         $s = $this->curl($sUrl, $aData, $sMetod, $sHttpCode);
 
-        $this->log($s);
+        $this->log($s, '', BX_LOG_DEBUG);
 
         if ($sHttpCode >= 300 || $sHttpCode < 200) {
             $this->_sError = 'Action('.$sAction.') returned status - ' . $sHttpCode;
@@ -234,7 +234,7 @@ class BxElsApi extends BxDol
         return $sResult;
     }
 
-    protected function log ($mixed, $sProvider = '')
+    protected function log ($mixed, $sProvider = '', $iLevel = BX_LOG_ERR)
     {
         if (!defined('BX_ELASTICSEARCH_LOG') || !constant('BX_ELASTICSEARCH_LOG'))
             return;
@@ -244,7 +244,7 @@ class BxElsApi extends BxDol
 		else if (is_object($mixed))
 			$mixed = json_encode($mixed);
 		
-		bx_log('bx_elasticsearch', $mixed);
+		bx_log('bx_elasticsearch', $mixed, $iLevel);
     }
 }
 

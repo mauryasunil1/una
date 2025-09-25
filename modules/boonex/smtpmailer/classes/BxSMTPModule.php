@@ -223,7 +223,7 @@ class BxSMTPModule extends BxDolModule
 
     function log ($s)
     {
-        bx_log('bx_smtp_mailer', $s);
+        bx_log('bx_smtp_mailer', $s, BX_LOG_ERR);
     }
 }
 

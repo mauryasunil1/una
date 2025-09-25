@@ -150,7 +150,7 @@ class BxProfiler extends BxDol
 
     function _appendToLog ($s)
     {
-		bx_log('bx_profiler', $s);
+		bx_log('bx_profiler', $s, BX_LOG_INFO);
     }
 
     function logSqlQuery ($iTime, $aSqlQuery, &$oStmt)

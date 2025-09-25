@@ -437,7 +437,7 @@ class BxBaseModPaymentModule extends BxBaseModGeneralModule
     	return BxDolService::call($mixedModule, 'cancel_subscription_item', $aParams);
     }
 
-    public function log($mixedContents, $sSection = '', $sTitle = '')
+    public function log($mixedContents, $sSection = '', $sTitle = '', $iLevel = BX_LOG_DEBUG)
     {
         if(is_array($mixedContents))
             $mixedContents = var_export($mixedContents, true);	
@@ -449,7 +449,7 @@ class BxBaseModPaymentModule extends BxBaseModGeneralModule
 
         $sTitle .= "\n";
 
-        bx_log('sys_payments', ":\n[" . $sSection . "] " . $sTitle . $mixedContents);
+        bx_log('sys_payments', ":\n[" . $sSection . "] " . $sTitle . $mixedContents, $iLevel);
     }
 }
 

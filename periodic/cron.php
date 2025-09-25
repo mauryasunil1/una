@@ -122,7 +122,7 @@ function runJob($aJob)
     } else if (!empty($aJob['service_call']) && BxDolService::isSerializedService($aJob['service_call'])) {
         BxDolService::callSerialized($aJob['service_call']);
     }
-    bx_log('sys_cron_jobs', $aJob['name'] . ' / timing: ' . (microtime(true) - $fStart) . ' / memory: ' . memory_get_usage());
+    bx_log('sys_cron_jobs', $aJob['name'] . ' / timing: ' . (microtime(true) - $fStart) . ' / memory: ' . memory_get_usage(), BX_LOG_INFO);
     $oDb->updateJob($aJob['id'], array('timing' => microtime(true) - $fStart));
 }
 

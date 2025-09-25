@@ -95,9 +95,9 @@ class BxPaymentProviderCredits extends BxBaseModPaymentProvider implements iBxBa
     {
         $aResult = $this->_finalizeCheckout($aData);
         if((int)$aResult['code'] != BX_PAYMENT_RESULT_SUCCESS) {
-            $this->log('Finalize Checkout: Failed');
-            $this->log($aData);
-            $this->log($aResult);
+            $this->log('Finalize Checkout: Failed', '', BX_LOG_ERR);
+            $this->log($aData, '', BX_LOG_ERR);
+            $this->log($aResult, '', BX_LOG_ERR);
         }
 
         if(!empty($aResult['pending_id']))

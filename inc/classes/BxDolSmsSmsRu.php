@@ -35,7 +35,7 @@ class BxDolSmsSmsRu extends BxDolSms
         if(($oResult = $oProvider->send_one($oData)) && $oResult->status == "OK")
             return true;
 
-        $this->_writeLog($oResult->status_code . ': ' . $oResult->status_text);
+        $this->_writeLog($oResult->status_code . ': ' . $oResult->status_text, BX_LOG_ERR);
         return false;
     }
 }

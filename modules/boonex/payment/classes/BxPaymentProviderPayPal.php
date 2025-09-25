@@ -100,8 +100,8 @@ class BxPaymentProviderPayPal extends BxBaseModPaymentProvider implements iBxBas
                 break;
         }
 
-        $this->log('Initialize Checkout:');
-        $this->log($aFormData);
+        $this->log('Initialize Checkout:', '', BX_LOG_INFO);
+        $this->log($aFormData, '', BX_LOG_INFO);
 
         $this->_oModule->_oTemplate->displayPageCodeRedirect($sActionURL, $aFormData);
         exit;
@@ -111,9 +111,9 @@ class BxPaymentProviderPayPal extends BxBaseModPaymentProvider implements iBxBas
     {
         $aResult = $this->_registerCheckout($aData);
         if(!isset($aResult['code']) || (int)$aResult['code'] != BX_PAYMENT_RESULT_SUCCESS) {
-            $this->log('Finalize Checkout: Failed');
-            $this->log($aData);
-            $this->log($aResult);
+            $this->log('Finalize Checkout: Failed', '', BX_LOG_ERR);
+            $this->log($aData, '', BX_LOG_ERR);
+            $this->log($aResult, '', BX_LOG_ERR);
         }
 
         return $aResult;
@@ -247,8 +247,8 @@ class BxPaymentProviderPayPal extends BxBaseModPaymentProvider implements iBxBas
 
     protected function _readValidationData($sConnectionUrl, $sRequest)
     {
-        $this->log('Validation Request: ');
-        $this->log($sRequest);
+        $this->log('Validation Request: ', '', BX_LOG_INFO);
+        $this->log($sRequest, '', BX_LOG_INFO);
 
 		$rConnect = curl_init('https://' . $sConnectionUrl . '/cgi-bin/webscr');
 		curl_setopt($rConnect, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
@@ -267,8 +267,8 @@ class BxPaymentProviderPayPal extends BxBaseModPaymentProvider implements iBxBas
         }
 
 		if(!$sResponse) {
-		    $this->log('Validation Data: ' . curl_error($rConnect));
-            $this->log($sResponse);
+		    $this->log('Validation Data: ' . curl_error($rConnect), '', BX_LOG_ERR);
+            $this->log($sResponse, '', BX_LOG_ERR);
 			curl_close($rConnect);
 
 			return array('code' => 5, 'message' => $this->_sLangsPrefix . 'err_cannot_validate');
@@ -278,8 +278,8 @@ class BxPaymentProviderPayPal extends BxBaseModPaymentProvider implements iBxBas
 
 		$aResponse = explode("\n", $sResponse);
 
-		$this->log('Validation Response: ');
-        $this->log($aResponse);
+		$this->log('Validation Response: ', '', BX_LOG_INFO);
+        $this->log($aResponse, '', BX_LOG_INFO);
 		return array('code' => 0, 'content' => $aResponse);
     }
 

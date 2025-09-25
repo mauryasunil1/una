@@ -97,11 +97,11 @@ class BxStrmEngineOvenMediaEngine extends BxDol
                 $bDeleteRecording = true;
             }
             else {
-                bx_log('bx_stream', "Store recording from URL(" . $sFileUrl . ") failed for content id({$aContentInfo['id']}): " . $oStorage->getErrorString());
+                bx_log('bx_stream', "Store recording from URL(" . $sFileUrl . ") failed for content id({$aContentInfo['id']}): " . $oStorage->getErrorString(), BX_LOG_ERR);
             }
         }
         else {
-            bx_log('bx_stream', "Store recording failed because 'bx_stream_recordings' storage doesn't exist");
+            bx_log('bx_stream', "Store recording failed because 'bx_stream_recordings' storage doesn't exist", BX_LOG_ERR);
             $bDeleteRecording = true;
         }
 
@@ -203,7 +203,7 @@ class BxStrmEngineOvenMediaEngine extends BxDol
 
         $sUrl = $sApiProtocol . "://{$sHost}:$iApiPort/v1{$sUri}";
         $s = bx_file_get_contents($sUrl, $aBody, $sMethod, ['Authorization: Basic ' . $sApiKey]);
-        bx_log('bx_stream_ome_api', $sUrl . "\n" . $s);
+        bx_log('bx_stream_ome_api', $sUrl . "\n" . $s, BX_LOG_DEBUG);
         if (!$s)
             return false;
 

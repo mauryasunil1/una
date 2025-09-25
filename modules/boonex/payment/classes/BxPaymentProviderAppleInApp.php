@@ -73,7 +73,7 @@ class BxPaymentProviderAppleInApp extends BxBaseModPaymentProvider implements iB
         if(!in_array($sType, array('INITIAL_BUY_CUSTOM', 'DID_RENEW', 'REFUND', 'CANCEL')))
             return 200;
 
-        $this->log($aNotification, 'Webhooks: ' . (!empty($sType) ? $sType : ''));
+        $this->log($aNotification, 'Webhooks: ' . (!empty($sType) ? $sType : ''), BX_LOG_INFO);
 
         $sMethod = '_processNotification' . bx_gen_method_name(strtolower($sType), array('.', '_', '-'));
     	if(!method_exists($this, $sMethod))

@@ -1564,7 +1564,7 @@ class BxTimelineDb extends BxBaseModNotificationsDb
             foreach($aTracks as $aTrack)
                 $sTracks .= "{$aTrack['file']} ({$aTrack['line']})\n";
 
-            bx_log('bx_timeline_custom', $sTracks);
+            bx_log('bx_timeline_custom', $sTracks, BX_LOG_DEBUG);
         }
             
         return parent::insertEvent($aParamsSet);

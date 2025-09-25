@@ -1175,9 +1175,9 @@ class BxPaymentProviderStripeV3 extends BxPaymentProviderStripeBasic implements 
             $aError = array();
         }
 
-        $this->log($sMessage . $sError);
+        $this->log($sMessage . $sError, '', BX_LOG_ERR);
         if(!empty($aError))
-            $this->log($aError);
+            $this->log($aError, '', BX_LOG_ERR);
 
         return false;
     }

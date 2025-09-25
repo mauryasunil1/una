@@ -77,7 +77,7 @@ class BxStrmModule extends BxBaseModTextModule
         if ($oStorage = BxDolStorage::getObjectInstance('bx_stream_recordings')) {
             $iFileId = $oStorage->storeFileFromUrl($sUrl, true, $aContentInfo[$CNF['FIELD_AUTHOR']], $aContentInfo['id']);
             if (!$iFileId)
-                bx_log('bx_stream', "Store recording from URL(" . $sUrl . ") failed for content id({$aContentInfo['id']})");
+                bx_log('bx_stream', "Store recording from URL(" . $sUrl . ") failed for content id({$aContentInfo['id']})", BX_LOG_ERR);
         }
     }
 
@@ -324,7 +324,7 @@ class BxStrmModule extends BxBaseModTextModule
 
             }
             else {
-                bx_log('bx_stream', "No recording ID defined for content ID($iContentId)");
+                bx_log('bx_stream', "No recording ID defined for content ID($iContentId)", BX_LOG_ERR);
             }
         }
 

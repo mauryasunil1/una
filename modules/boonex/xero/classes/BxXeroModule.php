@@ -68,7 +68,7 @@ class BxXeroModule extends BxDolModule
         $sSignatureReceived = isset($_SERVER['HTTP_X_XERO_SIGNATURE']) ? $_SERVER['HTTP_X_XERO_SIGNATURE'] : '';
 
         if(!hash_equals($sSignatureComputed, $sSignatureReceived)) {
-            bx_log($this->getName(), ":\n[Core] Get Webhook: Wrong Signature (" . $sSignatureComputed . ", " . $sSignatureReceived . ")");
+            bx_log($this->getName(), ":\n[Core] Get Webhook: Wrong Signature (" . $sSignatureComputed . ", " . $sSignatureReceived . ")", BX_LOG_ERR);
             http_response_code(401);
             return;
         }
@@ -200,7 +200,7 @@ class BxXeroModule extends BxDolModule
         bx_log($this->getName(), [
             ":\n[Core] Create Invoice: " . $sId,
             $aInvoice
-        ]);
+        ], BX_LOG_ERR);
 
         bx_alert($this->_oConfig->getName(), 'invoice_created', 0, 0, array(
             'id' => $sId,
@@ -216,7 +216,7 @@ class BxXeroModule extends BxDolModule
         bx_log($this->getName(), [
             ":\n[Core] Update Invoice: " . $sId,
             $aInvoice
-        ]);
+        ], BX_LOG_ERR);
 
         bx_alert($this->_oConfig->getName(), 'invoice_updated', 0, 0, array(
             'id' => $sId,

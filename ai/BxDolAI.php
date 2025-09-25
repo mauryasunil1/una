@@ -205,7 +205,7 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
 
     private function writeLog($sString)
     {
-        bx_log('sys_agents', $sString);
+        bx_log('sys_agents', $sString, BX_LOG_ERR);
     }
 }
 

@@ -409,7 +409,7 @@ class BxDolAI extends BxDolFactory implements iBxDolSingleton
         if(empty($sSection))
             $sSection = "Core";
 
-        bx_log('sys_agents', ":\n[" . $sSection . "] " . $mixedContents);
+        bx_log('sys_agents', ":\n[" . $sSection . "] " . $mixedContents, BX_LOG_ERR);
     }
 
     protected function _evalCode($aAutomator, $aParams = [])
