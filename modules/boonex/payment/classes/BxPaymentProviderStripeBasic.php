@@ -559,8 +559,8 @@ class BxPaymentProviderStripeBasic extends BxBaseModPaymentProvider
         if(!in_array($sType, array('invoice.payment_succeeded', 'charge.refunded', 'customer.subscription.deleted')))
             return 200;
 
-        $this->log('Webhooks: ' . (!empty($sType) ? $sType : ''));
-        $this->log($aEvent);
+        $this->log('Webhooks: ' . (!empty($sType) ? $sType : ''), '', BX_LOG_INFO);
+        $this->log($aEvent, '', BX_LOG_INFO);
 
         $sMethod = '_processEvent' . bx_gen_method_name($sType, array('.', '_', '-'));
     	if(!method_exists($this, $sMethod))
@@ -628,8 +628,8 @@ class BxPaymentProviderStripeBasic extends BxBaseModPaymentProvider
         if(empty($sMessage))
             $sMessage = $oException->getMessage();
 
-        $this->log($sMessage . $aError['error']['message']);
-        $this->log($aError);
+        $this->log($sMessage . $aError['error']['message'], '', BX_LOG_ERR);
+        $this->log($aError, '', BX_LOG_ERR);
 
         return false;
     }

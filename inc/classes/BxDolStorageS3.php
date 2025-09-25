@@ -191,7 +191,7 @@ class BxDolStorageS3 extends BxDolStorage
             }
         } catch (Exception $e) {
             $this->setErrorCode(BX_DOL_STORAGE_ERR_ENGINE_GET);
-            bx_log('sys_storage_s3', $e->getMessage());
+            bx_log('sys_storage_s3', $e->getMessage(), BX_LOG_ERR);
             return false;
         }
 
@@ -236,7 +236,7 @@ class BxDolStorageS3 extends BxDolStorage
             }
         } catch (Exception $e) {
             $this->setErrorCode(BX_DOL_STORAGE_ERR_ENGINE_ADD);
-            bx_log('sys_storage_s3', $e->getMessage());
+            bx_log('sys_storage_s3', $e->getMessage(), BX_LOG_ERR);
             return false;
         }
 
@@ -254,7 +254,7 @@ class BxDolStorageS3 extends BxDolStorage
             }
         } catch (Exception $e) {
             $this->setErrorCode(BX_DOL_STORAGE_ERR_UNLINK);
-            bx_log('sys_storage_s3', $e->getMessage());
+            bx_log('sys_storage_s3', $e->getMessage(), BX_LOG_ERR);
             return false;
         }
 

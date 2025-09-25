@@ -181,8 +181,8 @@ class BxPaymentProviderPayPalApi extends BxBaseModPaymentProvider implements iBx
 
         $aResult = $this->$sMethod($aData);
         if(!isset($aResult['code']) || (int)$aResult['code'] != BX_PAYMENT_RESULT_SUCCESS) {
-            $this->log($aResult, 'Finalize Checkout Failed:');
-            $this->log($aData, 'Finalize Checkout Input:');
+            $this->log($aResult, 'Finalize Checkout Failed:', BX_LOG_ERR);
+            $this->log($aData, 'Finalize Checkout Input:', BX_LOG_ERR);
         }
 
         return $aResult;
@@ -361,8 +361,8 @@ class BxPaymentProviderPayPalApi extends BxBaseModPaymentProvider implements iBx
         ));
 
         if($mixedResult === false || empty($mixedResult['id']) || empty($mixedResult['links'])) {
-            $this->log($mixedResult, 'Create Subscription:');
-
+            $this->log($mixedResult, 'Create Subscription:', BX_LOG_ERR);
+            
             return $this->_sLangsPrefix . 'err_cannot_perform';
         }
 
@@ -383,7 +383,7 @@ class BxPaymentProviderPayPalApi extends BxBaseModPaymentProvider implements iBx
     {
         $mixedResult = $this->_apiCallAuthorized($this->_sEndpoint . 'v1/billing/subscriptions/' . $sSubscriptionId, array(), array(), 'get');
         if($mixedResult === false || !isset($mixedResult['id'])) {
-            $this->log($mixedResult, 'Get Subscription:');
+            $this->log($mixedResult, 'Get Subscription:', BX_LOG_ERR);
 
             return array();
         }
@@ -398,7 +398,7 @@ class BxPaymentProviderPayPalApi extends BxBaseModPaymentProvider implements iBx
         ], [], 'post-json', true);
 
         if($sCode != 204) {
-            $this->log($sResponse, 'Cancel Subscription:');
+            $this->log($sResponse, 'Cancel Subscription:', BX_LOG_ERR);
 
             return false;
         }
@@ -423,7 +423,7 @@ class BxPaymentProviderPayPalApi extends BxBaseModPaymentProvider implements iBx
         ));
 
         if($mixedResult === false || !isset($mixedResult['id'])) {
-            $this->log($mixedResult, 'Create Product:');
+            $this->log($mixedResult, 'Create Product:', BX_LOG_ERR);
 
             return false;
         }
@@ -435,7 +435,7 @@ class BxPaymentProviderPayPalApi extends BxBaseModPaymentProvider implements iBx
     {
         $mixedResult = $this->_apiCallAuthorized($this->_sEndpoint . 'v1/catalogs/products/' . $sProductId, array(), array(), 'get');
         if($mixedResult === false || !isset($mixedResult['id'])) {
-            $this->log($mixedResult, 'Get Product:');
+            $this->log($mixedResult, 'Get Product:', BX_LOG_ERR);
 
             return array();
         }
@@ -509,7 +509,7 @@ class BxPaymentProviderPayPalApi extends BxBaseModPaymentProvider implements iBx
         ));
 
         if($mixedResult === false || !isset($mixedResult['id'])) {
-            $this->log($mixedResult, 'Create Plan:');
+            $this->log($mixedResult, 'Create Plan:', BX_LOG_ERR);
 
             return false;
         }
@@ -521,7 +521,7 @@ class BxPaymentProviderPayPalApi extends BxBaseModPaymentProvider implements iBx
     {
         $mixedResult = $this->_apiCallAuthorized($this->_sEndpoint . 'v1/billing/plans/' . $sPlanId, array(), array(), 'get');
         if($mixedResult === false || !isset($mixedResult['id'])) {
-            $this->log($mixedResult, 'Get Plan:');
+            $this->log($mixedResult, 'Get Plan:', BX_LOG_ERR);
 
             return array();
         }
@@ -542,7 +542,7 @@ class BxPaymentProviderPayPalApi extends BxBaseModPaymentProvider implements iBx
 
         $mixedResult = $this->_apiCallAuthorized($this->_sEndpoint . 'v1/billing/plans', $aParams, array(), 'get');
         if(empty($mixedResult) || !is_array($mixedResult) || !isset($mixedResult['plans'])) {
-            $this->log($mixedResult, 'Get Plans:');
+            $this->log($mixedResult, 'Get Plans:', BX_LOG_ERR);
 
             return array();
         }
@@ -560,7 +560,7 @@ class BxPaymentProviderPayPalApi extends BxBaseModPaymentProvider implements iBx
         ]);
 
         if($mixedResult === false || empty($mixedResult['access_token'])) {
-            $this->log($mixedResult, 'Get Token:');
+            $this->log($mixedResult, 'Get Token:', BX_LOG_ERR);
 
             return false;
         }
@@ -795,9 +795,9 @@ class BxPaymentProviderPayPalApi extends BxBaseModPaymentProvider implements iBx
         if(empty($sDescription))
             $sDescription = $oException->getMessage();
 
-        $this->log($sMessage . $sDescription);
+        $this->log($sMessage . $sDescription, '', BX_LOG_ERR);
         if(!empty($aError))
-            $this->log($aError);
+            $this->log($aError, '', BX_LOG_ERR);
 
         return false;
     }
@@ -816,7 +816,7 @@ class BxPaymentProviderPayPalApi extends BxBaseModPaymentProvider implements iBx
         if(!in_array($sType, array('PAYMENT.SALE.COMPLETED', 'PAYMENT.CAPTURE.REFUNDED', 'BILLING.SUBSCRIPTION.CANCELLED')))
             return 200;
 
-        $this->log($aEvent, 'Webhooks: ' . (!empty($sType) ? $sType : ''));
+        $this->log($aEvent, 'Webhooks: ' . (!empty($sType) ? $sType : ''), BX_LOG_INFO);
 
         $sMethod = '_processEvent' . bx_gen_method_name(strtolower($sType), array('.', '_', '-'));
     	if(!method_exists($this, $sMethod))

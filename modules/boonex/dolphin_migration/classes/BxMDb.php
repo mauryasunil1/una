@@ -109,7 +109,8 @@ class BxMDb
         bx_log('sys_db', "$sErrorType\n" .
             (empty($aError['message']) ? '' : "  Error: {$aError['message']}\n") .
             (empty($aError['query']) ? '' : "  Query: {$aError['query']}\n") .
-            (!function_exists('getLoggedId') || !getLoggedId() ? '' : "  Account ID: " . getLoggedId() . "\n")
+            (!function_exists('getLoggedId') || !getLoggedId() ? '' : "  Account ID: " . getLoggedId() . "\n"),
+            BX_LOG_ERR
         );
 
         bx_show_service_unavailable_error_and_exit($sOutput);

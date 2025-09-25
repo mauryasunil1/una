@@ -97,7 +97,7 @@ class BxXeroApi extends BxDol
             return $this->_oModule->_oConfig->getAuthorizeUrl(0);
         }
         catch (\League\OAuth2\Client\Provider\Exception\IdentityProviderException $oException) {
-            bx_log($this->_oModule->getName(), ":\n[API] Callback failed: " . $oException->getMessage());
+            bx_log($this->_oModule->getName(), ":\n[API] Callback failed: " . $oException->getMessage(), BX_LOG_ERR);
             return false;
         }
     }
@@ -146,7 +146,7 @@ class BxXeroApi extends BxDol
             }
         }
         catch (Exception $oException) {
-            bx_log($this->_oModule->getName(), ":\n[API] Add Contact: " . $oException->getMessage());
+            bx_log($this->_oModule->getName(), ":\n[API] Add Contact: " . $oException->getMessage(), BX_LOG_ERR);
         }
 
         return $mixedResult;
@@ -167,7 +167,7 @@ class BxXeroApi extends BxDol
                 $mixedResult = $oXeroResponse->getContacts()[0];
         }
         catch (Exception $oException) {
-            bx_log($this->_oModule->getName(), ":\n[API] Get Contact: " . $oException->getMessage());
+            bx_log($this->_oModule->getName(), ":\n[API] Get Contact: " . $oException->getMessage(), BX_LOG_ERR);
         }
 
         return $mixedResult;
@@ -199,7 +199,7 @@ class BxXeroApi extends BxDol
                 $mixedResult = $oXeroResponse->getContacts();
         }
         catch (Exception $oException) {
-            bx_log($this->_oModule->getName(), ":\n[API] Get Contacts: " . $oException->getMessage());
+            bx_log($this->_oModule->getName(), ":\n[API] Get Contacts: " . $oException->getMessage(), BX_LOG_ERR);
         }
 
         return $mixedResult;
@@ -297,7 +297,7 @@ class BxXeroApi extends BxDol
                 $mixedResult = $oXeroResponse->getInvoices()[0]->getInvoiceId();
         }
         catch (Exception $oException) {
-            bx_log($this->_oModule->getName(), ":\n[API] Add Invoice: " . $oException->getMessage());
+            bx_log($this->_oModule->getName(), ":\n[API] Add Invoice: " . $oException->getMessage(), BX_LOG_ERR);
         }
 
         return $mixedResult;
@@ -321,7 +321,7 @@ class BxXeroApi extends BxDol
                 $mixedResult = $oXeroResponse->getInvoices();
         }
         catch (Exception $oException) {
-            bx_log($this->_oModule->getName(), ":\n[API] Get Invoices: " . $oException->getMessage());
+            bx_log($this->_oModule->getName(), ":\n[API] Get Invoices: " . $oException->getMessage(), BX_LOG_ERR);
         }
 
         return $mixedResult;
@@ -342,7 +342,7 @@ class BxXeroApi extends BxDol
                 $mixedResult = $oXeroResponse->getInvoices()[0];
         }
         catch (Exception $oException) {
-            bx_log($this->_oModule->getName(), ":\n[API] Get Invoice: " . $oException->getMessage());
+            bx_log($this->_oModule->getName(), ":\n[API] Get Invoice: " . $oException->getMessage(), BX_LOG_ERR);
         }
 
         return $mixedResult;
@@ -363,7 +363,7 @@ class BxXeroApi extends BxDol
             $oXeroApi->emailInvoice($sTenantId, $sInvoiceId, $oRequestEmpty);            
         } 
         catch (Exception $oException) {
-            bx_log($this->_oModule->getName(), ":\n[API] Send Invoice: " . $oException->getMessage());
+            bx_log($this->_oModule->getName(), ":\n[API] Send Invoice: " . $oException->getMessage(), BX_LOG_ERR);
             $bResult = false;
         }
 
@@ -389,12 +389,12 @@ class BxXeroApi extends BxDol
     {
         $sTenantId = $this->_oModule->_oConfig->getTenantId();
         if($sTenantId === false) {
-            bx_log($this->_oModule->getName(), ":\n[API] Fetch failed: Empty Tenant ID.");
+            bx_log($this->_oModule->getName(), ":\n[API] Fetch failed: Empty Tenant ID.", BX_LOG_ERR);
             return false;
         }
 
         if(!$this->isAuthorized()) {
-            bx_log($this->_oModule->getName(), ":\n[API] Fetch failed: Unauthorized access.");
+            bx_log($this->_oModule->getName(), ":\n[API] Fetch failed: Unauthorized access.", BX_LOG_ERR);
             return false;
         }
 

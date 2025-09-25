@@ -547,10 +547,10 @@
     "@sigstore/core" "^2.0.0"
     "@sigstore/protobuf-specs" "^0.4.1"
 
-"@stripe/connect-js@^3.3.28":
-  version "3.3.28"
-  resolved "https://registry.yarnpkg.com/@stripe/connect-js/-/connect-js-3.3.28.tgz#6696b768c7123e77edeb8396e7664c1fc01928e0"
-  integrity sha512-+1gZawF2bOPkgD/GkpQ8P11KnhJipymkGWjtlp5iGeg3c/JiD3IhYwp8jOhNJIFFcr/QKCq/YwlHQ5XFZ6sSwA==
+"@stripe/connect-js@^3.3.30":
+  version "3.3.30"
+  resolved "https://registry.yarnpkg.com/@stripe/connect-js/-/connect-js-3.3.30.tgz#922b1d04a7af9f4dbf431a58ded152806b1c47fd"
+  integrity sha512-3GbRHNBqtmSvoAScTZYcXCaD8q+qf2Kpb6rb6+Rbc2kgKUykpoFuiHZKitW/DWC336z49XGZ/agJgYrEJ8r9vw==
 
 "@svta/common-media-library@^0.12.4":
   version "0.12.4"
@@ -1460,10 +1460,10 @@ filepond-plugin-image-transform@^3.8.7:
   resolved "https://registry.yarnpkg.com/filepond-plugin-image-transform/-/filepond-plugin-image-transform-3.8.7.tgz#6d32fff899366359a77b158f9ac75ae5971e768a"
   integrity sha512-vgKwyIDG2y5twanf7YpqZvxkaLudTjwd9vRcoq5sQDB8egUlX5/NA0bQ0823pocrm0fjbFeetICu44mkqeDkIA==
 
-filepond@^4.32.6:
-  version "4.32.8"
-  resolved "https://registry.yarnpkg.com/filepond/-/filepond-4.32.8.tgz#34fea6ba2c5474221b808d55a3e1bf2a46b9ef07"
-  integrity sha512-svcz5lh4YKrV92zogqpOKzVEOXbD/zT7RAHso5Lqp0GujP+kxF2PSl9Tb6AdYVzfMRtoPsExcphJPpBLoo8eYg==
+filepond@^4.32.9:
+  version "4.32.9"
+  resolved "https://registry.yarnpkg.com/filepond/-/filepond-4.32.9.tgz#52798d4adcb95bb11f381b292c03052a5aa29de2"
+  integrity sha512-MnNnRrTS1M/6C/puIs5dNkbP1RMGANFxnygwdweNXAxyeCS4S68UM4CdvmyF7UrZB93Fhop7Bea2Ib6rkrYHUw==
 
 fill-range@^7.1.1:
   version "7.1.1"
@@ -1777,10 +1777,10 @@ headroom.js@^0.12.0:
   version "11.11.1"
   resolved "https://codeload.github.com/highlightjs/highlight.js/tar.gz/5697ae5187746c24732e62cd625f3f83004a44ce"
 
-hls.js@^1.6.11:
-  version "1.6.11"
-  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-1.6.11.tgz#643cf98f93701accdcff3b912d712b2387e8ca3e"
-  integrity sha512-tdDwOAgPGXohSiNE4oxGr3CI9Hx9lsGLFe6TULUvRk2TfHS+w1tSAJntrvxsHaxvjtr6BXsDZM7NOqJFhU4mmg==
+hls.js@^1.6.13:
+  version "1.6.13"
+  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-1.6.13.tgz#fcf2823f17aaf9127b9011ef135cae5d2520ab75"
+  integrity sha512-hNEzjZNHf5bFrUNvdS4/1RjIanuJ6szpWNfTaX5I6WfGynWXGT7K/YQLYtemSvFExzeMdgdE4SsyVLJbd5PcZA==
 
 hosted-git-info@^2.1.4:
   version "2.8.9"
@@ -1804,10 +1804,10 @@ html-entities@~1.4.0:
   resolved "https://registry.yarnpkg.com/html-entities/-/html-entities-1.4.0.tgz#cfbd1b01d2afaf9adca1b10ae7dffab98c71d2dc"
   integrity sha512-8nxjcBcd8wovbeKx7h3wTji4e6+rhaVuPNpMqwWgnHh+N9ToqsCs6XztWRBPQ+UtzsoMAdKZtUENoVzU/EMtZA==
 
-htmx.org@^2.0.6:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/htmx.org/-/htmx.org-2.0.6.tgz#42573483c72112e7e332dfe93043cd0eb32cda01"
-  integrity sha512-7ythjYneGSk3yCHgtCnQeaoF+D+o7U2LF37WU3O0JYv3gTZSicdEFiI/Ai/NJyC5ZpYJWMpUb11OC5Lr6AfAqA==
+htmx.org@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/htmx.org/-/htmx.org-2.0.7.tgz#991571e009a2ea4cb60e7af8bb4c1c8c0de32ecd"
+  integrity sha512-YiJqF3U5KyO28VC5mPfehKJPF+n1Gni+cupK+D69TF0nm7wY6AXn3a4mPWIikfAXtl1u1F1+ZhSCS7KT8pVmqA==
 
 http-cache-semantics@^4.1.1:
   version "4.2.0"

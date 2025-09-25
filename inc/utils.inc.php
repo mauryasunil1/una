@@ -39,6 +39,11 @@ define('BX_EMAIL_MASS', 2); ///< mass email, one mesage send to manu users, with
 
 define('BX_MAINTENANCE_FILE', '.bx_maintenance'); ///< file name to use as mantenance mode indicator
 
+define('BX_LOG_ERR', 1); ///< error log level format @see bx_log
+define('BX_LOG_WARN', 2); ///< warning log level format @see bx_log
+define('BX_LOG_INFO', 4); ///< info log level format @see bx_log
+define('BX_LOG_DEBUG', 8); ///< debug log level format @see bx_log
+
 /**
  * The following two functions are needed to convert title to uri and back.
  * It usefull when titles are used in URLs, like in Categories and Tags.
@@ -690,7 +695,7 @@ function echoDbg( $what, $desc = '' )
 
 function echoDbgLog($mWhat, $sDesc = 'unused', $sFileName = 'unused')
 {
-    bx_log('sys_debug', $mWhat);
+    bx_log('sys_debug', $mWhat, BX_LOG_DEBUG);
 }
 
 function bx_is_dbg()
@@ -2470,10 +2475,10 @@ function bx_get_device_pixel_ratio()
  * @param $sObject - logs object
  * @param $mixed - string or array to log
  */
-function bx_log($sObject, $mixed)
+function bx_log($sObject, $mixed, $iLevel = BX_LOG_DEBUG)
 {
     if (class_exists('BxDolLogs', true) && $o = BxDolLogs::getObjectInstance($sObject))
-        return $o->add($mixed);
+        return $o->add($mixed, $iLevel);
     else
         return false;
 }

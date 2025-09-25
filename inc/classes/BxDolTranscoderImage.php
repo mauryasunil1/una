@@ -202,7 +202,7 @@ class BxDolTranscoderImage extends BxDolTranscoder implements iBxDolFactoryObjec
         if (IMAGE_ERROR_SUCCESS == $o->grayscale($sFile))
             return true;
 
-        bx_log('sys_transcoder', "[{$this->_aObject['object']}] ERROR: applyFilter_Grayscale failed for file ({$sFile}): " . $o->getError());
+        bx_log('sys_transcoder', "[{$this->_aObject['object']}] ERROR: applyFilter_Grayscale failed for file ({$sFile}): " . $o->getError(), BX_LOG_ERR);
 
         return false;
     }

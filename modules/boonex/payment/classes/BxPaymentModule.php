@@ -1628,13 +1628,13 @@ class BxPaymentModule extends BxBaseModPaymentModule
         foreach($aSubscriptions as $aSubscription) {
             $aPending = $this->_oDb->getOrderPending(array('type' => 'id', 'id' => (int)$aSubscription['pending_id']));
             if(empty($aPending) || !is_array($aPending) || $aPending['type'] != BX_PAYMENT_TYPE_RECURRING) {
-                $this->log($aSubscription, 'Time Tracker', 'Cannot process subscription.');
+                $this->log($aSubscription, 'Time Tracker', 'Cannot process subscription.', BX_LOG_ERR);
                 continue;
             }
 
             $oProvider = $this->getObjectProvider($aPending['provider'], $aPending['seller_id']);
             if($oProvider === false || !$oProvider->isActive() || !method_exists($oProvider, 'makePayment')) {
-                $this->log($aSubscription, 'Time Tracker', 'Payment provider unavailable or incorrect.');
+                $this->log($aSubscription, 'Time Tracker', 'Payment provider unavailable or incorrect.', BX_LOG_ERR);
                 continue;
             }
 
@@ -1643,17 +1643,17 @@ class BxPaymentModule extends BxBaseModPaymentModule
             if(($mixedResult = $oProvider->makePayment($aPending)) !== true) {
                 $this->_oDb->updateSubscription(['status' => BX_PAYMENT_SBS_STATUS_UNPAID], ['id' => $aSubscription['id']]);
 
-                $this->log($aSubscription, 'Time Tracker', 'Payment cannot be processed (code: ' . (!empty($mixedResult['code']) ? (int)$mixedResult['code'] : 0) . ').');
+                $this->log($aSubscription, 'Time Tracker', 'Payment cannot be processed (code: ' . (!empty($mixedResult['code']) ? (int)$mixedResult['code'] : 0) . ').', BX_LOG_ERR);
                 continue;
             }
 
             if(!$this->getObjectSubscriptions()->prolong($aPending)) {
-                $this->log($aSubscription, 'Time Tracker', 'Cannot prolong subscription.');
+                $this->log($aSubscription, 'Time Tracker', 'Cannot prolong subscription.', BX_LOG_ERR);
                 continue;
             }
 
             if(!$this->registerPayment($aPending)) {
-                $this->log($aSubscription, 'Time Tracker', 'Cannot register payment.');
+                $this->log($aSubscription, 'Time Tracker', 'Cannot register payment.', BX_LOG_ERR);
                 continue;
             }
         }

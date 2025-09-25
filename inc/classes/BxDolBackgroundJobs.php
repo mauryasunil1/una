@@ -53,7 +53,7 @@ class BxDolBackgroundJobs  extends BxDolFactory implements iBxDolSingleton
         if(!$this->_oQuery->addJob($sName, $mixedServiceCall, $iPriority))
             return false;
 
-        bx_log($this->_sObjectLog, "Added: " . $sName);
+        bx_log($this->_sObjectLog, "Added: " . $sName, BX_LOG_INFO);
 
         return true;
     }
@@ -63,7 +63,7 @@ class BxDolBackgroundJobs  extends BxDolFactory implements iBxDolSingleton
         if(!$this->_oQuery->deleteJob($sName))
             return false;
 
-        bx_log($this->_sObjectLog, "Deleted: " . $sName);
+        bx_log($this->_sObjectLog, "Deleted: " . $sName, BX_LOG_INFO);
 
         return true;
     }
@@ -99,7 +99,7 @@ class BxDolBackgroundJobs  extends BxDolFactory implements iBxDolSingleton
 
         $this->_oQuery->deleteJob($mixedJob['name']);
 
-        bx_log($this->_sObjectLog, "Processed: " . $mixedJob['name'] . " / timing: " . $fTiming . " / memory: " . memory_get_usage());
+        bx_log($this->_sObjectLog, "Processed: " . $mixedJob['name'] . " / timing: " . $fTiming . " / memory: " . memory_get_usage(), BX_LOG_INFO);
         return true;
     }
 
@@ -114,7 +114,7 @@ class BxDolBackgroundJobs  extends BxDolFactory implements iBxDolSingleton
             if($this->process($aJob))
                 $iProcessed += 1;
 
-        bx_log($this->_sObjectLog, "Processed: all (" . $iProcessed . " from " . count($aJobs) . ")");
+        bx_log($this->_sObjectLog, "Processed: all (" . $iProcessed . " from " . count($aJobs) . ")", BX_LOG_INFO);
 
         return true;
     }

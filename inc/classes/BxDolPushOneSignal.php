@@ -108,7 +108,7 @@ class BxDolPushOneSignal extends BxDolPush
         $oResult = @json_decode($sResult, true);
         if(isset($oResult['errors']))
             foreach($oResult['errors'] as $sError) {  
-                bx_log('sys_push', $sError . " Message:" . json_encode($aMessage));
+                bx_log('sys_push', $sError . " Message:" . json_encode($aMessage), BX_LOG_ERR);
             }
 
         return $sResult;

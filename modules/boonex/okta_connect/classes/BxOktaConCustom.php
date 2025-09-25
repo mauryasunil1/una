@@ -21,7 +21,7 @@ class BxOktaConCustom
 
     function onRegister ($iProfileId, $aRemoteProfileInfo)
     {
-        bx_log('bx_oktacon', $aRemoteProfileInfo);
+        bx_log('bx_oktacon', $aRemoteProfileInfo, BX_LOG_DEBUG);
         
         if (!empty($aRemoteProfileInfo['communities']))
            $this->syncCommunities($iProfileId, explode(',', $aRemoteProfileInfo['communities']));
@@ -31,7 +31,7 @@ class BxOktaConCustom
 
     function onLogin ($oProfile, $aRemoteProfileInfo)
     {
-        bx_log('bx_oktacon', $aRemoteProfileInfo);
+        bx_log('bx_oktacon', $aRemoteProfileInfo, BX_LOG_DEBUG);
 
         if (!empty($aRemoteProfileInfo['communities']))
            $this->syncCommunities($oProfile ? $oProfile->id() : bx_get_logged_profile_id(), explode(',', $aRemoteProfileInfo['communities']));

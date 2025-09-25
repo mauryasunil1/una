@@ -189,7 +189,7 @@ class BxAdsSourceShopifyPartner extends BxAdsSource
     protected function _log($sMessage, $bUseLog = false)
     {
         if($bUseLog) {
-            //TODO: Use bx_log here.
+            //TODO: Use bx_log here with ERROR log level
         }
         else
             throw new Exception($sMessage);

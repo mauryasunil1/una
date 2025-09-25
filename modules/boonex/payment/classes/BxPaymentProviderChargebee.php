@@ -157,7 +157,7 @@ class BxPaymentProviderChargebee extends BxBaseModPaymentProvider implements iBx
             $iError = $oException->getCode();
             $sError = $oException->getMessage();
 
-            $this->log('Create Hosted Page Error: ' . $sError . '(' . $iError . ')');
+            $this->log('Create Hosted Page Error: ' . $sError . '(' . $iError . ')', '', BX_LOG_ERR);
 
             return false;
         }
@@ -198,7 +198,7 @@ class BxPaymentProviderChargebee extends BxBaseModPaymentProvider implements iBx
             $iError = $oException->getCode();
             $sError = $oException->getMessage();
 
-            $this->log('Create Hosted Page Error: ' . $sError . '(' . $iError . ')');
+            $this->log('Create Hosted Page Error: ' . $sError . '(' . $iError . ')', '', BX_LOG_ERR);
 
             return false;
         }
@@ -220,7 +220,7 @@ class BxPaymentProviderChargebee extends BxBaseModPaymentProvider implements iBx
             $iError = $oException->getCode();
             $sError = $oException->getMessage();
 
-            $this->log('Retrieve Hosted Page Error: ' . $sError . '(' . $iError . ')');
+            $this->log('Retrieve Hosted Page Error: ' . $sError . '(' . $iError . ')', '', BX_LOG_ERR);
 
             return false;
         }
@@ -244,7 +244,7 @@ class BxPaymentProviderChargebee extends BxBaseModPaymentProvider implements iBx
             $iError = $oException->getCode();
             $sError = $oException->getMessage();
 
-            $this->log('Retrieve Subscription Error: ' . $sError . '(' . $iError . ')');
+            $this->log('Retrieve Subscription Error: ' . $sError . '(' . $iError . ')', '', BX_LOG_ERR);
 
             return false;
         }
@@ -285,8 +285,8 @@ class BxPaymentProviderChargebee extends BxBaseModPaymentProvider implements iBx
         catch (Exception $oException) {
             $aError = $oException->getJsonBody();
 
-            $this->log('Delete Subscription Error: ' . $aError['error']['message']);
-            $this->log($aError);
+            $this->log('Delete Subscription Error: ' . $aError['error']['message'], '', BX_LOG_ERR);
+            $this->log($aError, '', BX_LOG_ERR);
 
             return false;
         }
@@ -312,7 +312,7 @@ class BxPaymentProviderChargebee extends BxBaseModPaymentProvider implements iBx
             $iError = $oException->getCode();
             $sError = $oException->getMessage();
 
-            $this->log('Retrieve Invoice Error: ' . $sError . '(' . $iError . ')');
+            $this->log('Retrieve Invoice Error: ' . $sError . '(' . $iError . ')', '', BX_LOG_ERR);
 
             return false;
         }
@@ -341,7 +341,7 @@ class BxPaymentProviderChargebee extends BxBaseModPaymentProvider implements iBx
             $iError = $oException->getCode();
             $sError = $oException->getMessage();
 
-            $this->log('Retrieve Addons Error: ' . $sError . '(' . $iError . ')');
+            $this->log('Retrieve Addons Error: ' . $sError . '(' . $iError . ')', '', BX_LOG_ERR);
 
             return false;
         }
@@ -378,7 +378,7 @@ class BxPaymentProviderChargebee extends BxBaseModPaymentProvider implements iBx
             $iError = $oException->getCode();
             $sError = $oException->getMessage();
 
-            $this->log('Retrieve Addon Error: ' . $sError . '(' . $iError . ')');
+            $this->log('Retrieve Addon Error: ' . $sError . '(' . $iError . ')', '', BX_LOG_ERR);
 
             return false;
         }
@@ -411,7 +411,7 @@ class BxPaymentProviderChargebee extends BxBaseModPaymentProvider implements iBx
             $iError = $oException->getCode();
             $sError = $oException->getMessage();
 
-            $this->log('Retrieve Customer Error: ' . $sError . '(' . $iError . ')');
+            $this->log('Retrieve Customer Error: ' . $sError . '(' . $iError . ')', '', BX_LOG_ERR);
 
             return false;
         }
@@ -467,8 +467,8 @@ class BxPaymentProviderChargebee extends BxBaseModPaymentProvider implements iBx
         if(!in_array($sType, array('payment_succeeded', ' payment_refunded', 'subscription_cancelled')))
             return 200;
 
-        $this->log('Webhooks: ' . (!empty($sType) ? $sType : ''));
-        $this->log($aEvent);
+        $this->log('Webhooks: ' . (!empty($sType) ? $sType : ''), '', BX_LOG_INFO);
+        $this->log($aEvent, '', BX_LOG_INFO);
 
         $sMethod = '_processEvent' . bx_gen_method_name($sType, array('.', '_', '-'));
         if(!method_exists($this, $sMethod))

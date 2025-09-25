@@ -645,6 +645,8 @@
 	<string name="_adm_dbd_txt_su_system_media"><![CDATA[System Media]]></string>
         <string name="_adm_dbd_txt_c_select"><![CDATA[Select...]]></string>
 	<string name="_adm_dbd_txt_c_clear_all"><![CDATA[Clear all caches]]></string>
+	<string name="_adm_dbd_txt_c_content"><![CDATA[Content]]></string>
+	<string name="_adm_dbd_txt_c_clear_content"><![CDATA[Clear content cache]]></string>
 	<string name="_adm_dbd_txt_c_db"><![CDATA[DB]]></string>
 	<string name="_adm_dbd_txt_c_clear_db"><![CDATA[Clear DB cache]]></string>
 	<string name="_adm_dbd_txt_c_template"><![CDATA[Template]]></string>
