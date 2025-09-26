@@ -1,5 +1,6 @@
 /*--- Leaderboard ---*/
-.bx-reputation-leaderboard .bx-base-pofile-unit {
+.bx-reputation-leaderboard .bx-base-pofile-unit,
+.bx-reputation-leaderboard .bx-account-unit {
     width: auto;
     margin: 0;
 }

@@ -60,21 +60,20 @@ class BxReputationDb extends BxBaseModNotificationsDb
                 break;
 
             case 'stats':
-                $aMethod['name'] = 'getPairs';
+                $aMethod['name'] = 'getAllWithKey';
                 $aMethod['params'][1] = 'owner_id';
-                $aMethod['params'][2] = 'points';
-                $aMethod['params'][3] = [];
+                $aMethod['params'][2] = [];
 
                 $sSelectClause = '`owner_id`, SUM(`points`) AS `points`';
 
                 if(isset($aParams['context_id']) && $aParams['context_id'] !== false) {
-                    $aMethod['params'][3]['context_id'] = $aParams['context_id'];
+                    $aMethod['params'][2]['context_id'] = $aParams['context_id'];
 
                     $sWhereClause .= ' AND `context_id` = :context_id';
                 }
 
                 if(!empty($aParams['days'])) {
-                    $aMethod['params'][3]['days'] = (int)$aParams['days'];
+                    $aMethod['params'][2]['days'] = (int)$aParams['days'];
 
                     $sWhereClause .= ' AND `date` >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL :days DAY))';
                 }
@@ -214,22 +213,25 @@ class BxReputationDb extends BxBaseModNotificationsDb
                 break;
 
             case 'stats':
-                $aMethod['name'] = 'getPairs';
+                $aMethod['name'] = 'getAllWithKey';
                 $aMethod['params'][1] = 'profile_id';
-                $aMethod['params'][2] = 'points';
-                $aMethod['params'][3] = [];
+                $aMethod['params'][2] = [];
+
+                $sSelectPosition = 'SELECT COUNT(DISTINCT `trp2`.`points`) FROM `' . $CNF['TABLE_PROFILES'] . '` AS `trp2` WHERE `trp2`.`points` >= `trp`.`points`';
 
                 if(isset($aParams['context_id']) && $aParams['context_id'] !== false) {
-                    $aMethod['params'][3]['context_id'] = $aParams['context_id'];
+                    $aMethod['params'][2]['context_id'] = $aParams['context_id'];
 
-                    $sWhereClause .= ' AND `context_id` = :context_id';
+                    $sSelectPosition .= ' AND `trp2`.`context_id` = :context_id';
+                    $sWhereClause .= ' AND `trp`.`context_id` = :context_id';
                 }
 
                 if(isset($aParams['username']) && $aParams['username'] !== false) {
                     $aIds = $this->_getProfileIdByTerm($aParams['username']);
-                    $sWhereClause .= ' AND `profile_id` IN (' . $this->implode_escape($aIds) . ')';
+                    $sWhereClause .= ' AND `trp`.`profile_id` IN (' . $this->implode_escape($aIds) . ')';
                 }
 
+                $sSelectClause .= ', (' . $sSelectPosition . ') AS `position`';
                 $sOrderClause = '`trp`.`points` DESC';
                 $sLimitClause = '0, ' . (int)$aParams['limit'];
                 break;
@@ -274,6 +276,23 @@ class BxReputationDb extends BxBaseModNotificationsDb
         ]);
 
         return $aProfile && isset($aProfile['points']) ? (int)$aProfile['points'] : 0;
+    }
+
+    public function getProfilePosition($iProfileId, $iContextId = 0)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $sQuery = "SELECT 
+            `tp1`.`profile_id`,
+            (SELECT COUNT(DISTINCT `tp2`.`points`) FROM `" . $CNF['TABLE_PROFILES'] . "` AS `tp2` WHERE `tp2`.`context_id` = :context_id AND `tp2`.`points` >= `tp1`.`points`) AS `position`,
+            `tp1`.`points`
+        FROM `" . $CNF['TABLE_PROFILES'] . "` AS `tp1` 
+        WHERE `tp1`.`context_id` = :context_id AND `tp1`.`profile_id` = :profile_id";
+
+        return $this->getRow($sQuery, [
+            'profile_id' => $iProfileId, 
+            'context_id' => $iContextId
+        ]);
     }
 
     public function insertProfilesLevels($iProfileId, $iContextId, $iLevelId, $iDate = 0)

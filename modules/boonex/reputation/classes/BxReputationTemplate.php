@@ -270,13 +270,20 @@ class BxReputationTemplate extends BxBaseModNotificationsTemplate
             ]);
 
         $aTmplVarsProfiles = [];
-        foreach($aItems as $iProfileId => $iPoints)
-            if($iPoints != 0 && ($iProfileId = abs($iProfileId)) && ($oProfile = BxDolProfile::getInstance($iProfileId)) !== false)
-                $aTmplVarsProfiles[] = [
+        foreach($aItems as $iProfileId => $aItem)
+            if(($iPoints = (int)$aItem['points']) != 0 && ($iProfileId = abs($iProfileId)) && ($oProfile = BxDolProfile::getInstance($iProfileId)) !== false)
+                $aTmplVarsProfiles[] = array_merge($this->_bIsApi ? ['position' => $aItem['position'] ?? 0] : [
+                    'bx_if:show_position' => [
+                        'condition' => !$bGrowth,
+                        'content' => [
+                            'position' => $aItem['position'] ?? 0,
+                        ]
+                    ]
+                ], [
                     'unit' => !$this->_bIsApi ? $oProfile->getUnit($iProfileId) : BxDolProfile::getData($oProfile),
                     'sign' => $bGrowth ? ($iPoints > 0 ? '+' : '-') : '',
                     'points' => $bGrowth ? abs($iPoints) : $iPoints
-                ];
+                ]);
 
         if($this->_bIsApi)
             return array_merge([
