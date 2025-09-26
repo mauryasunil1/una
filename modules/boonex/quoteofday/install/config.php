@@ -19,7 +19,7 @@ $aConfig = array(
     'title' => 'Quote of the Day',
     'note' => 'Quote of the Day module.',
     'version' => '13.0.2.DEV',
-    'vendor' => 'BoonEx',
+    'vendor' => 'UNA INC',
     'help_url' => 'http://feed.una.io/?section={module_name}',
 
     'compatible_with' => array(

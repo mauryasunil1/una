@@ -10,6 +10,7 @@
  */
 
 $aConfig = array(
+
     /**
      * Main Section.
      */
@@ -18,7 +19,7 @@ $aConfig = array(
     'title' => 'Google Tag Manager',
     'note' => 'Google Tag Manager replaces hard-coded tags that are used for marketing, analytics, and testing on a website, with dynamic tags that are easier to implement and update.',
     'version' => '13.0.1.DEV',
-    'vendor' => 'BoonEx',
+    'vendor' => 'UNA INC',
     'help_url' => 'http://feed.una.io/?section={module_name}',
 
     'compatible_with' => array(

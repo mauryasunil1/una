@@ -10,6 +10,7 @@
  */
 
 $aConfig = array(
+
     /**
      * Main Section.
      */
@@ -18,7 +19,7 @@ $aConfig = array(
     'title' => 'Profiler',
     'note' => 'Measure different site timings.',
     'version' => '13.0.5.DEV',
-    'vendor' => 'Boonex',
+    'vendor' => 'UNA INC',
     'help_url' => 'http://feed.una.io/?section={module_name}',
 
     'compatible_with' => array(
