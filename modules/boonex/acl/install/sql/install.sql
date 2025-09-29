@@ -18,8 +18,7 @@ CREATE TABLE `bx_acl_level_prices` (
   `active` tinyint(4) NOT NULL default '1',
   `order` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`),
-  UNIQUE KEY `type` (`level_id`,`period`, `period_unit`)
+  UNIQUE KEY `name` (`name`)
 );
 
 -- TABLE: licenses
