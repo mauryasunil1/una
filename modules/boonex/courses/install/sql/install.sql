@@ -476,8 +476,8 @@ INSERT INTO `sys_form_displays` (`display_name`, `module`, `object`, `title`, `v
 ('bx_courses_price_edit', 'bx_courses', 'bx_courses_price', '_bx_courses_form_price_display_edit', 0);
 
 INSERT INTO `sys_form_inputs` (`object`, `module`, `name`, `value`, `values`, `checked`, `type`, `caption_system`, `caption`, `info`, `required`, `collapsed`, `html`, `attrs`, `attrs_tr`, `attrs_wrapper`, `checker_func`, `checker_params`, `checker_error`, `db_pass`, `db_params`, `editable`, `deletable`) VALUES
-('bx_courses_price', 'bx_courses', 'id', '', '', 0, 'select', '_bx_courses_form_price_input_sys_id', '_bx_courses_form_price_input_role_id', '', 1, 0, 0, '', '', '', '', '', '_bx_courses_form_price_input_err_role_id', 'Xss', '', 1, 0),
-('bx_courses_price', 'bx_courses', 'role_id', '', '', 0, 'hidden', '_bx_courses_form_price_input_sys_role_id', '', '', 1, 0, 0, '', '', '', '', '', '', 'Int', '', 1, 0),
+('bx_courses_price', 'bx_courses', 'id', '', '', 0, 'hidden', '_bx_courses_form_price_input_sys_id', '', '', 1, 0, 0, '', '', '', '', '', '', 'Int', '', 1, 0),
+('bx_courses_price', 'bx_courses', 'role_id', '', '', 0, 'select', '_bx_courses_form_price_input_sys_role_id', '_bx_courses_form_price_input_role_id', '', 1, 0, 0, '', '', '', '', '', '_bx_courses_form_price_input_err_role_id', 'Xss', '', 1, 0),
 ('bx_courses_price', 'bx_courses', 'name', '', '', 0, 'text', '_bx_courses_form_price_input_sys_name', '_bx_courses_form_price_input_name', '_bx_courses_form_price_input_inf_name', 1, 0, 0, '', '', '', 'Avail', '', '_bx_courses_form_price_input_err_name', 'Xss', '', 1, 0),
 ('bx_courses_price', 'bx_courses', 'caption', '', '', 0, 'text', '_bx_courses_form_price_input_sys_caption', '_bx_courses_form_price_input_caption', '_bx_courses_form_price_input_inf_caption', 1, 0, 0, '', '', '', 'Avail', '', '_bx_courses_form_price_input_err_caption', 'Xss', '', 1, 0),
 ('bx_courses_price', 'bx_courses', 'period', '', '', 0, 'text', '_bx_courses_form_price_input_sys_period', '_bx_courses_form_price_input_period', '_bx_courses_form_price_input_inf_period', 1, 0, 0, '', '', '', '', '', '', 'Int', '', 1, 0),
