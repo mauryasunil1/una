@@ -44,6 +44,15 @@ class BxBaseIconsetLucide extends BxBaseIconset
         return 'https://unpkg.com/lucide@latest';
     }
 
+    public function getIcon($sIcon)
+    {
+        $sIcon = trim(preg_replace('/(sys-icon|far|col-\w+)/i', '', $sIcon));
+        if(isset($this->_aMap[$sIcon]))
+            $sIcon = $this->_aMap[$sIcon];
+
+        return bx_gen_method_name($sIcon, ['_', '-']);
+    }
+
     public function getCode()
     {
         $sMap = json_encode($this->_aMap);

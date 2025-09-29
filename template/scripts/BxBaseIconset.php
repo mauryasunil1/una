@@ -35,6 +35,11 @@ class BxBaseIconset extends BxDolIconset
         return false;
     }
 
+    public function getIcon($sIcon)
+    {
+        return $sIcon;
+    }
+
     public function getCode()
     {
         return false;
