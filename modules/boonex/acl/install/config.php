@@ -18,7 +18,7 @@ $aConfig = array(
     'title' => 'Paid Levels',
     'note' => 'Paid Levels module.',
     'version' => '13.0.6.DEV',
-    'vendor' => 'BoonEx',
+    'vendor' => 'UNA INC',
     'help_url' => 'http://feed.una.io/?section={module_name}',
 
     'compatible_with' => array(
