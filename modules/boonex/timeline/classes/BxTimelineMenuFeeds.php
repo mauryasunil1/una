@@ -110,6 +110,7 @@ class BxTimelineMenuFeeds extends BxTemplMenu
                 'content' => [
                     'js_object' => $this->_sJsObject,
                     'style_prefix' => $this->_sStylePrefix,
+                    'name' => $a['name']
                 ]
             ]
         ]);

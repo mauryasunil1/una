@@ -121,9 +121,9 @@ BxTimelineViewFilters.prototype.changeFeedFilters = function(oLink, oRequestPara
     );
 };
 
-BxTimelineViewFilters.prototype.toggleMenuItemFeeds = function(oSource)
+BxTimelineViewFilters.prototype.toggleMenuItemFeeds = function(oSource, sMenuItem)
 {
-    bx_menu_toggle(oSource, this._sObjNameMenuFeeds);
+    bx_menu_toggle(oSource, this._sObjNameMenuFeeds, sMenuItem);
 };
 
 BxTimelineViewFilters.prototype.onFilterByModuleChange = function(oSource)
