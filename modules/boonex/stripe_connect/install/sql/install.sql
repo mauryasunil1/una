@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `bx_stripe_connect_commissions` (
 
 -- FORMS
 INSERT INTO `sys_objects_form` (`object`, `module`, `title`, `action`, `form_attrs`, `submit_name`, `table`, `key`, `uri`, `uri_title`, `params`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES
-('bx_stripe_connect_form_commissions', @sName, '_bx_stripe_connect_form_commissions_form', '', '', 'do_submit', 'bx_stripe_connect_commissions', 'id', '', '', '', 0, 1, 'BxPaymentFormCommissions', 'modules/boonex/payment/classes/BxPaymentFormCommissions.php');
+('bx_stripe_connect_form_commissions', @sName, '_bx_stripe_connect_form_commissions_form', '', '', 'do_submit', 'bx_stripe_connect_commissions', 'id', '', '', '', 0, 1, 'BxStripeConnectFormCommissions', 'modules/boonex/stripe_connect/classes/BxStripeConnectFormCommissions.php');
 
 INSERT INTO `sys_form_displays` (`display_name`, `module`, `object`, `title`, `view_mode`) VALUES
 ('bx_stripe_connect_form_commissions_add', @sName, 'bx_stripe_connect_form_commissions', '_bx_stripe_connect_form_commissions_display_add', 0),
