@@ -1,5 +1,24 @@
 module.exports = {
-  content: ["./template/**/*.html"],
+  content: [
+    './inc/js/*.js',
+    './inc/js/classes/*.js',
+
+    './modules/base/**/js/*.js',
+    './modules/base/**/template/*.html',
+
+    './modules/boonex/**/js/*.js',
+    './modules/boonex/**/template/*.html',
+
+    './modules/boonex/**/data/template/**/*.html',
+
+    './studio/template/*.html',
+    './studio/template/scripts/*.php',
+    './studio/template/scripts_templ/*.php',
+
+    './template/*.html',
+    './template/scripts/*.php',
+    './template/scripts_templ/*.php'
+  ],
   safelist: [
     {
       pattern: /.*/
