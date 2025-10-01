@@ -93,9 +93,14 @@ class BxBaseServiceAccount extends BxDol
                     $parts['query'] = http_build_query($query);
                     $sRedirectUrl = $parts['path'] . (!empty($parts['query']) ? '?' . $parts['query'] : '');
                 }
+
                 return [
+                    bx_api_get_block('form', $this->_oAccountForms->getObjectFormAdd()->getCodeAPI(), [
+                        'ext' => [
+                            'request' => ['url' => '/api.php?r=system/create_account_form/TemplServiceAccount', 'immutable' => true]
+                        ]
+                    ]),
                     bx_api_get_block('redirect', ['uri' => $sRedirectUrl]),
-                    //bx_api_get_block('login', ['session' => BxDolSession::getInstance()->getId()], ['id' => 2]),
                 ];
             }
             else

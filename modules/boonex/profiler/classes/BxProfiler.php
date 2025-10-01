@@ -379,7 +379,7 @@ class BxProfiler extends BxDol
             (function_exists('memory_get_usage') ? $this->oTemplate->nameValue('Memory:', $sMemory) : '') .
             $this->oTemplate->nameValue('PHP:', phpversion()) .
             $this->oTemplate->nameValue('SAPI:', php_sapi_name()) .
-            $this->oTemplate->nameValue('OS:', php_uname('s r m')) .
+            $this->oTemplate->nameValue('OS:', php_uname('s')) .
             $this->oTemplate->nameValue('Avg load:', $sLoad)
         );
     }

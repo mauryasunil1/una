@@ -81,7 +81,7 @@ class BxBasePage extends BxDolPage
     }
     
     public function performActionGetShare ()
-    {
+    {p
         $aEmbedData = BxDolPage::getEmbedData(bx_get('url'));
         if(!isset($aEmbedData['url'])) 
             return; 
@@ -545,7 +545,6 @@ class BxBasePage extends BxDolPage
             'menu_bottom' => '',
             'menu_add' => '',
             'config' => $this->_aObject['config_api'],
-            'ts' => time(),
             'elements' => $this->getPageBlocksAPI($aBlocks),
         ];
 
@@ -715,7 +714,10 @@ class BxBasePage extends BxDolPage
         else if(!$bIsVisible)
             $a['page_status'] = 403;
 
-        return $a;
+        return array_merge($a, [
+            'version' => ($sVersion = bx_get_ver()) && $sVersion == BX_DOL_VERSION ? $sVersion : 'invalid',
+            'ts' => time()
+        ]);
     }
 
     public function getPageContentAPI($aBlocks = [])
