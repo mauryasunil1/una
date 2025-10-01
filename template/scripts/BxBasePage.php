@@ -81,7 +81,7 @@ class BxBasePage extends BxDolPage
     }
     
     public function performActionGetShare ()
-    {p
+    {
         $aEmbedData = BxDolPage::getEmbedData(bx_get('url'));
         if(!isset($aEmbedData['url'])) 
             return; 
