@@ -1,6 +1,6 @@
 -- ICONSET
 INSERT INTO `sys_objects_iconset` (`object`, `title`, `override_class_name`, `override_class_file`) VALUES
-('bx_fontawesome', 'Font Awesome Pro', 'BxFontAwesomeIconset', 'modules/boonex/fontawesome/classes/BxFontAwesomeIconset.php'),
+('bx_fontawesome', 'Font Awesome Pro', 'BxFontAwesomeIconset', 'modules/boonex/fontawesome/classes/BxFontAwesomeIconset.php');
 
 
 -- Studio page and widget
