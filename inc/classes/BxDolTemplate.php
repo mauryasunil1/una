@@ -1921,7 +1921,10 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
             case 'lang_country':
                 if (!($sRet = BxDolLanguages::getInstance()->getLangCountryCode()))
                     $sRet = bx_lang_country();
-                break;                
+                break;
+            case 'lang_with_country':
+                $sRet = bx_lang_code_with_country();
+                break;
             case 'main_logo':
                 $sRet = BxTemplFunctions::getInstance()->getMainLogo();
                 break;
@@ -3303,11 +3306,13 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
             "'<bx_menu:([^\s]+) \/>'s",
             "'<bx_url_root />'",
             "'<bx_url_studio />'",
+            "'<bx_site_title />'"
         ]);
         $aValues = array_merge($aValues, [
             "<?php echo \$this->getMenu('\\1'); ?>",
             BX_DOL_URL_ROOT,
             BX_DOL_URL_STUDIO,
+            getParam('site_title')
         ]);
 
         //--- Parse Predefined Keys ---//

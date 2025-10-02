@@ -468,6 +468,21 @@ function bx_lang_code()
     return $sResult;
 }
 
+function bx_lang_code_with_country()
+{
+    $oLanguages = BxDolLanguages::getInstance();
+
+    $sName = $oLanguages->getCurrentLanguage();
+    $sCountry = '';
+    if(strpos($sName, '-') !== false)
+        list($sName, $sCountry) = explode('-', $sName);
+
+    if(($sCountryDb = $oLanguages->getLangCountryCode()))
+        $sCountry = $sCountryDb;
+
+    return $sName . ($sCountry ? '-' . $sCountry : '');
+}
+
 function bx_lang_country()
 {
     $sResult = bx_lang_name();
