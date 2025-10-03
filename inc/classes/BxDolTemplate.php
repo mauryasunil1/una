@@ -3304,14 +3304,12 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
         $aKeys = array_merge($aKeys, [
             "'<bx_menu:([^\s]+) \/>'s",
             "'<bx_url_root />'",
-            "'<bx_url_studio />'",
-            "'<bx_site_title />'"
+            "'<bx_url_studio />'"
         ]);
         $aValues = array_merge($aValues, [
             "<?php echo \$this->getMenu('\\1'); ?>",
             BX_DOL_URL_ROOT,
-            BX_DOL_URL_STUDIO,
-            getParam('site_title')
+            BX_DOL_URL_STUDIO
         ]);
 
         //--- Parse Predefined Keys ---//
