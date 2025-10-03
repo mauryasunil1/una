@@ -58,7 +58,7 @@ INSERT IGNORE INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `typ
 
 
 SET @iCategoryIdApi = (SELECT `id` FROM `sys_options_categories` WHERE `name` = 'api_layout');
-INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `extra`, `check`, `check_error`, `order`) VALUES
+INSERT IGNORE INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `extra`, `check`, `check_error`, `order`) VALUES
 (@iCategoryIdApi, 'sys_api_context_switcher', '_adm_stg_cpt_option_sys_api_context_switcher', '', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:32:"get_options_api_context_switcher";s:5:"class";s:13:"TemplServices";}', '', '', 2),
 (@iCategoryIdApi, 'sys_api_context_connection', '_adm_stg_cpt_option_sys_api_context_connection', '', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:34:"get_options_api_context_connection";s:5:"class";s:13:"TemplServices";}', '', '', 3);
 
@@ -218,7 +218,7 @@ INSERT INTO `sys_preloader`(`module`, `type`, `content`, `active`, `order`) VALU
 
 DELETE FROM `sys_preloader` WHERE `module` = 'system' AND `content` = 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:21:"get_preloader_content";s:6:"params";a:1:{i:0;s:8:"icons_js";}s:5:"class";s:12:"BaseServices";}';
 INSERT INTO `sys_preloader`(`module`, `type`, `content`, `active`, `order`) VALUES
-('system', 'js_system', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:21:"get_preloader_content";s:6:"params";a:1:{i:0;s:8:"icons_js";}s:5:"class";s:12:"BaseServices";}', 1, 20),
+('system', 'js_system', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:21:"get_preloader_content";s:6:"params";a:1:{i:0;s:8:"icons_js";}s:5:"class";s:12:"BaseServices";}', 1, 20);
 
 
 

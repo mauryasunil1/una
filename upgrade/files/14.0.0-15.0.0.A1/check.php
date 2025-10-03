@@ -11,4 +11,8 @@ else {
         $mixCheckResult = true;
 }
 
+if (true === $mixCheckResult && ($this->oDb->getOne("SELECT `id` FROM `sys_modules` WHERE `name` = 'bx_profiler'") > 0 || file_exists(BX_DIRECTORY_PATH_MODULES . 'boonex/profiler'))) {
+    $mixCheckResult = 'The Profiler module must be uninstalled and deleted before applying this update. After the update is complete, you can download the latest version from the App Store.';
+}
+
 return $mixCheckResult;
