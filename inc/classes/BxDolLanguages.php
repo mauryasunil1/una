@@ -485,7 +485,12 @@ function bx_lang_code_with_country()
 
 function bx_lang_country()
 {
-    $sResult = bx_lang_name();
+    $oLanguages = BxDolLanguages::getInstance();
+
+    if(($sCountryDb = $oLanguages->getLangCountryCode()))
+        return $sCountryDb;
+
+    $sResult = $oLanguages->getCurrentLanguage();
     if(strpos($sResult, '-') !== false)
         list($sCode, $sResult) = explode('-', $sResult);
 

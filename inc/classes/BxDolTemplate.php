@@ -1919,8 +1919,7 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
                 $sRet = bx_lang_direction();
                 break;
             case 'lang_country':
-                if (!($sRet = BxDolLanguages::getInstance()->getLangCountryCode()))
-                    $sRet = bx_lang_country();
+                $sRet = bx_lang_country();
                 break;
             case 'lang_with_country':
                 $sRet = bx_lang_code_with_country();
