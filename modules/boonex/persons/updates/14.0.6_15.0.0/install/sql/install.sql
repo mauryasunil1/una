@@ -47,6 +47,8 @@ INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `ch
 ('bx_person', 'bx_persons', 'badge', 'a:1:{i:0;s:21:"bx_persons_badge_crop";}', 'a:1:{s:21:"bx_persons_badge_crop";s:24:"_sys_uploader_crop_title";}', 0, 'files', '_bx_persons_form_profile_input_sys_badge', '_bx_persons_form_profile_input_badge', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0, ''),
 ('bx_person', 'bx_persons', 'badge_link', '', '', 0, 'text', '_bx_persons_form_profile_input_sys_badge_link', '_bx_persons_form_profile_input_badge_link', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 1, 0, '');
 
+UPDATE `sys_form_inputs` SET `type`='datetime' WHERE `object`='bx_person' AND `name`='profile_last_active';
+
 DELETE FROM `sys_form_display_inputs` WHERE `display_name`='bx_person_edit' AND `input_name` IN ('controls', 'do_submit', 'do_cancel');
 SET @iOrder = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_form_display_inputs` WHERE `display_name`='bx_person_edit');
 INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for_levels`, `active`, `order`) VALUES 

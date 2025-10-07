@@ -29,6 +29,7 @@ class BxCoursesUpdater extends BxDolStudioUpdater
                 $this->oDb->query("ALTER TABLE `bx_courses_prices` ADD `default` tinyint(4) NOT NULL default '0' AFTER `order`");
             if(!$this->oDb->isFieldExists('bx_courses_prices', 'active'))
                 $this->oDb->query("ALTER TABLE `bx_courses_prices` ADD `active` tinyint(4) NOT NULL default '1' AFTER `default`");
+        }
 
         return parent::actionExecuteSql($sOperation);
     }
