@@ -577,6 +577,8 @@ class BxDolSearchResult implements iBxDolReplaceable
     {
         $sModule = 'system';
         $sUnitType = 'content';
+        $sHomeUrl = '';
+        
         if(!empty($this->oModule)) {
             $sModule = $this->oModule->getName();
 
@@ -584,6 +586,8 @@ class BxDolSearchResult implements iBxDolReplaceable
                  $sUnitType = 'profile';
             if(method_exists($this->oModule, 'serviceIsGroupProfile') && $this->oModule->serviceIsGroupProfile())
                  $sUnitType = 'context';
+            
+            $sHomeUrl = bx_api_get_relative_url(BxDolPermalinks::getInstance()->permalink($this->oModule->_oConfig->CNF['URL_HOME']));
         }
 
         $sUnit =  'list';
@@ -596,7 +600,12 @@ class BxDolSearchResult implements iBxDolReplaceable
             'per_page' => $this->aCurrent['paginate']['perPage'],
             'start' => $this->aCurrent['paginate']['start'],
             'type' => $this->_sMode,
+            'view' => $this->_aParams['unit_view']
         ];
+        
+        if ($sHomeUrl){
+            $aParams['home_url'] = $sHomeUrl;
+        }
 
         foreach(['author', 'category', 'context', 'joined_profile', 'followed_contexts', 'level'] as $sParamAdd)
             if(isset($this->_aParams[$sParamAdd]))

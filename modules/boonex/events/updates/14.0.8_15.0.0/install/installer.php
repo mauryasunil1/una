@@ -28,7 +28,7 @@ class BxEventsUpdater extends BxDolStudioUpdater
             if(!$this->oDb->isFieldExists('bx_events_prices', 'added'))
                 $this->oDb->query("ALTER TABLE `bx_events_prices` ADD `added` int(11) NOT NULL default '0' AFTER `price`");
             if(!$this->oDb->isFieldExists('bx_events_prices', 'default'))
-                $this->oDb->query("ALTER TABLE `bx_events_prices` ADD `default` tinyint(4) NOT NULL default '0' AFTER `votes`");
+                $this->oDb->query("ALTER TABLE `bx_events_prices` ADD `default` tinyint(4) NOT NULL default '0' AFTER `order`");
             if(!$this->oDb->isFieldExists('bx_events_prices', 'active'))
                 $this->oDb->query("ALTER TABLE `bx_events_prices` ADD `active` tinyint(4) NOT NULL default '1' AFTER `default`");
         }
