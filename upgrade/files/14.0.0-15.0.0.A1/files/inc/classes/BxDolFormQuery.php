@@ -211,6 +211,8 @@ class BxDolFormQuery extends BxDolDb
 
     static public function getDataItems($sKey, $isUseForSet = false, $sUseValues = BX_DATA_VALUES_DEFAULT)
     {
+        bx_import('BxDolLanguages');
+        
         $oDb = BxDolDb::getInstance();
 
         if(!in_array($sUseValues, array(BX_DATA_VALUES_DEFAULT, BX_DATA_VALUES_ADDITIONAL, BX_DATA_VALUES_ALL)))
