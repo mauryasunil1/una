@@ -18,12 +18,12 @@ $aConfig = array(
     'name' => 'bx_quoteofday',
     'title' => 'Quote of the Day',
     'note' => 'Quote of the Day module.',
-    'version' => '13.0.2.DEV',
+    'version' => '15.0.1.DEV',
     'vendor' => 'UNA INC',
     'help_url' => 'http://feed.una.io/?section={module_name}',
 
     'compatible_with' => array(
-        '13.0.x'
+        '15.0.x'
     ),
 
     /**

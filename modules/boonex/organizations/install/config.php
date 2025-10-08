@@ -18,12 +18,12 @@ $aConfig = array(
     'name' => 'bx_organizations',
     'title' => 'Organizations',
     'note' => 'Basic organization profiles functionality.',
-    'version' => '14.0.9.DEV',
+    'version' => '15.0.1.DEV',
     'vendor' => 'UNA INC',
     'help_url' => 'http://feed.una.io/?section={module_name}',
 
     'compatible_with' => array(
-        '14.0.x'
+        '15.0.x'
     ),
 
     /**
