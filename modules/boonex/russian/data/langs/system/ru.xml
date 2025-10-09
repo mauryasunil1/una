@@ -3536,8 +3536,8 @@
     <string name="_sys_menu_title_public_con_submenu"><![CDATA[Связи]]></string>
     <string name="_sys_menu_set_title_con_submenu"><![CDATA[Связи]]></string>
     <string name="_sys_menu_item_title_con_friends"><![CDATA[Все друзья]]></string>
-    <string name="_sys_menu_item_title_con_friend_requests"><![CDATA[Хотят дружить]]></string>
-    <string name="_sys_menu_item_title_con_friend_requested"><![CDATA[Запрошенная дружба]]></string>
+    <string name="_sys_menu_item_title_con_friend_requests"><![CDATA[Полученные приглашения]]></string>
+    <string name="_sys_menu_item_title_con_friend_requested"><![CDATA[Отправленные приглашения]]></string>
     <string name="_sys_menu_item_title_con_following"><![CDATA[Подписан на]]></string>
     <string name="_sys_menu_item_title_con_followers"><![CDATA[Подписчики]]></string>
     <string name="_sys_menu_item_title_recom_friends"><![CDATA[Предложения]]></string>

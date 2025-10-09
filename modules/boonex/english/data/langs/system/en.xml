@@ -3576,7 +3576,7 @@ If it is not enabled then please consider implement this optimization, since it 
     <string name="_sys_menu_set_title_con_submenu"><![CDATA[Connections]]></string>
     <string name="_sys_menu_item_title_con_friends"><![CDATA[All Friends]]></string>
     <string name="_sys_menu_item_title_con_friend_requests"><![CDATA[Friend Requests]]></string>
-    <string name="_sys_menu_item_title_con_friend_requested"><![CDATA[Sent Friend Requests]]></string>
+    <string name="_sys_menu_item_title_con_friend_requested"><![CDATA[Sent Requests]]></string>
     <string name="_sys_menu_item_title_con_following"><![CDATA[Following]]></string>
     <string name="_sys_menu_item_title_con_followers"><![CDATA[Followers]]></string>
     <string name="_sys_menu_item_title_recom_friends"><![CDATA[Suggestions]]></string>
