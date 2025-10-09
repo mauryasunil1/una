@@ -118,7 +118,7 @@ class BxBaseIconsetLucide extends BxBaseIconset
         $sMap = json_encode($this->_aMap);
 
         $sCode = <<<BLAH
-        (function initClassOnlyLucide() {
+        function bx_iconset_init_lucide() {
             if(!window.lucide || !lucide.icons)
                 return;
  
@@ -139,7 +139,17 @@ class BxBaseIconsetLucide extends BxBaseIconset
               attrs: { class: ['sys-icon'] },
               nameAttr: 'data-lucide'
             });
-        })();
+        };
+
+        bx_iconset_init_lucide();
+
+        if (typeof glOnProcessHtml === 'undefined')
+            glOnProcessHtml = [];
+        if (glOnProcessHtml instanceof Array) {
+            glOnProcessHtml.push(function(e) {
+                bx_iconset_init_lucide();
+            });
+        }
 BLAH;
 
         return $this->_oTemplate->_wrapInTagJsCode($sCode);
