@@ -70,6 +70,9 @@ BxDolReport.prototype.onReport = function(oData, oElement)
 
         $(oElement).toggleClass('bx-report-reported');
 
+        if(oData && oData.disabled)
+            $(oElement).removeAttr('onclick').addClass($(oElement).hasClass('bx-btn') ? 'bx-btn-disabled' : 'bx-report-disabled');
+
         if(oData && oData.label_icon)
             $(oElement).find('.sys-action-do-icon .sys-icon').attr('class', 'sys-icon ' + oData.label_icon);
 
@@ -77,9 +80,6 @@ BxDolReport.prototype.onReport = function(oData, oElement)
             $(oElement).attr('title', oData.label_title);
             $(oElement).find('.sys-action-do-text').html(oData.label_title);
         }
-
-        if(oData && oData.disabled)
-            $(oElement).removeAttr('onclick').addClass($(oElement).hasClass('bx-btn') ? 'bx-btn-disabled' : 'bx-report-disabled');
 
         var oCounter = $this._getCounter(oElement);
         if(oCounter && oCounter.length > 0) {
