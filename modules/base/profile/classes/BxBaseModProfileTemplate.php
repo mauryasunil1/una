@@ -92,8 +92,16 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
             'is_profile_public' => $isProfilePublic,
         ]);
 
+        // profile
+        if (isset($aData['profile_id']))
+            $oProfile = BxDolProfile::getInstance($aData['profile_id']);
+        else
+            $oProfile = BxDolProfile::getInstanceByContentAndType((int)$aData[$CNF['FIELD_ID']], $this->MODULE);
+        
+        $iProfile = $oProfile->id();
+
         // try to get template variables from cache
-        $sCacheKey = 'sprofile_unit_vars:' . $oModule->getName() . (int)$aData[$CNF['FIELD_ID']] . ':' . $sTemplate . ':avci' . ($isAllowedViewCoverImage ? '1' : '0') . ':avpi' . ($isAllowedViewProfileImage ? '1' : '0') . ':pp' . ($isProfilePublic ? '1' : '0');
+        $sCacheKey = 'sprofile_unit_vars:' . $iProfile . ':onl' . ($oProfile->isOnline() ? 1 : 0) . ':' . $sTemplate . ':avci' . ($isAllowedViewCoverImage ? '1' : '0') . ':avpi' . ($isAllowedViewProfileImage ? '1' : '0') . ':pp' . ($isProfilePublic ? '1' : '0') . (isset($aParams['template_size']) ? ':' . $aParams['template_size'] : '');
         $aVars = bx_content_cache_get($sCacheKey);
         if (null === $aVars) {
             // get template variables if not found in cache
@@ -104,11 +112,6 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
         // get snippet menu
         $aTmplVarsMeta = array();
         if(substr($sTemplate, 0, 8) != 'unit_wo_') {
-            $iProfile = $aData['profile_id'] ?? false;
-            if($iProfile === false) {
-                $oProfile = BxDolProfile::getInstanceByContentAndType((int)$aData[$CNF['FIELD_ID']], $this->MODULE);
-                $iProfile = $oProfile->id();
-            }
             $aTmplVarsMeta = $this->getSnippetMenuVars ($iProfile, $bPublic, $aParams);
         }
         // snippet meta menu is never cached
