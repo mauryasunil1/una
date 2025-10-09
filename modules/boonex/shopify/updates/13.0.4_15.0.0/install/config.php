@@ -10,7 +10,7 @@ $aConfig = array(
      */
     'title' => 'Shopify',
     'version_from' => '13.0.4',
-    'version_to' => '13.0.5',
+    'version_to' => '15.0.0',
     'vendor' => 'UNA INC',
 
     'compatible_with' => array(

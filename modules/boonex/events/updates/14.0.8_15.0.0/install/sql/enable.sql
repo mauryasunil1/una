@@ -43,7 +43,7 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 
 UPDATE `sys_objects_menu` SET `title_public`='_bx_events_menu_title_public_submenu' WHERE `object`='bx_events_submenu';
 
-DELETE FROM `sys_menu_items` WHERE `set_name`='bx_groups_snippet_meta' AND `name` IN ('votes', 'reactions', 'scores');
+DELETE FROM `sys_menu_items` WHERE `set_name`='bx_events_snippet_meta' AND `name` IN ('votes', 'reactions', 'scores');
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `visibility_custom`, `active`, `copyable`, `editable`, `order`) VALUES
 ('bx_events_snippet_meta', 'bx_events', 'votes', '_sys_menu_item_title_system_sm_votes', '_sys_menu_item_title_sm_votes', '', '', '', '', '', 2147483647, '', 0, 0, 1, 16),
 ('bx_events_snippet_meta', 'bx_events', 'reactions', '_sys_menu_item_title_system_sm_reactions', '_sys_menu_item_title_sm_reactions', '', '', '', '', '', 2147483647, '', 0, 0, 1, 17),

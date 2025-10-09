@@ -3,7 +3,7 @@
         'name' => 'unaio/una',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '9de12135e0fc0b88aff7094e6cbf51573c7976b9',
+        'reference' => '21d4d0e99ef4bebfa6997eb8357535d0d68a6c3b',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -347,7 +347,7 @@
         'unaio/una' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '9de12135e0fc0b88aff7094e6cbf51573c7976b9',
+            'reference' => '21d4d0e99ef4bebfa6997eb8357535d0d68a6c3b',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

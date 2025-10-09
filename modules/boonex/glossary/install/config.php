@@ -18,12 +18,12 @@ $aConfig = array(
     'name' => 'bx_glossary',
     'title' => 'Glossary',
     'note' => 'Glossary module.',
-    'version' => '13.0.4.DEV',
+    'version' => '15.0.1.DEV',
     'vendor' => 'UNA INC',
     'help_url' => 'http://feed.una.io/?section={module_name}',
 
     'compatible_with' => array(
-        '13.0.x'
+        '15.0.x'
     ),
 
     /**

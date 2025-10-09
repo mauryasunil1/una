@@ -17,3 +17,12 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_ads_entry_price_year_edit', 'controls', 2147483647, 1, @iOrder+1),
 ('bx_ads_entry_price_year_edit', 'do_submit', 2147483647, 1, @iOrder+2),
 ('bx_ads_entry_price_year_edit', 'do_cancel', 2147483647, 1, @iOrder+3);
+
+DELETE FROM `sys_form_display_inputs` WHERE `display_name` IN ('bx_ads_entry_price_add', 'bx_ads_entry_price_edit', 'bx_ads_entry_price_year_add', 'bx_ads_entry_price_year_edit') AND `input_name`='seg_sex';
+DELETE FROM `sys_form_display_inputs` WHERE `display_name` IN ('bx_ads_entry_price_add', 'bx_ads_entry_price_edit', 'bx_ads_entry_price_year_add', 'bx_ads_entry_price_year_edit') AND `input_name`='seg_gender';
+INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for_levels`, `active`, `order`) VALUES 
+('bx_ads_entry_price_add', 'seg_gender', 2147483647, 1, 26),
+('bx_ads_entry_price_edit', 'seg_gender', 2147483647, 1, 23),
+
+('bx_ads_entry_price_year_add', 'seg_gender', 2147483647, 1, 27),
+('bx_ads_entry_price_year_edit', 'seg_gender', 2147483647, 1, 24);

@@ -23,9 +23,11 @@ class BxInvUpdater extends BxDolStudioUpdater
             if(!$this->oDb->isFieldExists('bx_inv_invites', 'aj_params'))
                 $this->oDb->query("ALTER TABLE `bx_inv_invites` ADD `aj_params` varchar(255) NOT NULL default '' AFTER `aj_action`");
 
-            $this->oDb->query("UPDATE `bx_inv_invites` SET `aj_action`='redirect', `aj_params`=`redirect` WHERE `redirect`<>''");
-            if($this->oDb->isFieldExists('bx_inv_invites', 'redirect'))
+            if($this->oDb->isFieldExists('bx_inv_invites', 'redirect')) {
+                $this->oDb->query("UPDATE `bx_inv_invites` SET `aj_action`='redirect', `aj_params`=`redirect` WHERE `redirect`<>''");
+
                 $this->oDb->query("ALTER TABLE `bx_inv_invites` DROP COLUMN `redirect`");
+            }
         }
 
         return parent::actionExecuteSql($sOperation);
