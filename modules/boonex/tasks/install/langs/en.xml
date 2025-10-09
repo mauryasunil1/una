@@ -13,7 +13,8 @@
     <string name="_bx_tasks_option_rss_num"><![CDATA[Number of items in RSS feed]]></string>
     <string name="_bx_tasks_option_searchable_fields"><![CDATA[Searchable fields for keyword search]]></string>
     <string name="_bx_tasks_option_auto_activation_for_categories"><![CDATA[Auto-Activation For Categories]]></string>
-  
+
+    <!-- Forms -->
     <string name="_bx_tasks_form_entry"><![CDATA[Tasks]]></string>
     <string name="_bx_tasks_form_entry_display_add"><![CDATA[Add Task]]></string>
     <string name="_bx_tasks_form_entry_display_edit"><![CDATA[Edit Task]]></string>
@@ -76,13 +77,14 @@
     <string name="_bx_tasks_form_entry_input_sys_attachments"><![CDATA[Attachments]]></string>
     <string name="_bx_tasks_form_entry_input_sys_allow_comments"><![CDATA[Allow comments]]></string>
     <string name="_bx_tasks_form_entry_input_allow_comments"><![CDATA[Allow comments]]></string>
-	
     <string name="_bx_tasks_form_entry_input_sys_tasks_list"><![CDATA[Task list]]></string>
     <string name="_bx_tasks_form_entry_input_tasks_list"><![CDATA[Task list]]></string>
-    <string name="_bx_tasks_form_profile_input_sys_initial_members"><![CDATA[Assign to]]></string>
-    <string name="_bx_tasks_form_profile_input_initial_members"><![CDATA[Assign to]]></string>
+    <string name="_bx_tasks_form_entry_input_sys_initial_members"><![CDATA[Assign to]]></string>
+    <string name="_bx_tasks_form_entry_input_initial_members"><![CDATA[Assign to]]></string>
     <string name="_bx_tasks_form_entry_input_sys_date_due_date"><![CDATA[Due date]]></string>
     <string name="_bx_tasks_form_entry_input_date_due_date"><![CDATA[Due date]]></string>
+    <string name="_bx_tasks_form_entry_input_sys_estimate"><![CDATA[Estimate]]></string>
+    <string name="_bx_tasks_form_entry_input_estimate"><![CDATA[Estimate (in hours)]]></string>
 
     <string name="_bx_tasks_form_list_entry"><![CDATA[Tasklists]]></string>
     <string name="_bx_tasks_form_list_entry_display_add"><![CDATA[Add Tasklist]]></string>
@@ -93,6 +95,23 @@
     <string name="_bx_tasks_form_list_entry_input_title"><![CDATA[Title]]></string>
     <string name="_bx_tasks_form_list_entry_input_title_err"><![CDATA[Title is essential. Please, fill in this field]]></string>
 
+    <string name="_bx_tasks_form_time"><![CDATA[Time]]></string>
+    <string name="_bx_tasks_form_display_time_add"><![CDATA[Add Time]]></string>
+    <string name="_bx_tasks_form_display_time_edit"><![CDATA[Edit Time]]></string>
+    <string name="_bx_tasks_form_time_input_sys_sys"><![CDATA[System]]></string>
+    <string name="_bx_tasks_form_time_input_sys_object_id"><![CDATA[Object ID]]></string>
+    <string name="_bx_tasks_form_time_input_object_id"><![CDATA[Task]]></string>
+    <string name="_bx_tasks_form_time_input_object_id_err"><![CDATA[This field in essential. Please, fill it in.]]></string>
+    <string name="_bx_tasks_form_time_input_sys_action"><![CDATA[Action]]></string>
+    <string name="_bx_tasks_form_time_input_sys_submit"><![CDATA[Submit]]></string>
+    <string name="_bx_tasks_form_time_input_submit"><![CDATA[Submit]]></string>
+    <string name="_bx_tasks_form_time_input_sys_value"><![CDATA[Time]]></string>
+    <string name="_bx_tasks_form_time_input_value"><![CDATA[Time]]></string>
+    <string name="_bx_tasks_form_time_input_sys_text"><![CDATA[Note]]></string>
+    <string name="_bx_tasks_form_time_input_text"><![CDATA[Note]]></string>
+    <string name="_bx_tasks_popup_title_time_add"><![CDATA[Add Time]]></string>
+    <string name="_bx_tasks_popup_title_time_edit"><![CDATA[Edit Time]]></string>
+
     <string name="_bx_tasks_category_form_entry"><![CDATA[Categories Form]]></string>
     <string name="_bx_tasks_category_display_add"><![CDATA[Add category]]></string>
     <string name="_bx_tasks_category_display_edit"><![CDATA[Edit category]]></string>
@@ -101,6 +120,7 @@
     <string name="_bx_tasks_category_form_entry_input_value_err"><![CDATA[Value is essential. Please, fill in this field]]></string>
     <string name="_bx_tasks_lmi_cpt_categories"><![CDATA[Categories]]></string>
 
+    <!-- ACL -->
     <string name="_bx_tasks_acl_action_create_entry"><![CDATA[Create Task]]></string>
     <string name="_bx_tasks_acl_action_delete_entry"><![CDATA[Delete Task]]></string>
     <string name="_bx_tasks_acl_action_view_entry"><![CDATA[View Task]]></string>
@@ -108,6 +128,7 @@
     <string name="_bx_tasks_acl_action_edit_any_entry"><![CDATA[Edit Any Task]]></string>
     <string name="_bx_tasks_acl_action_delete_any_entry"><![CDATA[Delete Any Task]]></string>
 
+    <!-- Pages -->
     <string name="_bx_tasks_page_title_sys_create_entry"><![CDATA[New Task]]></string>
     <string name="_bx_tasks_page_title_create_entry"><![CDATA[New Task]]></string>
     <string name="_bx_tasks_page_block_title_create_entry"><![CDATA[New Task]]></string>
@@ -199,7 +220,18 @@
     <string name="_bx_tasks_page_block_title_calendar_in_context"><![CDATA[Calendar]]></string>
     <string name="_bx_tasks_page_block_title_sys_calendar_of_author"><![CDATA[Calendar]]></string>
     <string name="_bx_tasks_page_block_title_calendar_of_author"><![CDATA[Calendar]]></string>
+    <string name="_bx_tasks_page_title_sys_entries_time_in_context"><![CDATA[My time in context]]></string>
+    <string name="_bx_tasks_page_title_entries_time_in_context"><![CDATA[My time in {display_name}]]></string>
+    <string name="_bx_tasks_page_title_sys_entries_time_in_context_administration"><![CDATA[All time in context]]></string>
+    <string name="_bx_tasks_page_title_entries_time_in_context_administration"><![CDATA[All time in {display_name}]]></string>
+    <string name="_bx_tasks_page_block_title_sys_menu_in_context"><![CDATA[View context menu]]></string>
+    <string name="_bx_tasks_page_block_title_menu_in_context"><![CDATA[Menu]]></string>
+    <string name="_bx_tasks_page_block_title_sys_entries_time_in_context"><![CDATA[My time in context]]></string>
+    <string name="_bx_tasks_page_block_title_entries_time_in_context"><![CDATA[My Time in <a href="{profile_link}">{display_name}</a>]]></string>
+    <string name="_bx_tasks_page_block_title_sys_entries_time_in_context_administration"><![CDATA[All time in context]]></string>
+    <string name="_bx_tasks_page_block_title_entries_time_in_context_administration"><![CDATA[All Time in <a href="{profile_link}">{display_name}</a>]]></string>
 
+    <!-- Menus -->
     <string name="_bx_tasks_menu_title_entry_attachments"><![CDATA[Form Attachments]]></string>
     <string name="_bx_tasks_menu_set_title_entry_attachments"><![CDATA[Form Attachments]]></string>
     <string name="_bx_tasks_menu_item_title_system_cpa_photo_simple"><![CDATA[Add Photo (simple)]]></string>
@@ -216,7 +248,6 @@
     <string name="_bx_tasks_menu_item_title_cpa_file_simple"><![CDATA[Add File]]></string>
     <string name="_bx_tasks_menu_item_title_system_cpa_file_html5"><![CDATA[Add File (html5)]]></string>
     <string name="_bx_tasks_menu_item_title_cpa_file_html5"><![CDATA[Add Files]]></string>
-
     <string name="_bx_tasks_menu_set_title_view_entry"><![CDATA[Task Actions]]></string>
     <string name="_bx_tasks_menu_title_view_entry"><![CDATA[Task Actions]]></string>
     <string name="_bx_tasks_menu_title_submenu"><![CDATA[Tasks Submenu]]></string>
@@ -263,27 +294,32 @@
     <string name="_bx_tasks_menu_item_title_admt_tasks"><![CDATA[Tasks]]></string>
     <string name="_bx_tasks_menu_item_title_manage_my"><![CDATA[My Tasks]]></string>
     <string name="_bx_tasks_menu_item_title_manage_all"><![CDATA[All Tasks]]></string>
-
+    <string name="_bx_tasks_menu_item_title_system_report_time"><![CDATA[Report Time]]></string>
     <string name="_bx_tasks_menu_item_title_system_set_completed"><![CDATA[Complete]]></string>
     <string name="_bx_tasks_menu_item_title_set_completed"><![CDATA[Complete]]></string>
     <string name="_bx_tasks_menu_item_title_system_set_uncompleted"><![CDATA[Re-open]]></string>
     <string name="_bx_tasks_menu_item_title_set_uncompleted"><![CDATA[Re-open]]></string>
+    <string name="_bx_tasks_menu_title_view_context_submenu"><![CDATA[View Context Submenu]]></string>
+    <string name="_bx_tasks_menu_set_title_view_context_submenu"><![CDATA[View Context Submenu]]></string>
+    <string name="_bx_tasks_menu_item_title_system_view_context_entries"><![CDATA[Tasks]]></string>
+    <string name="_bx_tasks_menu_item_title_view_context_entries"><![CDATA[Tasks]]></string>
+    <string name="_bx_tasks_menu_item_title_system_view_context_time"><![CDATA[My Time]]></string>
+    <string name="_bx_tasks_menu_item_title_view_context_time"><![CDATA[My Time]]></string>
+    <string name="_bx_tasks_menu_item_title_system_view_context_time_administration"><![CDATA[All Time]]></string>
+    <string name="_bx_tasks_menu_item_title_view_context_time_administration"><![CDATA[All Time]]></string>
 
-    <string name="_bx_tasks_grid_filter_item_title_adm_select_one_filter1"><![CDATA[All Statuses]]></string>
-    <string name="_bx_tasks_grid_filter_item_title_adm_select_one_filter2"><![CDATA[Any Audience]]></string>
-    <string name="_bx_tasks_grid_filter_item_title_adm_active"><![CDATA[Active]]></string>
-    <string name="_bx_tasks_grid_filter_item_title_adm_hidden"><![CDATA[Hidden]]></string>
-    <string name="_bx_tasks_grid_column_title_adm_active"><![CDATA[Active]]></string>
-    <string name="_bx_tasks_grid_column_title_adm_title"><![CDATA[Title]]></string>
-    <string name="_bx_tasks_grid_action_title_adm_audit_content"><![CDATA[Audit actions]]></string>
-    <string name="_bx_tasks_grid_column_title_adm_added"><![CDATA[Added]]></string>
-    <string name="_bx_tasks_grid_column_title_adm_author"><![CDATA[Author]]></string>>
-    <string name="_bx_tasks_grid_action_title_adm_add"><![CDATA[Add]]></string>
-    <string name="_bx_tasks_grid_action_title_adm_edit"><![CDATA[Edit]]></string>
-    <string name="_bx_tasks_grid_action_title_adm_delete"><![CDATA[Delete]]></string>
-    <string name="_bx_tasks_grid_action_title_adm_more_actions"><![CDATA[More Actions]]></string>
-    <string name="_bx_tasks_grid_action_err_delete"><![CDATA[Cannot delete the selected task(s).]]></string>
-    <string name="_bx_tasks_grid_txt_account_manager"><![CDATA[Redirect to manage account.]]></string>
+    <!-- Grids -->
+    <string name="_bx_tasks_grid_column_title_tm_author_id"><![CDATA[Profile]]></string>
+    <string name="_bx_tasks_grid_column_title_tm_object_id"><![CDATA[Task]]></string>
+    <string name="_bx_tasks_grid_column_title_tm_text"><![CDATA[Note]]></string>
+    <string name="_bx_tasks_grid_column_title_tm_value"><![CDATA[Time]]></string>
+    <string name="_bx_tasks_grid_column_title_tm_date"><![CDATA[Added]]></string>
+    <string name="_bx_tasks_grid_action_title_tm_add"><![CDATA[Add]]></string>
+    <string name="_bx_tasks_grid_action_title_tm_edit"><![CDATA[Edit]]></string>
+    <string name="_bx_tasks_grid_action_title_tm_delete"><![CDATA[Remove]]></string>
+    <string name="_bx_tasks_grid_action_title_tm_calculate"><![CDATA[Calculate]]></string>
+    <string name="_bx_tasks_grid_filter_item_title_tm_select_one_author_id"><![CDATA[Any Assignee]]></string>
+    <string name="_bx_tasks_grid_filter_item_title_tm_select_one_object_id"><![CDATA[Any Task]]></string>
 
     <string name="_bx_tasks_chart_growth"><![CDATA[Tasks: Growth]]></string>
     <string name="_bx_tasks_chart_growth_speed"><![CDATA[Tasks: Growth Speed]]></string>
@@ -342,6 +378,9 @@
     <string name="_bx_tasks_cat_Travel"><![CDATA[Travel]]></string>
     <string name="_bx_tasks_cat_Weddings"><![CDATA[Weddings]]></string>
     <string name="_bx_tasks_cat_Womens_Fashion"><![CDATA[Women's Fashion]]></string>
+
+    <string name="_bx_tasks_report_time_do_report"><![CDATA[Time]]></string>
+    <string name="_bx_tasks_report_time_do_unreport"><![CDATA[Revoke Time]]></string>
 
     <string name="_bx_tasks_txt_all_entries_in"><![CDATA[<a href="{0}">All Tasks in {1} ({2})</a>]]></string>
     <string name="_bx_tasks_txt_all_entries_by"><![CDATA[{0} tasks]]></string>

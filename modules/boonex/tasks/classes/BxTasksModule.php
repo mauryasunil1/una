@@ -100,72 +100,74 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         echo 'ok';
     }
 	
-	public function actionSetFilterValue($iListId, $sValue)
-	{
-		$CNF = &$this->_oConfig->CNF;
-		$aTmp = array();
-		if (isset($_COOKIE[$CNF['COOKIE_SETTING_KEY']]))
-			$aTmp =	json_decode($_COOKIE[$CNF['COOKIE_SETTING_KEY']], true);
-			
-		if ($sValue != '')
-			$aTmp[$iListId] = $sValue;
-		else
-			unset($aTmp[$iListId]);
+    public function actionSetFilterValue($iListId, $sValue)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $aTmp = array();
+        if (isset($_COOKIE[$CNF['COOKIE_SETTING_KEY']]))
+            $aTmp = json_decode($_COOKIE[$CNF['COOKIE_SETTING_KEY']], true);
+
+        if ($sValue != '')
+            $aTmp[$iListId] = $sValue;
+        else
+            unset($aTmp[$iListId]);
+
         bx_setcookie($CNF['COOKIE_SETTING_KEY'], json_encode($aTmp), time() + 60*60*24*365);
-	}
+    }
 	
-	public function actionProcessTaskListForm($iContextId, $iId)
+    public function actionProcessTaskListForm($iContextId, $iId)
     {
         if (!$this->isAllowAdd(-$iContextId))
             return;
-        
-		$CNF = &$this->_oConfig->CNF;
-		$oForm = null;
-		$sPopupTitle = "";
-		$aContentInfo = array();
-		if ($iId == 0){
-			$oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_LIST_ENTRY'], $CNF['OBJECT_FORM_LIST_ENTRY_DISPLAY_ADD']);
-			$sPopupTitle = _t('_bx_tasks_form_list_entry_display_add');
-		}
-		else{
-			$oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_LIST_ENTRY'], $CNF['OBJECT_FORM_LIST_ENTRY_DISPLAY_EDIT']);
-			$aContentInfo = $this->_oDb->getList($iId);
-			$sPopupTitle = _t('_bx_tasks_form_list_entry_display_edit');
-		}
-		
-		$oForm->aFormAttrs['action'] = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'process_task_list_form/' . $iContextId . '/' . $iId . '/';
-		if (!$oForm)
+
+        $CNF = &$this->_oConfig->CNF;
+
+        $oForm = null;
+        $sPopupTitle = "";
+        $aContentInfo = array();
+        if ($iId == 0){
+            $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_LIST_ENTRY'], $CNF['OBJECT_FORM_LIST_ENTRY_DISPLAY_ADD']);
+            $sPopupTitle = _t('_bx_tasks_form_list_entry_display_add');
+        }
+        else {
+            $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_LIST_ENTRY'], $CNF['OBJECT_FORM_LIST_ENTRY_DISPLAY_EDIT']);
+            $aContentInfo = $this->_oDb->getList($iId);
+            $sPopupTitle = _t('_bx_tasks_form_list_entry_display_edit');
+        }
+
+        $oForm->aFormAttrs['action'] = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'process_task_list_form/' . $iContextId . '/' . $iId . '/';
+        if (!$oForm)
             return '';
 		
-		$oForm->initChecker($aContentInfo, array());
-		
+        $oForm->initChecker($aContentInfo, array());
         if($oForm->isSubmittedAndValid()) {
-			if ($iId == 0){
-				$aValsToAdd['context_id'] = $iContextId;
-				$iId = $oForm->insert($aValsToAdd);
-			}
-			else{
-				$iId = $oForm->update($iId);
-			}
+            if ($iId == 0){
+                $aValsToAdd['context_id'] = $iContextId;
+                $iId = $oForm->insert($aValsToAdd);
+            }
+            else {
+                $iId = $oForm->update($iId);
+            }
 
-			return echoJson(array(
-				 'eval' => $this->_oConfig->getJsObject('tasks') . '.reloadData(oData, ' . $iContextId . ')',
-			));
+            return echoJson(array(
+                'eval' => $this->_oConfig->getJsObject('tasks') . '.reloadData(oData, ' . $iContextId . ')',
+            ));
         }
         else {	
-			$sContent = $this->_oTemplate->parseHtmlByName('popup_form.html', array(
-				'form_id' => $oForm->getId(),
-				'form' => $oForm->getCode(true)
-			));
-																	 
-			if (!$oForm->isSubmitted()){
-				echo $sContent;
-				return;
-			}
-			
-            return echoJson(array('form' => $sContent, 'form_id' => $oForm->getId()));;
+            $sContent = $this->_oTemplate->parseHtmlByName('popup_form.html', array(
+                    'form_id' => $oForm->getId(),
+                    'form' => $oForm->getCode(true)
+            ));
+
+            if (!$oForm->isSubmitted()) {
+                    echo $sContent;
+                    return;
+            }
+
+            return echoJson(array('form' => $sContent, 'form_id' => $oForm->getId()));
         }
-	}
+    }
     
     public function actionDeleteTaskList($iId, $iContextId)
     {
@@ -267,22 +269,70 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         $aSQLPart = array();
         $iContextId = (int)bx_get('context_id');
         
-        if (!$this->isAllowView($iContextId))
+        if(!$this->isAllowView($iContextId))
             return; 
 		
-		$oPrivacy = BxDolPrivacy::getObjectInstance($this->_oConfig->CNF['OBJECT_PRIVACY_VIEW']);
-		
-		if($iContextId){
-			$aSQLPart = $oPrivacy ? $oPrivacy->getContentByGroupAsSQLPart(- $iContextId) : array();
-		}
+        $oPrivacy = BxDolPrivacy::getObjectInstance($this->_oConfig->CNF['OBJECT_PRIVACY_VIEW']);
+
+        if($iContextId) {
+            $aSQLPart = $oPrivacy ? $oPrivacy->getContentByGroupAsSQLPart(- $iContextId) : array();
+        }
+
         // get entries
         $aEntries = $this->_oDb->getEntriesByDate(bx_get('start'), bx_get('end'), bx_get('event'), $aSQLPart);
         
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($aEntries);
     }
-	
-	/**
+
+    public function serviceGetBlockMenuContext($iProfileId)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $oMenu = BxDolMenu::getObjectInstance($CNF['OBJECT_MENU_SUBMENU_VIEW_CONTEXT']);
+        if(!$oMenu)
+            return '';
+
+        $oMenu->addMarkers(['profile_id' => $iProfileId]);
+        return $oMenu->getCode();
+    }
+
+    public function serviceGetBlockManageTimeContext($iContextPid)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        return $this->_getBlockManageTimeContext($CNF['OBJECT_GRID_TIME'], $iContextPid);
+    }
+    
+    public function serviceGetBlockAdministrateTimeContext($iContextPid)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        return $this->_getBlockManageTimeContext($CNF['OBJECT_GRID_TIME_ADMINISTRATION'], $iContextPid);
+    }
+
+    protected function _getBlockManageTimeContext($sGridObject, $iContextPid)
+    {
+        $oGrid = BxDolGrid::getObjectInstance($sGridObject);
+        if(!$oGrid)
+            return $this->_bIsApi ? [] : '';
+
+        $oGrid->setContextPid($iContextPid);
+
+        if($this->_bIsApi)
+            return [
+                bx_api_get_block('grid', $oGrid->getCodeAPI())
+            ];
+
+        $this->_oTemplate->addCss(['manage_tools.css']);
+        $this->_oTemplate->addJs(['modules/base/text/js/|manage_tools.js', 'manage_tools.js']);
+        $this->_oTemplate->addJsTranslation(['_sys_grid_search']);
+        return $this->_oTemplate->getJsCode('manage_tools', [
+            'sObjNameGrid' => $sGridObject
+        ]) . $oGrid->getCode();
+    }
+
+    /**
      * Data for Timeline module
      */
     public function serviceGetTimelineData()
@@ -291,21 +341,21 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         return array(
             'handlers' => array(
                 array('group' => $sModule . '_object', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'added', 'module_name' => $sModule, 'module_method' => 'get_timeline_post', 'module_class' => 'Module', 'groupable' => 0, 'group_by' => ''),
-				array('group' => $sModule . '_completed', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'completed', 'module_name' => $sModule, 'module_method' => 'get_timeline_completed', 'module_class' => 'Module',  'groupable' => 0, 'group_by' => ''),
-				array('group' => $sModule . '_reopened', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'reopened', 'module_name' => $sModule, 'module_method' => 'get_timeline_reopened', 'module_class' => 'Module',  'groupable' => 0, 'group_by' => ''),
+                array('group' => $sModule . '_completed', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'completed', 'module_name' => $sModule, 'module_method' => 'get_timeline_completed', 'module_class' => 'Module',  'groupable' => 0, 'group_by' => ''),
+                array('group' => $sModule . '_reopened', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'reopened', 'module_name' => $sModule, 'module_method' => 'get_timeline_reopened', 'module_class' => 'Module',  'groupable' => 0, 'group_by' => ''),
                 array('group' => $sModule . '_object', 'type' => 'update', 'alert_unit' => $sModule, 'alert_action' => 'edited'),
                 array('group' => $sModule . '_object', 'type' => 'delete', 'alert_unit' => $sModule, 'alert_action' => 'deleted'),
             ),
             'alerts' => array(
                 array('unit' => $sModule, 'action' => 'added'),
-				array('unit' => $sModule, 'action' => 'completed'),
-				array('unit' => $sModule, 'action' => 'reopened'),
+                array('unit' => $sModule, 'action' => 'completed'),
+                array('unit' => $sModule, 'action' => 'reopened'),
                 array('unit' => $sModule, 'action' => 'edited'),
                 array('unit' => $sModule, 'action' => 'deleted'),
             )
         );
     }
-	
+
     /**
      * Entry task for Timeline module
      */
@@ -434,12 +484,20 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         return $aResult;
     }
 
+    public function serviceCheckAllowedManageInContext($iContextPid)
+    {
+        if(!$this->isAllowManageByContext($iContextPid))
+            return false;
+
+        return true;
+    }
+
     public function serviceCheckAllowedManage($iContentId)
     {
         if(!$this->isAllowManage($iContentId))
             return false;
 
-        return true; 
+        return true;
     }
 
     public function serviceCheckAllowedComplete($iContentId)
@@ -601,7 +659,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 
         return $this->_oTemplate->getEntriesList($iContextId);
     }
-	
+
     /**
      * Common methods
      */

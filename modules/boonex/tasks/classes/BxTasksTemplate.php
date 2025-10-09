@@ -60,21 +60,26 @@ class BxTasksTemplate extends BxBaseModTextTemplate
 
         $aLists = $this->_oDb->getLists($iContextId);
 
-        $aListsVars = array();
+        $aTmplVarsLists = [];
         foreach($aLists as $aList) {
-            $aTasks = $this->_oDb->getTasks($iContextId, $aList['id']);
-            $aTasksVars = array();
+            $aTasks = $this->_oDb->getTasks($iContextId, $aList['id'], true);
+
+            $aTmplVarsTasks = [];
             foreach($aTasks as $aTask) {
+                $sState = $aStates[$aTask[$CNF['FIELD_STATE']]] ?? '';
+                if(!empty($aTask['time']))
+                    $sState .= ' ' . $this->_oConfig->timeI2S($aTask['time']);
+                if($bAllowManage && !empty($aTask['time_total']))
+                    $sState .= ' (' . $this->_oConfig->timeI2S($aTask['time_total']) . ')';
+
                 $aMembers = $oConnection->getConnectedInitiators($aTask[$CNF['FIELD_ID']]);
 
-                $aMembersVars = array();
-                foreach($aMembers as $iMember) {
-                    $oProfile = BxDolProfile::getInstance($iMember);
-                    if($oProfile && !($oProfile instanceof BxDolProfileUndefined))
-                        $aMembersVars[] = array('info' => $oProfile->getUnit(0, array('template' => 'unit_wo_info')));
-                }
+                $aTmplVarsMembers = [];
+                foreach($aMembers as $iMember)
+                    if(($oProfile = BxDolProfile::getInstance($iMember)) !== false && !($oProfile instanceof BxDolProfileUndefined))
+                        $aTmplVarsMembers[] = array('info' => $oProfile->getUnit(0, array('template' => 'unit_wo_info')));
 
-                $aTasksVars[] = array(
+                $aTmplVarsTasks[] = array(
                     'id' => $aTask[$CNF['FIELD_ID']],
                     'title' => bx_process_output($aTask[$CNF['FIELD_TITLE']]),
                     'created' => bx_time_js($aTask[$CNF['FIELD_ADDED']]),
@@ -82,8 +87,8 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                     'due' => $aTask[$CNF['FIELD_DUEDATE']] > 0 ? bx_time_js($aTask[$CNF['FIELD_DUEDATE']]) : '',
                     'type' => $aTypes[$aTask[$CNF['FIELD_TYPE']]] ?? '',
                     'priority' => $aPriorities[$aTask[$CNF['FIELD_PRIORITY']]] ?? '',
-                    'state' => $aStates[$aTask[$CNF['FIELD_STATE']]] ?? '',
-                    'bx_repeat:members' => $aMembersVars,
+                    'state' => $sState,
+                    'bx_repeat:members' => $aTmplVarsMembers,
                     'badges' => $oModule->serviceGetBadges($aTask[$CNF['FIELD_ID']], true),
                     'url' => bx_absolute_url($oPermalinks->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aTask[$CNF['FIELD_ID']])),
                     'object' => $this->_oConfig->getJsObject('tasks'),
@@ -114,7 +119,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                     $sAll = 'selected';
             }
 
-            $aListsVars[] = array(
+            $aTmplVarsLists[] = array(
                 'bx_if:allow_edit_list' => array(
                     'condition' => $bAllowAdd,
                     'content' => array(
@@ -147,7 +152,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                     )
                 ),
                 'id' => $aList['id'],
-                'bx_repeat:tasks' =>  $aTasksVars,
+                'bx_repeat:tasks' =>  $aTmplVarsTasks,
                 'context_id' => $iContextId,
                 'list_id' => $aList[$CNF['FIELD_ID']],
                 'object' => $this->_oConfig->getJsObject('tasks'),
@@ -165,7 +170,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
         ]);
 
         return $this->getJsCode('tasks', ['t_confirm_block_deletion' => _t('_bx_tasks_confirm_tasklist_deletion')]) . $this->parseHtmlByName('browse_tasks.html', [
-            'bx_repeat:task_lists' => $aListsVars,
+            'bx_repeat:task_lists' => $aTmplVarsLists,
             'bx_if:allow_add_list' => [
                 'condition' => $bAllowAdd,
                 'content' => [

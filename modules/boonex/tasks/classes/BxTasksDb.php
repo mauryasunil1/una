@@ -18,7 +18,7 @@ class BxTasksDb extends BxBaseModTextDb
         parent::__construct($oConfig);
     }
 	
-	public function getLists ($iContextId = 0)
+    public function getLists ($iContextId = 0)
     {
         $CNF = &$this->_oConfig->CNF;
 
@@ -26,7 +26,7 @@ class BxTasksDb extends BxBaseModTextDb
         return $this->getAll($sQuery);
     }
 	
-	public function getList ($iId = 0)
+    public function getList ($iId = 0)
     {
         $CNF = &$this->_oConfig->CNF;
 
@@ -45,22 +45,36 @@ class BxTasksDb extends BxBaseModTextDb
         $this->query($sQuery);
     }
 	
-    public function getTasks ($iContextId = 0, $iListId = 0)
+    public function getTasks ($iContextId = 0, $iListId = 0, $bWithStats = false)
     {
         $CNF = &$this->_oConfig->CNF;
 
-        $sWhereClause = " AND `" . $CNF['FIELD_ALLOW_VIEW_TO'] . "` = :" . $CNF['FIELD_ALLOW_VIEW_TO'] . " AND `" . $CNF['FIELD_TASKLIST'] . "` = :" . $CNF['FIELD_TASKLIST'];
+        $aBindings = [];
+        $sSelectClause = "`te`.*";
+        $sJoinClause = $sWhereClause = "";
 
-        $oCf = BxDolContentFilter::getInstance();
-        if($oCf->isEnabled())
-            $sWhereClause .= $oCf->getSQLParts($CNF['TABLE_ENTRIES'], $CNF['FIELD_CF']);
+        if(($sField = $CNF['FIELD_ALLOW_VIEW_TO']) && $iContextId) {
+            $aBindings[$sField] = $iContextId;
+            $sWhereClause .= " AND `te`.`" . $sField . "` = :" . $sField;
+        }
 
-        return $this->getAll("SELECT * FROM `" . $CNF['TABLE_ENTRIES'] . "` WHERE 1" . $sWhereClause, [
-            $CNF['FIELD_ALLOW_VIEW_TO'] => $iContextId,
-            $CNF['FIELD_TASKLIST'] => $iListId
-        ]);
+        if(($sField = $CNF['FIELD_TASKLIST']) && $iListId) {
+            $aBindings[$sField] = $iListId;
+            $sWhereClause .= " AND `te`.`" . $sField . "` = :" . $sField;
+        }
+
+        if(($oCf = BxDolContentFilter::getInstance()) && $oCf->isEnabled())
+            $sWhereClause .= $oCf->getSQLParts('te', $CNF['FIELD_CF']);
+
+        if($bWithStats) {
+            $sSelectClause .= $this->prepareAsString(", (SELECT SUM(`value`) FROM `" . $CNF['TABLE_TIME_TRACK'] . "` WHERE `object_id`=`te`.`id` AND `author_id`=?) AS `time`, `tt`.`sum` AS `time_total`", bx_get_logged_profile_id());
+
+            $sJoinClause .= " LEFT JOIN `" . $CNF['TABLE_TIME'] . "` AS `tt` ON `te`.`id`=`tt`.`object_id`";
+        }
+
+        return $this->getAll("SELECT " . $sSelectClause . " FROM `" . $CNF['TABLE_ENTRIES'] . "` AS `te`" . $sJoinClause . " WHERE 1" . $sWhereClause, $aBindings);
     }
-	
+
     public function getEntriesByDate($sDateFrom, $sDateTo, $aSQLPart = array())
     {
         // validate input data
@@ -139,6 +153,37 @@ class BxTasksDb extends BxBaseModTextDb
             return false;
 
         return count($aResult) == (int)$this->query("UPDATE `" . $CNF['TABLE_ENTRIES'] . "` SET `" . $CNF['FIELD_EXPIRED'] . "` = '1' WHERE `id` IN (" . $this->implode_escape($aResult) . ")") ? $aResult : false;
+    }
+    
+    public function getTimeTracks($aParams = []) 
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $aMethod = ['name' => 'getAll', 'params' => [0 => 'query']];
+        $sSelectClause = '`ttt`.*';
+        $sJoinClause = $sWhereClause = $sOrderClause = '';
+
+        if(!empty($aParams))
+            switch($aParams['sample']) {
+                case 'id':
+                    $aMethod['name'] = 'getRow';
+                    $aMethod['params'][1] = [
+                        'id' => $aParams['id']
+                    ];
+
+                    $sWhereClause = "AND `ttt`.`id` = :id";
+                    break;
+            }
+
+        if(!empty($sOrderClause))
+            $sOrderClause = "ORDER BY " . $sOrderClause;
+
+        $aMethod['params'][0] = "SELECT 
+                " . $sSelectClause . " 
+            FROM `" . $CNF['TABLE_TIME_TRACK'] . "` AS `ttt` " . $sJoinClause . " 
+            WHERE 1 " . $sWhereClause . " " . $sOrderClause;
+
+        return call_user_func_array([$this, $aMethod['name']], $aMethod['params']);
     }
 }
 

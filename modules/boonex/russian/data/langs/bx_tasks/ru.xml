@@ -13,7 +13,8 @@
     <string name="_bx_tasks_option_rss_num"><![CDATA[Количество элементов в ленте RSS]]></string>
     <string name="_bx_tasks_option_searchable_fields"><![CDATA[Поля для поиска]]></string>
     <string name="_bx_tasks_option_auto_activation_for_categories"><![CDATA[Автоактивация для категорий]]></string>
-  
+
+    <!-- Forms -->
     <string name="_bx_tasks_form_entry"><![CDATA[Задания]]></string>
     <string name="_bx_tasks_form_entry_display_add"><![CDATA[Добавить задание]]></string>
     <string name="_bx_tasks_form_entry_display_edit"><![CDATA[Редактировать задание]]></string>
@@ -76,13 +77,14 @@
     <string name="_bx_tasks_form_entry_input_sys_attachments"><![CDATA[Вложения]]></string>
     <string name="_bx_tasks_form_entry_input_sys_allow_comments"><![CDATA[Разрешить комментарии]]></string>
     <string name="_bx_tasks_form_entry_input_allow_comments"><![CDATA[Разрешить комментарии]]></string>
-	
     <string name="_bx_tasks_form_entry_input_sys_tasks_list"><![CDATA[Список заданий]]></string>
     <string name="_bx_tasks_form_entry_input_tasks_list"><![CDATA[Список заданий]]></string>
-    <string name="_bx_tasks_form_profile_input_sys_initial_members"><![CDATA[Назначить на]]></string>
-    <string name="_bx_tasks_form_profile_input_initial_members"><![CDATA[Назначить на]]></string>
+    <string name="_bx_tasks_form_entry_input_sys_initial_members"><![CDATA[Назначить на]]></string>
+    <string name="_bx_tasks_form_entry_input_initial_members"><![CDATA[Назначить на]]></string>
     <string name="_bx_tasks_form_entry_input_sys_date_due_date"><![CDATA[Срок]]></string>
     <string name="_bx_tasks_form_entry_input_date_due_date"><![CDATA[Срок]]></string>
+    <string name="_bx_tasks_form_entry_input_sys_estimate"><![CDATA[Временные затраты]]></string>
+    <string name="_bx_tasks_form_entry_input_estimate"><![CDATA[Временные затраты (в часах)]]></string>
 
     <string name="_bx_tasks_form_list_entry"><![CDATA[Списки заданий]]></string>
     <string name="_bx_tasks_form_list_entry_display_add"><![CDATA[Добавить Список заданий]]></string>
@@ -93,6 +95,21 @@
     <string name="_bx_tasks_form_list_entry_input_title"><![CDATA[Заголовок]]></string>
     <string name="_bx_tasks_form_list_entry_input_title_err"><![CDATA[Заголовок обязателен. Пожалуйста, заполните это поле]]></string>
 
+    <string name="_bx_tasks_form_time"><![CDATA[Время]]></string>
+    <string name="_bx_tasks_form_display_time_add"><![CDATA[Добавить время]]></string>
+    <string name="_bx_tasks_form_display_time_edit"><![CDATA[Редактировать время]]></string>
+    <string name="_bx_tasks_form_time_input_sys_sys"><![CDATA[Система]]></string>
+    <string name="_bx_tasks_form_time_input_sys_object_id"><![CDATA[ID объекта]]></string>
+    <string name="_bx_tasks_form_time_input_object_id"><![CDATA[Задание]]></string>
+    <string name="_bx_tasks_form_time_input_object_id_err"><![CDATA[Это поле обязательно. Пожалуйста, заполните его.]]></string>
+    <string name="_bx_tasks_form_time_input_sys_action"><![CDATA[Действие]]></string>
+    <string name="_bx_tasks_form_time_input_sys_submit"><![CDATA[Выполнить]]></string>
+    <string name="_bx_tasks_form_time_input_submit"><![CDATA[Выполнить]]></string>
+    <string name="_bx_tasks_form_time_input_sys_value"><![CDATA[Время]]></string>
+    <string name="_bx_tasks_form_time_input_value"><![CDATA[Время]]></string>
+    <string name="_bx_tasks_popup_title_time_add"><![CDATA[Добавить время]]></string>
+    <string name="_bx_tasks_popup_title_time_edit"><![CDATA[Редактировать время]]></string>
+
     <string name="_bx_tasks_category_form_entry"><![CDATA[Форма Категории]]></string>
     <string name="_bx_tasks_category_display_add"><![CDATA[Добавить категорию]]></string>
     <string name="_bx_tasks_category_display_edit"><![CDATA[Редактировать категорию]]></string>
@@ -101,6 +118,7 @@
     <string name="_bx_tasks_category_form_entry_input_value_err"><![CDATA[Значение обязательно. Пожалуйста, заполните это поле]]></string>
     <string name="_bx_tasks_lmi_cpt_categories"><![CDATA[Категории]]></string>
 
+    <!-- ACL -->
     <string name="_bx_tasks_acl_action_create_entry"><![CDATA[Создать Задание]]></string>
     <string name="_bx_tasks_acl_action_delete_entry"><![CDATA[Удалить Задание]]></string>
     <string name="_bx_tasks_acl_action_view_entry"><![CDATA[Просмотреть Задание]]></string>
@@ -108,6 +126,7 @@
     <string name="_bx_tasks_acl_action_edit_any_entry"><![CDATA[Редактировать Любое Задание]]></string>
     <string name="_bx_tasks_acl_action_delete_any_entry"><![CDATA[Удалять Любое Задание]]></string>
 
+    <!-- Pages -->
     <string name="_bx_tasks_page_title_sys_create_entry"><![CDATA[Новое Задание]]></string>
     <string name="_bx_tasks_page_title_create_entry"><![CDATA[Новое Задание]]></string>
     <string name="_bx_tasks_page_block_title_create_entry"><![CDATA[Новое Задание]]></string>
@@ -199,7 +218,18 @@
     <string name="_bx_tasks_page_block_title_calendar_in_context"><![CDATA[Календарь]]></string>
     <string name="_bx_tasks_page_block_title_sys_calendar_of_author"><![CDATA[Календарь]]></string>
     <string name="_bx_tasks_page_block_title_calendar_of_author"><![CDATA[Календарь]]></string>
+    <string name="_bx_tasks_page_title_sys_entries_time_in_context"><![CDATA[Мое время в контексте]]></string>
+    <string name="_bx_tasks_page_title_entries_time_in_context"><![CDATA[Мое время в {display_name}]]></string>
+    <string name="_bx_tasks_page_title_sys_entries_time_in_context_administration"><![CDATA[Всё время в контексте]]></string>
+    <string name="_bx_tasks_page_title_entries_time_in_context_administration"><![CDATA[Всё время в {display_name}]]></string>
+    <string name="_bx_tasks_page_block_title_sys_menu_in_context"><![CDATA[Меню просмотра контекста]]></string>
+    <string name="_bx_tasks_page_block_title_menu_in_context"><![CDATA[Меню]]></string>
+    <string name="_bx_tasks_page_block_title_sys_entries_time_in_context"><![CDATA[Мое время в контексте]]></string>
+    <string name="_bx_tasks_page_block_title_entries_time_in_context"><![CDATA[Мое время в <a href="{profile_link}">{display_name}</a>]]></string>
+    <string name="_bx_tasks_page_block_title_sys_entries_time_in_context_administration"><![CDATA[Всё время в контексте]]></string>
+    <string name="_bx_tasks_page_block_title_entries_time_in_context_administration"><![CDATA[Всё время в <a href="{profile_link}">{display_name}</a>]]></string>
 
+    <!-- Menus -->
     <string name="_bx_tasks_menu_title_entry_attachments"><![CDATA[Форма - Прикрепления]]></string>
     <string name="_bx_tasks_menu_set_title_entry_attachments"><![CDATA[Форма - Прикрепления]]></string>
     <string name="_bx_tasks_menu_item_title_system_cpa_photo_simple"><![CDATA[Добавить фото (один)]]></string>
@@ -214,7 +244,6 @@
     <string name="_bx_tasks_menu_item_title_cpa_file_simple"><![CDATA[Добавить файл]]></string>
     <string name="_bx_tasks_menu_item_title_system_cpa_file_html5"><![CDATA[Добавить файл (много)]]></string>
     <string name="_bx_tasks_menu_item_title_cpa_file_html5"><![CDATA[Добавить Файлы]]></string>
-
     <string name="_bx_tasks_menu_set_title_view_entry"><![CDATA[Задание - Действия]]></string>
     <string name="_bx_tasks_menu_title_view_entry"><![CDATA[Задание - Действия]]></string>
     <string name="_bx_tasks_menu_title_submenu"><![CDATA[Задания - Подменю]]></string>
@@ -261,27 +290,32 @@
     <string name="_bx_tasks_menu_item_title_admt_tasks"><![CDATA[Задания]]></string>
     <string name="_bx_tasks_menu_item_title_manage_my"><![CDATA[Мои Задания]]></string>
     <string name="_bx_tasks_menu_item_title_manage_all"><![CDATA[Все Задания]]></string>
-
+    <string name="_bx_tasks_menu_item_title_system_report_time"><![CDATA[Внести время]]></string>
     <string name="_bx_tasks_menu_item_title_system_set_completed"><![CDATA[Завершить]]></string>
     <string name="_bx_tasks_menu_item_title_set_completed"><![CDATA[Завершить]]></string>
     <string name="_bx_tasks_menu_item_title_system_set_uncompleted"><![CDATA[Открыть заново]]></string>
     <string name="_bx_tasks_menu_item_title_set_uncompleted"><![CDATA[Открыть заново]]></string>
+    <string name="_bx_tasks_menu_title_view_context_submenu"><![CDATA[Просмотр контекста - Подменю]]></string>
+    <string name="_bx_tasks_menu_set_title_view_context_submenu"><![CDATA[Просмотр контекста - Подменю]]></string>
+    <string name="_bx_tasks_menu_item_title_system_view_context_entries"><![CDATA[Задания]]></string>
+    <string name="_bx_tasks_menu_item_title_view_context_entries"><![CDATA[Задания]]></string>
+    <string name="_bx_tasks_menu_item_title_system_view_context_time"><![CDATA[Моё время]]></string>
+    <string name="_bx_tasks_menu_item_title_view_context_time"><![CDATA[Моё время]]></string>
+    <string name="_bx_tasks_menu_item_title_system_view_context_time_administration"><![CDATA[Всё время]]></string>
+    <string name="_bx_tasks_menu_item_title_view_context_time_administration"><![CDATA[Всё время]]></string>
 
-    <string name="_bx_tasks_grid_filter_item_title_adm_select_one_filter1"><![CDATA[Все статусы]]></string>
-    <string name="_bx_tasks_grid_filter_item_title_adm_select_one_filter2"><![CDATA[Любая аудитория]]></string>
-    <string name="_bx_tasks_grid_filter_item_title_adm_active"><![CDATA[Активные]]></string>
-    <string name="_bx_tasks_grid_filter_item_title_adm_hidden"><![CDATA[Спрятанные]]></string>
-    <string name="_bx_tasks_grid_column_title_adm_active"><![CDATA[Активные]]></string>
-    <string name="_bx_tasks_grid_column_title_adm_title"><![CDATA[Заголовок]]></string>
-    <string name="_bx_tasks_grid_action_title_adm_audit_content"><![CDATA[Аудит действий]]></string>
-    <string name="_bx_tasks_grid_column_title_adm_added"><![CDATA[Добавленные]]></string>
-    <string name="_bx_tasks_grid_column_title_adm_author"><![CDATA[Автор]]></string>>
-    <string name="_bx_tasks_grid_action_title_adm_add"><![CDATA[Добавить]]></string>
-    <string name="_bx_tasks_grid_action_title_adm_edit"><![CDATA[Редактировать]]></string>
-    <string name="_bx_tasks_grid_action_title_adm_delete"><![CDATA[Удалить]]></string>
-    <string name="_bx_tasks_grid_action_title_adm_more_actions"><![CDATA[Дополнительные Действия]]></string>
-    <string name="_bx_tasks_grid_action_err_delete"><![CDATA[Невозможно удалить выбранную(ные) заданиие(ния).]]></string>
-    <string name="_bx_tasks_grid_txt_account_manager"><![CDATA[Перенаправить в Управление аккаунтом.]]></string>
+    <!-- Grids -->
+    <string name="_bx_tasks_grid_column_title_tm_author_id"><![CDATA[Профиль]]></string>
+    <string name="_bx_tasks_grid_column_title_tm_object_id"><![CDATA[Задание]]></string>
+    <string name="_bx_tasks_grid_column_title_tm_text"><![CDATA[Примечание]]></string>
+    <string name="_bx_tasks_grid_column_title_tm_value"><![CDATA[Время]]></string>
+    <string name="_bx_tasks_grid_column_title_tm_date"><![CDATA[Добавлено]]></string>
+    <string name="_bx_tasks_grid_action_title_tm_add"><![CDATA[Добавить]]></string>
+    <string name="_bx_tasks_grid_action_title_tm_edit"><![CDATA[Редактировать]]></string>
+    <string name="_bx_tasks_grid_action_title_tm_delete"><![CDATA[Удалить]]></string>
+    <string name="_bx_tasks_grid_action_title_tm_calculate"><![CDATA[Рассчитать]]></string>
+    <string name="_bx_tasks_grid_filter_item_title_tm_select_one_author_id"><![CDATA[Любой исполнитель]]></string>
+    <string name="_bx_tasks_grid_filter_item_title_tm_select_one_object_id"><![CDATA[Любая задача]]></string>
 
     <string name="_bx_tasks_chart_growth"><![CDATA[Tasks: Growth]]></string>
     <string name="_bx_tasks_chart_growth_speed"><![CDATA[Tasks: Growth Speed]]></string>
@@ -340,6 +374,9 @@
     <string name="_bx_tasks_cat_Travel"><![CDATA[Путешествия]]></string>
     <string name="_bx_tasks_cat_Weddings"><![CDATA[Свадьба]]></string>
     <string name="_bx_tasks_cat_Womens_Fashion"><![CDATA[Женская мода]]></string>
+
+    <string name="_bx_tasks_report_time_do_report"><![CDATA[Время]]></string>
+    <string name="_bx_tasks_report_time_do_unreport"><![CDATA[Сбросить время]]></string>
 
     <string name="_bx_tasks_txt_all_entries_in"><![CDATA[<a href="{0}">Все Задания в {1} ({2})</a>]]></string>
     <string name="_bx_tasks_txt_all_entries_by"><![CDATA[{0} заданий]]></string>

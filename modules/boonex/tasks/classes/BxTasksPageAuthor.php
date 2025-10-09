@@ -13,11 +13,19 @@
  */
 class BxTasksPageAuthor extends BxBaseModTextPageAuthor
 {
+    protected $_sModule;
+    protected $_oModule;
+
     public function __construct($aObject, $oTemplate = false)
     {
         parent::__construct($aObject, $oTemplate);
-    }
 
+        $this->_sModule = 'bx_tasks';
+    	$this->_oModule = BxDolModule::getInstance($this->_sModule);
+
+        if(($oMenuHolder = BxDolMenu::getObjectInstance('sys_site_submenu')) && ($oMenu = BxDolMenu::getObjectInstance($oMenuHolder->getObjectSubmenu())))
+            $oMenu->setSelected($this->_sModule, 'tasks-context');
+    }
 }
 
 /** @} */

@@ -42,15 +42,12 @@ $aConfig = array(
     /**
      * List of page triggers.
      */
-    'page_triggers' => array (
-    	'trigger_page_profile_view_entry',
-    ),
+    'page_triggers' => array (),
     
     /**
      * Menu triggers.
      */
     'menu_triggers' => array(
-        'trigger_profile_view_submenu',
         'trigger_group_view_submenu',
     ),
 
@@ -115,7 +112,7 @@ $aConfig = array(
     ),
     'enable_success' => array(
         'process_menu_triggers' => 1,
-        'process_page_triggers' => 1,
+        'process_page_triggers' => 0,
     	'process_esearches' => 1,
         'register_transcoders' => 1,
         'clear_db_cache' => 1,

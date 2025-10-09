@@ -31,6 +31,8 @@ class BxTasksConfig extends BxBaseModTextConfig
             // database tables
             'TABLE_ENTRIES' => $aModule['db_prefix'] . 'tasks',
             'TABLE_LISTS' => $aModule['db_prefix'] . 'lists',
+            'TABLE_TIME' => $aModule['db_prefix'] . 'time',
+            'TABLE_TIME_TRACK' => $aModule['db_prefix'] . 'time_track',
             'TABLE_POLLS' => '',
             'TABLE_ENTRIES_FULLTEXT' => 'title_text',
 
@@ -117,6 +119,7 @@ class BxTasksConfig extends BxBaseModTextConfig
             ),
             'OBJECT_VIDEO_TRANSCODER_HEIGHT' => '480px',
             'OBJECT_REPORTS' => 'bx_tasks',
+            'OBJECT_REPORTS_TIME' => 'bx_tasks_time',
             'OBJECT_VIEWS' => 'bx_tasks',
             'OBJECT_VOTES' => 'bx_tasks',
             'OBJECT_REACTIONS' => 'bx_tasks_reactions',
@@ -137,6 +140,9 @@ class BxTasksConfig extends BxBaseModTextConfig
             'OBJECT_FORM_LIST_ENTRY' => 'bx_tasks_list',
             'OBJECT_FORM_LIST_ENTRY_DISPLAY_ADD' => 'bx_tasks_list_entry_add',
             'OBJECT_FORM_LIST_ENTRY_DISPLAY_EDIT' => 'bx_tasks_list_entry_edit',
+            'OBJECT_FORM_TIME' => 'bx_tasks_time',
+            'OBJECT_FORM_TIME_DISPLAY_ADD' => 'bx_tasks_time_add',
+            'OBJECT_FORM_TIME_DISPLAY_EDIT' => 'bx_tasks_time_edit',
             'OBJECT_MENU_ENTRY_ATTACHMENTS' => 'bx_tasks_entry_attachments', // attachments menu in create/edit forms
             'OBJECT_MENU_ACTIONS_VIEW_ENTRY' => 'bx_tasks_view', // actions menu on view entry page
             'OBJECT_MENU_ACTIONS_VIEW_ENTRY_ALL' => 'bx_tasks_view_actions', // all actions menu on view entry page
@@ -145,8 +151,9 @@ class BxTasksConfig extends BxBaseModTextConfig
             'OBJECT_MENU_SUBMENU_VIEW_ENTRY_MAIN_SELECTION' => 'tasks-home', // first item in view entry submenu from main module submenu
             'OBJECT_MENU_SNIPPET_META' => 'bx_tasks_snippet_meta', // menu for snippet meta info
             'OBJECT_MENU_MANAGE_TOOLS' => 'bx_tasks_menu_manage_tools', //manage menu in content administration tools
-            'OBJECT_GRID_ADMINISTRATION' => 'bx_tasks_administration',
-            'OBJECT_GRID_COMMON' => 'bx_tasks_common',
+            'OBJECT_MENU_SUBMENU_VIEW_CONTEXT' => 'bx_tasks_view_context_submenu',
+            'OBJECT_GRID_TIME_ADMINISTRATION' => 'bx_tasks_time_administration',
+            'OBJECT_GRID_TIME' => 'bx_tasks_time',
             'OBJECT_GRID_CATEGORIES' => 'bx_tasks_categories',
             'OBJECT_UPLOADERS' => array('bx_tasks_simple', 'bx_tasks_html5'),
             'OBJECT_CONTENT_INFO' => 'bx_tasks',
@@ -200,12 +207,8 @@ class BxTasksConfig extends BxBaseModTextConfig
                 'txt_sample_score_up_single' => '_bx_tasks_txt_sample_score_up_single',
                 'txt_sample_score_down_single' => '_bx_tasks_txt_sample_score_down_single',
                 'form_field_author' => '_bx_tasks_form_entry_input_author',
-            	'grid_action_err_delete' => '_bx_tasks_grid_action_err_delete',
-            	'grid_txt_account_manager' => '_bx_tasks_grid_txt_account_manager',
-                'filter_item_active' => '_bx_tasks_grid_filter_item_title_adm_active',
-            	'filter_item_hidden' => '_bx_tasks_grid_filter_item_title_adm_hidden',
-            	'filter_item_select_one_filter1' => '_bx_tasks_grid_filter_item_title_adm_select_one_filter1',
-                'filter_item_select_one_filter2' => '_bx_tasks_grid_filter_item_title_adm_select_one_filter2',
+            	'filter_item_select_one_filter1' => '_bx_tasks_grid_filter_item_title_tm_select_one_author_id',
+                'filter_item_select_one_filter2' => '_bx_tasks_grid_filter_item_title_tm_select_one_object_id',
             	'menu_item_manage_my' => '_bx_tasks_menu_item_title_manage_my',
             	'menu_item_manage_all' => '_bx_tasks_menu_item_title_manage_all',
                 'txt_all_entries_by' => '_bx_tasks_txt_all_entries_by',
@@ -216,22 +219,28 @@ class BxTasksConfig extends BxBaseModTextConfig
             ),
         ));
         
-        $this->_aJsClasses = array_merge($this->_aJsClasses, array(
+        $this->_aJsClasses = array_merge($this->_aJsClasses, [
             'manage_tools' => 'BxTasksManageTools',
             'categories' => 'BxDolCategories',
             'tasks' => 'BxTasksView'
-        ));
+        ]);
 
-        $this->_aJsObjects = array_merge($this->_aJsObjects, array(
+        $this->_aJsObjects = array_merge($this->_aJsObjects, [
             'manage_tools' => 'oBxTasksManageTools',
             'categories' => 'oBxDolCategories',
             'tasks' => 'oBxTasksView'
-        ));
+        ]);
 
-        $this->_aGridObjects = array(
-            'common' => $this->CNF['OBJECT_GRID_COMMON'],
-            'administration' => $this->CNF['OBJECT_GRID_ADMINISTRATION'],
-        );
+        $this->_aGridObjects = [
+            'time' => $this->CNF['OBJECT_GRID_TIME'],
+            'time-administration' => $this->CNF['OBJECT_GRID_TIME_ADMINISTRATION'],
+        ];
+
+        $sPrefix = str_replace('_', '-', $this->_sName);
+        $this->_aHtmlIds = array_merge($this->_aHtmlIds, [
+            'time_popup' =>  $sPrefix . '-time-popup',
+            'total_popup' =>  $sPrefix . '-total-popup',
+        ]);
 
         $this->_bAttachmentsInTimeline = true;
     }
@@ -239,6 +248,21 @@ class BxTasksConfig extends BxBaseModTextConfig
     public function isCompleted($iState)
     {
         return in_array($iState, [BX_TASKS_STATE_CANCELLED, BX_TASKS_STATE_DUPLICATE, BX_TASKS_STATE_DONE]);
+    }
+    
+    public function timeS2I($s)
+    {
+        if(strpos($s, ':') === false)
+            return 0;
+
+        list($iH, $iM) = explode(':', $s);
+        return 60 * $iH + $iM;
+    }
+
+    public function timeI2S($i)
+    {
+        $iH = intdiv($i, 60);
+        return sprintf("%02d", $iH) . ':' . sprintf("%02d", $i - 60 * $iH);
     }
 }
 

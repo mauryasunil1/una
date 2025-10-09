@@ -38,6 +38,15 @@ class BxTasksMenuViewActions extends BxBaseModTextMenuViewActions
     {
         return $this->_getMenuItemByNameActions($aItem);
     }
+
+    protected function _getMenuItemReportTime($aItem, $aParams = [])
+    {
+        $CNF = &$this->_oModule->_oConfig->CNF;
+
+        return parent::_getMenuItemReport($aItem, array_merge($aParams, [
+            'object' => $CNF['OBJECT_REPORTS_TIME']
+        ]));
+    }
 }
 
 /** @} */

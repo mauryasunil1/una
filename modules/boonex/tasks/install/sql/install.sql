@@ -9,11 +9,13 @@ CREATE TABLE IF NOT EXISTS `bx_tasks_tasks` (
   `title` varchar(255) NOT NULL,
   `type` int(11) NOT NULL default '0',
   `priority` int(11) NOT NULL default '0',
+  `estimate` int(11) NOT NULL default '0',
   `state` int(11) NOT NULL default '0',
   `cat` int(11) NOT NULL,
   `multicat` text NOT NULL,
   `text` mediumtext NOT NULL,
   `labels` text NOT NULL,
+  `time` int(11) NOT NULL default '0',
   `views` int(11) NOT NULL default '0',
   `rate` float NOT NULL default '0',
   `votes` int(11) NOT NULL default '0',
@@ -292,6 +294,27 @@ CREATE TABLE IF NOT EXISTS `bx_tasks_reports_track` (
   KEY `report` (`object_id`, `author_nip`)
 );
 
+-- TABLE: time
+CREATE TABLE IF NOT EXISTS `bx_tasks_time` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `object_id` int(11) NOT NULL default '0',
+  `count` int(11) NOT NULL default '0',
+  `sum` int(11) NOT NULL default '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `object_id` (`object_id`)
+);
+
+CREATE TABLE IF NOT EXISTS `bx_tasks_time_track` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `object_id` int(11) NOT NULL default '0',
+  `author_id` int(11) NOT NULL default '0',
+  `author_nip` int(11) unsigned NOT NULL default '0',
+  `value` int(11) NOT NULL default '0',
+  `text` text NOT NULL default '',
+  `date` int(11) NOT NULL default '0',
+  PRIMARY KEY (`id`)
+);
+
 -- TABLE: favorites
 CREATE TABLE `bx_tasks_favorites_track` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -318,6 +341,18 @@ CREATE TABLE IF NOT EXISTS `bx_tasks_scores_track` (
   `author_id` int(11) NOT NULL default '0',
   `author_nip` int(11) unsigned NOT NULL default '0',
   `type` varchar(8) NOT NULL default '',
+  `date` int(11) NOT NULL default '0',
+  PRIMARY KEY (`id`),
+  KEY `vote` (`object_id`, `author_nip`)
+);
+
+-- TABLE: hours
+CREATE TABLE IF NOT EXISTS `bx_tasks_votes_track` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `object_id` int(11) NOT NULL default '0',
+  `author_id` int(11) NOT NULL default '0',
+  `author_nip` int(11) unsigned NOT NULL default '0',
+  `value` tinyint(4) NOT NULL default '0',
   `date` int(11) NOT NULL default '0',
   PRIMARY KEY (`id`),
   KEY `vote` (`object_id`, `author_nip`)
@@ -408,7 +443,8 @@ INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `ch
 ('bx_tasks', 'bx_tasks', 'added', '', '', 0, 'datetime', '_bx_tasks_form_entry_input_sys_date_added', '_bx_tasks_form_entry_input_date_added', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'changed', '', '', 0, 'datetime', '_bx_tasks_form_entry_input_sys_date_changed', '_bx_tasks_form_entry_input_date_changed', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'published', '', '', 0, 'datetime', '_bx_tasks_form_entry_input_sys_date_published', '_bx_tasks_form_entry_input_date_published', '_bx_tasks_form_entry_input_date_published_info', 0, 0, 0, '', '', '', '', '', '', 'DateTimeTs', '', 1, 0),
-('bx_tasks', 'bx_tasks', 'initial_members', '', '', 0, 'custom', '_bx_tasks_form_profile_input_sys_initial_members', '_bx_tasks_form_profile_input_initial_members', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 1),
+('bx_tasks', 'bx_tasks', 'initial_members', '', '', 0, 'custom', '_bx_tasks_form_entry_input_sys_initial_members', '_bx_tasks_form_entry_input_initial_members', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 1),
+('bx_tasks', 'bx_tasks', 'estimate', '', '', 0, 'text', '_bx_tasks_form_entry_input_sys_estimate', '_bx_tasks_form_entry_input_estimate', '', 0, 0, 0, '', '', '', '', '', '', 'Int', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'due_date', '', '', 0, 'datetime', '_bx_tasks_form_entry_input_sys_date_due_date', '_bx_tasks_form_entry_input_date_due_date', '', 0, 0, 0, '', '', '', '', '', '', 'DateTimeTs', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'attachments', '', '', 0, 'custom', '_bx_tasks_form_entry_input_sys_attachments', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_tasks', 'bx_tasks', 'labels', '', '', 0, 'custom', '_sys_form_input_sys_labels', '_sys_form_input_labels', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
@@ -422,9 +458,10 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_tasks_entry_add', 'due_date', 192, 1, 4),
 ('bx_tasks_entry_add', 'type', 2147483647, 1, 5),
 ('bx_tasks_entry_add', 'priority', 2147483647, 1, 6),
-('bx_tasks_entry_add', 'controls', 2147483647, 1, 7),
-('bx_tasks_entry_add', 'do_publish', 2147483647, 1, 8),
-('bx_tasks_entry_add', 'do_cancel', 2147483647, 1, 9),
+('bx_tasks_entry_add', 'estimate', 2147483647, 1, 7),
+('bx_tasks_entry_add', 'controls', 2147483647, 1, 8),
+('bx_tasks_entry_add', 'do_publish', 2147483647, 1, 9),
+('bx_tasks_entry_add', 'do_cancel', 2147483647, 1, 10),
 
 ('bx_tasks_entry_delete', 'delete_confirm', 2147483647, 1, 1),
 ('bx_tasks_entry_delete', 'do_submit', 2147483647, 1, 2),
@@ -437,13 +474,14 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_tasks_entry_edit', 'files', 2147483647, 1, 6),
 ('bx_tasks_entry_edit', 'allow_view_to', 2147483647, 1, 7),
 ('bx_tasks_entry_edit', 'cf', 2147483647, 1, 8),
-('bx_tasks_entry_edit', 'initial_members', 192, 1, 8),
+('bx_tasks_entry_edit', 'initial_members', 192, 1, 9),
 ('bx_tasks_entry_edit', 'due_date', 192, 1, 10),
 ('bx_tasks_entry_edit', 'type', 2147483647, 1, 11),
 ('bx_tasks_entry_edit', 'priority', 2147483647, 1, 12),
-('bx_tasks_entry_edit', 'controls_edit', 2147483647, 1, 13),
-('bx_tasks_entry_edit', 'do_submit', 2147483647, 1, 14),
-('bx_tasks_entry_edit', 'do_cancel_edit', 2147483647, 1, 15),
+('bx_tasks_entry_edit', 'estimate', 2147483647, 1, 13),
+('bx_tasks_entry_edit', 'controls_edit', 2147483647, 1, 14),
+('bx_tasks_entry_edit', 'do_submit', 2147483647, 1, 15),
+('bx_tasks_entry_edit', 'do_cancel_edit', 2147483647, 1, 16),
 
 ('bx_tasks_entry_edit_state', 'state', 2147483647, 1, 1),
 ('bx_tasks_entry_edit_state', 'controls_edit_popup', 2147483647, 1, 2),
@@ -452,11 +490,12 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 
 ('bx_tasks_entry_view', 'type', 2147483647, 1, 1),
 ('bx_tasks_entry_view', 'priority', 2147483647, 1, 2),
-('bx_tasks_entry_view', 'cat', 2147483647, 1, 3),
-('bx_tasks_entry_view', 'added', 2147483647, 1, 4),
-('bx_tasks_entry_view', 'changed', 2147483647, 1, 5),
-('bx_tasks_entry_view', 'due_date', 192, 1, 6),
-('bx_tasks_entry_view', 'state', 2147483647, 1, 7);
+('bx_tasks_entry_view', 'estimate', 2147483647, 1, 3),
+('bx_tasks_entry_view', 'cat', 2147483647, 1, 4),
+('bx_tasks_entry_view', 'added', 2147483647, 1, 5),
+('bx_tasks_entry_view', 'changed', 2147483647, 1, 6),
+('bx_tasks_entry_view', 'due_date', 192, 1, 7),
+('bx_tasks_entry_view', 'state', 2147483647, 1, 8);
 
 
 -- FORMS: entry (tasklist)
@@ -473,7 +512,6 @@ INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `ch
 ('bx_tasks_list', 'bx_tasks', 'do_cancel', '_bx_tasks_form_entry_input_do_cancel', '', 0, 'button', '_bx_tasks_form_entry_input_sys_do_cancel', '', '', 0, 0, 0, 'a:2:{s:7:"onclick";s:45:"$(''.bx-popup-applied:visible'').dolPopupHide()";s:5:"class";s:22:"bx-def-margin-sec-left";}', '', '', '', '', '', '', '', 1, 0),
 ('bx_tasks_list', 'bx_tasks', 'controls', '', 'do_submit,do_cancel', 0, 'input_set', '', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0);
 
-
 INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for_levels`, `active`, `order`) VALUES 
 ('bx_tasks_list_entry_add', 'title', 2147483647, 1, 1),
 ('bx_tasks_list_entry_add', 'controls', 2147483647, 1, 2),
@@ -484,6 +522,34 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_tasks_list_entry_edit', 'controls', 2147483647, 1, 2),
 ('bx_tasks_list_entry_edit', 'do_submit', 2147483647, 1, 3),
 ('bx_tasks_list_entry_edit', 'do_cancel', 2147483647, 1, 4);
+
+-- FORMS: time
+INSERT INTO `sys_objects_form` (`object`, `module`, `title`, `action`, `form_attrs`, `submit_name`, `table`, `key`, `uri`, `uri_title`, `params`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES
+('bx_tasks_time', 'bx_tasks', '_bx_tasks_form_time', 'report.php', 'a:3:{s:2:"id";s:0:"";s:4:"name";s:0:"";s:5:"class";s:17:"bx-report-do-form";}', 'submit', '', 'id', '', '', '', 0, 1, '', '');
+
+INSERT INTO `sys_form_displays` (`display_name`, `module`, `object`, `title`, `view_mode`) VALUES
+('bx_tasks_time_add', 'bx_tasks', 'bx_tasks_time', '_bx_tasks_form_display_time_add', 0),
+('bx_tasks_time_edit', 'bx_tasks', 'bx_tasks_time', '_bx_tasks_form_display_time_edit', 0);
+
+INSERT INTO `sys_form_inputs` (`object`, `module`, `name`, `value`, `values`, `checked`, `type`, `caption_system`, `caption`, `info`, `required`, `collapsed`, `html`, `attrs`, `attrs_tr`, `attrs_wrapper`, `checker_func`, `checker_params`, `checker_error`, `db_pass`, `db_params`, `editable`, `deletable`) VALUES
+('bx_tasks_time', 'bx_tasks', 'sys', '', '', 0, 'hidden', '_bx_tasks_form_time_input_sys_sys', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0),
+('bx_tasks_time', 'bx_tasks', 'object_id', '', '', 0, 'hidden', '_bx_tasks_form_time_input_sys_object_id', '_bx_tasks_form_time_input_object_id', '', 0, 0, 0, '', '', '', '', '', '', 'Int', '', 0, 0),
+('bx_tasks_time', 'bx_tasks', 'action', '', '', 0, 'hidden', '_bx_tasks_form_time_input_sys_action', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0),
+('bx_tasks_time', 'bx_tasks', 'value', '', '', 0, 'time', '_bx_tasks_form_time_input_sys_value', '_bx_tasks_form_time_input_value', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 1, 0),
+('bx_tasks_time', 'bx_tasks', 'text', '', '', 0, 'textarea', '_bx_tasks_form_time_input_sys_text', '_bx_tasks_form_time_input_text', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 1, 0),
+('bx_tasks_time', 'bx_tasks', 'submit', '_bx_tasks_form_time_input_submit', '', 0, 'submit', '_bx_tasks_form_time_input_sys_submit', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0);
+
+INSERT INTO `sys_form_display_inputs` (`display_name`, `input_name`, `visible_for_levels`, `active`, `order`) VALUES
+('bx_tasks_time_add', 'sys', 2147483647, 1, 1),
+('bx_tasks_time_add', 'object_id', 2147483647, 1, 2),
+('bx_tasks_time_add', 'action', 2147483647, 1, 3),
+('bx_tasks_time_add', 'value', 2147483647, 1, 4),
+('bx_tasks_time_add', 'text', 2147483647, 1, 5),
+('bx_tasks_time_add', 'submit', 2147483647, 1, 6),
+
+('bx_tasks_time_edit', 'value', 2147483647, 1, 1),
+('bx_tasks_time_edit', 'text', 2147483647, 1, 2),
+('bx_tasks_time_edit', 'submit', 2147483647, 1, 3);
 
 
 -- PRE-VALUES
@@ -573,8 +639,9 @@ INSERT INTO `sys_objects_score` (`name`, `module`, `table_main`, `table_track`, 
 ('bx_tasks', 'bx_tasks', 'bx_tasks_scores', 'bx_tasks_scores_track', '604800', '0', 'bx_tasks_tasks', 'id', 'author', 'score', 'sc_up', 'sc_down', '', '');
 
 -- REPORTS
-INSERT INTO `sys_objects_report` (`name`, `module`, `table_main`, `table_track`, `is_on`, `base_url`, `object_comment`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
-('bx_tasks', 'bx_tasks', 'bx_tasks_reports', 'bx_tasks_reports_track', '1', 'page.php?i=view-task&id={object_id}', 'bx_tasks_notes', 'bx_tasks_tasks', 'id', 'author', 'reports', '', '');
+INSERT INTO `sys_objects_report` (`name`, `module`, `table_main`, `table_track`, `pruning`, `is_on`, `base_url`, `object_comment`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
+('bx_tasks', 'bx_tasks', 'bx_tasks_reports', 'bx_tasks_reports_track', '31536000', '1', 'page.php?i=view-task&id={object_id}', 'bx_tasks_notes', 'bx_tasks_tasks', 'id', 'author', 'reports', '', ''),
+('bx_tasks_time', 'bx_tasks', 'bx_tasks_time', 'bx_tasks_time_track', '0', '1', 'page.php?i=view-task&id={object_id}', '', 'bx_tasks_tasks', 'id', 'author', 'time', 'BxTasksTime', 'modules/boonex/tasks/classes/BxTasksTime.php');
 
 -- VIEWS
 INSERT INTO `sys_objects_view` (`name`, `module`, `table_track`, `period`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_count`, `class_name`, `class_file`) VALUES 
