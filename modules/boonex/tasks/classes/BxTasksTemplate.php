@@ -48,7 +48,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
         $aPriorities = BxDolFormQuery::getDataItems($CNF['OBJECT_PRE_LIST_PRIORITIES']);
         $aStates = BxDolFormQuery::getDataItems($CNF['OBJECT_PRE_LIST_STATES']);
 
-        $aFilterValues = array();
+        $aFilterValues = [];
         if(isset($_COOKIE[$CNF['COOKIE_SETTING_KEY']]))
             $aFilterValues = json_decode($_COOKIE[$CNF['COOKIE_SETTING_KEY']], true);
 
@@ -66,20 +66,20 @@ class BxTasksTemplate extends BxBaseModTextTemplate
 
             $aTmplVarsTasks = [];
             foreach($aTasks as $aTask) {
-                $sState = $aStates[$aTask[$CNF['FIELD_STATE']]] ?? '';
-                if(!empty($aTask['time']))
-                    $sState .= ' ' . $this->_oConfig->timeI2S($aTask['time']);
-                if($bAllowManage && !empty($aTask['time_total']))
-                    $sState .= ' (' . $this->_oConfig->timeI2S($aTask['time_total']) . ')';
+                $sTime = '';
+                if(!empty($aTask['time_total']))
+                    $sTime = _t('_bx_tasks_txt_total', $this->_oConfig->timeI2S($aTask['time_total']) . (!empty($aTask['time']) ? ' (' . $this->_oConfig->timeI2S($aTask['time']) . ')' : ''));
+                if(!empty($aTask['estimate']))
+                    $sTime .= ' ' . _t('_bx_tasks_txt_estimate', $this->_oConfig->timeI2S(60 * (int)$aTask['estimate']));
 
                 $aMembers = $oConnection->getConnectedInitiators($aTask[$CNF['FIELD_ID']]);
 
                 $aTmplVarsMembers = [];
                 foreach($aMembers as $iMember)
                     if(($oProfile = BxDolProfile::getInstance($iMember)) !== false && !($oProfile instanceof BxDolProfileUndefined))
-                        $aTmplVarsMembers[] = array('info' => $oProfile->getUnit(0, array('template' => 'unit_wo_info')));
+                        $aTmplVarsMembers[] = ['info' => $oProfile->getUnit(0, ['template' => 'unit_wo_info'])];
 
-                $aTmplVarsTasks[] = array(
+                $aTmplVarsTasks[] = [
                     'id' => $aTask[$CNF['FIELD_ID']],
                     'title' => bx_process_output($aTask[$CNF['FIELD_TITLE']]),
                     'created' => bx_time_js($aTask[$CNF['FIELD_ADDED']]),
@@ -87,27 +87,28 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                     'due' => $aTask[$CNF['FIELD_DUEDATE']] > 0 ? bx_time_js($aTask[$CNF['FIELD_DUEDATE']]) : '',
                     'type' => $aTypes[$aTask[$CNF['FIELD_TYPE']]] ?? '',
                     'priority' => $aPriorities[$aTask[$CNF['FIELD_PRIORITY']]] ?? '',
-                    'state' => $sState,
+                    'state' => $aStates[$aTask[$CNF['FIELD_STATE']]] ?? '',
+                    'time' => $sTime,
                     'bx_repeat:members' => $aTmplVarsMembers,
                     'badges' => $oModule->serviceGetBadges($aTask[$CNF['FIELD_ID']], true),
                     'url' => bx_absolute_url($oPermalinks->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aTask[$CNF['FIELD_ID']])),
                     'object' => $this->_oConfig->getJsObject('tasks'),
-                    'bx_if:allow_manage' => array(
+                    'bx_if:allow_manage' => [
                         'condition' => $bAllowManage,
-                        'content' => array(
+                        'content' => [
                             'id' => $aTask[$CNF['FIELD_ID']],
                             'object' => $this->_oConfig->getJsObject('tasks'),
                             'checked' => $aTask[$CNF['FIELD_COMPLETED']] == 1 ? 'checked' : '',
-                        )
-                    ),
-                    'bx_if:deny_manage' => array(
+                        ]
+                    ],
+                    'bx_if:deny_manage' => [
                         'condition' => !$bAllowManage,
-                        'content' => array(
+                        'content' => [
                             'id' => $aTask[$CNF['FIELD_ID']],
                             'checked' => $aTask[$CNF['FIELD_COMPLETED']] == 1 ? 'checked' : '',
-                        )
-                    ),
-                );
+                        ]
+                    ]
+                ];
             }
 
             $sClass = $sCompleted = $sAll = "";
@@ -119,38 +120,38 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                     $sAll = 'selected';
             }
 
-            $aTmplVarsLists[] = array(
-                'bx_if:allow_edit_list' => array(
+            $aTmplVarsLists[] = [
+                'bx_if:allow_edit_list' => [
                     'condition' => $bAllowAdd,
-                    'content' => array(
+                    'content' => [
                         'title' => $aList[$CNF['FIELD_TITLE']],
                         'context_id' => $iContextId,
                         'list_id' => $aList[$CNF['FIELD_ID']],
                         'object' => $this->_oConfig->getJsObject('tasks'),
-                    )
-                ),
-                'bx_if:allow_add' => array(
+                    ]
+                ],
+                'bx_if:allow_add' => [
                     'condition' => $bAllowAdd,
-                    'content' => array(
+                    'content' => [
                         'context_id' => $iContextId,
                         'list_id' => $aList[$CNF['FIELD_ID']],
                         'object' => $this->_oConfig->getJsObject('tasks'),
-                    )
-                ),
-                'bx_if:allow_delete_list' => array(
+                    ]
+                ],
+                'bx_if:allow_delete_list' => [
                     'condition' => $bAllowManage,
-                    'content' => array(
+                    'content' => [
                         'context_id' => $iContextId,
                         'list_id' => $aList[$CNF['FIELD_ID']],
                         'object' => $this->_oConfig->getJsObject('tasks'),
-                    )
-                ),
-                'bx_if:deny_edit_list' => array(
+                    ]
+                ],
+                'bx_if:deny_edit_list' => [
                     'condition' => !$bAllowAdd,
-                    'content' => array(
+                    'content' => [
                         'title' => $aList[$CNF['FIELD_TITLE']],
-                    )
-                ),
+                    ]
+                ],
                 'id' => $aList['id'],
                 'bx_repeat:tasks' =>  $aTmplVarsTasks,
                 'context_id' => $iContextId,
@@ -159,7 +160,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                 'class' => $sClass,
                 'completed' => $sCompleted,
                 'all' => $sAll,
-            );
+            ];
         }
 
         $this->addCssJs();
@@ -169,7 +170,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
             'modules/base/general/js/|forms.js'
         ]);
 
-        return $this->getJsCode('tasks', ['t_confirm_block_deletion' => _t('_bx_tasks_confirm_tasklist_deletion')]) . $this->parseHtmlByName('browse_tasks.html', [
+        return $this->getJsCode('tasks', ['t_confirm_block_deletion' => _t('_bx_tasks_txt_msg_confirm_tasklist_deletion')]) . $this->parseHtmlByName('browse_tasks.html', [
             'bx_repeat:task_lists' => $aTmplVarsLists,
             'bx_if:allow_add_list' => [
                 'condition' => $bAllowAdd,

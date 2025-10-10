@@ -36,6 +36,18 @@ class BxTasksTime extends BxTemplReport
         });
     }
 
+    public function report($aParams = [])
+    {
+        $mixedResult = parent::report($aParams);
+        if(!empty($mixedResult) && is_array($mixedResult) && isset($mixedResult['popup'], $mixedResult['popup_id']))
+            $mixedResult['popup'] = [
+                'html' => $mixedResult['popup'], 
+                'options' => ['closeOnOuterClick' => false]
+            ];
+
+        return $mixedResult;
+    }
+
     /**
      * Should always return false to allow any number of time reports per user.
      */
@@ -51,6 +63,9 @@ class BxTasksTime extends BxTemplReport
 
         $aTrack = is_array($mixedTrack) ? $mixedTrack : $this->_oQuery->getTrackBy(['type' => 'id', 'id' => (int)$mixedTrack]);
         if(empty($aTrack) || !is_array($aTrack))
+            return false;
+
+        if(!$bUndo && empty($aTrack['value_date']) && !$this->_oQuery->updateTrack(['value_date' => time()], ['id' => $aTrack['id']]))
             return false;
 
         if(!$this->_oQuery->updateReport($iObjectId, $aTrack['value'], $bUndo))

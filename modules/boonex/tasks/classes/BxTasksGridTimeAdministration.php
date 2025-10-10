@@ -144,13 +144,13 @@ class BxTasksGridTimeAdministration extends BxTemplGrid
     {
         return parent::_getCellDefault($this->_oModule->_oConfig->timeI2S($mixedValue), $sKey, $aField, $aRow);
     }
-    
-    protected function _getCellDate($mixedValue, $sKey, $aField, $aRow)
-    {
-        if($this->_bIsApi)
-            return ['type' => 'time', 'data' => $mixedValue];
 
-        return parent::_getCellDefault(bx_time_js($mixedValue, BX_FORMAT_DATE, true), $sKey, $aField, $aRow);
+    protected function _getCellValueDate($mixedValue, $sKey, $aField, $aRow)
+    {
+        return $this->_bIsApi ? [
+            'type' => 'time', 
+            'data' => $mixedValue
+        ] : parent::_getCellDefault($mixedValue ? bx_time_js($mixedValue, BX_FORMAT_DATE, true) : '', $sKey, $aField, $aRow);
     }
 
     protected function _getActionEdit($sType, $sKey, $a, $isSmall = false, $isDisabled = false, $aRow = [])

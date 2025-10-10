@@ -105,8 +105,17 @@
     <string name="_bx_tasks_form_time_input_sys_action"><![CDATA[Действие]]></string>
     <string name="_bx_tasks_form_time_input_sys_submit"><![CDATA[Выполнить]]></string>
     <string name="_bx_tasks_form_time_input_submit"><![CDATA[Выполнить]]></string>
+    <string name="_bx_tasks_form_time_input_sys_cancel"><![CDATA[Отменить]]></string>
+    <string name="_bx_tasks_form_time_input_cancel"><![CDATA[Отменить]]></string>
+    <string name="_bx_tasks_form_time_input_sys_controls"><![CDATA[Управление]]></string>
     <string name="_bx_tasks_form_time_input_sys_value"><![CDATA[Время]]></string>
     <string name="_bx_tasks_form_time_input_value"><![CDATA[Время]]></string>
+    <string name="_bx_tasks_form_time_input_value_err"><![CDATA[Если Вы хотите внести временя, заполните это поле.]]></string>
+    <string name="_bx_tasks_form_time_input_sys_value_date"><![CDATA[Дата]]></string>
+    <string name="_bx_tasks_form_time_input_value_date"><![CDATA[Дата]]></string>
+    <string name="_bx_tasks_form_time_input_value_date_inf"><![CDATA[Оставьте поле пустым, чтобы использовать сегодняшнюю дату.]]></string>
+    <string name="_bx_tasks_form_time_input_sys_text"><![CDATA[Примечание]]></string>
+    <string name="_bx_tasks_form_time_input_text"><![CDATA[Примечание]]></string>
     <string name="_bx_tasks_popup_title_time_add"><![CDATA[Добавить время]]></string>
     <string name="_bx_tasks_popup_title_time_edit"><![CDATA[Редактировать время]]></string>
 
@@ -309,7 +318,7 @@
     <string name="_bx_tasks_grid_column_title_tm_object_id"><![CDATA[Задание]]></string>
     <string name="_bx_tasks_grid_column_title_tm_text"><![CDATA[Примечание]]></string>
     <string name="_bx_tasks_grid_column_title_tm_value"><![CDATA[Время]]></string>
-    <string name="_bx_tasks_grid_column_title_tm_date"><![CDATA[Добавлено]]></string>
+    <string name="_bx_tasks_grid_column_title_tm_value_date"><![CDATA[Дата]]></string>
     <string name="_bx_tasks_grid_action_title_tm_add"><![CDATA[Добавить]]></string>
     <string name="_bx_tasks_grid_action_title_tm_edit"><![CDATA[Редактировать]]></string>
     <string name="_bx_tasks_grid_action_title_tm_delete"><![CDATA[Удалить]]></string>
@@ -397,12 +406,14 @@
     <string name="_bx_tasks_txt_filter_all"><![CDATA[Все Задания]]></string>
     <string name="_bx_tasks_txt_filter_completed"><![CDATA[Завершенные Задания]]></string>
     <string name="_bx_tasks_txt_filter_uncompleted"><![CDATA[Незавершенные Задания]]></string>
-    <string name="_bx_tasks_txt_err_cannot_perform_action"><![CDATA[Невозможно выполнить действие. Пожалуйста, оповестите нас об этой проблеме.]]></string>
-    <string name="_bx_tasks_confirm_tasklist_deletion"><![CDATA[Вы удалите все задания, которые содержатся в этом списке заданий. Вы уверены?]]></string>
+    <string name="_bx_tasks_txt_total"><![CDATA[Total: {0}]]></string>
+    <string name="_bx_tasks_txt_estimate"><![CDATA[Estimate: {0}]]></string>
 
+    <string name="_bx_tasks_txt_err_cannot_perform_action"><![CDATA[Невозможно выполнить действие. Пожалуйста, оповестите нас об этой проблеме.]]></string>
     <string name="_bx_tasks_txt_err_cannot_perform_action"><![CDATA[Невозможно выполнить действие. Пожалуйста, оповестите нас об этой проблеме.]]></string>
     <string name="_bx_tasks_txt_msg_status_hidden"><![CDATA[Данное задание было скрыто.]]></string>
     <string name="_bx_tasks_txt_msg_status_pending"><![CDATA[Данное задание ожидает утверждения.]]></string>
+    <string name="_bx_tasks_txt_msg_confirm_tasklist_deletion"><![CDATA[Вы удалите все задания, которые содержатся в этом списке заданий. Вы уверены?]]></string>
 
     <!-- Notifications -->
     <string name="_bx_tasks_alert_action_completed_personal"><![CDATA[Задание завершено]]></string>

@@ -13,7 +13,7 @@
  */
 class BxTasksDb extends BxBaseModTextDb
 {
-    function __construct(&$oConfig)
+    public function __construct(&$oConfig)
     {
         parent::__construct($oConfig);
     }

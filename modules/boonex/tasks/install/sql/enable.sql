@@ -308,13 +308,13 @@ INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable
 ('bx_tasks_time_administration', 'object_id', '_bx_tasks_grid_column_title_tm_object_id', '30%', 0, 0, '', 3),
 ('bx_tasks_time_administration', 'text', '_bx_tasks_grid_column_title_tm_text', '15%', 0, 16, '', 4),
 ('bx_tasks_time_administration', 'value', '_bx_tasks_grid_column_title_tm_value', '10%', 0, 0, '', 5),
-('bx_tasks_time_administration', 'date', '_bx_tasks_grid_column_title_tm_date', '15%', 0, 0, '', 6),
+('bx_tasks_time_administration', 'value_date', '_bx_tasks_grid_column_title_tm_value_date', '15%', 0, 0, '', 6),
 
 ('bx_tasks_time', 'checkbox', '_sys_select', '2%', 0, 0, '', 1),
 ('bx_tasks_time', 'object_id', '_bx_tasks_grid_column_title_tm_object_id', '30%', 0, 0, '', 2),
 ('bx_tasks_time', 'text', '_bx_tasks_grid_column_title_tm_text', '25%', 0, 32, '', 3),
 ('bx_tasks_time', 'value', '_bx_tasks_grid_column_title_tm_value', '10%', 0, 0, '', 4),
-('bx_tasks_time', 'date', '_bx_tasks_grid_column_title_tm_date', '15%', 0, 0, '', 5),
+('bx_tasks_time', 'value_date', '_bx_tasks_grid_column_title_tm_value_date', '15%', 0, 0, '', 5),
 ('bx_tasks_time', 'actions', '', '18%', 0, '', '', 6);
 
 INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon_only`, `confirm`, `order`) VALUES

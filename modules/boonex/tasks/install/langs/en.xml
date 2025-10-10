@@ -105,8 +105,15 @@
     <string name="_bx_tasks_form_time_input_sys_action"><![CDATA[Action]]></string>
     <string name="_bx_tasks_form_time_input_sys_submit"><![CDATA[Submit]]></string>
     <string name="_bx_tasks_form_time_input_submit"><![CDATA[Submit]]></string>
+    <string name="_bx_tasks_form_time_input_sys_cancel"><![CDATA[Cancel]]></string>
+    <string name="_bx_tasks_form_time_input_cancel"><![CDATA[Cancel]]></string>
+    <string name="_bx_tasks_form_time_input_sys_controls"><![CDATA[Controls]]></string>
     <string name="_bx_tasks_form_time_input_sys_value"><![CDATA[Time]]></string>
     <string name="_bx_tasks_form_time_input_value"><![CDATA[Time]]></string>
+    <string name="_bx_tasks_form_time_input_value_err"><![CDATA[If you want to log some time fill this field in.]]></string>
+    <string name="_bx_tasks_form_time_input_sys_value_date"><![CDATA[Date]]></string>
+    <string name="_bx_tasks_form_time_input_value_date"><![CDATA[Date]]></string>
+    <string name="_bx_tasks_form_time_input_value_date_inf"><![CDATA[Leave empty to use today date.]]></string>
     <string name="_bx_tasks_form_time_input_sys_text"><![CDATA[Note]]></string>
     <string name="_bx_tasks_form_time_input_text"><![CDATA[Note]]></string>
     <string name="_bx_tasks_popup_title_time_add"><![CDATA[Add Time]]></string>
@@ -220,9 +227,9 @@
     <string name="_bx_tasks_page_block_title_calendar_in_context"><![CDATA[Calendar]]></string>
     <string name="_bx_tasks_page_block_title_sys_calendar_of_author"><![CDATA[Calendar]]></string>
     <string name="_bx_tasks_page_block_title_calendar_of_author"><![CDATA[Calendar]]></string>
-    <string name="_bx_tasks_page_title_sys_entries_time_in_context"><![CDATA[My time in context]]></string>
+    <string name="_bx_tasks_page_title_sys_entries_time_in_context"><![CDATA[Time in context: My]]></string>
     <string name="_bx_tasks_page_title_entries_time_in_context"><![CDATA[My time in {display_name}]]></string>
-    <string name="_bx_tasks_page_title_sys_entries_time_in_context_administration"><![CDATA[All time in context]]></string>
+    <string name="_bx_tasks_page_title_sys_entries_time_in_context_administration"><![CDATA[Time in context: All]]></string>
     <string name="_bx_tasks_page_title_entries_time_in_context_administration"><![CDATA[All time in {display_name}]]></string>
     <string name="_bx_tasks_page_block_title_sys_menu_in_context"><![CDATA[View context menu]]></string>
     <string name="_bx_tasks_page_block_title_menu_in_context"><![CDATA[Menu]]></string>
@@ -313,7 +320,7 @@
     <string name="_bx_tasks_grid_column_title_tm_object_id"><![CDATA[Task]]></string>
     <string name="_bx_tasks_grid_column_title_tm_text"><![CDATA[Note]]></string>
     <string name="_bx_tasks_grid_column_title_tm_value"><![CDATA[Time]]></string>
-    <string name="_bx_tasks_grid_column_title_tm_date"><![CDATA[Added]]></string>
+    <string name="_bx_tasks_grid_column_title_tm_value_date"><![CDATA[Date]]></string>
     <string name="_bx_tasks_grid_action_title_tm_add"><![CDATA[Add]]></string>
     <string name="_bx_tasks_grid_action_title_tm_edit"><![CDATA[Edit]]></string>
     <string name="_bx_tasks_grid_action_title_tm_delete"><![CDATA[Remove]]></string>
@@ -401,12 +408,15 @@
     <string name="_bx_tasks_txt_filter_all"><![CDATA[All Tasks]]></string>
     <string name="_bx_tasks_txt_filter_completed"><![CDATA[Completed Tasks]]></string>
     <string name="_bx_tasks_txt_filter_uncompleted"><![CDATA[Uncompleted Tasks]]></string>
+    <string name="_bx_tasks_txt_total"><![CDATA[Total: {0}]]></string>
+    <string name="_bx_tasks_txt_estimate"><![CDATA[Estimate: {0}]]></string>
+
     <string name="_bx_tasks_txt_err_cannot_perform_action"><![CDATA[Cannot perform action. Please report.]]></string>
-    <string name="_bx_tasks_confirm_tasklist_deletion"><![CDATA[You will delete all tasks that are contained in this tasklist. Are you sure?]]></string>
-  
     <string name="_bx_tasks_txt_err_cannot_perform_action"><![CDATA[Cannot perform action. Please report.]]></string>
     <string name="_bx_tasks_txt_msg_status_hidden"><![CDATA[This task was hidden.]]></string>
     <string name="_bx_tasks_txt_msg_status_pending"><![CDATA[This task is pending approval.]]></string>
+    <string name="_bx_tasks_txt_msg_confirm_tasklist_deletion"><![CDATA[You will delete all tasks that are contained in this tasklist. Are you sure?]]></string>
+    
 
     <!-- Notifications -->
     <string name="_bx_tasks_alert_action_completed_personal"><![CDATA[Complete task]]></string>

@@ -28,11 +28,13 @@ class BxTasksGridTime extends BxTasksGridTimeAdministration
         $oForm = $this->_getFormObject($sAction);
         $oForm->initChecker();
         if($oForm->isSubmittedAndValid()) {
+            $iNow = time();
             $aValsToAdd = [
                 'author_id' => $this->_iLogged,
                 'author_nip' => bx_get_ip_hash(getVisitorIP()),
                 'value' => $this->_oModule->_oConfig->timeS2I($oForm->getCleanValue('value')),
-                'date' => time()
+                'value_date' => $oForm->getCleanValue('value_date') ?: $iNow,
+                'date' => $iNow
             ];
 
             $iTrackId = $oForm->insert($aValsToAdd);

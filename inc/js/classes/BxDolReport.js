@@ -68,7 +68,8 @@ BxDolReport.prototype.onReport = function(oData, oElement)
         if(oData && oData.code != 0)
             return;
 
-        $(oElement).toggleClass('bx-report-reported');
+        if(oData && oData.reported != undefined)
+            $(oElement).toggleClass('bx-report-reported', oData.reported);
 
         if(oData && oData.disabled)
             $(oElement).removeAttr('onclick').addClass($(oElement).hasClass('bx-btn') ? 'bx-btn-disabled' : 'bx-report-disabled');
@@ -96,28 +97,39 @@ BxDolReport.prototype.onReport = function(oData, oElement)
 };
 
 BxDolReport.prototype.processJson = function(oData, oElement) {
-	oElement = oElement != undefined ? oElement : this._oParent;
+    oElement = oElement != undefined ? oElement : this._oParent;
 
-	var fContinue = function() {
-		//--- Show Popup
-	    if(oData && oData.popup != undefined) {
-	    	$('#' + oData.popup_id).remove();
+    var fContinue = function() {
+        //--- Show Popup
+        if(oData && oData.popup != undefined) {
+            $('#' + oData.popup_id).remove();
 
-	    	$(oData.popup).hide().prependTo('body').dolPopup({
-	    		pointer: {
-	    			el: oElement
-	    		},
-	            fog: {
-					color: '#fff',
-					opacity: .7
-	            }
-	        });
-	    }
+            var oPopup = null;
+            var oOptions = {
+                pointer: {
+                    el: oElement
+                },
+                fog: {
+                    color: '#fff',
+                    opacity: .7
+                },
+                closeOnOuterClick: false
+            };
 
-	    //--- Evaluate JS code
-	    if (oData && oData.eval != undefined)
-	        eval(oData.eval);
-	};
+            if(typeof(oData.popup) == 'object') {
+                oOptions = $.extend({}, oOptions, oData.popup.options);
+                oPopup = $(oData.popup.html);
+            }
+            else 
+                oPopup = $(oData.popup);
+
+            oPopup.hide().prependTo('body').dolPopup(oOptions);
+        }
+
+        //--- Evaluate JS code
+        if (oData && oData.eval != undefined)
+            eval(oData.eval);
+    };
 
     //--- Show Message
     if(oData && oData.message != undefined)

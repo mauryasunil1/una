@@ -15,6 +15,15 @@ class BxTasksTimeQuery extends BxDolReportQuery
         parent::__construct($oModule);
     }
 
+    public function updateTrack($aParamsSet, $aParamsWhere)
+    {
+        if(empty($aParamsSet) || empty($aParamsWhere))
+            return false;
+
+        $sSql = "UPDATE `{$this->_sTableTrack}` SET " . $this->arrayToSQL($aParamsSet) . " WHERE " . $this->arrayToSQL($aParamsWhere, " AND ");
+        return $this->query($sSql);
+    }
+
     public function getReport($iObjectId)
     {
         $aResult = $this->getRow("SELECT `count` as `count`, `sum` AS `sum` FROM `{$this->_sTable}` WHERE `object_id` = :object_id LIMIT 1", ['object_id' => $iObjectId]);
