@@ -116,9 +116,10 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
 
         // get snippet menu
         $aTmplVarsMeta = array();
-        if(substr($sTemplate, 0, 8) != 'unit_wo_') {
+        if($this->_isTemplateWithMeta($sTemplate)) {
             $aTmplVarsMeta = $this->getSnippetMenuVars ($iProfile, $bPublic, $aParams);
         }
+
         // snippet meta menu is never cached
         $aVars['bx_if:meta']['condition'] = !empty($aTmplVarsMeta);
         $aVars['bx_if:meta']['content'] = $aTmplVarsMeta;
@@ -867,6 +868,21 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
             $sImageUrl = bx_is_api() ? '' : $this->getImageUrl(substr($sNoImage, 0, strrpos($sNoImage, '-')) . '.svg');
 
         return $sImageUrl;
+    }
+
+    protected function _isTemplateWithMeta($sTemplateName = 'unit.html')
+    {
+        $sResult = '';
+        switch($sTemplateName) {
+            case 'unit_ext.html':
+            case 'unit_with_cover.html':
+                $sResult = true;
+                break;
+            default:
+                $sResult = false;
+                break;
+        }
+        return $sResult;        
     }
 
     protected function _getUnitClass($aData, $sTemplateName = 'unit.html')
