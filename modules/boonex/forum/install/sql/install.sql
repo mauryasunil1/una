@@ -622,7 +622,7 @@ INSERT INTO `sys_objects_view` (`name`, `module`, `table_track`, `period`, `is_o
 INSERT INTO `sys_objects_vote` (`Name`, `Module`, `TableMain`, `TableTrack`, `PostTimeout`, `MinValue`, `MaxValue`, `IsUndo`, `IsOn`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldRate`, `TriggerFieldRateCount`, `ClassName`, `ClassFile`) VALUES 
 (@sName, @sName, 'bx_forum_votes', 'bx_forum_votes_track', '604800', '1', '1', '0', '1', 'bx_forum_discussions', 'id', 'author', 'rate', 'votes', '', ''),
 ('bx_forum_reactions', @sName, 'bx_forum_reactions', 'bx_forum_reactions_track', '604800', '1', '1', '1', '1', 'bx_forum_discussions', 'id', 'author', 'rrate', 'rvotes', 'BxTemplVoteReactions', ''),
-('bx_forum_poll_answers', @sName, 'bx_forum_polls_answers_votes', 'bx_forum_polls_answers_votes_track', '604800', '1', '1', '0', '1', 'bx_forum_polls_answers', 'id', 'author_id', 'rate', 'votes', 'BxForumVotePollAnswers', 'modules/boonex/forum/classes/BxForumVotePollAnswers.php');
+('bx_forum_poll_answers', @sName, 'bx_forum_polls_answers_votes', 'bx_forum_polls_answers_votes_track', '604800', '1', '1', '0', '1', 'bx_forum_polls_answers', 'id', '', 'rate', 'votes', 'BxForumVotePollAnswers', 'modules/boonex/forum/classes/BxForumVotePollAnswers.php');
 
 
 -- SCORES

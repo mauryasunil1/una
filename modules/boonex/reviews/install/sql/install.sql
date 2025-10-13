@@ -609,7 +609,7 @@ INSERT INTO `sys_objects_vote` (`Name`, `Module`, `TableMain`, `TableTrack`, `Po
 ('bx_reviews', 'bx_reviews', 'bx_reviews_votes', 'bx_reviews_votes_track', '604800', '1', '1', '0', '1', 'bx_reviews_reviews', 'id', 'author', 'rate', 'votes', '', ''),
 ('bx_reviews_stars', 'bx_reviews', 'bx_reviews_svotes', 'bx_reviews_svotes_track', '604800', '1', '5', '0', '1', 'bx_reviews_reviews', 'id', 'author', 'srate', 'svotes', 'BxReviewsVoteStars', 'modules/boonex/reviews/classes/BxReviewsVoteStars.php'),
 ('bx_reviews_reactions', 'bx_reviews', 'bx_reviews_reactions', 'bx_reviews_reactions_track', '604800', '1', '1', '1', '1', 'bx_reviews_reviews', 'id', 'author', 'rrate', 'rvotes', 'BxTemplVoteReactions', ''),
-('bx_reviews_poll_answers', 'bx_reviews', 'bx_reviews_polls_answers_votes', 'bx_reviews_polls_answers_votes_track', '604800', '1', '1', '0', '1', 'bx_reviews_polls_answers', 'id', 'author_id', 'rate', 'votes', 'BxReviewsVotePollAnswers', 'modules/boonex/reviews/classes/BxReviewsVotePollAnswers.php');
+('bx_reviews_poll_answers', 'bx_reviews', 'bx_reviews_polls_answers_votes', 'bx_reviews_polls_answers_votes_track', '604800', '1', '1', '0', '1', 'bx_reviews_polls_answers', 'id', '', 'rate', 'votes', 'BxReviewsVotePollAnswers', 'modules/boonex/reviews/classes/BxReviewsVotePollAnswers.php');
 
 -- SCORES
 INSERT INTO `sys_objects_score` (`name`, `module`, `table_main`, `table_track`, `post_timeout`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_score`, `trigger_field_cup`, `trigger_field_cdown`, `class_name`, `class_file`) VALUES 

@@ -665,7 +665,7 @@ INSERT INTO `sys_objects_cmts` (`Name`, `Module`, `Table`, `CharsPostMin`, `Char
 INSERT INTO `sys_objects_vote` (`Name`, `Module`, `TableMain`, `TableTrack`, `PostTimeout`, `MinValue`, `MaxValue`, `IsUndo`, `IsOn`, `TriggerTable`, `TriggerFieldId`, `TriggerFieldAuthor`, `TriggerFieldRate`, `TriggerFieldRateCount`, `ClassName`, `ClassFile`) VALUES 
 ('bx_classes', 'bx_classes', 'bx_classes_votes', 'bx_classes_votes_track', '604800', '1', '1', '0', '1', 'bx_classes_classes', 'id', 'author', 'rate', 'votes', '', ''),
 ('bx_classes_reactions', 'bx_classes', 'bx_classes_reactions', 'bx_classes_reactions_track', '604800', '1', '1', '1', '1', 'bx_classes_classes', 'id', 'author', 'rrate', 'rvotes', 'BxTemplVoteReactions', ''),
-('bx_classes_poll_answers', 'bx_classes', 'bx_classes_polls_answers_votes', 'bx_classes_polls_answers_votes_track', '604800', '1', '1', '0', '1', 'bx_classes_polls_answers', 'id', 'author_id', 'rate', 'votes', 'BxClssVotePollAnswers', 'modules/boonex/classes/classes/BxClssVotePollAnswers.php');
+('bx_classes_poll_answers', 'bx_classes', 'bx_classes_polls_answers_votes', 'bx_classes_polls_answers_votes_track', '604800', '1', '1', '0', '1', 'bx_classes_polls_answers', 'id', '', 'rate', 'votes', 'BxClssVotePollAnswers', 'modules/boonex/classes/classes/BxClssVotePollAnswers.php');
 
 -- SCORES
 INSERT INTO `sys_objects_score` (`name`, `module`, `table_main`, `table_track`, `post_timeout`, `is_on`, `trigger_table`, `trigger_field_id`, `trigger_field_author`, `trigger_field_score`, `trigger_field_cup`, `trigger_field_cdown`, `class_name`, `class_file`) VALUES 
