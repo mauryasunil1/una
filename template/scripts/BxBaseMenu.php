@@ -53,7 +53,7 @@ class BxBaseMenu extends BxDolMenu
      */
     public function getCode ()
     {
-        $sMenuTitle = isset($this->_aObject['title']) ? _t($this->_aObject['title']) : 'Menu-' . rand(0, PHP_INT_MAX);
+        $sMenuTitle = isset($this->_aObject['object']) ? $this->_aObject['object'] : 'Menu-' . rand(0, PHP_INT_MAX);
         if (isset($GLOBALS['bx_profiler']) && $GLOBALS['bx_profiler']->isMenu($sMenuTitle))
             $sMenuTitle .= rand(0, PHP_INT_MAX);
         if (isset($GLOBALS['bx_profiler'])) $GLOBALS['bx_profiler']->beginMenu($sMenuTitle);

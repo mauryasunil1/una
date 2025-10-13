@@ -20,6 +20,7 @@ define('BX_PDO_STATE_SUCCESS', '00000');
 class BxDolDb extends BxDolFactory implements iBxDolSingleton
 {	
     protected static $_rLink;
+    protected static $_iQueriesCounter = 0;
     protected static $_aDbCacheData = [];
 
     protected static $_aParams;
@@ -142,6 +143,11 @@ class BxDolDb extends BxDolFactory implements iBxDolSingleton
     public static function getLink()
     {
     	return self::$_rLink;
+    }
+
+    public static function getQueriesCounter()
+    {
+    	return self::$_iQueriesCounter;
     }
 
     public function setReadOnlyMode($b)
@@ -567,6 +573,8 @@ class BxDolDb extends BxDolFactory implements iBxDolSingleton
 
         if(isset($GLOBALS['bx_profiler']))
         	$GLOBALS['bx_profiler']->endQuery($oStatement);
+
+        ++self::$_iQueriesCounter;
 
 		//is needed for SILENT mode
 		if(!$bResult && !empty($this->_aError))

@@ -201,6 +201,10 @@ class BxProfiler extends BxDol
             'type' => $sType,
             'class/file' => $sClassFile,
             'method' => $sMethod,
+            'sql_counter' => BxDolDb::getInstance()->getQueriesCounter(),
+            'sql' => 0,
+            'kb_counter' => function_exists('memory_get_usage') ? memory_get_usage() : 0,
+            'kb' => 0,
             'begin' => microtime (),
             'time' => -1,
         );
@@ -209,8 +213,18 @@ class BxProfiler extends BxDol
     function endModule($sType, $sHash)
     {
         --$this->_aModulesLevel;
+
         $iTime = $this->_calcTime ($this->_aModules[$sHash]['begin']);
         unset ($this->_aModules[$sHash]['begin']);
+
+        $iSqlCounter = BxDolDb::getInstance()->getQueriesCounter() - $this->_aModules[$sHash]['sql_counter'];
+        unset ($this->_aModules[$sHash]['sql_counter']);
+
+        $iMemCounter = function_exists('memory_get_usage') ? memory_get_usage() - $this->_aModules[$sHash]['kb_counter']: 0;
+        unset ($this->_aModules[$sHash]['kb_counter']);
+
+        $this->_aModules[$sHash]['sql'] = $iSqlCounter;
+        $this->_aModules[$sHash]['kb'] = $this->_formatKb($iMemCounter);
         $this->_aModules[$sHash]['time'] = $this->_formatTime($iTime);
         $this->_aModules[$sHash]['raw_time'] = $iTime;
         if (isset($this->aConf['long_module']) && $iTime > $this->aConf['long_module'])
@@ -226,6 +240,10 @@ class BxProfiler extends BxDol
             'unit' => $sUnit,
             'action' => $sAction,
             'handler' => $sHandler,
+            'sql_counter' => BxDolDb::getInstance()->getQueriesCounter(),
+            'sql' => 0,
+            'kb_counter' => function_exists('memory_get_usage') ? memory_get_usage() : 0,
+            'kb' => 0,
             'begin' => microtime (),
             'time' => -1,
         );
@@ -235,8 +253,18 @@ class BxProfiler extends BxDol
     {
         --$this->_iAlertsLevel;
         $sHash = md5($sUnit . $sAction . $sHandler . $this->_iAlertsLevel);
+
         $iTime = $this->_calcTime ($this->_aAlerts[$sHash]['begin']);
         unset ($this->_aAlerts[$sHash]['begin']);
+
+        $iSqlCounter = BxDolDb::getInstance()->getQueriesCounter() - $this->_aAlerts[$sHash]['sql_counter'];
+        unset ($this->_aAlerts[$sHash]['sql_counter']);
+
+        $iMemCounter = function_exists('memory_get_usage') ? memory_get_usage() - $this->_aAlerts[$sHash]['kb_counter']: 0;
+        unset ($this->_aAlerts[$sHash]['kb_counter']);
+
+        $this->_aAlerts[$sHash]['sql'] = $iSqlCounter;
+        $this->_aAlerts[$sHash]['kb'] = $this->_formatKb($iMemCounter);
         $this->_aAlerts[$sHash]['time'] = $this->_formatTime($iTime);
         $this->_aAlerts[$sHash]['raw_time'] = $iTime;
     }
@@ -244,18 +272,32 @@ class BxProfiler extends BxDol
     function beginInjection ($sId)
     {
         $this->_sInjectionIndex = $sId;
-        $this->_aInjections[$sId]['begin'] = microtime ();
+        $this->_aInjections[$sId] = [
+            'begin' => microtime (),
+            'sql_counter' => BxDolDb::getInstance()->getQueriesCounter(),
+            'kb_counter' => function_exists('memory_get_usage') ? memory_get_usage() : 0,
+        ];
     }
 
     function endInjection ($sId, $aInjection)
     {
         if (!isset($this->_aInjections[$sId]))
             return;
+
         $iTime = $this->_calcTime ($this->_aInjections[$sId]['begin']);
         unset ($this->_aInjections[$sId]['begin']);
+
+        $iSqlCounter = BxDolDb::getInstance()->getQueriesCounter() - $this->_aInjections[$sId]['sql_counter'];
+        unset ($this->_aInjections[$sId]['sql_counter']);
+
+        $iMemCounter = function_exists('memory_get_usage') ? memory_get_usage() - $this->_aInjections[$sId]['kb_counter']: 0;
+        unset ($this->_aInjections[$sId]['kb_counter']);
+
         $this->_aInjections[$sId]['name'] = isset($aInjection['name']) ? $aInjection['name'] : 'no-name';
         $this->_aInjections[$sId]['key'] = $aInjection['key'];
         $this->_aInjections[$sId]['replace'] = $aInjection['replace'] ? 'yes' : 'no';
+        $this->_aInjections[$sId]['sql'] = $iSqlCounter;
+        $this->_aInjections[$sId]['kb'] = $this->_formatKb($iMemCounter);
         $this->_aInjections[$sId]['time'] = $this->_formatTime($iTime);
         $this->_aInjections[$sId]['raw_time'] = $iTime;
     }
@@ -263,18 +305,32 @@ class BxProfiler extends BxDol
     function beginPageBlock ($sName, $iBlockId)
     {
         $this->_sPageBlockIndex = $iBlockId;
-        $this->_aPagesBlocks[$this->_sPageBlockIndex]['name'] = $sName;
-        $this->_aPagesBlocks[$this->_sPageBlockIndex]['begin'] = microtime ();
+        $this->_aPagesBlocks[$this->_sPageBlockIndex] = [
+            'name' => $sName,
+            'begin' => microtime (),
+            'sql_counter' => BxDolDb::getInstance()->getQueriesCounter(),
+            'kb_counter' => function_exists('memory_get_usage') ? memory_get_usage() : 0,
+        ];
     }
 
     function endPageBlock ($iBlockId, $isEmpty, $isCached)
     {
         if (!$this->_sPageBlockIndex)
             return;
+
         $iTime = $this->_calcTime ($this->_aPagesBlocks[$this->_sPageBlockIndex]['begin']);
         unset ($this->_aPagesBlocks[$this->_sPageBlockIndex]['begin']);
+
+        $iSqlCounter = BxDolDb::getInstance()->getQueriesCounter() - $this->_aPagesBlocks[$this->_sPageBlockIndex]['sql_counter'];
+        unset ($this->_aPagesBlocks[$this->_sPageBlockIndex]['sql_counter']);
+
+        $iMemCounter = function_exists('memory_get_usage') ? memory_get_usage() - $this->_aPagesBlocks[$this->_sPageBlockIndex]['kb_counter']: 0;
+        unset ($this->_aPagesBlocks[$this->_sPageBlockIndex]['kb_counter']);
+
         $this->_aPagesBlocks[$this->_sPageBlockIndex]['cached'] = $isCached ? 'yes' : 'no';
         $this->_aPagesBlocks[$this->_sPageBlockIndex]['empty'] = $isEmpty ? 'yes' : 'no';
+        $this->_aPagesBlocks[$this->_sPageBlockIndex]['sql'] = $iSqlCounter;
+        $this->_aPagesBlocks[$this->_sPageBlockIndex]['kb'] = $this->_formatKb($iMemCounter);
         $this->_aPagesBlocks[$this->_sPageBlockIndex]['time'] = $this->_formatTime($iTime);
         $this->_aPagesBlocks[$this->_sPageBlockIndex]['raw_time'] = $iTime;
     }
@@ -282,16 +338,30 @@ class BxProfiler extends BxDol
     function beginPage ($sName)
     {
         $this->_sPageIndex = md5 ($sName.time().rand());
-        $this->_aPages[$this->_sPageIndex]['name'] = $sName;
-        $this->_aPages[$this->_sPageIndex]['begin'] = microtime ();
+        $this->_aPages[$this->_sPageIndex] = [
+            'name' => $sName,
+            'begin' => microtime (),
+            'sql_counter' => BxDolDb::getInstance()->getQueriesCounter(),
+            'kb_counter' => function_exists('memory_get_usage') ? memory_get_usage() : 0,
+        ];
     }
 
     function endPage (&$sContent)
     {
         if (!$this->_sPageIndex || !isset($this->_aPages[$this->_sPageIndex]['begin']))
             return;
+
         $iTime = $this->_calcTime ($this->_aPages[$this->_sPageIndex]['begin']);
         unset ($this->_aPages[$this->_sPageIndex]['begin']);
+
+        $iSqlCounter = BxDolDb::getInstance()->getQueriesCounter() - $this->_aPages[$this->_sPageIndex]['sql_counter'];
+        unset ($this->_aPages[$this->_sPageIndex]['sql_counter']);
+
+        $iMemCounter = function_exists('memory_get_usage') ? memory_get_usage() - $this->_aPages[$this->_sPageIndex]['kb_counter']: 0;
+        unset ($this->_aPages[$this->_sPageIndex]['kb_counter']);
+
+        $this->_aPages[$this->_sPageIndex]['sql'] = $iSqlCounter;
+        $this->_aPages[$this->_sPageIndex]['kb'] = $this->_formatKb($iMemCounter);
         $this->_aPages[$this->_sPageIndex]['time'] = $this->_formatTime($iTime);
         $this->_aPages[$this->_sPageIndex]['raw_time'] = $iTime;
     }
@@ -299,16 +369,30 @@ class BxProfiler extends BxDol
     function beginTemplate ($sName, $sRand)
     {
         $this->_aTemplateIndexes[$sName.$sRand] = 1;
-        $this->_aTemplates[$sName.$sRand]['name'] = $sName;
-        $this->_aTemplates[$sName.$sRand]['begin'] = microtime ();
+        $this->_aTemplates[$sName.$sRand] = [
+            'name' => $sName,
+            'begin' => microtime (),
+            'sql_counter' => BxDolDb::getInstance()->getQueriesCounter(),
+            'kb_counter' => function_exists('memory_get_usage') ? memory_get_usage() : 0,
+        ];
     }
 
     function endTemplate ($sName, $sRand, &$sContent, $isCached)
     {
         if (!isset($this->_aTemplateIndexes[$sName.$sRand]))
             return;
+
         $iTime = $this->_calcTime ($this->_aTemplates[$sName.$sRand]['begin']);
         unset ($this->_aTemplates[$sName.$sRand]['begin']);
+
+        $iSqlCounter = BxDolDb::getInstance()->getQueriesCounter() - $this->_aTemplates[$sName.$sRand]['sql_counter'];
+        unset ($this->_aTemplates[$sName.$sRand]['sql_counter']);
+
+        $iMemCounter = function_exists('memory_get_usage') ? memory_get_usage() - $this->_aTemplates[$sName.$sRand]['kb_counter']: 0;
+        unset ($this->_aTemplates[$sName.$sRand]['kb_counter']);
+
+        $this->_aTemplates[$sName.$sRand]['sql'] = $iSqlCounter;
+        $this->_aTemplates[$sName.$sRand]['kb'] = $this->_formatKb($iMemCounter);
         $this->_aTemplates[$sName.$sRand]['cached'] = $isCached ? 'yes' : 'no';
         $this->_aTemplates[$sName.$sRand]['time'] = $this->_formatTime($iTime);
         $this->_aTemplates[$sName.$sRand]['raw_time'] = $iTime;
@@ -317,20 +401,29 @@ class BxProfiler extends BxDol
     function beginQuery ($sSql)
     {
         $this->_sQueryIndex = md5 ($sSql.time().rand());
-        $this->_aQueries[$this->_sQueryIndex]['sql'] = $sSql;
-        $this->_aQueries[$this->_sQueryIndex]['begin'] = microtime ();
+        $this->_aQueries[$this->_sQueryIndex] = [
+            'sql' => $sSql,
+            'begin' => microtime (),
+            'kb_counter' => function_exists('memory_get_usage') ? memory_get_usage() : 0,
+        ];
     }
 
     function endQuery (&$oStmt)
     {
         if (!$this->_sQueryIndex)
             return;
+
         $iTime = $this->_calcTime ($this->_aQueries[$this->_sQueryIndex]['begin']);
         unset ($this->_aQueries[$this->_sQueryIndex]['begin']);
+
+        $iMemCounter = function_exists('memory_get_usage') ? memory_get_usage() - $this->_aQueries[$this->_sQueryIndex]['kb_counter']: 0;
+        unset ($this->_aQueries[$this->_sQueryIndex]['kb_counter']);
+
         $this->_aQueries[$this->_sQueryIndex]['time'] = $this->_formatTime($iTime);
         $this->_aQueries[$this->_sQueryIndex]['raw_time'] = $iTime;
         $this->_aQueries[$this->_sQueryIndex]['rows'] = $oStmt ? BxDolDb::getInstance()->getNumRows($oStmt) : '';
         $this->_aQueries[$this->_sQueryIndex]['affected'] = $oStmt ? BxDolDb::getInstance()->getAffectedRows($oStmt) : '';
+        $this->_aQueries[$this->_sQueryIndex]['kb'] = $this->_formatKb($iMemCounter);
         if (isset($this->aConf['long_query']) && $iTime > $this->aConf['long_query'])
             $this->logSqlQuery ($iTime, $this->_aQueries[$this->_sQueryIndex], $oStmt);
     }
@@ -342,16 +435,30 @@ class BxProfiler extends BxDol
 
     function beginMenu ($sName)
     {
-        $this->_aMenus[$sName]['name'] = $sName;
-        $this->_aMenus[$sName]['begin'] = microtime ();
+        $this->_aMenus[$sName] = [
+            'name' => $sName,
+            'begin' => microtime (),
+            'sql_counter' => BxDolDb::getInstance()->getQueriesCounter(),
+            'kb_counter' => function_exists('memory_get_usage') ? memory_get_usage() : 0,
+        ];
     }
 
     function endMenu ($sName, $sCacheType = '', $bCacheUsed = false)
     {
         if (!isset($this->_aMenus[$sName]))
             return;
+
         $iTime = $this->_calcTime ($this->_aMenus[$sName]['begin']);
         unset ($this->_aMenus[$sName]['begin']);
+
+        $iSqlCounter = BxDolDb::getInstance()->getQueriesCounter() - $this->_aMenus[$sName]['sql_counter'];
+        unset ($this->_aMenus[$sName]['sql_counter']);
+
+        $iMemCounter = function_exists('memory_get_usage') ? memory_get_usage() - $this->_aMenus[$sName]['kb_counter']: 0;
+        unset ($this->_aMenus[$sName]['kb_counter']);
+
+        $this->_aMenus[$sName]['sql'] = $iSqlCounter;
+        $this->_aMenus[$sName]['kb'] = $this->_formatKb($iMemCounter);
         $this->_aMenus[$sName]['time'] = $this->_formatTime($iTime);
         $this->_aMenus[$sName]['raw_time'] = $iTime;        
         $this->_aMenus[$sName]['cache type'] = $sCacheType;
@@ -611,6 +718,12 @@ class BxProfiler extends BxDol
             return round($i/1024, 1) . 'K';
         else
             return $i . 'B';
+    }
+
+    function _formatKb ($i)
+    {
+        $s = round($i / 1024, 0);
+        return $s == '-0' ? '0' : $s;
     }
 
     function _isProfilerDisabled()
