@@ -64,6 +64,7 @@ class BxTasksConfig extends BxBaseModTextConfig
             'FIELD_STATUS_ADMIN' => 'status_admin',
             'FIELD_LABELS' => 'labels',
             'FIELD_TASKLIST' => 'tasks_list',
+            'FIELD_INITIAL_MEMBERS' => 'initial_members',
             'FIELD_DUEDATE' => 'due_date',
             'FIELD_EXPIRED' => 'expired',
             'FIELD_COMPLETED' => 'completed',

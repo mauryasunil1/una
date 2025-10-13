@@ -345,6 +345,7 @@ SET @iHandler := LAST_INSERT_ID();
 INSERT INTO `sys_alerts` (`unit`, `action`, `handler_id`) VALUES
 ('system', 'save_setting', @iHandler),
 ('profile', 'delete', @iHandler),
+('profile', 'search_by_term', @iHandler),
 
 ('bx_tasks_videos_mp4', 'transcoded', @iHandler);
 

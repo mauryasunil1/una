@@ -13,8 +13,10 @@
  */
 class BxTasksFormEntry extends BxBaseModTextFormEntry
 {
+    protected $_iContextId;
+
     protected $_sGhostTemplateCover = 'form_ghost_template_cover.html';
-	
+
     public function __construct($aInfo, $oTemplate = false)
     {
         $this->MODULE = 'bx_tasks';
@@ -72,20 +74,14 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
             $this->aInputs[$CNF['FIELD_FILE']]['ghost_template'] = '';
             $this->aInputs[$CNF['FIELD_FILE']]['tr_attrs'] = array('class'=> 'bx-base-text-attachment-item');
         }
-		
-		if (isset($this->aInputs['initial_members']) && !isset($this->aInputs['initial_members']['value'])) {
-			if (bx_get('id')){
-				$oConn = BxDolConnection::getObjectInstance($CNF['OBJECT_CONNECTION']);
-				$this->aInputs['initial_members']['value'] = $oConn->getConnectedInitiators(bx_get('id'));
-			}
-			else{
-				$this->aInputs['initial_members']['value'] = array(bx_get_logged_profile_id());
-			}
-			
-        }
     }
 
-    function getCode($bDynamicMode = false)
+    public function setContextId($iContextId)
+    {
+        $this->_iContextId = $iContextId;
+    }
+
+    public function getCode($bDynamicMode = false)
     {
         $this->_replaceMarkersInControls('controls_edit');
 
@@ -94,23 +90,33 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
         $sResult .= ($bDynamicMode ? $sInclude : '') . $this->_oModule->_oTemplate->getJsCode('tasks');
     	return $sResult;
     }
-	
-    function initChecker ($aValues = array (), $aSpecificValues = array())
+
+    public function initChecker ($aValues = array (), $aSpecificValues = array())
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
 
         $bValues = $aValues && !empty($aValues['id']);
+
         $aContentInfo = $bValues ? $this->_oModule->_oDb->getContentInfoById($aValues['id']) : false;
+        if(!empty($aContentInfo) && is_array($aContentInfo))
+            $this->setContextId(abs($aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]));
 
         if($this->aParams['display'] == $CNF['OBJECT_FORM_ENTRY_DISPLAY_EDIT'] && isset($CNF['FIELD_PUBLISHED']) && isset($this->aInputs[$CNF['FIELD_PUBLISHED']]))
             if($bValues && in_array($aValues[$CNF['FIELD_STATUS']], array('active', 'hidden')))
                 unset($this->aInputs[$CNF['FIELD_PUBLISHED']]);
 
-        if (isset($CNF['FIELD_COVER']) && isset($this->aInputs[$CNF['FIELD_COVER']])) {
+        if(($sKey = 'FIELD_COVER') && isset($CNF[$sKey], $this->aInputs[$CNF[$sKey]])) {
             if($bValues)
                 $this->aInputs[$CNF['FIELD_COVER']]['content_id'] = $aValues['id'];
 
             $this->aInputs[$CNF['FIELD_COVER']]['ghost_template'] = $this->_oModule->_oTemplate->parseHtmlByName($this->_sGhostTemplateCover, $this->_getCoverGhostTmplVars($aContentInfo));
+        }
+
+        if(($sKey = 'FIELD_INITIAL_MEMBERS') && isset($CNF[$sKey], $this->aInputs[$CNF[$sKey]])) {
+            if($bValues)
+                $this->aInputs[$CNF[$sKey]]['value'] = BxDolConnection::getObjectInstance($CNF['OBJECT_CONNECTION'])->getConnectedInitiators($aValues['id']);
+            else
+                $this->aInputs[$CNF[$sKey]]['value'] = [bx_get_logged_profile_id()];
         }
 
         parent::initChecker ($aValues, $aSpecificValues);
@@ -145,17 +151,16 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
         $aValsToAdd[$CNF['FIELD_STATUS']] = $aValsToAdd[$CNF['FIELD_PUBLISHED']] > $aValsToAdd[$CNF['FIELD_ADDED']] ? 'awaiting' : 'active';
 
         $iContentId = parent::insert ($aValsToAdd, $isIgnore);
-        if(!empty($iContentId)){
+        if(!empty($iContentId)) {
             $this->processFiles($CNF['FIELD_COVER'], $iContentId, true);
-			
-			if(isset($this->aInputs['initial_members'])) {
-				$this->_setAssignments($iContentId, $this->aInputs['initial_members']['value']);
-			}
+
+            if(isset($this->aInputs['initial_members']))
+                $this->_setAssignments($iContentId, $this->aInputs['initial_members']['value']);
         }
         return $iContentId;
     }
 
-    function update ($iContentId, $aValsToAdd = array(), &$aTrackTextFieldsChanges = null)
+    public function update ($iContentId, $aValsToAdd = array(), &$aTrackTextFieldsChanges = null)
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
 
@@ -166,20 +171,30 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
 
             $aValsToAdd[$CNF['FIELD_PUBLISHED']] = $iPublished;
         }
-		
-		if(isset($this->aInputs['initial_members'])) {
-			$this->_setAssignments($iContentId, $this->aInputs['initial_members']['value']);
-		}
-		
-		$aContentInfo = $this->_oModule->_oDb->getContentInfoById($iContentId);
-		$aValsToAdd[$CNF['FIELD_ALLOW_VIEW_TO']] = $aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']];
-	
+
+        if(isset($this->aInputs['initial_members'])) {
+            $this->_setAssignments($iContentId, $this->aInputs['initial_members']['value']);
+        }
+
+        $aContentInfo = $this->_oModule->_oDb->getContentInfoById($iContentId);
+        $aValsToAdd[$CNF['FIELD_ALLOW_VIEW_TO']] = $aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']];
+
         $iResult = parent::update ($iContentId, $aValsToAdd, $aTrackTextFieldsChanges);
         $this->processFiles($CNF['FIELD_COVER'], $iContentId, false);   
         return $iResult;
     }
 
-    protected function _getCoverGhostTmplVars($aContentInfo = array())
+    public function delete ($iContentId, $aContentInfo = [])
+    {
+        $CNF = &$this->_oModule->_oConfig->CNF;
+
+        if(($sKey = 'OBJECT_REPORTS_TIME') && !empty($CNF[$sKey]) && ($o = BxDolReport::getObjectInstance($CNF[$sKey], $iContentId)))
+            $o->onObjectDelete();
+
+        return parent::delete($iContentId);
+    }
+
+    protected function _getCoverGhostTmplVars($aContentInfo = [])
     {
     	$CNF = &$this->_oModule->_oConfig->CNF;
 
@@ -196,15 +211,15 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
     {
     	$CNF = &$this->_oModule->_oConfig->CNF;
 
-    	return array (
+    	return [
             'name' => $this->aInputs[$CNF['FIELD_PHOTO']]['name'],
             'content_id' => (int)$this->aInputs[$CNF['FIELD_PHOTO']]['content_id'],
             'editor_id' => isset($CNF['FIELD_TEXT_ID']) ? $CNF['FIELD_TEXT_ID'] : '',
             'bx_if:set_thumb' => [
-				'condition' => false,
-				'content' => []
-			],
-    	);
+                'condition' => false,
+                'content' => []
+            ]
+    	];
     }
 	
     protected function _setAssignments($iContentId, $aMembers)
@@ -265,14 +280,15 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
             ));
         }
     }
-	
-	protected function genCustomInputInitialMembers ($aInput)
+
+    protected function genCustomInputInitialMembers ($aInput)
     {
-        $aInput['ajax_get_suggestions'] = BX_DOL_URL_ROOT . "modules/?r=" . $this->_oModule->_oConfig->getUri() . "/ajax_get_initial_members";
-        return $this->genCustomInputUsernamesSuggestions($aInput);
+        return $this->genCustomInputUsernamesSuggestions(array_merge($aInput , [
+            'ajax_get_suggestions' => BX_DOL_URL_ROOT . "modules/?r=" . $this->_oModule->_oConfig->getUri() . "/ajax_get_initial_members/" . $this->_iContextId
+        ]));
     }
-	
-	protected function genCustomInputTasksList(&$aInput)
+
+    protected function genCustomInputTasksList(&$aInput)
     {
         return $this->genInputStandard($aInput);
     }

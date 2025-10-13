@@ -162,7 +162,7 @@ class BxTasksTime extends BxTemplReport
                 'style_prefix' => $this->_sStylePrefix,
                 'user_unit' => $sUserUnit,
                 'value' => $this->_oModule->_oConfig->timeI2S($aReport['value']),
-                'date' => bx_time_js($aReport['date'], BX_FORMAT_DATE, true),
+                'date' => $aReport['value_date'] ? bx_time_js($aReport['value_date'], BX_FORMAT_DATE, true) : '',
             	'bx_if:show_text' => [
                     'condition' => strlen($sText) > 0,
                     'content' => [

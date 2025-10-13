@@ -37,6 +37,32 @@ class BxTasksTemplate extends BxBaseModTextTemplate
         return $this->parseHtmlByName($sTemplateName, $aVars);
     }
 
+    public function entryAssignments ($aProfiles)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $aTmplVarsProfiles = [];
+        foreach($aProfiles as $mixedProfile) {
+            $bProfile = is_array($mixedProfile);
+
+            $oProfile = BxDolProfile::getInstance($bProfile ? (int)$mixedProfile['id'] : (int)$mixedProfile);
+            if(!$oProfile)
+                continue;
+
+            $aUnitParams = ['template' => ['name' => 'unit', 'size' => 'thumb']];
+            if($bProfile && is_array($mixedProfile['info']))
+                $aUnitParams['template']['vars'] = $mixedProfile['info'];
+
+            $aTmplVarsProfiles[] = [
+                'unit' => $oProfile->getUnit(0, $aUnitParams)
+            ];
+        }
+
+        return $aTmplVarsProfiles ? $this->parseHtmlByName('entry-assignments.html', [
+            'bx_repeat:profiles' => $aTmplVarsProfiles
+        ]) : MsgBox(_t('_sys_txt_empty'));
+    }
+
     public function getEntriesList($iContextId)
     {
         $CNF = &$this->_oConfig->CNF;

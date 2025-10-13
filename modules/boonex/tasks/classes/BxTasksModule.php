@@ -39,11 +39,15 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
     /**
      * Get possible recipients for start conversation form
      */
-    public function actionAjaxGetInitialMembers ()
+    public function actionAjaxGetInitialMembers($iContextPid)
     {
         $sTerm = bx_get('term');
+        $sModule = $this->_oConfig->getName();
 
-        $a = BxDolService::call('system', 'profiles_search', array($sTerm), 'TemplServiceProfiles');
+        $a = bx_srv('system', 'profiles_search', [$sTerm, [
+            'module' => $sModule,
+            'search_params' => ['name' => $sModule . '_initial_members', 'context_pid' => $iContextPid]
+        ]], 'TemplServiceProfiles');
 
         header('Content-Type:text/javascript; charset=utf-8');
         echo(json_encode($a));
@@ -190,21 +194,25 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 	
     public function actionProcessTaskForm($iContextId, $iListId)
     {
-        if(!$this->isAllowAdd(-$iContextId))
-            return;
-        
+        $_iContextId = abs($iContextId);
+
+        if(!$this->isAllowAdd($_iContextId))
+            return echoJson([]);
+
         $CNF = &$this->_oConfig->CNF;
 
         $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_ENTRY'], $CNF['OBJECT_FORM_ENTRY_DISPLAY_ADD']);
-        $oForm->aFormAttrs['action'] = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'process_task_form/' . $iContextId . '/' . $iListId . '/';
         if(!$oForm)
-            return '';
+            return echoJson([]);
+
+        $oForm->setAction(BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'process_task_form/' . $iContextId . '/' . $iListId . '/');
+        $oForm->setContextId($_iContextId);
 
         $oForm->initChecker();
         if($oForm->isSubmittedAndValid()) {
             $iContentId = $oForm->insert([$CNF['FIELD_ALLOW_VIEW_TO'] => $iContextId, $CNF['FIELD_TASKLIST'] => $iListId]);
-
-            $this->onPublished($iContentId);
+            if($iContentId)
+                $this->onPublished($iContentId);
 
             return echoJson([
                 'eval' => $this->_oConfig->getJsObject('tasks') . '.reloadData(oData, ' . $iContextId . ')',
@@ -215,13 +223,11 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
                 'form_id' => $oForm->getId(),
                 'form' => $oForm->getCode(true)
             ]);
-																	 
-            if (!$oForm->isSubmitted()) {
-                echo $sContent;
-                return;
-            }
 
-            return echoJson(['form' => $sContent, 'form_id' => $oForm->getId()]);
+            if($oForm->isSubmitted()) 
+                return echoJson(['form' => $sContent, 'form_id' => $oForm->getId()]);
+
+            echo $sContent;
         }
     }
 
@@ -550,27 +556,9 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         if($bAsArray)
             return $aProfiles;
 
-        $sResult = '';
-        foreach ($aProfiles as $mixedProfile) {
-            $bProfile = is_array($mixedProfile);
-
-            $oProfile = BxDolProfile::getInstance($bProfile ? (int)$mixedProfile['id'] : (int)$mixedProfile);
-            if(!$oProfile)
-                continue;
-
-            $aUnitParams = array('template' => array('name' => 'unit', 'size' => 'thumb'));
-            if($bProfile && is_array($mixedProfile['info']))
-                $aUnitParams['template']['vars'] = $mixedProfile['info'];
-
-            $sResult .= $oProfile->getUnit(0, $aUnitParams);
-        }
-
-        if(!$sResult)
-            $sResult = MsgBox(_t('_sys_txt_empty'));
-
-        return $sResult;
+        return $this->_oTemplate->entryAssignments($aProfiles);
     }
-	
+
     public function serviceCheckAllowedCommentsTask($iContentId, $sObjectComments) 
     {
         $CNF = &$this->_oConfig->CNF;
