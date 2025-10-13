@@ -461,13 +461,15 @@ class BxBaseServiceProfiles extends BxDol
         return $aRet;
     }
 
-    public function serviceProfilesSearch ($sTerm, $mixedParems = [])
+    public function serviceProfilesSearch ($sTerm, $mixedParams = [])
     {
-        $iLimit = (int)getParam('sys_profiles_search_limit');
-        if(is_int($mixedParems)) 
-            $iLimit = (int)$mixedParems;
-        else if(is_array($mixedParems) && isset($mixedParems['limit']))
-            $iLimit = (int)$mixedParems['limit'];
+        $bParams = is_array($mixedParams);
+
+        $iLimit = 0;
+        if((is_numeric($mixedParams) && ($_iLimit = (int)$mixedParams)) || ($bParams && isset($mixedParams['limit']) && ($_iLimit = (int)$mixedParams['limit']))) 
+            $iLimit = $_iLimit;
+        else
+            $iLimit = (int)getParam('sys_profiles_search_limit');
 
         // display friends by default
         if (!$sTerm)
@@ -476,12 +478,20 @@ class BxBaseServiceProfiles extends BxDol
         // get list of "profiles" modules
         $aModules = $this->serviceGetProfilesModules();
 
+        $mixedSearchParams = (int)getParam('sys_per_page_search_keyword_single');
+        if($bParams && !empty($mixedParams['search_params']) && is_array($mixedParams['search_params']))
+            $mixedSearchParams = [
+                'search_params' => $mixedParams['search_params'], 
+                'limit' => $mixedSearchParams
+            ];
+
         // search in each module
-        $a = array();
+        $a = [];
         foreach ($aModules as $aModule) {
-            if (!BxDolService::call($aModule['name'], 'act_as_profile'))
+            if(!bx_srv($aModule['name'], 'act_as_profile'))
                 continue;
-            $a = array_merge($a, BxDolService::call($aModule['name'], 'profiles_search', array($sTerm, getParam('sys_per_page_search_keyword_single'))));
+
+            $a = array_merge($a, bx_srv($aModule['name'], 'profiles_search', [$sTerm, $mixedSearchParams]));
         }
 
         // sort result
@@ -502,27 +512,27 @@ class BxBaseServiceProfiles extends BxDol
          *      - `result` - [array] by ref, array of results, can be overridden in hook processing
          * @hook @ref hook-account-profiles_search_by_location
          */
-        bx_alert('system', 'profiles_search', 0, 0, array(
-            'module' => is_array($mixedParems) && isset($mixedParems['module']) ? $mixedParems['module'] : '',
+        bx_alert('system', 'profiles_search', 0, 0, [
+            'module' => $bParams && isset($mixedParams['module']) ? $mixedParams['module'] : '',
             'term' => $sTerm,
             'result' => &$a
-        ));
+        ]);
 
         // return as array
         return array_slice($a, 0, $iLimit);
     }
 
-    public function serviceProfilesSearchByLocation ($aLocation, $iRadius, $mixedParems = [])
+    public function serviceProfilesSearchByLocation ($aLocation, $iRadius, $mixedParams = [])
     {
-        $sModule = !empty($mixedParems['module']) ? $mixedParems['module'] : '';
+        $sModule = !empty($mixedParams['module']) ? $mixedParams['module'] : '';
         $aModules = !empty($sModule) ? [BxDolModuleDb::getInstance()->getModuleByName($sModule)] : $this->serviceGetProfilesModules();
 
         $iStart = 0;
         $iLimit = 20;
-        if(is_int($mixedParems)) 
-            $iLimit = (int)$mixedParems;
-        else if(is_array($mixedParems) && isset($mixedParems['limit']))
-            $iLimit = (int)$mixedParems['limit'];
+        if(is_int($mixedParams)) 
+            $iLimit = (int)$mixedParams;
+        else if(is_array($mixedParams) && isset($mixedParams['limit']))
+            $iLimit = (int)$mixedParams['limit'];
 
         $aLocation[] = $iRadius;
         $oProfileQuery = BxDolProfileQuery::getInstance();

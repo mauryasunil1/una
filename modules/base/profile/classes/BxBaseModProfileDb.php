@@ -96,28 +96,32 @@ class BxBaseModProfileDb extends BxBaseModGeneralDb
         return $this->query($sQuery, $aBindings);
     }
 
-    public function searchByTerm($sTerm, $iLimit)
+    public function searchByTerm($sTerm, $mixedParams)
     {
-        if (!$this->_oConfig->CNF['FIELDS_QUICK_SEARCH'])
-            return array();
+        if(!$this->_oConfig->CNF['FIELDS_QUICK_SEARCH'])
+            return [];
 
-		$aBindings = array(
-			'type' => $this->_oConfig->getName(),
-			'status' => BX_PROFILE_STATUS_ACTIVE
-		);
+        $aBindings = [
+            'type' => $this->_oConfig->getName(),
+            'status' => BX_PROFILE_STATUS_ACTIVE
+        ];
         $sSelect = "`c`.`id` AS `content_id`, `p`.`account_id`, `p`.`id` AS `profile_id`, `p`.`status` AS `profile_status` ";
         
         $sJoin = "INNER JOIN `sys_profiles` AS `p` ON (`p`.`content_id` = `c`.`id` AND `p`.`type` = :type) INNER JOIN `sys_accounts` AS `a` ON (`a`.`id` =  `p`.`account_id`)";
         
         $sWhere = '';
         foreach ($this->_oConfig->CNF['FIELDS_QUICK_SEARCH'] as $sField) {
-        	$aBindings[$sField] = '%' . $sTerm . '%';
+            $aBindings[$sField] = '%' . $sTerm . '%';
 
             $sWhere .= " OR `c`.`$sField` LIKE :" . $sField;
         }
         $sWhere = "`p`.`status` = :status AND (0 $sWhere) ";
 
-        $sOrderBy = $this->prepareAsString(" ORDER BY `a`.`logged` DESC LIMIT ?", (int)$iLimit);
+        $sOrderBy = " ORDER BY `a`.`logged` DESC";
+
+        $sLimit = "";
+        if((is_numeric($mixedParams) && ($iLimit = (int)$mixedParams)) || (is_array($mixedParams) && isset($mixedParams['limit']) && ($iLimit = (int)$mixedParams['limit'])))
+            $sLimit = $this->prepareAsString(" LIMIT ?", $iLimit);
 
         /**
          * @hooks
@@ -133,18 +137,21 @@ class BxBaseModProfileDb extends BxBaseModGeneralDb
          *      - `join` - [string] by ref, 'join' part of SQL query, can be overridden in hook processing
          *      - `where` - [string] by ref, 'where' part of SQL query, can be overridden in hook processing
          *      - `order_by` - [string] by ref, 'order' part of SQL query, can be overridden in hook processing
+         *      - `limit` - [string] by ref, 'limit' part of SQL query, can be overridden in hook processing
          * @hook @ref hook-profile-search_by_term
          */
         bx_alert('profile', 'search_by_term', 0, 0, [
             'module' => $this->_oConfig->getName(), 
+            'params' => $mixedParams['search_params'] ?? '',
             'table' => $this->_oConfig->CNF['TABLE_ENTRIES'], 
             'select' => &$sSelect,  
             'join' => &$sJoin, 
             'where' => &$sWhere, 
-            'order_by' => &$sOrderBy
+            'order_by' => &$sOrderBy,
+            'limit' => &$sLimit
         ]);
-        
-        return $this->getAll("SELECT " . $sSelect . " FROM `" . $this->_oConfig->CNF['TABLE_ENTRIES'] . "` AS `c` " . $sJoin . " WHERE " . $sWhere . $sOrderBy, $aBindings);
+
+        return $this->getAll("SELECT " . $sSelect . " FROM `" . $this->_oConfig->CNF['TABLE_ENTRIES'] . "` AS `c` " . $sJoin . " WHERE " . $sWhere . $sOrderBy . $sLimit, $aBindings);
     }
 
     protected function _getEntriesBySearchIds($aParams, &$aMethod, &$sSelectClause, &$sJoinClause, &$sWhereClause, &$sOrderClause, &$sLimitClause)

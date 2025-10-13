@@ -381,11 +381,11 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
         return '';
     }
 
-    public function serviceProfilesSearch ($sTerm, $iLimit)
+    public function serviceProfilesSearch ($sTerm, $mixedParams)
     {
-        $aRet = array();
+        $aRet = [];
 
-        $a = $this->_oDb->searchByTerm($sTerm, $iLimit);
+        $a = $this->_oDb->searchByTerm($sTerm, $mixedParams);
         foreach ($a as $r) {
             $oProfile = BxDolProfile::getInstance($r['profile_id']);
 
@@ -396,13 +396,13 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
                 $aRet[] = $aData['author_data'];
             }
             else{
-                $aRet[] = array (
+                $aRet[] = [
                     'label' => $this->serviceProfileName($r['content_id']), 
                     'value' => $r['profile_id'], 
                     'url' => $oProfile->getUrl(),
                     'thumb' => $oProfile->getThumb(),
                     'unit' => $oProfile->getUnit(0, ['template' => ['name' => 'unit_wo_info', 'size' => 'icon']])
-                );
+                ];
             }
         }
 
