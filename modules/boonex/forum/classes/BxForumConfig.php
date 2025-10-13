@@ -111,6 +111,7 @@ class BxForumConfig extends BxBaseModTextConfig
             'PARAM_CHARS_SUMMARY_PLAIN' => 'bx_forum_plain_summary_chars',
             'PARAM_NUM_RSS' => 'bx_forum_rss_num',
             'PARAM_SEARCHABLE_FIELDS' => 'bx_forum_searchable_fields',
+            'PARAM_PER_PAGE_BROWSE_SHOWCASE' => 'bx_forum_per_page_browse_showcase',
             'PARAM_AUTOSUBSCRIBE_CREATED' => 'bx_forum_autosubscribe_created',
             'PARAM_AUTOSUBSCRIBE_REPLIED' => 'bx_forum_autosubscribe_replied', 
             'PARAM_LINKS_ENABLED' => true,

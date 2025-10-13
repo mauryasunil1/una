@@ -1759,6 +1759,8 @@
     <string name="_adm_stg_inf_option_sys_live_search_limit"><![CDATA[Set the maximum number of results displayed in Live Search suggestion box.]]></string>
     <string name="_adm_stg_cpt_option_sys_profiles_search_limit"><![CDATA[Profile Search Results]]></string>
     <string name="_adm_stg_inf_option_sys_profiles_search_limit"><![CDATA[Set the maximum number of results displayed per page in Profile Search.]]></string>
+    <string name="_adm_stg_cpt_option_sys_per_page_browse_showcase"><![CDATA[Number of items in showcase view]]></string>
+    <string name="_adm_stg_inf_option_sys_per_page_browse_showcase"><![CDATA[Set the maximum number of results displayed in horizontal carousel.]]></string>
     <string name="_adm_stg_cpt_option_sys_session_lifetime_in_min"><![CDATA[Session lifetime (min)]]></string>
     <string name="_adm_stg_cpt_option_sys_session_auth"><![CDATA[Session authentication]]></string>
     <string name="_adm_stg_cpt_option_sys_default_curl_timeout"><![CDATA[cURL - default timeout]]></string>

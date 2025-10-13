@@ -242,13 +242,18 @@ class BxBaseModGeneralSearchResult extends BxTemplSearchResult
 
     protected function getItemPerPageInShowCase ()
     {
-        $iPerPageInShowCase = BX_SYS_PER_PAGE_BROWSE_SHOWCASE;
+        $iPerPageInShowCase = (int)getParam('sys_per_page_browse_showcase');
+
         $CNF = &$this->oModule->_oConfig->CNF;
-        if (isset($CNF['PARAM_PER_PAGE_BROWSE_SHOWCASE']))
-            $iPerPageInShowCase = getParam($CNF['PARAM_PER_PAGE_BROWSE_SHOWCASE']);
+        if(isset($CNF['PARAM_PER_PAGE_BROWSE_SHOWCASE']))
+            $iPerPageInShowCase = (int)getParam($CNF['PARAM_PER_PAGE_BROWSE_SHOWCASE']);
+
+        if(!$iPerPageInShowCase)
+            $iPerPageInShowCase = BX_SYS_PER_PAGE_BROWSE_SHOWCASE;
+
         return $iPerPageInShowCase;
     }
-    
+
     function displayResultBlock()
     {
         if ($this->bShowcaseView) {

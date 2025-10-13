@@ -1735,6 +1735,8 @@
     <string name="_adm_stg_inf_option_sys_live_search_limit"><![CDATA[Установите максимальное количество результатов, отображаемых в поле предложений интерактивного поиска.]]></string>
     <string name="_adm_stg_cpt_option_sys_profiles_search_limit"><![CDATA[Результаты поиска профилей]]></string>
     <string name="_adm_stg_inf_option_sys_profiles_search_limit"><![CDATA[Установите максимальное количество результатов, отображаемых на странице поиска профиля.]]></string>
+    <string name="_adm_stg_cpt_option_sys_per_page_browse_showcase"><![CDATA[Количество позиций при витринном отображении]]></string>
+    <string name="_adm_stg_inf_option_sys_per_page_browse_showcase"><![CDATA[Установите максимальное количество результатов, отображаемых в горизонтальной карусели.]]></string>
     <string name="_adm_stg_cpt_option_sys_session_auth"><![CDATA[Аутентификация через сессию]]></string>
     <string name="_adm_stg_cpt_option_sys_default_curl_timeout"><![CDATA[cURL - Таймаут по умолчанию]]></string>
     <string name="_adm_stg_cpt_option_sys_default_socket_timeout"><![CDATA[Таймаут чтения HTTP контекста (в секундах, -1 - неограниченно)]]></string>
