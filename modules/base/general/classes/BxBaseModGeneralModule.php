@@ -764,6 +764,11 @@ class BxBaseModGeneralModule extends BxDolModule
         return isset($this->_oConfig->CNF['ICON']) ? $this->_oConfig->CNF['ICON'] : '';
     }
 
+    public function serviceGetModerators($iContentId)
+    {
+        return $this->getModerators($iContentId);
+    }
+
     public function serviceGetAuthor ($iContentId)
     {
         $mixedResult = $this->_getFieldValue('FIELD_AUTHOR', $iContentId);
@@ -2644,6 +2649,7 @@ class BxBaseModGeneralModule extends BxDolModule
 
                 //--- Moderation related: For 'admins'.
                 ['group' => $sModule . '_object_pending_approval', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'pending_approval', 'module_name' => $sModule, 'module_method' => 'get_notifications_post_pending_approval', 'module_class' => 'Module', 'module_event_privacy' => $sEventPrivacy],
+                ['group' => $sModule . '_object_reported', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'reported_content', 'module_name' => $sModule, 'module_method' => 'get_notifications_post_reported', 'module_class' => 'Module', 'module_event_privacy' => $sEventPrivacy],
             ],
             'settings' => [
                 ['group' => 'content', 'unit' => $sModule, 'action' => 'added', 'types' => ['follow_member', 'follow_context']],
@@ -2657,6 +2663,7 @@ class BxBaseModGeneralModule extends BxDolModule
 
                 //--- Moderation related: For 'admins'.
                 ['group' => 'action_required', 'unit' => $sModule, 'action' => 'pending_approval', 'types' => ['personal']],
+                ['group' => 'action_required', 'unit' => $sModule, 'action' => 'reported_content', 'types' => ['personal']],
             ],
             'alerts' => [
                 ['unit' => $sModule, 'action' => 'added'],
@@ -2682,6 +2689,7 @@ class BxBaseModGeneralModule extends BxDolModule
 
                 //--- Moderation related: For 'admins'.
                 ['unit' => $sModule, 'action' => 'pending_approval'],
+                ['unit' => $sModule, 'action' => 'reported_content'],
             ]
         ];
 
@@ -2747,6 +2755,16 @@ class BxBaseModGeneralModule extends BxDolModule
     }
 
     public function serviceGetNotificationsPostPendingApproval($aEvent)
+    {
+        return $this->serviceGetNotificationsForModeration($aEvent);
+    }
+
+    public function serviceGetNotificationsPostReported($aEvent)
+    {
+        return $this->serviceGetNotificationsForModeration($aEvent);
+    }
+
+    public function serviceGetNotificationsForModeration($aEvent)
     {
         $aResult = $this->serviceGetNotificationsPost($aEvent);
 
@@ -4246,6 +4264,35 @@ class BxBaseModGeneralModule extends BxDolModule
         return true;
     }
 
+    public function getModerators($mixedContentInfo)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $sModule = $this->_oConfig->getName();
+
+        if(!is_array($mixedContentInfo))
+            $mixedContentInfo = $this->_oDb->getContentInfoById((int)$mixedContentInfo);
+
+        $aModerators = [];
+        if(getParam('sys_notify_to_approve_by_role') == 'on' && bx_srv('system', 'is_module_content', [$sModule]) && ($sField = 'FIELD_ALLOW_VIEW_TO') && !empty($CNF[$sField]) && (int)$mixedContentInfo[$CNF[$sField]] < 0) {
+            $iContextProfileId = abs((int)$mixedContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]);
+            $oContextProfile = BxDolProfile::getInstance($iContextProfileId);
+
+            $aModerators = bx_srv($oContextProfile->getModule(), 'get_admins_to_manage_content', [$iContextProfileId]);
+        }
+
+        if(empty($aModerators))
+            $aModerators = BxDolAclQuery::getInstance()->getProfilesByAction([
+                MEMBERSHIP_ACTION_EDIT_ANY_ENTRY, 
+                MEMBERSHIP_ACTION_DELETE_ANY_ENTRY
+            ], [
+                'module' => $sModule, 
+                'ids_only' => true
+            ]);
+
+        return $aModerators;
+    }
+
     public function _isModerator ($isPerformAction = false)
     {
         return $this->_isModeratorForProfile($isPerformAction, $this->_iProfileId);
@@ -4459,25 +4506,7 @@ class BxBaseModGeneralModule extends BxDolModule
         if(empty($CNF['PARAM_AUTO_APPROVE']) || getParam($CNF['PARAM_AUTO_APPROVE']) == 'on')
             return;
 
-        $aRecipients = [];
-        if(getParam('sys_notify_to_approve_by_role') == 'on' && bx_srv('system', 'is_module_content', [$this->_oConfig->getName()]) && !empty($CNF['FIELD_ALLOW_VIEW_TO']) && (int)$aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']] < 0) {
-            $iContextProfileId = abs((int)$aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]);
-            $oContextProfile = BxDolProfile::getInstance($iContextProfileId);
-
-            $aRecipients = bx_srv($oContextProfile->getModule(), 'get_admins_to_manage_content', [$iContextProfileId]);
-        }
-
-        $sModule = $this->getName();
-
-        if(empty($aRecipients))
-            $aRecipients = BxDolAclQuery::getInstance()->getProfilesByAction([
-                MEMBERSHIP_ACTION_EDIT_ANY_ENTRY, 
-                MEMBERSHIP_ACTION_DELETE_ANY_ENTRY
-            ], [
-                'module' => $sModule, 
-                'ids_only' => true
-            ]);
-
+        $aRecipients = $this->getModerators($aContentInfo);
         if(empty($aRecipients))
             return;
 

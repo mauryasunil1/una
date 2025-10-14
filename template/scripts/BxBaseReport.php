@@ -441,6 +441,33 @@ class BxBaseReport extends BxDolReport
              */
             bx_alert('report', 'do', $iId, $iAuthorId, ['object_system' => $this->_sSystem, 'object_id' => $iObjectId, 'object_author_id' => $iObjectAuthorId, 'type' => $sType, 'text' => $sText]);
 
+            if(($sModule = $this->_aSystem['module_name']) && ($sMethod = 'get_moderators') && bx_is_srv($sModule, $sMethod)) {
+                $aModerators = bx_srv($sModule, $sMethod, [$iObjectId]);
+                if(!empty($aModerators) && is_array($aModerators))
+                    foreach($aModerators as $iModeratorId)
+                        /**
+                         * @hooks
+                         * @hookdef hook-bx_base_general-reported_content '{module_name}', 'reported_content' - hook to notify admins/moderators about newly reported content
+                         * - $unit_name - module name
+                         * - $action - equals `reported_content`
+                         * - $object_id - content id
+                         * - $sender_id - report author profile id
+                         * - $extra_params - array of additional params with the following array keys:
+                         *      - `object_author_id` - [int] admin/moderator profile id
+                         *      - `report_id` - [int] report id
+                         *      - `report_type` - [string] report type
+                         *      - `report_text` - [string] message attached to report
+                         * @hook @ref hook-bx_base_general-reported_content
+                         */
+                        bx_alert($sModule, 'reported_content', $iObjectId, $iAuthorId, [
+                            'object_author_id' => (int)$iModeratorId,
+
+                            'report_id' => $iId,
+                            'report_type' => $sType, 
+                            'report_text' => $sText
+                        ]);
+            }
+            
             $aResult = $this->_returnReportData($iObjectId, $iAuthorId, $iId, $aReport, !$bPerformed);
 
             if(($oSockets = BxDolSockets::getInstance()) && $oSockets->isEnabled())

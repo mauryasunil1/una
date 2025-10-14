@@ -1610,6 +1610,7 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
                 
                 //--- Moderation related: For 'admins'.
                 ['group' => $sModule . '_object_pending_approval', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'pending_approval', 'module_name' => $sModule, 'module_method' => 'get_notifications_post_pending_approval', 'module_class' => 'Module'],
+                ['group' => $sModule . '_object_reported', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'reported_content', 'module_name' => $sModule, 'module_method' => 'get_notifications_post_reported', 'module_class' => 'Module'],
             ],
             'settings' => [
                 ['group' => 'vote', 'unit' => $sModule, 'action' => 'doVote', 'types' => $aSettingsTypes],
@@ -1628,6 +1629,7 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
 
                 //--- Moderation related: For 'admins'.
                 ['group' => 'action_required', 'unit' => $sModule, 'action' => 'pending_approval', 'types' => ['personal']],
+                ['group' => 'action_required', 'unit' => $sModule, 'action' => 'reported_content', 'types' => ['personal']],
             ],
             'alerts' => [
                 ['unit' => $sModule, 'action' => 'doVote'],
@@ -1643,9 +1645,10 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
                 ['unit' => $sModule, 'action' => 'join_request'],
 
                 ['unit' => $sModule, 'action' => 'timeline_post_common'],
-                
+
                 //--- Moderation related: For 'admins'.
                 ['unit' => $sModule, 'action' => 'pending_approval'],
+                ['unit' => $sModule, 'action' => 'reported_content'],
             ]
         ];
     }

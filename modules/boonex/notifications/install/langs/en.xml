@@ -132,6 +132,7 @@
     <string name="_bx_ntfs_alert_action_publish_succeeded_personal"><![CDATA[Delayed publishing succeeded]]></string>
     <string name="_bx_ntfs_alert_action_pending_approval_personal"><![CDATA[New pending approval content]]></string>
     <string name="_bx_ntfs_alert_action_approved_personal"><![CDATA[Your content was approved]]></string>
+    <string name="_bx_ntfs_alert_action_reported_content_personal"><![CDATA[New report]]></string>
 
     <string name="_bx_ntfs_setting_title_mask"><![CDATA[{0}: {1}]]></string>
     <string name="_bx_ntfs_setting_type_personal"><![CDATA[Activity related to you]]></string>
@@ -159,6 +160,7 @@
     <string name="_bx_ntfs_txt_object_publish_failed"><![CDATA[Failed to publish your {entry_sample} <b class="bx-ntfs-content-entry">{entry_caption}</b>]]></string>
     <string name="_bx_ntfs_txt_object_publish_succeeded"><![CDATA[Your {entry_sample} <b class="bx-ntfs-content-entry">{entry_caption}</b> was published successfully]]></string>
     <string name="_bx_ntfs_txt_object_pending_approval"><![CDATA[<b class="bx-ntfs-content-profile">{owner_name}</b> added a pending approval {entry_sample} <b class="bx-ntfs-content-entry">{entry_caption}</b>]]></string>
+    <string name="_bx_ntfs_txt_object_reported_content"><![CDATA[<b class="bx-ntfs-content-profile">{owner_name}</b> reported a {entry_sample} <b class="bx-ntfs-content-entry">{entry_caption}</b>]]></string>
     <string name="_bx_ntfs_txt_subobject_added"><![CDATA[<b class="bx-ntfs-content-profile">{owner_name}</b> added a {subentry_sample} <b class="bx-ntfs-content-entry">{entry_caption}</b>]]></string>
     <string name="_bx_ntfs_txt_subobject_added_in_context"><![CDATA[<b class="bx-ntfs-content-profile">{owner_name}</b> has got a {subentry_sample} <b class="bx-ntfs-content-entry">{entry_caption}</b>]]></string>
     <string name="_bx_ntfs_txt_new_event_subject"><![CDATA[New on "{0}"]]></string>
