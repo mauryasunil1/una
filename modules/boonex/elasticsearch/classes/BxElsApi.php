@@ -16,7 +16,7 @@ define('BX_ELASTICSEARCH_LOG', 1);
  */
 class BxElsApi extends BxDol
 {
-    static $TYPE = 'doc';
+    static $TYPE = '_doc';
     
 	protected $_oModule;
 
