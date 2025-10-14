@@ -2484,6 +2484,9 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
                 array('group' => $sModule . '_score_up', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'doVoteUp', 'module_name' => $sModule, 'module_method' => 'get_notifications_score_up', 'module_class' => 'Module'),
 
                 array('group' => $sModule . '_score_down', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'doVoteDown', 'module_name' => $sModule, 'module_method' => 'get_notifications_score_down', 'module_class' => 'Module'),
+
+                //--- Moderation related: For 'admins'.
+                ['group' => $sModule . '_object_reported', 'type' => 'insert', 'alert_unit' => $sModule, 'alert_action' => 'reported_content', 'module_name' => $sModule, 'module_method' => 'get_notifications_post_reported', 'module_class' => 'Module'],
             ),
             'settings' => array(
                 array('group' => 'content', 'unit' => $sModule, 'action' => 'post_common', 'types' => array('personal', 'follow_member', 'follow_context')),
@@ -2495,7 +2498,10 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
                 array('group' => 'vote', 'unit' => $sModule, 'action' => 'doVote', 'types' => array('personal', 'follow_member', 'follow_context')),
                 array('group' => 'vote', 'unit' => $sModule . '_reactions', 'action' => 'doVote', 'types' => array('personal', 'follow_member', 'follow_context')),
                 array('group' => 'score_up', 'unit' => $sModule, 'action' => 'doVoteUp', 'types' => array('personal', 'follow_member', 'follow_context')),
-                array('group' => 'score_down', 'unit' => $sModule, 'action' => 'doVoteDown', 'types' => array('personal', 'follow_member', 'follow_context'))
+                array('group' => 'score_down', 'unit' => $sModule, 'action' => 'doVoteDown', 'types' => array('personal', 'follow_member', 'follow_context')),
+                
+                //--- Moderation related: For 'admins'.
+                ['group' => 'action_required', 'unit' => $sModule, 'action' => 'reported_content', 'types' => ['personal']],
             ),
             'alerts' => array(
                 array('unit' => $sModule, 'action' => 'post_common'),
@@ -2520,6 +2526,9 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
 
                 array('unit' => $sModule, 'action' => 'doVoteUp'),
                 array('unit' => $sModule, 'action' => 'doVoteDown'),
+
+                //--- Moderation related: For 'admins'.
+                ['unit' => $sModule, 'action' => 'reported_content'],
             )
         );
     }
@@ -2594,6 +2603,19 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
             'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
             'modal_view' => $this->getName()            
         ];
+    }
+
+    public function serviceGetNotificationsPostReported($aEvent)
+    {
+        $aResult = $this->serviceGetNotificationsPost($aEvent);
+
+        /**
+         * Unset Entry Author because the notification is addressed to 'admins'.
+         */
+        if(isset($aResult['entry_author']))
+            unset($aResult['entry_author']);
+
+        return $aResult;
     }
 
     /**
@@ -3791,6 +3813,21 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
     public function getStatusAdmin()
     {
         return $this->isModerator() || $this->_oConfig->isAutoApproveEnabled() ? BX_TIMELINE_STATUS_ACTIVE : BX_TIMELINE_STATUS_PENDING;
+    }
+    
+    public function getModerators($mixedContentInfo)
+    {
+        $sModule = $this->_oConfig->getName();
+
+        if(!is_array($mixedContentInfo))
+            $mixedContentInfo = $this->_oDb->getContentInfoById((int)$mixedContentInfo);
+
+        $aModerators = BxDolAclQuery::getInstance()->getProfilesByAction(['edit', 'delete'], [
+            'module' => $sModule, 
+            'ids_only' => true
+        ]);
+
+        return $aModerators;
     }
 
     public function getItemData($iId, $aParams = array())

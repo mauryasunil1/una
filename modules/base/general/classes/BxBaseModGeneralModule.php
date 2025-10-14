@@ -2756,15 +2756,15 @@ class BxBaseModGeneralModule extends BxDolModule
 
     public function serviceGetNotificationsPostPendingApproval($aEvent)
     {
-        return $this->serviceGetNotificationsForModeration($aEvent);
+        return $this->serviceGetNotificationsPostForModeration($aEvent);
     }
 
     public function serviceGetNotificationsPostReported($aEvent)
     {
-        return $this->serviceGetNotificationsForModeration($aEvent);
+        return $this->serviceGetNotificationsPostForModeration($aEvent);
     }
 
-    public function serviceGetNotificationsForModeration($aEvent)
+    public function serviceGetNotificationsPostForModeration($aEvent)
     {
         $aResult = $this->serviceGetNotificationsPost($aEvent);
 
