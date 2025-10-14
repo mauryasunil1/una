@@ -44,7 +44,7 @@ class BxElsModule extends BxBaseModGeneralModule
             $sIndex = $this->_oConfig->getIndex();
 
         // search all
-        $mixed = $this->_oApi->api('/' . $sIndex . '@bx_posts/doc/_search?q=*');
+        $mixed = $this->_oApi->api('/' . $sIndex . '@bx_posts/_search?q=*');
         // $mixed = $this->_oApi->api('/testdata/_search', ['query' => ['match_all' => (object)[]]]);
 
         // search for the term
