@@ -459,7 +459,7 @@ class BxBaseReport extends BxDolReport
                          *      - `report_text` - [string] message attached to report
                          * @hook @ref hook-bx_base_general-reported_content
                          */
-                        bx_alert($sModule, 'reported_content', $iObjectId, $iAuthorId, [
+                        bx_alert($this->_sSystem, 'reported_content', $iObjectId, $iAuthorId, [
                             'object_author_id' => (int)$iModeratorId,
 
                             'report_id' => $iId,

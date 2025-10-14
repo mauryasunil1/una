@@ -201,6 +201,16 @@ INSERT INTO `bx_notifications_settings`(`group`, `handler_id`, `delivery`, `type
 ('score_down', @iHandlerId, 'email', 'follow_context', '_bx_ntfs_alert_action_doVoteDown_follow_context', 4),
 ('score_down', @iHandlerId, 'push', 'follow_context', '_bx_ntfs_alert_action_doVoteDown_follow_context', 4);
 
+INSERT INTO `bx_notifications_handlers`(`group`, `type`, `alert_unit`, `alert_action`, `content`, `privacy`) VALUES 
+('sys_cmts_object_reported', 'insert', 'sys_cmts', 'reported_content', 'a:3:{s:11:"module_name";s:6:"system";s:13:"module_method";s:34:"get_notifications_comment_reported";s:12:"module_class";s:17:"TemplCmtsServices";}', '');
+SET @iHandlerId = LAST_INSERT_ID();
+
+INSERT INTO `bx_notifications_settings`(`group`, `handler_id`, `delivery`, `type`, `title`, `order`) VALUES
+('action_required', @iHandlerId, 'site', 'personal', '_bx_ntfs_alert_action_reported_content_personal', 8),
+('action_required', @iHandlerId, 'email', 'personal', '_bx_ntfs_alert_action_reported_content_personal', 8),
+('action_required', @iHandlerId, 'push', 'personal', '_bx_ntfs_alert_action_reported_content_personal', 8);
+
+
 CREATE TABLE IF NOT EXISTS `bx_notifications_queue` (
   `id` int(11) NOT NULL auto_increment,
   `profile_id` int(11) NOT NULL DEFAULT '0',

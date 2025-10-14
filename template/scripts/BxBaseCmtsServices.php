@@ -425,6 +425,41 @@ class BxBaseCmtsServices extends BxDol
         ];
     }
 
+    public function serviceGetNotificationsCommentReported($aEvent)
+    {
+        $iCmtIdUnique = (int)$aEvent['object_id'];
+
+        $aCmtInfo = BxDolCmts::getGlobalInfo($iCmtIdUnique);
+        if(empty($aCmtInfo) || !is_array($aCmtInfo))
+            return [];
+
+        $oCmts = BxDolCmts::getObjectInstance($aCmtInfo['system_name'], 0, false);
+        if(!$oCmts || !$oCmts->isEnabled())
+            return [];
+
+        $iCmtId = (int)$aCmtInfo['cmt_id'];
+        $sCmtUrl = str_replace(BX_DOL_URL_ROOT, '{bx_url_root}', $oCmts->serviceGetLink($iCmtId));
+        $sCmtCaption = strmaxtextlen($oCmts->serviceGetText($iCmtId), 20, '...');
+
+        $sCmtUrlApi = '';
+        if(bx_is_api() && getParam('sys_api_comment_notif_link_content') == 'on') {
+            $aCmt = $oCmts->getCommentsBy(['type' => 'uniq_id', 'uniq_id' => $iCmtIdUnique]);
+            if(!empty($aCmt) && is_array($aCmt)) {
+                $oCmts->init($aCmt['cmt_object_id']);
+
+                $sCmtUrlApi = $oCmts->getBaseUrl('{bx_url_root}') . '#cid=' . $iCmtId;
+            }
+        }
+
+        return [
+            'entry_sample' => $oCmts->getLanguageKey('txt_sample_single'),
+            'entry_url' => $sCmtUrl,
+            'entry_url_api' => $sCmtUrlApi,
+            'entry_caption' => $sCmtCaption,
+            'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
+        ];
+    }
+
     /**
      * Comment vote for Notifications module
      */

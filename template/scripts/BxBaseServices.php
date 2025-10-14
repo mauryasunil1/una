@@ -935,6 +935,22 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
         return false;
     }
 
+    public function serviceGetModerators($iContentId)
+    {
+        $aModerators = BxDolAclQuery::getInstance()->getProfilesByMembership([
+            MEMBERSHIP_ID_MODERATOR, 
+            MEMBERSHIP_ID_ADMINISTRATOR
+        ]);
+
+        $aIds = [];
+        array_walk($aModerators, function ($aItem, $iKey, $aParams) {
+            if(!empty($aItem['id']))
+                $aParams[0][] = (int)$aItem['id'];
+        }, [&$aIds]);
+
+        return $aIds;
+    }
+
     public function servicePrepareFields ($aFieldsProfile)
     {
         return $aFieldsProfile;

@@ -147,7 +147,9 @@ INSERT INTO `sys_alerts` (`unit`, `action`, `handler_id`) VALUES
 ('sys_cmts_reactions', 'undoVote', @iHandler),
 
 ('sys_cmts', 'doVoteUp', @iHandler),
-('sys_cmts', 'doVoteDown', @iHandler);
+('sys_cmts', 'doVoteDown', @iHandler),
+
+('sys_cmts', 'reported_content', @iHandler);
 
 
 -- EMAIL TEMPLATES

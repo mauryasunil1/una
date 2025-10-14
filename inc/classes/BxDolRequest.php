@@ -170,6 +170,9 @@ class BxDolRequest extends BxDol
         if (!$aModule)
             return false;
 
+        if (isset($aModule['name']) && 'system' == $aModule['name'] && 'Module' == $sClass)
+            $sClass = 'BaseServices';
+
         $sClass = $aModule['class_prefix'] . $sClass;
         if(($oModule = BxDolRequest::_require($aModule, $sClass)) === false)
             return false;
