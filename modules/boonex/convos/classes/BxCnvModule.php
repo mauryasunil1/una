@@ -155,7 +155,7 @@ class BxCnvModule extends BxBaseModTextModule
         $oPage = BxDolPage::getObjectInstance('bx_convos_home');
 
         if (!$aFolder || !$oPage) {
-            $this->_oTemplate->displayPageNotFound();
+            $oTemplate->displayPageNotFound();
             exit;
         }
 
@@ -167,11 +167,11 @@ class BxCnvModule extends BxBaseModTextModule
 
         $s = $oPage->getCode();
 
-        $this->_oTemplate = BxDolTemplate::getInstance();
-        $this->_oTemplate->setPageNameIndex (BX_PAGE_DEFAULT);
-        $this->_oTemplate->setPageContent ('page_main_code', $s);
-        $_GET['i']='convos-folder'; //#1148
-        $this->_oTemplate->getPageCode();
+        $oTemplate = BxDolTemplate::getInstance();
+        $oTemplate->setPageNameIndex (BX_PAGE_DEFAULT);
+        $oTemplate->setPageContent ('page_main_code', $s);
+        $_GET['i']='convos-folder'; // #1148
+        $oTemplate->getPageCode();
     }
 
     /**
