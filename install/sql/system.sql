@@ -532,7 +532,6 @@ SET @iCategoryId = LAST_INSERT_ID();
 
 INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `info`, `value`, `type`, `extra`, `check`, `check_error`, `order`) VALUES
 (@iCategoryId, 'site_title', '_adm_stg_cpt_option_site_title', '_adm_stg_inf_option_site_title', 'Community', 'digit', '', '', '', 1),
-(@iCategoryId, 'site_description', '_adm_stg_cpt_option_site_description', '_adm_stg_inf_option_site_description', 'Community powered by UNA Platform', 'digit', '', '', '', 2),
 (@iCategoryId, 'site_email', '_adm_stg_cpt_option_site_email', '_adm_stg_inf_option_site_email', 'admin@example.com', 'digit', '', '', '', 3),
 (@iCategoryId, 'site_email_notify', '_adm_stg_cpt_option_site_email_notify', '_adm_stg_inf_option_site_email_notify', 'admin@example.com', 'digit', '', '', '', 4),
 (@iCategoryId, 'site_tour_home', '_adm_stg_cpt_option_site_tour_home', '_adm_stg_inf_option_site_tour_home', 'on', 'checkbox', '', '', '', 6),

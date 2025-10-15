@@ -1563,8 +1563,6 @@
     <string name="_adm_stg_cpt_option_site_login_social_compact"><![CDATA[Задействовать компактный вид входа через соц. сети]]></string>
     <string name="_adm_stg_cpt_option_site_title"><![CDATA[Имя сообщества]]></string>
     <string name="_adm_stg_inf_option_site_title"><![CDATA[Имя по умолчанию, используемое для ссылки на ваш сайт в текстах сайта, метатегах, электронных письмах и уведомлениях.]]></string>
-    <string name="_adm_stg_cpt_option_site_description"><![CDATA[Описание сообщества]]></string>
-    <string name="_adm_stg_inf_option_site_description"><![CDATA[Описание по умолчанию, используемое в текстах сайта, метаданных и тд.]]></string>
     <string name="_adm_stg_cpt_option_site_tour_home"><![CDATA[Пользовательский тур]]></string>
     <string name="_adm_stg_inf_option_site_tour_home"><![CDATA[<a href="/studio/polyglot.php?page=keys">Здесь</a> вы можете редактировать шаги и содержание пользовательского тура.]]></string>
     <string name="_adm_stg_cpt_option_site_tour_studio"><![CDATA[Экскурсия по студии]]></string>

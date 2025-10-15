@@ -1306,8 +1306,6 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
             $sDescription = $this->aPage['description'];
         if(!$sDescription && $bPage)
             $sDescription = $oPage->getMetaDescription();
-        if(!$sDescription)
-            $sDescription = getParam('site_description');
         $bDescription = !empty($sDescription);
 
         if($bDescription)
