@@ -38,8 +38,8 @@ class BxElsApi extends BxDol
     public function searchSimple($sIndex, $sType, $sTerm) 
     {
         if ($sType) {
-            $sQuery = "/{$sIndex}@{$sType}/" . self::$TYPE . "/_search";
-            return $this->api($sQuery, array('query' => array('simple_query_string' => array('query' => $sTerm))));
+            $sQuery = "/{$sIndex}@{$sType}/_search";
+            return $this->api($sQuery, array('query' => array('simple_query_string' => array('query' => $sTerm))), 'post');
         } 
         else {
             $this->log('ERROR: searchSimple - search without specifying particular module(type) isn\'t supported', '', BX_LOG_ERR);
@@ -49,13 +49,13 @@ class BxElsApi extends BxDol
     public function searchExtended($sIndex, $sType, $aCondition, $aSelection = array()) 
     {
         if ($sType) {
-            $sQuery = "/{$sIndex}@{$sType}/" . self::$TYPE . "/_search";
+            $sQuery = "/{$sIndex}@{$sType}/_search";
 
             $aQuery = array('query' => $this->_prepareConditionsGroup($aCondition));
             if(!empty($aSelection))
                 $aQuery = array_merge($aQuery, $aSelection);
 
-            return $this->api($sQuery, $aQuery);
+            return $this->api($sQuery, $aQuery, 'post');
         }
         else {
             $this->log('ERROR: searchExtended - search without specifying particular module(type) isn\'t supported', BX_LOG_ERR);
