@@ -102,6 +102,8 @@ class BxInvModule extends BxDolModule
         $aKeyParams = [];
         if(!empty($aParams['key']))
             $aKeyParams['key'] = $aParams['key'];
+        if(!empty($aParams['key_lifetime']))
+            $iKeyLifetime = (int)$aParams['key_lifetime'];
         if($iKeyLength)
             $aKeyParams['length'] = $iKeyLength;
 
