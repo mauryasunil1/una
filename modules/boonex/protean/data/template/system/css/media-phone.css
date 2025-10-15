@@ -9,6 +9,10 @@
     padding-right: 0;
 }
 
+/*--- Menu ---*/
+.bx-media-phone .bx-header .bx-toolbar-content .bx-toolbar-item.bx-ti-menu .bx-sliding-smenu-main {
+    display: none;
+}
 
 /* --------------- design boxes */
 .bx-media-phone .bx-layout-cell > .bx-page-block-container > .bx-db-container {

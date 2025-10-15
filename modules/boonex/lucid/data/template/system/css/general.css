@@ -8,10 +8,6 @@
 
 #bx-logo-container {
     height: auto;
-
-    margin-left: 0.625rem;
-    margin-right: 0;
-
     text-align: left;
 }
 
@@ -26,9 +22,6 @@
 .bx-toolbar-content::before,
 .bx-toolbar-content::after {
     display: none;
-}
-.bx-toolbar-content .bx-toolbar-item {
-    display: inline-block;
 }
 .bx-toolbar-content .bx-toolbar-item.bx-ti-menu {
     margin: 0;

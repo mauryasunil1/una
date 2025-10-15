@@ -3446,6 +3446,8 @@
     <string name="_sys_menu_template_title_main_in_panel"><![CDATA[Навигация по сайту - Панель]]></string>
     <string name="_sys_menu_template_title_multilevel"><![CDATA[Многоуровневое меню]]></string>
     <string name="_sys_menu_template_title_toolbar"><![CDATA[Панель инструментов - Кнопки]]></string>
+    <string name="_sys_menu_template_title_toolbar_left"><![CDATA[Панель инструментов - Кнопки слева]]></string>
+    <string name="_sys_menu_template_title_toolbar_right"><![CDATA[Панель инструментов - Кнопки справа]]></string>
     <string name="_sys_menu_template_title_ver"><![CDATA[Вертикальные ссылки]]></string>
     <string name="_sys_menu_template_title_ver_lite"><![CDATA[Вертикальные ссылки (облегчённые)]]></string>
     <string name="_sys_menu_template_title_account_notifications"><![CDATA[Аккаунт - Уведомления]]></string>
