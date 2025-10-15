@@ -94,32 +94,9 @@ class BxBaseEditorQuill extends BxDolEditor
         if ($this->_sButtonsCustom !== false) {
             $sToolbarItems = $this->_sButtonsCustom;
         }
-        
+
         $sEditorName = 'quill_' . str_replace(['-', ' '], '_', $aAttrs['form_id'] . '_' . $aAttrs['element_name'] . '_' . $aAttrs['uniq']);
-        $this->_oTemplate->addJsTranslation([
-            '_sys_txt_quill_tooltip_bold',
-            '_sys_txt_quill_tooltip_italic',
-            '_sys_txt_quill_tooltip_underline',
-            '_sys_txt_quill_tooltip_clean',
-            '_sys_txt_quill_tooltip_list_ordered',
-            '_sys_txt_quill_tooltip_list_bullet',
-            '_sys_txt_quill_tooltip_indent_1',
-            '_sys_txt_quill_tooltip_indent_2',
-            '_sys_txt_quill_tooltip_blockquote',
-            '_sys_txt_quill_tooltip_direction',
-            '_sys_txt_quill_tooltip_script_sub',
-            '_sys_txt_quill_tooltip_script_super',
-            '_sys_txt_quill_tooltip_link',
-            '_sys_txt_quill_tooltip_image',
-            '_sys_txt_quill_tooltip_code_block',
-            '_sys_txt_quill_tooltip_color',
-            '_sys_txt_quill_tooltip_background',
-            '_sys_txt_quill_tooltip_align',
-            '_sys_txt_quill_tooltip_header',
-            '_sys_txt_quill_tooltip_embed',
-            '_sys_txt_quill_tooltip_embed_popup_header',
-            '_sys_txt_quill_tooltip_link_popup_header',
-        ]);
+        
         // initialize editor
         $sInitEditor = $this->_replaceMarkers(self::$CONF_COMMON, array(
             'bx_var_custom_init' => $sCustomInit,
@@ -146,15 +123,16 @@ class BxBaseEditorQuill extends BxDolEditor
         " . $sInitEditor;
 
         if ($bDynamicMode) {
-            list($aJs, $aCss) = $this->_getJsCss(true);
+            list($aJs, $aJsTranslations, $aCss) = $this->_getJsCss(true);
 
             $sScript = "var " . $sEditorName . ";"; 
-            $sScript .= $this->_oTemplate->addJsPreloaded($aJs, $sInitCallBack, "typeof bQuillEditorInited === 'undefined'", $sInitEditor.';');
-           
+            $sScript .= $this->_oTemplate->addJsPreloaded($aJs, $sInitCallBack, "typeof bQuillEditorInited === 'undefined'", $sInitEditor . ';');
             $sScript = $this->_oTemplate->_wrapInTagJsCode($sScript);
-            $sScript = $this->_oTemplate->addCss($aCss, true) . $sScript;
+            $sScript .= $this->_oTemplate->addJsTranslation($aJsTranslations, true);
 
-        } else {
+            $sScript = $this->_oTemplate->addCss($aCss, true) . $sScript;
+        } 
+        else {
             $sScript = "var " . $sEditorName . "; " . $this->_oTemplate->addJsCodeOnLoad($sInitCallBack);
             $sScript = $this->_oTemplate->_wrapInTagJsCode($sScript);
         }
@@ -168,19 +146,17 @@ class BxBaseEditorQuill extends BxDolEditor
      */
     protected function _addJsCss($bDynamicMode = false, $sInitEditor = '')
     {
-        if ($bDynamicMode)
+        if($bDynamicMode || $this->_bJsCssAdded)
             return '';
-        
-        if ($this->_bJsCssAdded)
-            return '';
-        
-        list($aJs, $aCss) = $this->_getJsCss();
+
+        list($aJs, $aJsTranslations, $aCss) = $this->_getJsCss();
 
         $this->_oTemplate->addJs($aJs);
+        $this->_oTemplate->addJsTranslation($aJsTranslations);
         $this->_oTemplate->addCss($aCss);
-        
+
         $this->_bJsCssAdded = true;
-        
+
         return '';
     }
     
@@ -190,33 +166,57 @@ class BxBaseEditorQuill extends BxDolEditor
         $sJsPrefixRoot = $bUseUrlsForJs ? BX_DOL_URL_ROOT .'inc/js/' : BX_DIRECTORY_PATH_INC . 'js/';
         $sJsSuffix = $bUseUrlsForJs ? '' : '|';
         
-        $aJs = array(
+        $aJs = [
             $sJsPrefix . 'highlight/' . $sJsSuffix . 'highlight.min.js',
             $sJsPrefix . 'quill/' . $sJsSuffix . 'quill.min.js', 
             $sJsPrefix . 'quill/' . $sJsSuffix . 'quill.mention.min.js',
             $sJsPrefix . 'quill/' . $sJsSuffix . 'quill.imageUploader.min.js', 
             $sJsPrefix . 'quill/' . $sJsSuffix . 'image-resize.min.js', 
             $sJsPrefix . 'quill/' . $sJsSuffix . 'quill-emoji.js', 
-            $sJsPrefixRoot  . $sJsSuffix . 'editor.quill.js',
-            
-        );
+            $sJsPrefixRoot  . $sJsSuffix . 'editor.quill.js'
+        ];
+        
+        $aJsTranslations = [
+            '_sys_txt_quill_tooltip_bold',
+            '_sys_txt_quill_tooltip_italic',
+            '_sys_txt_quill_tooltip_underline',
+            '_sys_txt_quill_tooltip_clean',
+            '_sys_txt_quill_tooltip_list_ordered',
+            '_sys_txt_quill_tooltip_list_bullet',
+            '_sys_txt_quill_tooltip_indent_1',
+            '_sys_txt_quill_tooltip_indent_2',
+            '_sys_txt_quill_tooltip_blockquote',
+            '_sys_txt_quill_tooltip_direction',
+            '_sys_txt_quill_tooltip_script_sub',
+            '_sys_txt_quill_tooltip_script_super',
+            '_sys_txt_quill_tooltip_link',
+            '_sys_txt_quill_tooltip_image',
+            '_sys_txt_quill_tooltip_code_block',
+            '_sys_txt_quill_tooltip_color',
+            '_sys_txt_quill_tooltip_background',
+            '_sys_txt_quill_tooltip_align',
+            '_sys_txt_quill_tooltip_header',
+            '_sys_txt_quill_tooltip_embed',
+            '_sys_txt_quill_tooltip_embed_popup_header',
+            '_sys_txt_quill_tooltip_link_popup_header',
+        ];
 
         $sCss = 'editor.less';
-        $aCss = BxDolTemplate::getInstance()->_lessCss(array(
-        	'path' => $this->_oTemplate->getCssPath($sCss),
-        	'url' => $this->_oTemplate->getCssUrl($sCss)
-        ));
-        
-        $aCss = array_merge($aCss, array(
+        $aCss = BxDolTemplate::getInstance()->_lessCss([
+            'path' => $this->_oTemplate->getCssPath($sCss),
+            'url' => $this->_oTemplate->getCssUrl($sCss)
+        ]);
+
+        $aCss = array_merge($aCss, [
             BX_DIRECTORY_PATH_BASE . 'css/|editor_snow.quill.css',  
             BX_DIRECTORY_PATH_PLUGINS_PUBLIC . 'quill/|quill.mention.css', 
             BX_DIRECTORY_PATH_PLUGINS_PUBLIC . 'quill/|quill-emoji.css', 
             BX_DIRECTORY_PATH_PLUGINS_PUBLIC . 'highlight/|default.min.css',
             BX_DIRECTORY_PATH_PLUGINS_PUBLIC . 'quill/quill.imageUploader.min.css',
             BX_DIRECTORY_PATH_BASE . 'css/|editor.quill.css',
-        ));
+        ]);
 
-        return array($aJs, $aCss);
+        return [$aJs, $aJsTranslations, $aCss];
     }
 }
 
