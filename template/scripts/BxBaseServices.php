@@ -1459,6 +1459,15 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
         return $aResults;
     }
 
+    public function serviceGetOptionsIconsetDefault()
+    {
+        $aObjects = BxDolIconsetQuery::getObjects();
+        foreach($aObjects as $aObject)
+            $aResults[$aObject['object']] = $aObject['title'];
+
+        return $aResults;
+    }
+
     public function serviceGetOptionsApiMenuTop()
     {
         $aMenus = BxDolMenuQuery::getMenuObjects();

@@ -11,28 +11,22 @@
  * Database queries for iconset objects.
  * @see BxDolIconset
  */
-class BxDolIconsetQuery extends BxDolDb
+class BxDolIconsetQuery extends BxDolFactoryObjectQuery
 {
-    protected $_aObject;
-
     public function __construct($aObject)
     {
-        parent::__construct();
-
-        $this->_aObject = $aObject;
+        parent::__construct($aObject);
     }
 
-    static public function getIconsetObject ($sObject)
+    static public function getObject ($sObject)
     {
-        $oDb = BxDolDb::getInstance();
-
-        $aObject = $oDb->getRow("SELECT * FROM `sys_objects_iconset` WHERE `object` = :object", ['object' => $sObject]);
-        if(!$aObject || !is_array($aObject))
-            return false;
-
-        return $aObject;
+        return parent::getObjectFromTable($sObject, 'sys_objects_iconset');
     }
 
+    static public function getObjects ()
+    {
+        return parent::getObjectsFromTable('sys_objects_iconset');
+    }
 }
 
 /** @} */

@@ -33,7 +33,7 @@ class BxDolIconset extends BxDolFactory implements iBxDolFactoryObject
         if(isset($GLOBALS['bxDolClasses']['BxDolIconset!'.$sObject]))
             return $GLOBALS['bxDolClasses']['BxDolIconset!'.$sObject];
 
-        $aObject = BxDolIconsetQuery::getIconsetObject($sObject);
+        $aObject = BxDolIconsetQuery::getObject($sObject);
         if(!$aObject || !is_array($aObject))
             return false;
 
