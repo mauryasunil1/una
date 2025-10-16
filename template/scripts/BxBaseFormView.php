@@ -130,6 +130,8 @@ class BxBaseFormView extends BxDolForm
         $sName = !empty($aInfo['params']['display']) ? $aInfo['params']['display'] : '';
         if(empty($sName) && !empty($aInfo['params']['object']))
             $sName = $aInfo['params']['object'];
+        if(empty($sName) && !empty($aInfo['form_attrs']['id']))
+            $sName = $aInfo['form_attrs']['id'];
 
         $this->_sJsObjectName = 'oForm' . bx_gen_method_name($sName, array('_' , '-'));
 
