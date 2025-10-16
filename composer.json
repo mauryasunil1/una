@@ -90,7 +90,7 @@
         "bshaffer/oauth2-server-php": "^1.12",
         "erusev/parsedown": "@dev",
         "paypal/paypal-checkout-sdk": "^1.0",
-        "phpmailer/phpmailer": "^6.5",
+        "phpmailer/phpmailer": "^7.0",
         "stripe/stripe-php": "^18.0.0",
         "twilio/sdk": "^8.3",
         "avto-dev/composer-cleanup-plugin": "dev-master",
