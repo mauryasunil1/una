@@ -402,7 +402,7 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 -- MENU: notifications menu in account popup
 SET @iNotifMenuOrder = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_menu_items` WHERE `set_name` = 'sys_account_notifications' AND `active` = 1 AND `order` < 9999 ORDER BY `order` DESC LIMIT 1);
 INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `addon`, `submenu_object`, `visible_for_levels`, `visibility_custom`, `active`, `copyable`, `order`) VALUES
-('sys_account_notifications', 'bx_ads', 'notifications-ads-offers', '_bx_ads_menu_item_title_system_offers_all', '_bx_ads_menu_item_title_offers_all', 'page.php?i=ads-offers&profile_id={member_id}', '', '', 'ad col-green2', 'a:3:{s:6:"module";s:6:"bx_ads";s:6:"method";s:16:"get_offers_count";s:6:"params";a:1:{i:0;s:8:"awaiting";}}', '', 2147483646, '', 1, 0, @iNotifMenuOrder + 1);
+('sys_account_notifications', 'bx_ads', 'notifications-ads-offers', '_bx_ads_menu_item_title_system_offers_all', '_bx_ads_menu_item_title_offers_all', 'page.php?i=ads-offers', '', '', 'ad col-green2', 'a:3:{s:6:"module";s:6:"bx_ads";s:6:"method";s:16:"get_offers_count";s:6:"params";a:1:{i:0;s:8:"awaiting";}}', '', 2147483646, '', 1, 0, @iNotifMenuOrder + 1);
 
 -- MENU: profile stats
 SET @iNotifMenuOrder = (SELECT IFNULL(MAX(`order`), 0) FROM `sys_menu_items` WHERE `set_name` = 'sys_profile_stats' AND `active` = 1 LIMIT 1);
