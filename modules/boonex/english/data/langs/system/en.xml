@@ -3697,6 +3697,17 @@ If it is not enabled then please consider implement this optimization, since it 
     <string name="_sys_page_block_title_wiki_pages_list"><![CDATA[Pages List]]></string>
     <string name="_sys_page_block_title_wiki_page_contents"><![CDATA[Page Contents]]></string>
 
+    <string name="_sys_page_description_hashtag"><![CDATA[Hashtag "{0}" search results]]></string>
+    <string name="_sys_page_description_hashtag_in_section"><![CDATA[Hashtag "{0}" search results in "{1}" section]]></string>
+    <string name="_sys_page_description_keyword"><![CDATA[Keyword "{0}" search results]]></string>
+    <string name="_sys_page_description_keyword_in_section"><![CDATA[Keyword "{0}" search results in "{1}" section]]></string>
+    <string name="_sys_page_description_category"><![CDATA[Category "{0}" search results]]></string>
+    <string name="_sys_page_description_category_in_section"><![CDATA[Category "{0}" search results in "{1}" section]]></string>
+    <string name="_sys_page_description_location"><![CDATA[Location "{0}" search results]]></string>
+    <string name="_sys_page_description_location_in_section"><![CDATA[Location "{0}" search results in "{1}" section]]></string>
+    <string name="_sys_page_description_mention"><![CDATA[Mentions of "{0}" search results]]></string>
+    <string name="_sys_page_description_mention_in_section"><![CDATA[Mentions of "{0}" in "{1}" section search results]]></string>
+
     <string name="_sys_page_lang_block_about"><![CDATA[This site is powered by UNA. The rest is a mystery.]]></string>
     <string name="_sys_page_lang_block_terms"><![CDATA[Our terms of use.]]></string>
     <string name="_sys_page_lang_block_privacy"><![CDATA[Our privacy policy.]]></string>

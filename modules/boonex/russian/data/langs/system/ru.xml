@@ -3651,10 +3651,22 @@
 	<string name="_sys_page_block_title_std_dash_space"><![CDATA[Использование дискового пространства]]></string>
 	<string name="_sys_page_block_title_std_dash_host_tools"><![CDATA[Инструменты хоста]]></string>
 	<string name="_sys_page_block_title_std_dash_cache"><![CDATA[Кэш]]></string>
-    <string name="_sys_page_block_title_std_dash_queues"><![CDATA[Очереди]]></string>
+        <string name="_sys_page_block_title_std_dash_queues"><![CDATA[Очереди]]></string>
 	<string name="_sys_page_block_title_terms"><![CDATA[Правила пользования]]></string>
-    <string name="_sys_page_block_title_wiki_pages_list"><![CDATA[Список страниц]]></string>
-    <string name="_sys_page_block_title_wiki_page_contents"><![CDATA[Содержание страницы]]></string>
+        <string name="_sys_page_block_title_wiki_pages_list"><![CDATA[Список страниц]]></string>
+        <string name="_sys_page_block_title_wiki_page_contents"><![CDATA[Содержание страницы]]></string>
+
+        <string name="_sys_page_description_hashtag"><![CDATA[Результаты поиска по хэштегу "{0}"]]></string>
+        <string name="_sys_page_description_hashtag_in_section"><![CDATA[Результаты поиска по хэштегу "{0}" в разделе "{1}"]]></string>
+        <string name="_sys_page_description_keyword"><![CDATA[Результаты поиска по ключевому слову "{0}"]]></string>
+        <string name="_sys_page_description_keyword_in_section"><![CDATA[Результаты поиска по ключевому слову "{0}" в разделе "{1}"]]></string>
+        <string name="_sys_page_description_category"><![CDATA[Результаты поиска по категории "{0}"]]></string>
+        <string name="_sys_page_description_category_in_section"><![CDATA[Результаты поиска по категории "{0}" в разделе "{1}"]]></string>
+        <string name="_sys_page_description_location"><![CDATA[Результаты поиска по местоположению "{0}"]]></string>
+        <string name="_sys_page_description_location_in_section"><![CDATA[Результаты поиска по местоположению "{0}" в разделе "{1}"]]></string>
+        <string name="_sys_page_description_mention"><![CDATA[Результаты поиска, где упоминается "{0}"]]></string>
+        <string name="_sys_page_description_mention_in_section"><![CDATA[Результаты поиска, где упоминается "{0}" в разделе "{1}"]]></string>
+
 	<string name="_sys_page_lang_block_about"><![CDATA[Этот сайт сделан на UNA. Остальное - тайна, покрытая мраком.]]></string>
 	<string name="_sys_page_lang_block_terms"><![CDATA[Правила пользования нашим сайтом.]]></string>
 	<string name="_sys_page_lang_block_privacy"><![CDATA[Политика конфиденциальности нашего сайта.]]></string>

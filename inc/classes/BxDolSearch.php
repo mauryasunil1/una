@@ -1055,11 +1055,12 @@ class BxDolSearchResult implements iBxDolReplaceable
 
         // keyword
         $sKeyword = bx_process_input(isset($this->_aCustomSearchCondition['keyword']) ? $this->_aCustomSearchCondition['keyword'] : bx_get('keyword'));
+        $bKeyword = !empty($sKeyword);
 
-        if ($this->_bLiveSearch && empty($sKeyword))
+        if ($this->_bLiveSearch && !$bKeyword)
             return;
 
-        if ($sKeyword !== false) {
+        if ($bKeyword) {
             if (substr($sKeyword, 0, 1) == '@') {
                 $sModule = $this->aCurrent['module_name'];
                 $sMethod = 'act_as_profile';
@@ -1095,47 +1096,71 @@ class BxDolSearchResult implements iBxDolReplaceable
             $o = BxDolMetatags::getObjectInstance($this->aCurrent['object_metatags']);
             if ($o) {
                 unset($this->aCurrent['restriction']['keyword']);
+
+                $aLocationString = [];
                 switch ($this->_sMetaType) {
                     case 'location_country':
+                        $aLocationString['country'] = $sKeyword;
                         $o->locationsSetSearchCondition($this, $sKeyword);
                         break;
                     case 'location_country_state':
-                        $o->locationsSetSearchCondition($this, $sKeyword, bx_process_input(isset($this->_aCustomSearchCondition['state']) ? $this->_aCustomSearchCondition['state'] : bx_get('state')));
+                        $aLocationString['country'] = $sKeyword;
+                        $aLocationString['state'] = bx_process_input(isset($this->_aCustomSearchCondition['state']) ? $this->_aCustomSearchCondition['state'] : bx_get('state'));
+                        $o->locationsSetSearchCondition($this, $sKeyword, $aLocationString['state']);
                         break;
                     case 'location_country_city':
-                        $o->locationsSetSearchCondition($this, $sKeyword, bx_process_input(isset($this->_aCustomSearchCondition['state']) ? $this->_aCustomSearchCondition['state'] : bx_get('state')), bx_process_input(isset($this->_aCustomSearchCondition['city']) ? $this->_aCustomSearchCondition['city'] : bx_get('city')));
+                        $aLocationString['country'] = $sKeyword;
+                        $aLocationString['state'] = bx_process_input(isset($this->_aCustomSearchCondition['state']) ? $this->_aCustomSearchCondition['state'] : bx_get('state'));
+                        $aLocationString['city'] = bx_process_input(isset($this->_aCustomSearchCondition['city']) ? $this->_aCustomSearchCondition['city'] : bx_get('city'));
+                        $o->locationsSetSearchCondition($this, $sKeyword, $aLocationString['state'], $aLocationString['city']);
                         break;
                     case 'location_state':
+                        $aLocationString['state'] = $sKeyword;
                         $o->locationsSetSearchCondition($this, false, $sKeyword);
                         break;
                     case 'location_city':
+                        $aLocationString['city'] = $sKeyword;
                         $o->locationsSetSearchCondition($this, false, false, $sKeyword);
                         break;
                     case 'mention':
                         $oCmts = !empty($this->sModuleObjectComments) ? BxDolCmts::getObjectInstance($this->sModuleObjectComments, 0, false) : false;
                         $o->mentionsSetSearchCondition($this, $sKeyword, $oCmts ? $oCmts->getSystemId() : 0);
+
+                        if(($oProfile = BxDolProfile::getInstance((int)$sKeyword)) !== false)
+                            $this->_setPageDescription('_sys_page_description_mention', $oProfile->getDisplayName(), $this->aCurrent['title']);
                         break;
                     case 'keyword':
                         $oCmts = !empty($this->sModuleObjectComments) ? BxDolCmts::getObjectInstance($this->sModuleObjectComments, 0, false) : false;
                         $o->keywordsSetSearchCondition($this, $sKeyword, $oCmts ? $oCmts->getSystemId() : 0);
+
+                        $this->_setPageDescription('_sys_page_description_hashtag', $sKeyword, $this->aCurrent['title']);
                         break;
                 }
+
+                if(in_array($this->_sMetaType, ['location_country', 'location_country_state', 'location_country_city', 'location_state', 'location_city']))
+                    $this->_setPageDescription('_sys_page_description_location', $o->locationsStringFromArray($aLocationString, false), $this->aCurrent['title']);
             }
         }
 
         // category
-        if ($this->_sCategoryObject){
+        if ($this->_sCategoryObject) {
             if(($o = BxDolCategory::getObjectInstance($this->_sCategoryObject)) && $this->_bSingleSearch) {
                 if ($this->aCurrent['name'] == $o->getSearchObject()) {
                     unset($this->aCurrent['restriction']['keyword']);
                     $o->setSearchCondition($this, $sKeyword);
                 }
+
+                $this->_setPageDescription('_sys_page_description_category', $o->getCategoryTitle($sKeyword), $this->aCurrent['title']);
             }
+
             if ($this->_sCategoryObject == 'multi'){
                 unset($this->aCurrent['restriction']['keyword']);
                 $this->setCategoriesCondition($sKeyword);
             }
         }
+
+        if($bKeyword && !$this->_sMetaType && !$this->_sCategoryObject)
+            $this->_setPageDescription('_sys_page_description_keyword', $sKeyword, $this->aCurrent['title']);
 
         $this->setPaginate();
         $iNum = $this->getNum();
@@ -1448,6 +1473,16 @@ class BxDolSearchResult implements iBxDolReplaceable
     protected function _replaceMarkers ($mixed)
     {
         return bx_replace_markers($mixed, $this->_aMarkers);
+    }
+
+    protected function _setPageDescription()
+    {
+        $aArgs = func_get_args();
+
+        if($this->_bSingleSearch)
+            $aArgs[0] .= '_in_section';
+
+        BxDolTemplate::getInstance()->setPageDescription(call_user_func_array('_t', $aArgs));
     }
 }
 
