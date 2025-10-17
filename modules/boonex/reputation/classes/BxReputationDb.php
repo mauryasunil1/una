@@ -102,6 +102,43 @@ class BxReputationDb extends BxBaseModNotificationsDb
         return call_user_func_array([$this, $aMethod['name']], $aMethod['params']);
     }
 
+    public function getEventsStats($aParams)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $aBindings = [];
+
+        $sWhereSubClause = '';
+        if(isset($aParams['context_id']) && $aParams['context_id'] !== false) {
+            $aBindings['context_id'] = $aParams['context_id'];
+
+            $sWhereSubClause .= ' AND `context_id` = :context_id';
+        }
+
+        if(!empty($aParams['days'])) {
+            $aBindings['days'] = (int)$aParams['days'];
+
+            $sWhereSubClause .= ' AND `date` >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL :days DAY))';
+        }
+
+        $sGroupSubClause = 'GROUP BY `owner_id`';
+
+        $sTableClause = '(SELECT `owner_id` AS `profile_id`, SUM(`points`) AS `points` FROM `' . $CNF['TABLE_EVENTS'] . '` WHERE 1 ' . $sWhereSubClause . ' ' . $sGroupSubClause . ')';
+
+        $sSelectPosition = 'SELECT COUNT(DISTINCT `tre2`.`points`) FROM ' . $sTableClause . ' AS `tre2` WHERE `tre2`.`points` >= `tre`.`points`';
+
+        $sWhereClause = '';
+        if(isset($aParams['username']) && $aParams['username'] !== false) {
+            $aIds = $this->_getProfileIdByTerm($aParams['username']);
+            $sWhereClause .= ' AND `tre`.`profile_id` IN (' . $this->implode_escape($aIds) . ')';
+        }
+
+        $sOrderClause = 'ORDER BY `tre`.`points` DESC';
+        $sLimitClause = 'LIMIT 0, ' . (int)$aParams['limit'];
+
+        return $this->getAllWithKey('SELECT *, (' . $sSelectPosition . ') AS `position` FROM ' . $sTableClause . ' AS `tre` WHERE 1 ' . $sWhereClause . ' ' . $sOrderClause . ' ' . $sLimitClause, 'profile_id', $aBindings);
+    }
+
     public function getLevels($aParams = []) 
     {
         $CNF = &$this->_oConfig->CNF;
