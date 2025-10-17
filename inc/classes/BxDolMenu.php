@@ -489,13 +489,13 @@ class BxDolMenu extends BxDolFactory implements iBxDolFactoryObject, iBxDolRepla
 
         return true;
     }
-    
+
     protected function isMultilevel ()
     {
-        if ($this->_isMultilevel !== null)
-            return $this->_isMultilevel;
+        if($this->_isMultilevel === null)
+            $this->_isMultilevel = !empty($this->_aObject['set_name']) && $this->_oQuery->isSetMultilevel($this->_aObject['set_name']);
 
-        $this->_isMultilevel = !empty($this->_aObject['set_name']) && $this->_oQuery->isSetMultilevel($this->_aObject['set_name']);
+        return $this->_isMultilevel;
     }
 
     protected function _getVisibilityClass($a)
