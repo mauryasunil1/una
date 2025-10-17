@@ -48,6 +48,25 @@ class BxBaseModProfilePageEntry extends BxBaseModGeneralPageEntry
             $this->_aContentInfo = $this->_oModule->_oDb->getContentInfoById($this->_aProfileInfo['content_id']);
         }
 
+        if (!$this->_oProfile && isLogged()) { // if no params are given, then redirect to own profile pages
+            $a = [];
+            if (isset($CNF['URI_VIEW_ENTRY']))
+                $a[$CNF['URI_VIEW_ENTRY']] = ['id', 'getContentId'];
+            if (isset($CNF['URI_VIEW_FRIENDS']))
+                $a[$CNF['URI_VIEW_FRIENDS']] = ['profile_id', 'id'];
+            if (isset($CNF['URI_VIEW_RELATIONS']))
+                $a[$CNF['URI_VIEW_RELATIONS']] = ['profile_id', 'id'];
+            
+            foreach ($a as $sUri => $r) {
+                if ($this->_aObject['uri'] == $sUri) {
+                    $oProfile = BxDolProfile::getInstance();
+                    $sUrl = bx_absolute_url(BxDolPermalinks::getInstance()->permalink('page.php?i=' . $sUri . '&' . $r[0] . '=' . $oProfile->{$r[1]}()));
+                    header("Location: " . $sUrl);
+                    exit;
+                }
+            }
+        }
+
         if (!$this->_isAvailablePage($this->_aObject) || !$this->_oProfile) {
             $this->setPageCover(false);
             return;

@@ -17,8 +17,11 @@ class BxBaseMenuAccountNotifications extends BxTemplMenu
     {
         parent::__construct ($aObject, $oTemplate);
 
+        $oProfile = BxDolProfile::getInstance();
+        $oModule = BxDolModule::getInstance($oProfile->getModule());
         $this->addMarkers(array(
-            'studio_url' => BX_DOL_URL_STUDIO
+            'studio_url' => BX_DOL_URL_STUDIO,
+            'own_profile_url' => 'page.php?i=' . $oModule->_oConfig->CNF['URI_VIEW_ENTRY'],
         ));        
     }
 
@@ -30,7 +33,7 @@ class BxBaseMenuAccountNotifications extends BxTemplMenu
         ));
 
         $aDuplicates = $this->_oQuery->getMenuItemsBy(array(
-            'type' => 'set_name_duplicates', 
+            'type' => 'set_name_duplicates',
             'set_name' => $this->_aObject['set_name']
         ));
 
