@@ -268,7 +268,7 @@ class BxBaseServiceContent extends BxDol
     /** 
      * @ref bx_system_general_cnt-update "Update content"
      */
-    public function serviceUpdate ($sContentObject, $iContentId, $aValues)
+    public function serviceUpdate ($sContentObject, $iContentId, $aValues, $sDisplay = false)
     {
         if ('sys_account' == $sContentObject) {
             $o = BxDolAccount::getInstance($iContentId);
@@ -289,7 +289,7 @@ class BxBaseServiceContent extends BxDol
         $o = BxDolContentInfo::getObjectInstance($sContentObject);
         if (!$o)
             return false;
-        if ($sErrorMsg = $o->updateContent($iContentId, $aValues))
+        if ($sErrorMsg = $o->updateContent($iContentId, $aValues, $sDisplay))
             return ['code' => 500, 'error' => $sErrorMsg];
         else
             return ['code' => 0];
@@ -443,7 +443,7 @@ class BxBaseServiceContent extends BxDol
     /** 
      * @ref bx_system_general_cnt-replace_file "Replace file"
      */
-    public function serviceReplaceFile ($sContentObject, $iContentId, $sField, $sFileUrl)
+    public function serviceReplaceFile ($sContentObject, $iContentId, $sField, $sFileUrl, $sDisplay = false)
     {
         // some checks
         if (!isLogged())
@@ -453,7 +453,10 @@ class BxBaseServiceContent extends BxDol
         if (!$a)
             return ['code' => 404, 'error' => _t('_sys_txt_not_found')];
 
-        $oForm = bx_srv($sContentObject, 'get_object_form', ['edit']);
+        $aParams = [];
+        if ($sDisplay !== false)
+            $aParams['display'] = $sDisplay;
+        $oForm = bx_srv($sContentObject, 'get_object_form', ['edit', $aParams]);
         if (!$oForm)
             return ['code' => 404, 'error' => _t('_sys_request_module_not_found_cpt')];
 
@@ -477,7 +480,7 @@ class BxBaseServiceContent extends BxDol
             return $a;
 
         // assign uploaded file id to the field
-        return $this->serviceUpdate($sContentObject, $iContentId, [$sField => $iFileId]);
+        return $this->serviceUpdate($sContentObject, $iContentId, [$sField => $iFileId], $sDisplay);
     }
 
     protected function getUserIds($oAccount)

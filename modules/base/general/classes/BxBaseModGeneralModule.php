@@ -2213,10 +2213,10 @@ class BxBaseModGeneralModule extends BxDolModule
      * @param $aValues key value pairs to update
      * @return error message or empty string on success
      */
-    public function serviceEditEntity ($iContentId, $aValues)
+    public function serviceEditEntity ($iContentId, $aValues, $sDisplay = false)
     {
         $oFormsHelper = $this->getFormsHelper();
-        return $oFormsHelper->editData($iContentId, $aValues);
+        return $oFormsHelper->editData($iContentId, $aValues, $sDisplay);
     }
 
     /**
