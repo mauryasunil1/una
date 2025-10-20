@@ -77,7 +77,7 @@ class BxBaseMenu extends BxDolMenu
                     break;                
                 case 'per_acl': // separate cache for each ACL
                     $aAcl = BxDolAcl::getInstance()->getMemberMembershipInfo(bx_get_logged_profile_id());
-                    $sCacheKey = "menu_{$this->_sObject}" . "_acl" . $aAcl['id'];
+                    $sCacheKey = "menu_{$this->_sObject}" . "_acl" . $aAcl['id'] . '_a' . (isAdmin() ? 1 : 0);
                     break;
                 default:
                     trigger_error("Unknown cache mode for menu ({$this->_sObject}): {$this->_aObject['cache']}", E_USER_ERROR);
