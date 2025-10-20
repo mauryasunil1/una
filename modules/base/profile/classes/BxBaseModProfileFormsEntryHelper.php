@@ -181,6 +181,8 @@ class BxBaseModProfileFormsEntryHelper extends BxBaseModGeneralFormsEntryHelper
             bx_content_cache_del("profile_switcher_" . $oEditedProfile->getAccountId() . "_1");
         }
 
+        bx_content_cache_del_by_prefix('sprofile_unit_vars:' . $oEditedProfile->id() . ':');
+
         return '';
     }
 

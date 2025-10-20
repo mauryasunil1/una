@@ -2370,6 +2370,9 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
             $CNF['FIELD_COVER'] => 'cover',
         ];
 
+        bx_content_cache_del_by_prefix('sprofile_unit_vars:' . $aContentInfo['profile_id'] . ':');
+        bx_content_cache_del_by_prefix('menu_sys_toolbar_member_p' . $aContentInfo['profile_id']);
+
         if(!empty($aField2Method[$sFiledName]))
             /**
              * @hooks

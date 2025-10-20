@@ -145,6 +145,7 @@ class BxBaseModGeneralModule extends BxDolModule
 
     public function actionUpdateImagePosition($iContentId, $sFiledName, $sH, $sV)
     {
+        // TODO: check permissions
         $this->serviceUpdateImagePosition($iContentId, $sFiledName, $sH, $sV);
     }
 
@@ -1257,6 +1258,11 @@ class BxBaseModGeneralModule extends BxDolModule
             $sValue = json_encode(['x' => $sH, 'y' => $sV]);
 
         $this->_oDb->updateEntriesBy([$CNF[$sFieldNamePos] => $sValue], [$CNF['FIELD_ID'] => $iContentId]);
+
+        if($this instanceof BxBaseModProfileModule) {
+            $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
+            bx_content_cache_del_by_prefix('sprofile_unit_vars:' . $aContentInfo['profile_id'] . ':');
+        }
 
         return true;
     }
