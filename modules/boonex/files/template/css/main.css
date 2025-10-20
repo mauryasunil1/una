@@ -124,8 +124,7 @@
 }
 .bx-files-browser-toolbar .bx-btn {
     float: none;
-    display: inline-block;
-    vertical-align: top;
+    display: inline-flex;
 }
 .bx-files-toolbar-controls-group {
     display: inline-block;

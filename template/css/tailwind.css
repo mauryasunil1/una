@@ -734,6 +734,10 @@
     .bx-btn img {
         @apply bg-contain bg-no-repeat bg-center;
     }
+    
+    .bx-btn svg {
+        @apply inline align-middle;
+    }
 
     .bx-btn u {
         @apply ml-2 first:ml-0 no-underline;
@@ -1562,7 +1566,8 @@
         @apply text-white text-xs font-medium whitespace-nowrap;
         @apply opacity-90 hover:opacity-100 active:translate-y-0.5
     }
-    .bx-badge img{
+    .bx-badge img,
+    .bx-badge svg {
         @apply max-h-4 m-0 p-0;
     }
     .sys-icon-image.bx-badge-icon,

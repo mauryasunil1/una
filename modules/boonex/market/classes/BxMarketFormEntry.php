@@ -351,7 +351,7 @@ class BxMarketFormEntry extends BxBaseModTextFormEntry
                 if(empty($aContentInfo) || !is_array($aContentInfo))
                     continue;
                 
-               $sVals .= '<b class="val bx-def-color-bg-hl bx-def-round-corners">' . $aContentInfo[$CNF['FIELD_TITLE']] . '<input type="hidden" name="' . $aInput['name'] . '[]" value="' . $iValue . '" /></b>';
+               $sVals .= '<b class="val bx-def-color-bg-hl bx-def-round-corners">' . $aContentInfo[$CNF['FIELD_TITLE']] . '<i class="sys-icon times ltr:ml-1 rtl:mr-1"></i><input type="hidden" name="' . $aInput['name'] . '[]" value="' . $iValue . '" /></b>';
             }
             $sVals = trim($sVals, ',');
         }

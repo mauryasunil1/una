@@ -22,7 +22,11 @@ class BxBaseIconsetLucide extends BxBaseIconset
         $this->_aMap = [
             'ad' => 'circle-star',
             'address-card' => 'id-card',
+            'angle-double-left' => 'chevrons-left',
+            'angle-double-right' => 'chevrons-right',
+            'arrows-alt' => 'move',
             'book-reader' => 'book-open-text',
+            'buffer' => 'layers',
             'building' => 'building',
             'bullhorn' => 'megaphone',
             'calendar-day' => 'calendar-days',
@@ -50,6 +54,7 @@ class BxBaseIconsetLucide extends BxBaseIconset
             'exclamation-circle' => 'alert-circle',
             'exclamation-triangle' => 'alert-triangle',
             'fa-book' => 'book-text',
+            'fa-bookmark' => 'bookmark',
             'fa-smile' => 'smile',
             'fa-thumbs-up' => 'thumbs-up',
             'file-alt' => 'file',
@@ -62,6 +67,7 @@ class BxBaseIconsetLucide extends BxBaseIconset
             'hashtag' => 'hash',
             'helpcircle' => 'help-circle',
             'house' => 'home',
+            'industry' => 'factory',
             'info-circle' => 'info',
             'keyround' => 'key-round',
             'language' => 'languages',
@@ -76,15 +82,19 @@ class BxBaseIconsetLucide extends BxBaseIconset
             'plus-circle' => 'plus-circle',
             'qrcode' => 'qr-code',
             'quote-right' => 'quote',
+            'remove' => 'x',
             'reply-all' => 'reply-all',
+            'search-location' => 'search-check',
             'share-alt' => 'share-2',
             'shield-alt' => 'shield',
             'sign-in-alt' => 'log-in',
             'sign-out-alt' => 'log-out',
             'star-half-o' => 'star-half',
+            'swatchbook' => 'swatch-book',
             'sync' => 'refresh-ccw',
             'tachometer-alt' => 'gauge',
             'tasks' => 'check-square',
+            'th-large' => 'grid-2x2',
             'thumbtack' => 'pin',
             'times' => 'x',
             'times-circle' => 'x-circle',
@@ -128,7 +138,7 @@ class BxBaseIconsetLucide extends BxBaseIconset
                 if(el.hasAttribute('data-lucide'))
                     return;
 
-                const sName = el.getAttribute('class').replace(/(sys-icon|far|col-\w+)/gi, '').trim().split(' ').shift();
+                const sName = el.getAttribute('class').replace(/(sys-icon-bigger|sys-icon|fab|far|fas|col-\w+)/gi, '').trim().split(' ').shift();
                 if(sName)
                   el.setAttribute('data-lucide', aMap[sName] != undefined ? aMap[sName] : sName);
                 else
