@@ -2259,6 +2259,9 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
         if(!$iProfileId && ($oProfile = BxDolProfile::getInstanceByContentAndType($iContentId, $sModule)) !== false)
             $iProfileId = $oProfile->id();
 
+        bx_content_cache_del_by_prefix('sprofile_unit_vars:' . $iProfileId . ':');
+        bx_content_cache_del_by_prefix('menu_sys_toolbar_member_p' . $iProfileId);
+
         $aField2Method = [
             $CNF['FIELD_PICTURE'] => 'picture',
             $CNF['FIELD_COVER'] => 'cover',
