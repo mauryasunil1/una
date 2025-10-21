@@ -68,7 +68,7 @@ BxDolConnection.prototype.connect = function(oLink, sAction, iContentId, bConfir
 
 BxDolConnection.prototype.onConnect = function(oData) {
     if(oData.data != 'undefined')
-        $('#' + this._aHtmlIds['main'] + this._iContentId).replaceWith(oData.data);
+        $('#' + this._aHtmlIds['main'] + this._iContentId).replaceWith(oData.data).bxProcessHtml();
 };
 
 BxDolConnection.prototype.toggleConnectPopup = function(oLink, iContentId) {
