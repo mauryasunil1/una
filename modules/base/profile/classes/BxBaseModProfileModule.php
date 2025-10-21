@@ -2106,7 +2106,7 @@ class BxBaseModProfileModule extends BxBaseModGeneralModule implements iBxDolCon
         if(($sMsg = $this->checkAllowedView($aDataEntry)) !== CHECK_ACTION_RESULT_ALLOWED)
             return $sMsg;
 
-        return CHECK_ACTION_RESULT_ALLOWED;
+        return $this->_checkAllowedConnect ($aDataEntry, $isPerformAction, ['sys_profiles_subscriptions', 'checkAllowedConnectByAcl'], false, false);
     }
 
     /**

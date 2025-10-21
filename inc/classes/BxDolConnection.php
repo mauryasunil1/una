@@ -240,6 +240,13 @@ class BxDolConnection extends BxDolFactory implements iBxDolFactoryObject
 
         return $aResult['code'] == 0 ? CHECK_ACTION_RESULT_ALLOWED : $aResult['message'];
     }
+    
+    public function checkAllowedConnectByAcl ($iInitiator, $iContent, $isPerformAction = false)
+    {
+        $aResult = $this->_checkAllowedConnectByAcl($iInitiator, $iContent, $isPerformAction);
+
+        return $aResult['code'] == 0 ? CHECK_ACTION_RESULT_ALLOWED : $aResult['message'];
+    }
 
     public function checkAllowedAddConnection ($iInitiator, $iContent, $isPerformAction = false, $isMutual = false, $isInvertResult = false, $isSwap = false, $isCheckExists = true)
     {
@@ -1183,6 +1190,24 @@ class BxDolConnection extends BxDolFactory implements iBxDolFactoryObject
             list($iCode, $sMessage) = [5, $sErr];
 
         return ['code' => $iCode, 'message' => $sMessage != '' ? $sMessage : null];
+    }
+
+    protected function _checkAllowedConnectByAcl ($iInitiator, $iContent, $isPerformAction = false)
+    {
+        $sErr = _t('_sys_txt_access_denied');
+
+        if(!$iInitiator || !$iContent || $iInitiator == $iContent)
+            return ['code' => 1, 'message' => $sErr];
+
+        $oInitiator = BxDolProfile::getInstance($iInitiator);
+        if(!$oInitiator || !BxDolProfile::getInstance($iContent))
+            return ['code' => 2, 'message' => $sErr];
+
+        // check ACL
+        if(($mixedResult = $this->_checkAllowedConnectInitiator($oInitiator, $isPerformAction)) !== CHECK_ACTION_RESULT_ALLOWED)
+            return ['code' => 3, 'message' => $mixedResult];
+
+        return ['code' => 0];
     }
 
     protected function _checkAllowedConnectInitiator ($oInitiator, $isPerformAction = false)
