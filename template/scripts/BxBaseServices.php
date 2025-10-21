@@ -1687,6 +1687,12 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
 
         return $oSearch;
     }
+
+    public function serviceHomeRedirect()
+    {
+        header("Location:" . BX_DOL_URL_ROOT, true, 301);
+        exit;        
+    }
 }
 
 /** @} */

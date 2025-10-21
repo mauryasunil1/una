@@ -6570,7 +6570,8 @@ CREATE TABLE IF NOT EXISTS `sys_rewrite_rules` (
 );
 
 INSERT INTO `sys_rewrite_rules` (`preg`, `service`, `active`) VALUES
-('^sys-action/(.*)$', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:11:"wiki_action";s:6:"params";a:2:{i:0;s:3:"sys";i:1;s:3:"{1}";}s:5:"class";s:16:"TemplServiceWiki";}', '1');
+('^sys-action/(.*)$', 'a:4:{s:6:"module";s:6:"system";s:6:"method";s:11:"wiki_action";s:6:"params";a:2:{i:0;s:3:"sys";i:1;s:3:"{1}";}s:5:"class";s:16:"TemplServiceWiki";}', '1'),
+('^home/?$', 'a:3:{s:6:\"module\";s:6:\"system\";s:6:\"method\";s:13:\"home_redirect\";s:6:\"params\";a:0:{}}', 1);
 
 -- --------------------------------------------------------
 
