@@ -213,6 +213,13 @@ class BxBaseStudioNavigationItems extends BxDolStudioNavigationItems
         return $mixed;
     }
 
+    public function performActionEnable($mixedChecked = null)
+    {
+        $mixed = parent::performActionEnable($mixedChecked);
+        $this->onMenuItemsChanged();
+        return $mixed;
+    }
+
     public function performActionShowTo()
     {
         $sAction = 'show_to';
