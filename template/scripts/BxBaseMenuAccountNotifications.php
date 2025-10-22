@@ -17,12 +17,17 @@ class BxBaseMenuAccountNotifications extends BxTemplMenu
     {
         parent::__construct ($aObject, $oTemplate);
 
-        $oProfile = BxDolProfile::getInstance();
-        $oModule = BxDolModule::getInstance($oProfile->getModule());
-        $this->addMarkers(array(
+        $aMarkers = [
             'studio_url' => BX_DOL_URL_STUDIO,
-            'own_profile_url' => 'page.php?i=' . $oModule->_oConfig->CNF['URI_VIEW_ENTRY'],
-        ));        
+        ];
+
+        if(($oProfile = BxDolProfile::getInstance()) !== false && ($sModule = $oProfile->getModule()) != 'system') {
+            $oModule = BxDolModule::getInstance($sModule);
+            if($oModule !== null && isset($oModule->_oConfig->CNF['URI_VIEW_ENTRY']))
+                $aMarkers['own_profile_url'] = 'page.php?i=' . $oModule->_oConfig->CNF['URI_VIEW_ENTRY'];
+        }
+
+        $this->addMarkers($aMarkers);        
     }
 
     protected function getMenuItemsRaw ()
