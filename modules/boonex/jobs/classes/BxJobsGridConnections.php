@@ -16,6 +16,26 @@ class BxJobsGridConnections extends BxBaseModGroupsGridConnections
         $this->_sContentModule = 'bx_jobs';
         parent::__construct ($aOptions, $oTemplate);
     }
+
+    protected function _getActionSetRole ($sType, $sKey, $a, $isSmall = false, $isDisabled = false, $aRow = [])
+    {
+        $CNF = &$this->_oModule->_oConfig->CNF;
+
+        if($this->_aContentInfo[$CNF['FIELD_AUTHOR']] == $aRow['id'])
+            return $this->_bIsApi ? [] : '';
+
+        return parent::_getActionSetRole ($sType, $sKey, $a, $isSmall = false, $isDisabled = false, $aRow = []);
+    }
+
+    protected function _getActionDelete ($sType, $sKey, $a, $isSmall = false, $isDisabled = false, $aRow = [])
+    {
+        $CNF = &$this->_oModule->_oConfig->CNF;
+
+        if($this->_aContentInfo[$CNF['FIELD_AUTHOR']] == $aRow['id'])
+            return $this->_bIsApi ? [] : '';
+
+        return parent::_getActionDelete ($sType, $sKey, $a, $isSmall, $isDisabled, $aRow);
+    }
 }
 
 /** @} */

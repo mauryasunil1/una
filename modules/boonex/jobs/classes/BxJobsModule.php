@@ -59,6 +59,16 @@ class BxJobsModule extends BxBaseModGroupsModule
         return $mixedResult;
     }
 
+    public function checkAllowedFans(&$aDataEntry, $isPerformAction = false)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        if($aDataEntry[$CNF['FIELD_AUTHOR']] == bx_get_logged_profile_id())
+            return _t('_sys_txt_access_denied');
+
+        return parent::checkAllowedFans($aDataEntry, $isPerformAction);
+    }
+
     public function decodeDataAPI($aData, $aParams = [])
     {
         $aResult = parent::decodeDataAPI($aData, $aParams);
