@@ -1608,7 +1608,7 @@ class BxBaseCmts extends BxDolCmts
 
             foreach($aFiles as $aFile) {
                 $sFile = $oStorage->getFileUrlById($aFile['image_id']);
-                $bImage = $oTranscoder && $oTranscoder->isMimeTypeSupported($aFile['mime_type']);
+                $bImage = $oTranscoder && ($oTranscoder->isMimeTypeSupported($aFile['mime_type']) || $oTranscoder->isMimeTypeSvg($aFile['mime_type']));
 
                 $sPreview = '';
                 $iWidth = $iHeight = 0;
@@ -1642,7 +1642,7 @@ class BxBaseCmts extends BxDolCmts
                     'h' => $iHeight
                 );
 
-                if($this->_bIsApi){
+                if($this->_bIsApi) {
                     $aTmplImages[] = array(
                         'is_image' => $bImage,
                         'file' => $aTmplVarsFile['file'],
@@ -1654,7 +1654,7 @@ class BxBaseCmts extends BxDolCmts
                         'height' => $aTmplVarsFile['h'],
                     );
                 }
-                else{
+                else {
                     $aTmplImages[] = array(
                         'style_prefix' => $this->_sStylePrefix,
                         'bx_if:show_image' => array(

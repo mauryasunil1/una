@@ -108,7 +108,12 @@ class BxDolTranscoderImage extends BxDolTranscoder implements iBxDolFactoryObjec
 
         return false;
     }
-    
+
+    public function isMimeTypeSvg($sMimeType)
+    {
+        return strncmp('image/svg', $sMimeType, 9) === 0;
+    }
+
     /**
      * Get transcoded file url.
      * If transcoded file is ready then direct url to the file is returned.
@@ -120,7 +125,7 @@ class BxDolTranscoderImage extends BxDolTranscoder implements iBxDolFactoryObjec
     {
         if(($sFileUrl = $this->getOrigFileUrl($mixedHandler)) !== false) {
             $sFileMimeType = $this->_oStorage->getMimeTypeByFileName($sFileUrl);
-            if (strncmp('image/svg', $sFileMimeType, 9) === 0)
+            if($this->isMimeTypeSvg($sFileMimeType))
                 return $sFileUrl;
         }
 
