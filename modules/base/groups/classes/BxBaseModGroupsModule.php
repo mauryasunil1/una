@@ -1926,10 +1926,12 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
 
     public function checkAllowedFans(&$aDataEntry, $isPerformAction = false)
     {
+        $CNF = &$this->_oConfig->CNF;
+
         if(($sMsg = $this->checkAllowedView($aDataEntry)) !== CHECK_ACTION_RESULT_ALLOWED)
             return $sMsg;
 
-        return CHECK_ACTION_RESULT_ALLOWED;
+        return $this->_checkAllowedConnect($aDataEntry, $isPerformAction, [$CNF['OBJECT_GRID_CONNECTIONS'], 'checkAllowedConnectByAcl'], false, false);
     }
 
     /**

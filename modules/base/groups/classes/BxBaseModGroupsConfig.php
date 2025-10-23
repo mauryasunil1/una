@@ -23,28 +23,30 @@ class BxBaseModGroupsConfig extends BxBaseModProfileConfig
     {
         parent::__construct($aModule);
 
-        $this->_aMenuItems2MethodsActions = array (
+        $this->_aMenuItems2MethodsActions = [
             'join-group-profile' => 'checkAllowedFanAdd',
+            'profile-fans' => 'checkAllowedFans',
             'profile-fan-add' => 'checkAllowedFanAdd',
             'profile-fan-remove' => 'checkAllowedFanRemove',
+            'profile-subscriptions' => 'checkAllowedSubscriptions',
             'profile-subscribe-add' => 'checkAllowedSubscribeAdd',
             'profile-subscribe-remove' => 'checkAllowedSubscribeRemove',
             'profile-actions-more' => 'checkAllowedViewMoreMenu',
             'convos-compose' => 'checkAllowedCompose',
-        );
+        ];
 
         $sHtmlPrefix = str_replace('_', '-', $this->_sName);
-        $this->_aHtmlIds = array(
+        $this->_aHtmlIds = [
             'popup_price' => $sHtmlPrefix . '-popup-price'
-        );
+        ];
 
         $this->_bUseCoverAsThumb = $this->_initUseCoverAsThumb();
 
         $oPayments = BxDolPayments::getInstance();
-        $this->_aCurrency = array(
+        $this->_aCurrency = [
             'code' => $oPayments->getOption('default_currency_code'),
             'sign' => $oPayments->getOption('default_currency_sign')
-        );
+        ];
     }
 
     public function getHtmlIds($sKey = '')
