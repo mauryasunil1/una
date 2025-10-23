@@ -149,7 +149,14 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
                 if(empty($sFile))
                     $sFile = 'tailwind.min.css';
 
-                $sResult = '{dir_plugins_public}tailwind/css/|' . $sFile;
+                $sPath = '{dir_plugins_public}tailwind/css/|';
+                if($sFile == 'cdn')
+                    $sResult = [
+                        'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4',
+                        $sPath . 'tailwind.min.css' //TODO: Replace this with correct file name.
+                    ];
+                else
+                    $sResult = $sPath . $sFile;
                 break;
         }
 
@@ -1455,6 +1462,8 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
 
             closedir($oHandle);
         }
+
+        $aResults['cdn'] = _t('_adm_stg_cpt_option_sys_css_tailwind_default_cdn');
 
         return $aResults;
     }
