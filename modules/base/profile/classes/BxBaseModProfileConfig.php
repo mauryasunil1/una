@@ -18,6 +18,7 @@ class BxBaseModProfileConfig extends BxBaseModGeneralConfig
 
     protected $_bRoles;
     protected $_aRoles;
+    protected $_aRolesData;
 
     function __construct($aModule)
     {
@@ -58,6 +59,7 @@ class BxBaseModProfileConfig extends BxBaseModGeneralConfig
 
         $this->_bRoles = false;
         $this->_aRoles = false;
+        $this->_aRolesData = false;
     }
 
     public function isFriends()
@@ -85,6 +87,14 @@ class BxBaseModProfileConfig extends BxBaseModGeneralConfig
 
         return $this->_aRoles;
     }
+    
+    public function getRolesData()
+    {
+        if($this->_aRoles === false)
+            $this->_initRoles();
+
+        return $this->_aRolesData;
+    }
 
     public function roleIdI2S($iValue)
     {
@@ -98,11 +108,15 @@ class BxBaseModProfileConfig extends BxBaseModGeneralConfig
 
     protected function _initRoles()
     {
-        if(empty($this->CNF['OBJECT_PRE_LIST_ROLES'])) 
+        $sList = '';
+        if(!($sList = $this->CNF['OBJECT_PRE_LIST_ROLES'] ?? false)) 
             return;
 
-        $this->_aRoles = BxDolFormQuery::getDataItems($this->CNF['OBJECT_PRE_LIST_ROLES']);
+        $this->_aRoles = BxDolFormQuery::getDataItems($sList);
         $this->_bRoles = !empty($this->_aRoles) && is_array($this->_aRoles);
+
+        if($this->_bRoles)
+            $this->_aRolesData = BxDolFormQuery::getDataItems($sList, false, BX_DATA_VALUES_ALL);
     }
 
     public function getConnectionToFunctionCheck()

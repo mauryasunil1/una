@@ -2106,21 +2106,14 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
 
     public function isAllowedModuleActionByRole($sModule, $sAction, $iProfileRole)
     {
-        static $aRoles;
-
-        if (!$aRoles && isset($this->_oConfig->CNF['OBJECT_PRE_LIST_ROLES']) && !empty($this->_oConfig->CNF['OBJECT_PRE_LIST_ROLES']))
-            $aRoles = BxBaseFormView::getDataItems($this->_oConfig->CNF['OBJECT_PRE_LIST_ROLES'], true, BX_DATA_VALUES_ALL);
-
-        if ($aRoles) {
+        if(($aRoles = $this->_oConfig->getRolesData()) && is_array($aRoles))
             foreach ($aRoles as $iRole => $aRoleData) {
-                if ($iRole == 0 && $iProfileRole == 0 || $iRole > 0 && $this->isRole($iProfileRole, $iRole)) {
-                    $mPermissions = isset($aRoles[$iRole]) && isset($aRoles[$iRole]['Data']) && !empty($aRoles[$iRole]['Data']) ? unserialize($aRoles[$iRole]['Data']) : false;
-                    if ($mPermissions && isset($mPermissions[$sModule])) {
+                if(($iRole == 0 && $iProfileRole == 0) || ($iRole > 0 && $this->isRole($iProfileRole, $iRole))) {
+                    $mPermissions = !empty($aRoleData['Data']) ? unserialize($aRoleData['Data']) : false;
+                    if($mPermissions && isset($mPermissions[$sModule]))
                         return isset($mPermissions[$sModule][$sAction]) && $mPermissions[$sModule][$sAction];
-                    }
                 }
             }
-        }
 
         return NULL;
     }
