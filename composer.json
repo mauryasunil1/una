@@ -96,7 +96,8 @@
         "avto-dev/composer-cleanup-plugin": "dev-master",
         "mpratt/embera": "~2.0",
         "spatie/calendar-links": "^1.5",
-        "pusher/pusher-php-server": "^7.2"
+        "pusher/pusher-php-server": "^7.2",
+        "enshrined/svg-sanitize": "^0.22.0"
     },
     "scripts": {
         "post-update-cmd": [
