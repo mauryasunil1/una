@@ -17,6 +17,7 @@ class BxBaseMenuCreatePost extends BxTemplMenuCustom
     protected $_sJsObject;
 
     protected $_mixedContextId;
+    protected $_iMenuItems;
 
     public function __construct ($aObject, $oTemplate)
     {
@@ -28,11 +29,17 @@ class BxBaseMenuCreatePost extends BxTemplMenuCustom
         $this->_sJsObject = 'oBxDolCreatePost';
 
         $this->_mixedContextId = false;
+        $this->_iMenuItems = 0;
     }
 
     public function setContextId($mixedContextId)
     {
         $this->_mixedContextId = $mixedContextId;
+    }
+
+    public function getMenuItemsCount()
+    {
+        return $this->_iMenuItems;
     }
 
     protected function getMenuItemsRaw ()
@@ -63,6 +70,8 @@ class BxBaseMenuCreatePost extends BxTemplMenuCustom
                 'onclick' => "return " . $this->_sJsObject . ".getForm('" . $sModule . "', '" . $aModules[$sModule] . "', this)"
             ]);
     	}
+
+        $this->_iMenuItems = count($aResult);
 
         if(!empty($aResult) && is_array($aResult))
             $aResult['more-auto'] = [

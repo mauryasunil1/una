@@ -789,7 +789,7 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
                 'js_object' => $sJsObject,
                 'js_content' => $sJsContent
             ]),
-            'menu' => $oMenu
+            'menu' => $oMenu->getMenuItemsCount() > 1 ? $oMenu : ''
         ];
     }
 
