@@ -8,6 +8,8 @@
  * @{
  */
 
+define('BX_DOL_STUDIO_BUILDER_PAGE', 1);
+
 class BxBaseStudioBuilderPage extends BxDolStudioBuilderPage
 {
     protected $sParamsDivider = '#';

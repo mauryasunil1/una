@@ -48,7 +48,7 @@ class BxBaseModProfilePageEntry extends BxBaseModGeneralPageEntry
             $this->_aContentInfo = $this->_oModule->_oDb->getContentInfoById($this->_aProfileInfo['content_id']);
         }
 
-        if (!$this->_oProfile && isLogged()) { // if no params are given, then redirect to own profile pages
+        if (!$this->_oProfile && isLogged() && !defined('BX_DOL_STUDIO_BUILDER_PAGE')) { // if no params are given, then redirect to own profile pages
             $a = [];
             if (isset($CNF['URI_VIEW_ENTRY']))
                 $a[$CNF['URI_VIEW_ENTRY']] = ['id', 'getContentId'];
