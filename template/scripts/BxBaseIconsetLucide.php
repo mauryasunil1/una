@@ -104,6 +104,7 @@ class BxBaseIconsetLucide extends BxBaseIconset
             'thumbtack' => 'pin',
             'times' => 'x',
             'times-circle' => 'x-circle',
+            'toolbox' => 'tool-case',
             'trash2' => 'trash-2',
             'unlock-alt' => 'unlock',
             'user-friends' => 'users',
