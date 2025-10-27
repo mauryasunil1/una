@@ -75,6 +75,17 @@ class BxBaseModGroupsTemplate extends BxBaseModProfileTemplate
 
     public function getPopupSetRole($aRoles, $iProfileId, $iProfileRole)
     {
+        if ($this->_bIsApi){
+            $aTmplVarsRoles = array();
+            foreach($aRoles as $iRole => $sRole){
+                $aTmplVarsRoles[] = [
+                    'value' => $iRole,
+                    'label' => $sRole, 
+                ];
+            }
+            return ['values' => $aTmplVarsRoles, 'value' => $iProfileRole];
+        }
+        
         $sJsObject = $this->_oConfig->getJsObject('main');
         $sHtmlIdPrefix = str_replace('_', '-', $this->_oConfig->getName()) . '-role';
 

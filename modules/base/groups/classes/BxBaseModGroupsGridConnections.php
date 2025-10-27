@@ -161,12 +161,20 @@ class BxBaseModGroupsGridConnections extends BxDolGridConnections
             $oMenu = new BxTemplMenu(array('template' => 'menu_vertical.html', 'menu_id'=> $sHtmlIdPrefix . 'menu', 'menu_items' => $aMenuItems));
             if(!empty($iRole))
                 $oMenu->setSelected('', $sHtmlIdPrefix . $iRole);
-
-            $sPopupContent = $oMenu->getCode();
+            if($this->_bIsApi)
+                $sPopupContent = $aMenuItems;
+            else
+                $sPopupContent = $oMenu->getCode();
         }
         else
             $sPopupContent = $this->_oModule->_oTemplate->getPopupSetRole($this->_aRoles, $iId, $iRole);
 
+        if($this->_bIsApi){
+            $sPopupContent['callback'] = '/api.php?r=system/perfom_action_api/TemplServiceGrid/&params[]=&o=' . $this->_sObject . '&a=set_role_submit&profile_id=' . $this->_iGroupProfileId . '&content_module=' .  $this->_sContentModule .'&ids[]=' . $iId . '&';
+            $sPopupContent['title'] = _t('_' . $this->_sContentModule . '_txt_set_role');
+            return [bx_api_get_block('membership', $sPopupContent)];
+        }
+        
         $oFunctions = BxTemplFunctions::getInstance();
         return $this->_getActionResult(['popup' => $oFunctions->transBox(str_replace('_', '-', $this->_sContentModule) . '-set-role-popup', $oFunctions->simpleBoxContent($sPopupContent))]);
     }
@@ -332,14 +340,18 @@ class BxBaseModGroupsGridConnections extends BxDolGridConnections
 
     protected function _getActionSetRole ($sType, $sKey, $a, $isSmall = false, $isDisabled = false, $aRow = [])
     {
-        /**
-         * Note. The feature isn't available in API for now.
-         */
-        if($this->_bIsApi)
-            return [];
-
         if ($this->_oModule->checkAllowedManageAdmins($this->_iGroupProfileId) !== CHECK_ACTION_RESULT_ALLOWED)
             return $this->_bIsApi ? [] : '';
+        
+        if($this->_bIsApi){
+            $CNF = &$this->_oModule->_oConfig->CNF;
+            return array_merge($a, [
+                'name' => $sKey, 
+                'type' => 'modal', 
+                'callback' => 'system/perfom_action_api/TemplServiceGrid/&params[]=&o=' . $this->_sObject . '&a=set_role&profile_id=' . $this->_iGroupProfileId . '&content_module=' .  $this->_sContentModule .'&ids[]=' . $aRow['id'],
+                'content_type' => $aRow['content_type']
+            ]);
+         }
 
         return parent::_getActionDefault ($sType, $sKey, $a, $isSmall, $isDisabled, $aRow);
     }
