@@ -29,6 +29,10 @@ class BxBaseModGroupsAlertsResponse extends BxBaseModProfileAlertsResponse
 
         $CNF = &$this->_oModule->_oConfig->CNF;
 
+        $sMethod = '_process' . bx_gen_method_name($oAlert->sUnit . '_' . $oAlert->sAction);           	
+        if(method_exists($this, $sMethod) && $this->$sMethod($oAlert) === true)
+            return;
+
         // connection events
         if (isset($CNF['OBJECT_CONNECTIONS']) && $CNF['OBJECT_CONNECTIONS'] == $oAlert->sUnit && 'connection_added' == $oAlert->sAction) {
             $this->_oModule->serviceAddMutualConnection($oAlert->aExtras['content'], $oAlert->aExtras['initiator']);
@@ -120,6 +124,14 @@ class BxBaseModGroupsAlertsResponse extends BxBaseModProfileAlertsResponse
             $oAlert->aExtras['check_result'][CHECK_ACTION_RESULT] = CHECK_ACTION_MESSAGE_NOT_ALLOWED;
             $oAlert->aExtras['check_result'][CHECK_ACTION_MESSAGE] = _t('_sys_access_denied_to_private_content');
         }
+    }
+
+    protected function _processBxTimelineGetExternalPost($oAlert)
+    {
+        if(($sCode = $this->_oModule->_oTemplate->getTimelineCardRecommendations()) != '')
+            $oAlert->aExtras['override_result'] = $sCode;
+
+        return true;
     }
 }
 

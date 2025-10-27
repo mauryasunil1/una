@@ -21,6 +21,7 @@ class BxDolRecommendation extends BxDolFactory implements iBxDolFactoryObject
     protected $_iReducerIgnore;
 
     protected $_iPerPageDefault;
+    protected $_iPerPageDefaultShowcase;
 
     protected function __construct($aObject)
     {
@@ -42,6 +43,7 @@ class BxDolRecommendation extends BxDolFactory implements iBxDolFactoryObject
         $this->_iReducerIgnore = 10;
 
         $this->_iPerPageDefault = 24;
+        $this->_iPerPageDefaultShowcase = 32;
     }
 
     public static function getObjectInstance($sObject)

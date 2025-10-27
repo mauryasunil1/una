@@ -115,6 +115,30 @@ class BxBaseModGroupsTemplate extends BxBaseModProfileTemplate
         return $this->parseHtmlByName('popup_qnr_answers.html', ['bx_repeat:answers' => $aTmplVarsAnswers]);
     }
 
+    public function getTimelineCardRecommendations()
+    {
+        $CNF = &$this->_oConfig->CNF;
+        
+        $iProfileId = 0;
+        if(!($iProfileId = bx_get_logged_profile_id()))
+            return '';
+
+        $oRecommendation = false;
+        if(($sKey = 'OBJECT_RECOMMENDATIONS_FANS') && (empty($CNF[$sKey]) || !($oRecommendation = BxDolRecommendation::getObjectInstance($CNF[$sKey]))))
+            return '';
+
+        //TODO: Start from here. Need to do something with Paginate or use some scroller.
+        $sCode = $oRecommendation->getCode($iProfileId, ['showcase' => true]);
+        if(!$sCode)
+            return '';
+
+        return $this->parseHtmlByName('timeline_post_recommendation.html', [
+            'html_id' => $this->_oConfig->getHtmlIds('timeline_card_recommendations'),
+            'class' => str_replace('_', '-', $this->_oConfig->getName()),
+            'code' => $sCode
+        ]) . $this->addCss(['timeline.css'], true);
+    }
+
     protected function _getUnitClass($aData, $sTemplateName = 'unit.html')
     {
         $CNF = &$this->_oConfig->CNF;

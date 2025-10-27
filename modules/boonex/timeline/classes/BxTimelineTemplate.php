@@ -1016,23 +1016,7 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
         $iExtenalsEvery = $this->_oConfig->getExtenalsEvery($aParams['type']);
 
         $mixedEvents = $bReturnArray ? [] : '';
-        foreach($aEvents as $aEvent) {
-            $iEvent = (int)$aEvent['id'];
-            $aEvent['index'] = $iEventIndex + 1;
-
-            $sEvent = $this->getPost($aEvent, $aParams);
-            if(empty($sEvent))
-                continue;
-
-            if(!$iFirst && (int)$aEvent[$CNF['FIELD_STICKED']] == 0)
-                $iFirst = $aEvent['id'];
-
-            if($bReturnArray)
-                $mixedEvents[] = $aEvent;
-            else
-                $mixedEvents .= $sEvent;
-
-            $iEventIndex++;
+        do {
             if($iExtenalsEvery > 0 && $iEventIndex % $iExtenalsEvery == 0) {
                 $aParams['event_index'] = $iEventIndex;
 
@@ -1062,7 +1046,25 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
                         $mixedEvents .= $mixedExternalPost;
                 }
             }
-        }
+
+            $aEvent = [];
+            if(!($aEvent = $aEvents[$iEventIndex] ?? false))
+                continue;
+
+            $aEvent['index'] = $iEventIndex + 1;
+
+            $sEvent = $this->getPost($aEvent, $aParams);
+            if(empty($sEvent))
+                continue;
+
+            if(!$iFirst && (int)$aEvent[$CNF['FIELD_STICKED']] == 0)
+                $iFirst = (int)$aEvent['id'];
+
+            if($bReturnArray)
+                $mixedEvents[] = $aEvent;
+            else
+                $mixedEvents .= $sEvent;
+        } while(++$iEventIndex < $iEvents);
 
         if($bReturnArray)
             return $mixedEvents;
@@ -1083,9 +1085,9 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
         else
             $sLoadMore = $this->getLoadMore($aParams, $bNext, $iEvents > 0 && $bEvents);
 
-        $sEmpty = $this->getEmpty($iEvents <= 0 || !$bEvents);
+        $sEmpty = $this->getEmpty(!$bEvents);
 
-        return array($sContent, $sLoadMore, $sBack, $sEmpty, $iFirst, $bNext);
+        return [$sContent, $sLoadMore, $sBack, $sEmpty, $iFirst, $bNext];
     }
 
     public function getEmpty($bVisible)

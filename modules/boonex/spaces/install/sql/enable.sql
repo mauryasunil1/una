@@ -679,11 +679,11 @@ SET @iHandler := LAST_INSERT_ID();
 
 INSERT INTO `sys_alerts` (`unit`, `action`, `handler_id`) VALUES
 ('system', 'save_setting', @iHandler),
-('bx_timeline', 'post_common', @iHandler),
+('profile', 'delete', @iHandler),
+
 ('bx_spaces_pics', 'file_deleted', @iHandler),
 ('bx_spaces_fans', 'connection_added', @iHandler),
 ('bx_spaces_fans', 'connection_removed', @iHandler),
-('profile', 'delete', @iHandler),
 ('bx_spaces', 'fan_added', @iHandler),
 ('bx_spaces', 'join_invitation', @iHandler),
 ('bx_spaces', 'join_request', @iHandler),
@@ -697,7 +697,10 @@ INSERT INTO `sys_alerts` (`unit`, `action`, `handler_id`) VALUES
 ('bx_spaces', 'timeline_report', @iHandler),
 ('bx_spaces', 'timeline_repost', @iHandler),
 ('bx_spaces', 'timeline_pin', @iHandler),
-('bx_spaces', 'timeline_promote', @iHandler);
+('bx_spaces', 'timeline_promote', @iHandler),
+
+('bx_timeline', 'post_common', @iHandler),
+('bx_timeline', 'get_external_post', @iHandler);
 
 -- PRIVACY 
 

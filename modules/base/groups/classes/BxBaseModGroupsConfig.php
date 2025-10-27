@@ -37,7 +37,8 @@ class BxBaseModGroupsConfig extends BxBaseModProfileConfig
 
         $sHtmlPrefix = str_replace('_', '-', $this->_sName);
         $this->_aHtmlIds = [
-            'popup_price' => $sHtmlPrefix . '-popup-price'
+            'popup_price' => $sHtmlPrefix . '-popup-price',
+            'timeline_card_recommendations' => $sHtmlPrefix . '-recommendations'
         ];
 
         $this->_bUseCoverAsThumb = $this->_initUseCoverAsThumb();
