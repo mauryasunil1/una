@@ -59,6 +59,7 @@ class BxBaseIconsetLucide extends BxBaseIconset
             'exclamation-triangle' => 'alert-triangle',
             'fa-book' => 'book-text',
             'fa-bookmark' => 'bookmark',
+            'fa-check-circle' => 'circle-check', 
             'fa-smile' => 'smile',
             'fa-thumbs-up' => 'thumbs-up',
             'file-alt' => 'file',

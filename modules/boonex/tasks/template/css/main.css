@@ -26,36 +26,28 @@
 .bx-tasks-task-checkbox input[type=checkbox] {
     display:none;
 }
-.bx-tasks-task-checkbox  input[type=checkbox] + label{
+.bx-tasks-task-checkbox input[type=checkbox] + label {
     height: 24px;
     width: 24px;
     display:inline-block;
     padding: 0;
+
+    line-height: 1;
+    font-size: 1.5rem;
+
     cursor: pointer;
 }
-.bx-tasks-task-checkbox  input[type=checkbox] + label:before{
-    content: "\f111";
-    font-family: "sys-user-far", sans-serif;
-    display: block;
-    width: 100%;
-    height: 100%;
-    font-size: 1.5rem;
-    line-height: 1;
+.bx-tasks-task-checkbox input[type=checkbox] + label .bx-tasks-completed {
+    display: none;
 }
-.bx-tasks-task-checkbox input[type=checkbox]:checked + label{
-    height: 24px;
-    width: 24px;
-    display:inline-block;
-    padding: 0;
-}
-.bx-tasks-task-checkbox input[type=checkbox]:checked + label:before{
-    content: "\f058";
-    font-family: "sys-user-far", sans-serif;
+.bx-tasks-task-checkbox input[type=checkbox] + label .bx-tasks-uncompleted {
     display: block;
-    width: 100%;
-    height: 100%;
-    font-size: 1.5rem;
-    line-height: 1;
+}
+.bx-tasks-task-checkbox input[type=checkbox]:checked + label .bx-tasks-completed {
+    display: block;
+}
+.bx-tasks-task-checkbox input[type=checkbox]:checked + label .bx-tasks-uncompleted {
+    display: none;
 }
 .bx-tasks-task {
     display: flex;
@@ -82,7 +74,6 @@
     height: 2rem;
     font-size: 1rem;
 }
-.bx-tasks-task .bx-badge, 
 .bx-tasks-task .bx-badges-list {
     display: inline-block;
 }

@@ -105,11 +105,13 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                     if(($oProfile = BxDolProfile::getInstance($iMember)) !== false && !($oProfile instanceof BxDolProfileUndefined))
                         $aTmplVarsMembers[] = ['info' => $oProfile->getUnit(0, ['template' => 'unit_wo_info'])];
 
+                $bCompleted = $aTask[$CNF['FIELD_COMPLETED']] == 1;
+
                 $aTmplVarsTasks[] = [
                     'id' => $aTask[$CNF['FIELD_ID']],
                     'title' => bx_process_output($aTask[$CNF['FIELD_TITLE']]),
                     'created' => bx_time_js($aTask[$CNF['FIELD_ADDED']]),
-                    'class' => $aTask[$CNF['FIELD_COMPLETED']] == 1 ? 'completed' : 'uncompleted',
+                    'class' => $bCompleted ? 'completed' : 'uncompleted',
                     'due' => $aTask[$CNF['FIELD_DUEDATE']] > 0 ? bx_time_js($aTask[$CNF['FIELD_DUEDATE']]) : '',
                     'type' => $aTypes[$aTask[$CNF['FIELD_TYPE']]] ?? '',
                     'priority' => $aPriorities[$aTask[$CNF['FIELD_PRIORITY']]] ?? '',
@@ -124,14 +126,14 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                         'content' => [
                             'id' => $aTask[$CNF['FIELD_ID']],
                             'object' => $this->_oConfig->getJsObject('tasks'),
-                            'checked' => $aTask[$CNF['FIELD_COMPLETED']] == 1 ? 'checked' : '',
+                            'checked' => $bCompleted ? 'checked' : '',
                         ]
                     ],
                     'bx_if:deny_manage' => [
                         'condition' => !$bAllowManage,
                         'content' => [
                             'id' => $aTask[$CNF['FIELD_ID']],
-                            'checked' => $aTask[$CNF['FIELD_COMPLETED']] == 1 ? 'checked' : '',
+                            'checked' => $bCompleted ? 'checked' : '',
                         ]
                     ]
                 ];
