@@ -129,23 +129,36 @@ class BxBaseModGroupsTemplate extends BxBaseModProfileTemplate
     public function getTimelineCardRecommendations()
     {
         $CNF = &$this->_oConfig->CNF;
+        $sModule = $this->_oConfig->getName();
         
         $iProfileId = 0;
         if(!($iProfileId = bx_get_logged_profile_id()))
-            return '';
+            return $this->_bIsApi ? [] : '';
 
         $oRecommendation = false;
         if(($sKey = 'OBJECT_RECOMMENDATIONS_FANS') && (empty($CNF[$sKey]) || !($oRecommendation = BxDolRecommendation::getObjectInstance($CNF[$sKey]))))
-            return '';
+            return $this->_bIsApi ? [] : '';
 
-        //TODO: Start from here. Need to do something with Paginate or use some scroller.
+        if($this->_bIsApi) {
+            $aResult = [];
+            if(($aCode = $oRecommendation->getCodeAPI($iProfileId)) && is_array($aCode))
+                $aResult = [
+                    'id' => '',
+                    'type' => $sModule . '_recommendations',
+                    'object_privacy_view' => 3,
+                    'content' => $aCode
+                ];
+
+            return $aResult;
+        }
+
         $sCode = $oRecommendation->getCode($iProfileId, ['showcase' => true]);
         if(!$sCode)
             return '';
 
         return $this->parseHtmlByName('timeline_post_recommendation.html', [
             'html_id' => $this->_oConfig->getHtmlIds('timeline_card_recommendations'),
-            'class' => str_replace('_', '-', $this->_oConfig->getName()),
+            'class' => str_replace('_', '-', $sModule),
             'code' => $sCode
         ]) . $this->addCss(['timeline.css'], true);
     }
