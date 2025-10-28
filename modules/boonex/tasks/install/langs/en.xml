@@ -18,6 +18,11 @@
     <string name="_bx_tasks_form_entry"><![CDATA[Tasks]]></string>
     <string name="_bx_tasks_form_entry_display_add"><![CDATA[Add Task]]></string>
     <string name="_bx_tasks_form_entry_display_edit"><![CDATA[Edit Task]]></string>
+    <string name="_bx_tasks_form_entry_display_edit_body"><![CDATA[Edit Task's Body]]></string>
+    <string name="_bx_tasks_form_entry_display_edit_type"><![CDATA[Edit Task's Type]]></string>
+    <string name="_bx_tasks_form_entry_display_edit_priority"><![CDATA[Edit Task's Priority]]></string>
+    <string name="_bx_tasks_form_entry_display_edit_estimate"><![CDATA[Edit Task's Estimate]]></string>
+    <string name="_bx_tasks_form_entry_display_edit_due_date"><![CDATA[Edit Task's Due Date]]></string>
     <string name="_bx_tasks_form_entry_display_edit_state"><![CDATA[Edit Task's State]]></string>
     <string name="_bx_tasks_form_entry_display_delete"><![CDATA[Delete Task]]></string>
     <string name="_bx_tasks_form_entry_display_view"><![CDATA[View Task]]></string>

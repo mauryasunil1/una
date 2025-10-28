@@ -32,9 +32,19 @@ class BxTasksTemplate extends BxBaseModTextTemplate
     
     public function entryText ($aData, $sTemplateName = 'entry-text.html')
     {
-        $aVars = $this->getTmplVarsText($aData);
+        $CNF = &$this->_oConfig->CNF;
+        $iLoggedId = bx_get_logged_profile_id();
 
-        return $this->parseHtmlByName($sTemplateName, $aVars);
+        $sResult = '';
+        if($aData[$CNF['FIELD_AUTHOR']] != $iLoggedId) {
+            $aVars = $this->getTmplVarsText($aData);
+
+            $sResult = $this->parseHtmlByName($sTemplateName, $aVars);
+        }
+        else 
+            $sResult = $this->getModule()->serviceEntityEdit($aData[$CNF['FIELD_ID']], $CNF['OBJECT_FORM_ENTRY_DISPLAY_EDIT_BODY']);
+
+        return $sResult;
     }
 
     public function entryAssignments ($aProfiles)

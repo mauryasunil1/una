@@ -64,10 +64,30 @@ BxTasksView.prototype.processTask = function (iContextId, iListId, oSource) {
     });
 };
 
+BxTasksView.prototype.processTaskEditType = function (iContentId, oSource) {
+    this.processTaskEditProperty(iContentId, 'type', oSource);
+};
+
+BxTasksView.prototype.processTaskEditPriority = function (iContentId, oSource) {
+    this.processTaskEditProperty(iContentId, 'priority', oSource);
+};
+
+BxTasksView.prototype.processTaskEditEstimate = function (iContentId, oSource) {
+    this.processTaskEditProperty(iContentId, 'estimate', oSource);
+};
+
+BxTasksView.prototype.processTaskEditDueDate = function (iContentId, oSource) {
+    this.processTaskEditProperty(iContentId, 'due_date', oSource);
+};
+
 BxTasksView.prototype.processTaskEditState = function (iContentId, oSource) {
+    this.processTaskEditProperty(iContentId, 'state', oSource);
+};
+
+BxTasksView.prototype.processTaskEditProperty = function (iContentId, sProperty, oSource) {
     var $this = this;
     $(window).dolPopupAjax({
-        url: $this._oOptions.sActionUrl + 'process_task_form_edit_state/' + iContentId + '/',
+        url: $this._oOptions.sActionUrl + 'process_task_form_edit_property/' + iContentId + '/' + sProperty + '/',
         closeOnOuterClick: false,
         removeOnClose: true
     });

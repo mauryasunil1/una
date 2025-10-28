@@ -1,3 +1,9 @@
+/*-- Entry Form: View --*/
+.bx-form-advanced-wrapper.bx_tasks_wrapper .bx-form-row-view-value a {
+    text-decoration: underline;
+}
+
+
 /*-- Time Form --*/
 #bx-form-element-value .bx-form-input-wrapper-input_set {
     display: flex;

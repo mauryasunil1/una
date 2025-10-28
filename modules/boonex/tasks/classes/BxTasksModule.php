@@ -231,7 +231,7 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         }
     }
 
-    public function actionProcessTaskFormEditState($iContentId)
+    public function actionProcessTaskFormEditProperty($iContentId, $sProperty)
     {
         $CNF = &$this->_oConfig->CNF;
 
@@ -239,16 +239,26 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         if(!$this->isAllowAdd(abs($aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']])))
             return '';
 
-        $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_ENTRY'], $CNF['OBJECT_FORM_ENTRY_DISPLAY_EDIT_STATE']);
-        $oForm->aFormAttrs['action'] = BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'process_task_form_edit_state/' . $iContentId . '/';
+        $sForm = '';
+        if(($sKey = 'OBJECT_FORM_ENTRY_DISPLAY_EDIT_' . strtoupper($sProperty)) && !empty($CNF[$sKey]))
+            $sForm = $CNF[$sKey];
+        else
+            return '';
+
+        $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_ENTRY'], $sForm);
+        $oForm->setId($sForm);
+        $oForm->setName($sForm);
+        $oForm->setAction(BX_DOL_URL_ROOT . $this->_oConfig->getBaseUri() . 'process_task_form_edit_property/' . $iContentId . '/' . $sProperty . '/');
         if(!$oForm)
             return '';
 
         $oForm->initChecker($aContentInfo);
         if($oForm->isSubmittedAndValid()) {
-            $iState = $oForm->getCleanValue($CNF['FIELD_STATE']);
-            if(!$oForm->update($iContentId, [$CNF['FIELD_COMPLETED'] => (int)$this->_oConfig->isCompleted($iState)]))
+            if(!$oForm->update($iContentId))
                 return echoJson(['msg' => _t('_bx_tasks_txt_err_cannot_perform_action')]);
+
+            if(($sMethod = '_onEdit' . bx_gen_method_name($sProperty)) && method_exists($this, $sMethod))
+                $this->$sMethod($iContentId, $oForm);
 
             return echoJson([
                 'eval' => $this->_oConfig->getJsObject('tasks') . '.reload(oData)',
@@ -267,6 +277,19 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 
             return echoJson(['form' => $sContent, 'form_id' => $oForm->getId()]);
         }
+    }
+
+    protected function _onEditState($iContentId, &$oForm)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $iState = $oForm->getCleanValue($CNF['FIELD_STATE']);
+
+        $this->_oDb->updateEntriesBy([
+            $CNF['FIELD_COMPLETED'] => (int)$this->_oConfig->isCompleted($iState)
+        ], [
+            $CNF['FIELD_ID'] => $iContentId
+        ]);
     }
 
     public function actionCalendarData()

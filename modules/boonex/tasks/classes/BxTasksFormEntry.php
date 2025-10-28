@@ -81,6 +81,19 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
         $this->_iContextId = $iContextId;
     }
 
+    public function genViewRowValue(&$aInput)
+    {
+        $CNF = &$this->_oModule->_oConfig->CNF;
+
+        $sValue = parent::genViewRowValue($aInput);
+        if(in_array($aInput['name'], [$CNF['FIELD_TYPE'], $CNF['FIELD_PRIORITY'], $CNF['FIELD_ESTIMATE'], $CNF['FIELD_DUEDATE'], $CNF['FIELD_STATE']]))
+            $sValue = $this->_oModule->_oTemplate->parseLink('javascript:void(0)', $sValue ?: _t('_undefined'), [
+                'onclick' => 'javascript:' . $this->_oModule->_oConfig->getJsObject('tasks') . '.processTaskEdit' . bx_gen_method_name($aInput['name']) . '(' . $this->_iContentId . ', this)'
+            ]);
+
+        return $sValue;
+    }
+
     public function getCode($bDynamicMode = false)
     {
         $this->_replaceMarkersInControls('controls_edit');

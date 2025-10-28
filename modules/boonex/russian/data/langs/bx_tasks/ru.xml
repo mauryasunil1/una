@@ -18,6 +18,11 @@
     <string name="_bx_tasks_form_entry"><![CDATA[Задания]]></string>
     <string name="_bx_tasks_form_entry_display_add"><![CDATA[Добавить задание]]></string>
     <string name="_bx_tasks_form_entry_display_edit"><![CDATA[Редактировать задание]]></string>
+    <string name="_bx_tasks_form_entry_display_edit_body"><![CDATA[Редактировать тело задачи]]></string>
+    <string name="_bx_tasks_form_entry_display_edit_type"><![CDATA[Редактировать тип задачи]]></string>
+    <string name="_bx_tasks_form_entry_display_edit_priority"><![CDATA[Редактировать приоритет задачи]]></string>
+    <string name="_bx_tasks_form_entry_display_edit_estimate"><![CDATA[Редактировать временные затраты задачи]]></string>
+    <string name="_bx_tasks_form_entry_display_edit_due_date"><![CDATA[Редактировать срок выполнения задачи]]></string>
     <string name="_bx_tasks_form_entry_display_edit_state"><![CDATA[Редактировать состояние задачи]]></string>
     <string name="_bx_tasks_form_entry_display_delete"><![CDATA[Удалить задание]]></string>
     <string name="_bx_tasks_form_entry_display_view"><![CDATA[Просмотреть задание]]></string>
@@ -410,8 +415,8 @@
     <string name="_bx_tasks_txt_filter_all"><![CDATA[Все Задания]]></string>
     <string name="_bx_tasks_txt_filter_completed"><![CDATA[Завершенные Задания]]></string>
     <string name="_bx_tasks_txt_filter_uncompleted"><![CDATA[Незавершенные Задания]]></string>
-    <string name="_bx_tasks_txt_total"><![CDATA[Total: {0}]]></string>
-    <string name="_bx_tasks_txt_estimate"><![CDATA[Estimate: {0}]]></string>
+    <string name="_bx_tasks_txt_total"><![CDATA[Потрачено времени: {0}]]></string>
+    <string name="_bx_tasks_txt_estimate"><![CDATA[Выделено времени: {0}]]></string>
 
     <string name="_bx_tasks_txt_err_cannot_perform_action"><![CDATA[Невозможно выполнить действие. Пожалуйста, оповестите нас об этой проблеме.]]></string>
     <string name="_bx_tasks_txt_err_cannot_perform_action"><![CDATA[Невозможно выполнить действие. Пожалуйста, оповестите нас об этой проблеме.]]></string>

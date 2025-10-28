@@ -404,6 +404,11 @@ INSERT INTO `sys_form_displays`(`object`, `display_name`, `module`, `view_mode`,
 ('bx_tasks', 'bx_tasks_entry_add', 'bx_tasks', 0, '_bx_tasks_form_entry_display_add'),
 ('bx_tasks', 'bx_tasks_entry_delete', 'bx_tasks', 0, '_bx_tasks_form_entry_display_delete'),
 ('bx_tasks', 'bx_tasks_entry_edit', 'bx_tasks', 0, '_bx_tasks_form_entry_display_edit'),
+('bx_tasks', 'bx_tasks_entry_edit_body', 'bx_tasks', 0, '_bx_tasks_form_entry_display_edit_body'),
+('bx_tasks', 'bx_tasks_entry_edit_type', 'bx_tasks', 0, '_bx_tasks_form_entry_display_edit_type'),
+('bx_tasks', 'bx_tasks_entry_edit_priority', 'bx_tasks', 0, '_bx_tasks_form_entry_display_edit_priority'),
+('bx_tasks', 'bx_tasks_entry_edit_estimate', 'bx_tasks', 0, '_bx_tasks_form_entry_display_edit_estimate'),
+('bx_tasks', 'bx_tasks_entry_edit_due_date', 'bx_tasks', 0, '_bx_tasks_form_entry_display_edit_due_date'),
 ('bx_tasks', 'bx_tasks_entry_edit_state', 'bx_tasks', 0, '_bx_tasks_form_entry_display_edit_state'),
 ('bx_tasks', 'bx_tasks_entry_view', 'bx_tasks', 1, '_bx_tasks_form_entry_display_view');
 
@@ -472,10 +477,34 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_tasks_entry_edit', 'do_submit', 2147483647, 1, 15),
 ('bx_tasks_entry_edit', 'do_cancel_edit', 2147483647, 1, 16),
 
+('bx_tasks_entry_edit_body', 'title', 2147483647, 1, 1),
+('bx_tasks_entry_edit_body', 'text', 2147483647, 1, 2),
+('bx_tasks_entry_edit_body', 'do_submit', 2147483647, 1, 3),
+
 ('bx_tasks_entry_edit_state', 'state', 2147483647, 1, 1),
 ('bx_tasks_entry_edit_state', 'controls_edit_popup', 2147483647, 1, 2),
 ('bx_tasks_entry_edit_state', 'do_submit', 2147483647, 1, 3),
 ('bx_tasks_entry_edit_state', 'do_cancel', 2147483647, 1, 4),
+
+('bx_tasks_entry_edit_type', 'type', 2147483647, 1, 1),
+('bx_tasks_entry_edit_type', 'controls_edit_popup', 2147483647, 1, 2),
+('bx_tasks_entry_edit_type', 'do_submit', 2147483647, 1, 3),
+('bx_tasks_entry_edit_type', 'do_cancel', 2147483647, 1, 4),
+
+('bx_tasks_entry_edit_priority', 'priority', 2147483647, 1, 1),
+('bx_tasks_entry_edit_priority', 'controls_edit_popup', 2147483647, 1, 2),
+('bx_tasks_entry_edit_priority', 'do_submit', 2147483647, 1, 3),
+('bx_tasks_entry_edit_priority', 'do_cancel', 2147483647, 1, 4),
+
+('bx_tasks_entry_edit_estimate', 'estimate', 2147483647, 1, 1),
+('bx_tasks_entry_edit_estimate', 'controls_edit_popup', 2147483647, 1, 2),
+('bx_tasks_entry_edit_estimate', 'do_submit', 2147483647, 1, 3),
+('bx_tasks_entry_edit_estimate', 'do_cancel', 2147483647, 1, 4),
+
+('bx_tasks_entry_edit_due_date', 'due_date', 192, 1, 1),
+('bx_tasks_entry_edit_due_date', 'controls_edit_popup', 2147483647, 1, 2),
+('bx_tasks_entry_edit_due_date', 'do_submit', 2147483647, 1, 3),
+('bx_tasks_entry_edit_due_date', 'do_cancel', 2147483647, 1, 4),
 
 ('bx_tasks_entry_view', 'type', 2147483647, 1, 1),
 ('bx_tasks_entry_view', 'priority', 2147483647, 1, 2),
