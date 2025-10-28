@@ -250,20 +250,43 @@ class BxTasksConfig extends BxBaseModTextConfig
     {
         return in_array($iState, [BX_TASKS_STATE_CANCELLED, BX_TASKS_STATE_DUPLICATE, BX_TASKS_STATE_DONE]);
     }
-    
+
+    public function timeA2I($a)
+    {
+        if(!$a || !is_array($a) || count($a) != 2)
+            return 0;
+
+        $iH = (int)($a[0] ?? 0);
+        if($iH < 0)
+            $iH = 0;
+
+        $iM = (int)($a[1] ?? 0);
+        if($iM < 0)
+            $iM = 0;
+        else if($iM > 59)
+            $iM = 59;
+
+        return 60 * $iH + $iM;
+    }
+
     public function timeS2I($s)
     {
         if(strpos($s, ':') === false)
             return 0;
 
-        list($iH, $iM) = explode(':', $s);
-        return 60 * $iH + $iM;
+        return $this->timeA2I(explode(':', $s));
+    }
+
+    public function timeI2A($i)
+    {
+        $iH = intdiv($i, 60);
+        return [$iH, $i - 60 * $iH];
     }
 
     public function timeI2S($i)
     {
-        $iH = intdiv($i, 60);
-        return sprintf("%02d", $iH) . ':' . sprintf("%02d", $i - 60 * $iH);
+        list($iH, $iM) = $this->timeI2A($i);
+        return sprintf("%02d", $iH) . ':' . sprintf("%02d", $iM);
     }
 }
 

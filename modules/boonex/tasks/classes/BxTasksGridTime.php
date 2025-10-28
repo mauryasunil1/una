@@ -32,7 +32,7 @@ class BxTasksGridTime extends BxTasksGridTimeAdministration
             $aValsToAdd = [
                 'author_id' => $this->_iLogged,
                 'author_nip' => bx_get_ip_hash(getVisitorIP()),
-                'value' => $this->_oModule->_oConfig->timeS2I($oForm->getCleanValue('value')),
+                'value' => $this->_oModule->_oConfig->timeA2I([(int)$oForm->getCleanValue('value_h'), (int)$oForm->getCleanValue('value_m')]),
                 'value_date' => $oForm->getCleanValue('value_date') ?: $iNow,
                 'date' => $iNow
             ];
@@ -77,11 +77,11 @@ class BxTasksGridTime extends BxTasksGridTimeAdministration
         if(empty($aTrack) || !is_array($aTrack))
             return $this->_getActionResult([]);
 
-        $oForm = $this->_getFormObject($sAction, $iTrack);
-        $oForm->initChecker(array_merge($aTrack, ['value' => $this->_oModule->_oConfig->timeI2S($aTrack['value'])]));
+        $oForm = $this->_getFormObject($sAction, $aTrack);
+        $oForm->initChecker($aTrack);
         if($oForm->isSubmittedAndValid()) {
             $aValsToAdd = [
-                'value' => $this->_oModule->_oConfig->timeS2I($oForm->getCleanValue('value')),
+                'value' => $this->_oModule->_oConfig->timeA2I([(int)$oForm->getCleanValue('value_h'), (int)$oForm->getCleanValue('value_m')]),
             ];
 
             if(!$oForm->update($iTrack, $aValsToAdd))
@@ -128,20 +128,22 @@ class BxTasksGridTime extends BxTasksGridTimeAdministration
         return $bResult;
     }
 
-    protected function _getFormObject($sAction, $iId = 0)
+    protected function _getFormObject($sAction, $aTrack = [])
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
 
         $bActionAdd = $sAction == 'add';
         $bActionEdit = $sAction == 'edit';
 
+        $bTrack = !empty($aTrack) && is_array($aTrack);
+
         $aActionParams = [
             'o' => $this->_sObject, 
             'a' => $sAction,
             'context_pid' => $this->_iContextPid
         ];
-        if($bActionEdit && !empty($iId))
-            $aActionParams['id'] = $iId;
+        if($bActionEdit && $bTrack)
+            $aActionParams['id'] = (int)$aTrack['id'];
 
         $sForm = $CNF['OBJECT_FORM_TIME_DISPLAY_' . strtoupper($sAction)];
         $oForm = BxDolForm::getObjectInstance($CNF['OBJECT_FORM_TIME'], $sForm);
@@ -172,6 +174,19 @@ class BxTasksGridTime extends BxTasksGridTimeAdministration
                     'key' => $aTask[$CNF['FIELD_ID']],
                     'value' => $aTask[$CNF['FIELD_TITLE']]
                 ];
+            }
+        }
+        else if($bActionEdit) {
+            if($bTrack) {
+                list($value_h, $value_m) = $this->_oModule->_oConfig->timeI2A($aTrack['value']);
+
+                foreach($oForm->aInputs['value'] as $mixedKey => $mixedValue) {
+                    if(!is_numeric($mixedKey) || !is_array($mixedValue))
+                        continue;
+
+                    if(($iValue = ${$mixedValue['name']} ?? false) !== false)
+                        $oForm->aInputs['value'][$mixedKey]['value'] = (int)$iValue;
+                }
             }
         }
 

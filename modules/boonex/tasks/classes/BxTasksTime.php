@@ -123,8 +123,9 @@ class BxTasksTime extends BxTemplReport
         if(!$this->isAllowedReport(true))
             return ['code' => 2, 'message' => $this->msgErrAllowedReport()];
 
-        $sValue = $this->_bApi ? $aParams['value'] : $oForm->getCleanValue('value');
-        $iValue = $this->_oModule->_oConfig->timeS2I($sValue);
+        $iVh = ($sKey = 'value_h') && $this->_bApi ? $aParams[$sKey] : $oForm->getCleanValue($sKey);
+        $iVm = ($sKey = 'value_m') && $this->_bApi ? $aParams[$sKey] : $oForm->getCleanValue($sKey);
+        $iValue = $this->_oModule->_oConfig->timeA2I([$iVh, $iVm]);
 
         $sText = $this->_bApi ? $aParams['text'] : $oForm->getCleanValue('text');
         $sText = bx_process_input($sText, BX_DATA_TEXT_MULTILINE);

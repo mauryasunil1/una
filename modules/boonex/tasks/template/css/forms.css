@@ -1,0 +1,8 @@
+/*-- Time Form --*/
+#bx-form-element-value .bx-form-input-wrapper-input_set {
+    display: flex;
+    align-items: center;
+}
+#bx-form-element-value .bx-form-input-wrapper-input_set div {
+    margin: 0 0.5rem;
+}
