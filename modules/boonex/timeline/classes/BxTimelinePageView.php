@@ -16,6 +16,9 @@ class BxTimelinePageView extends BxBaseModTextPageAuthor
 {
     public function __construct($aObject, $oTemplate = false)
     {
+        if(bx_get('profile_id') === false && ($this->_oProfile = BxDolProfile::getInstance()) !== false)
+            $this->_aProfileInfo = $this->_oProfile->getInfo();
+
         parent::__construct($aObject, $oTemplate);
     }
 }
