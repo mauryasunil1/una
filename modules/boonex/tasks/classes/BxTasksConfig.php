@@ -66,7 +66,7 @@ class BxTasksConfig extends BxBaseModTextConfig
             'FIELD_LABELS' => 'labels',
             'FIELD_TASKLIST' => 'tasks_list',
             'FIELD_INITIAL_MEMBERS' => 'initial_members',
-            'FIELD_DUEDATE' => 'due_date',
+            'FIELD_DUE_DATE' => 'due_date',
             'FIELD_EXPIRED' => 'expired',
             'FIELD_COMPLETED' => 'completed',
             'FIELD_ANONYMOUS' => 'anonymous',
@@ -255,6 +255,34 @@ class BxTasksConfig extends BxBaseModTextConfig
     public function isCompleted($iState)
     {
         return in_array($iState, [BX_TASKS_STATE_CANCELLED, BX_TASKS_STATE_DUPLICATE, BX_TASKS_STATE_DONE]);
+    }
+    
+    public function getTypeTitle($iValue)
+    {
+        $aItems = BxDolFormQuery::getDataItems($this->CNF['OBJECT_PRE_LIST_TYPES'], false, BX_DATA_VALUES_ALL);
+        return $aItems[$iValue]['LKey'] ?? '';
+    }
+
+    public function getPriorityTitle($iValue)
+    {
+        $aItems = BxDolFormQuery::getDataItems($this->CNF['OBJECT_PRE_LIST_PRIORITIES'], false, BX_DATA_VALUES_ALL);
+        return $aItems[$iValue]['LKey'] ?? '';
+    }
+
+    public function getEstimateTitle($iValue)
+    {
+        return $this->timeI2S($iValue);
+    }
+
+    public function getDueDateTitle($iValue)
+    {
+        return bx_time_js($iValue, BX_FORMAT_DATE, true);
+    }
+
+    public function getStateTitle($iValue)
+    {
+        $aItems = BxDolFormQuery::getDataItems($this->CNF['OBJECT_PRE_LIST_STATES'], false, BX_DATA_VALUES_ALL);
+        return $aItems[$iValue]['LKey'] ?? '';
     }
 
     public function timeA2I($a)

@@ -123,7 +123,7 @@ class BxTasksTemplate extends BxBaseModTextTemplate
                     'title' => bx_process_output($aTask[$CNF['FIELD_TITLE']]),
                     'created' => bx_time_js($aTask[$CNF['FIELD_ADDED']]),
                     'class' => $bCompleted ? 'completed' : 'uncompleted',
-                    'due' => $aTask[$CNF['FIELD_DUEDATE']] > 0 ? bx_time_js($aTask[$CNF['FIELD_DUEDATE']]) : '',
+                    'due' => $aTask[$CNF['FIELD_DUE_DATE']] > 0 ? bx_time_js($aTask[$CNF['FIELD_DUE_DATE']]) : '',
                     'type' => $aTypes[$aTask[$CNF['FIELD_TYPE']]] ?? '',
                     'priority' => $aPriorities[$aTask[$CNF['FIELD_PRIORITY']]] ?? '',
                     'state' => $aStates[$aTask[$CNF['FIELD_STATE']]] ?? '',

@@ -105,3 +105,20 @@
 .bx-media-desktop .bx-tasks-form-cnt{
     width: 800px;
 }
+
+/*--- View Task: Comments List ---*/
+.cmts .cmt.cmt-auto {
+    margin-bottom: 0.25rem;
+}
+.cmts .cmt:not(.cmt-auto) {
+    margin-top: 1.0rem;
+    margin-bottom: 1.0rem;
+}
+.cmts .cmt.cmt-auto .cmt-avatar {
+    height: 0;
+}
+.cmts .cmt.cmt-auto .cmt-info .cmt-cont,
+.cmts .cmt.cmt-auto .cmt-info .cmt-cont .cmt-body {
+    margin-top: 0;
+    font-size: 0.75rem;
+}

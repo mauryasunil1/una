@@ -425,7 +425,15 @@
     <string name="_bx_tasks_txt_msg_status_hidden"><![CDATA[This task was hidden.]]></string>
     <string name="_bx_tasks_txt_msg_status_pending"><![CDATA[This task is pending approval.]]></string>
     <string name="_bx_tasks_txt_msg_confirm_tasklist_deletion"><![CDATA[You will delete all tasks that are contained in this tasklist. Are you sure?]]></string>
-    
+
+    <string name="_bx_tasks_txt_msg_format"><![CDATA[{0} &#183; <span>{1}</span>]]></string>
+    <string name="_bx_tasks_txt_msg_edit_type"><![CDATA[<a href="{author_link}">{author_name}</a> changed type to <b>{value}</b>]]></string>
+    <string name="_bx_tasks_txt_msg_edit_priority"><![CDATA[<a href="{author_link}">{author_name}</a> changed priority to <b>{value}</b>]]></string>
+    <string name="_bx_tasks_txt_msg_edit_estimate"><![CDATA[<a href="{author_link}">{author_name}</a> changed estimate to <b>{value}</b>]]></string>
+    <string name="_bx_tasks_txt_msg_edit_due_date"><![CDATA[<a href="{author_link}">{author_name}</a> changed due date to <b>{value}</b>]]></string>
+    <string name="_bx_tasks_txt_msg_edit_state"><![CDATA[<a href="{author_link}">{author_name}</a> changed state to <b>{value}</b>]]></string>
+    <string name="_bx_tasks_txt_msg_completed"><![CDATA[<a href="{author_link}">{author_name}</a> completed the task]]></string>
+    <string name="_bx_tasks_txt_msg_uncompleted"><![CDATA[<a href="{author_link}">{author_name}</a> re-opened the task]]></string>
 
     <!-- Notifications -->
     <string name="_bx_tasks_alert_action_completed_personal"><![CDATA[Complete task]]></string>

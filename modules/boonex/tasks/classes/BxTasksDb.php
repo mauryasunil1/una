@@ -148,7 +148,7 @@ class BxTasksDb extends BxBaseModTextDb
     {
         $CNF = $this->_oConfig->CNF;
 
-        $aResult = $this->getColumn("SELECT `id` FROM `" . $CNF['TABLE_ENTRIES'] . "` WHERE `" . $CNF['FIELD_DUEDATE'] . "` < UNIX_TIMESTAMP()  AND `" . $CNF['FIELD_EXPIRED'] . "` = '0'");
+        $aResult = $this->getColumn("SELECT `id` FROM `" . $CNF['TABLE_ENTRIES'] . "` WHERE `" . $CNF['FIELD_DUE_DATE'] . "` < UNIX_TIMESTAMP()  AND `" . $CNF['FIELD_EXPIRED'] . "` = '0'");
         if(empty($aResult) || !is_array($aResult))
             return false;
 

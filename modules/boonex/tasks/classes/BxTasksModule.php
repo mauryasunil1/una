@@ -258,7 +258,9 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
                 return echoJson(['msg' => _t('_bx_tasks_txt_err_cannot_perform_action')]);
 
             if(($sMethod = '_onEdit' . bx_gen_method_name($sProperty)) && method_exists($this, $sMethod))
-                $this->$sMethod($iContentId, $oForm);
+                $this->$sMethod($aContentInfo, $oForm);
+            else
+                $this->_onEditProperty($aContentInfo, $sProperty, $oForm);
 
             return echoJson([
                 'eval' => $this->_oConfig->getJsObject('tasks') . '.reload(oData)',
@@ -277,19 +279,6 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
 
             return echoJson(['form' => $sContent, 'form_id' => $oForm->getId()]);
         }
-    }
-
-    protected function _onEditState($iContentId, &$oForm)
-    {
-        $CNF = &$this->_oConfig->CNF;
-
-        $iState = $oForm->getCleanValue($CNF['FIELD_STATE']);
-
-        $this->_oDb->updateEntriesBy([
-            $CNF['FIELD_COMPLETED'] => (int)$this->_oConfig->isCompleted($iState)
-        ], [
-            $CNF['FIELD_ID'] => $iContentId
-        ]);
     }
 
     public function actionCalendarData()
@@ -771,6 +760,60 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
 
         return (bool)$aContentInfo[$CNF['FIELD_COMPLETED']];
+    }
+
+    public function logActivity($iContentId, $aMessage)
+    {
+        $CNF = &$this->_oConfig->CNF;
+        
+        $oCmts = BxDolCmts::getObjectInstance($CNF['OBJECT_COMMENTS'], $iContentId);
+        if(!$oCmts || !$oCmts->isEnabled())
+            return false;
+
+        if(($oAuthor = BxDolProfile::getInstance()) !== false)
+            $aMessage['markers'] = array_merge($aMessage['markers'] ?? [], [
+                'author_link' => $oAuthor->getUrl(),
+                'author_name' => $oAuthor->getDisplayName(),
+            ]);
+
+        return $oCmts->addAuto($aMessage);
+    }
+
+    /**
+     * Internal methods
+     */
+    protected function _onEditProperty($aContentInfo, $sProperty, &$oForm)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $iContentId = (int)$aContentInfo[$CNF['FIELD_ID']];
+
+        $mixedValue = $oForm->getCleanValue($CNF['FIELD_' . strtoupper($sProperty)]);
+        if(($sMethod = 'get' . bx_gen_method_name($sProperty) . 'Title') && method_exists($this->_oConfig, $sMethod))
+            $mixedValue = $this->_oConfig->$sMethod($mixedValue);
+
+        $this->logActivity($iContentId, ['key' => '_bx_tasks_txt_msg_edit_' . $sProperty, 'markers' => ['value' => $mixedValue]]);
+    }
+
+    protected function _onEditState($aContentInfo, &$oForm)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $iContentId = (int)$aContentInfo[$CNF['FIELD_ID']];
+
+        $iState = $oForm->getCleanValue($CNF['FIELD_STATE']);
+        $this->logActivity($iContentId, ['key' => '_bx_tasks_txt_msg_edit_state', 'markers' => ['value' => $this->_oConfig->getStateTitle($iState)]]);
+
+        $iCompleted = (int)$this->_oConfig->isCompleted($iState);
+        if($iCompleted != (int)$this->_oConfig->isCompleted($aContentInfo[$CNF['FIELD_STATE']])) {
+            $this->_oDb->updateEntriesBy([
+                $CNF['FIELD_COMPLETED'] => $iCompleted,
+            ], [
+                $CNF['FIELD_ID'] => $iContentId
+            ]);
+
+            $this->logActivity($iContentId, ['key' => '_bx_tasks_txt_msg_' . ($iCompleted ? '' : 'un') . 'completed']);
+        }
     }
 }
 
