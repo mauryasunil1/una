@@ -861,7 +861,9 @@ class BxDolForm extends BxDol implements iBxDolReplaceable
 
             // init form with submitted data, overwrite prevously declared values
 
-            $oChecker->enableFormCsrfChecking(isset($this->aParams['csrf']['disable']) && $this->aParams['csrf']['disable'] === true ? false : true);
+            $bViewMode = isset($this->aParams['view_mode']) && (int)$this->aParams['view_mode'] == 1;
+            $bCsrfDisabled = isset($this->aParams['csrf']['disable']) && $this->aParams['csrf']['disable'] === true;
+            $oChecker->enableFormCsrfChecking(!$bViewMode && !$bCsrfDisabled);
 
             $this->_isValid = $oChecker->check($this->aInputs, $aValues);
 
