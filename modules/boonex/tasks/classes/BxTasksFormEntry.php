@@ -17,6 +17,8 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
 
     protected $_sGhostTemplateCover = 'form_ghost_template_cover.html';
 
+    protected $_aProperties;
+
     public function __construct($aInfo, $oTemplate = false)
     {
         $this->MODULE = 'bx_tasks';
@@ -74,6 +76,8 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
             $this->aInputs[$CNF['FIELD_FILE']]['ghost_template'] = '';
             $this->aInputs[$CNF['FIELD_FILE']]['tr_attrs'] = array('class'=> 'bx-base-text-attachment-item');
         }
+
+        $this->_aProperties = $this->_oModule->_oConfig->getProperties();
     }
 
     public function setContextId($iContextId)
@@ -84,9 +88,9 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
     public function genViewRowValue(&$aInput)
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
-
+        
         $sValue = parent::genViewRowValue($aInput);
-        if($this->_oModule->isAllowManage($this->_iContentId) && in_array($aInput['name'], [$CNF['FIELD_TYPE'], $CNF['FIELD_PRIORITY'], $CNF['FIELD_ESTIMATE'], $CNF['FIELD_DUE_DATE'], $CNF['FIELD_STATE']]))
+        if($this->_oModule->isAllowManage($this->_iContentId) && !empty($aInput['name']) && in_array($aInput['name'], $this->_aProperties))
             $sValue = $this->_oModule->_oTemplate->parseLink('javascript:void(0)', $sValue ?: _t('_undefined'), [
                 'onclick' => 'javascript:' . $this->_oModule->_oConfig->getJsObject('tasks') . '.processTaskEdit' . bx_gen_method_name($aInput['name']) . '(' . $this->_iContentId . ', this)'
             ]);

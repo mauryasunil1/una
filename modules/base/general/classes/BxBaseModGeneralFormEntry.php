@@ -963,7 +963,7 @@ class BxBaseModGeneralFormEntry extends BxTemplFormView
     function genViewRowWrapped(&$aInput)
     {
         $sResult = parent::genViewRowWrapped($aInput);
-        if(!$aInput['rateable'])
+        if(empty($aInput['rateable']))
             return $sResult;
 
         $sValue = $this->genViewRowValue($aInput);

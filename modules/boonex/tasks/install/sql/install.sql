@@ -543,7 +543,7 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 
 -- FORMS: time
 INSERT INTO `sys_objects_form` (`object`, `module`, `title`, `action`, `form_attrs`, `submit_name`, `table`, `key`, `uri`, `uri_title`, `params`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES
-('bx_tasks_time', 'bx_tasks', '_bx_tasks_form_time', 'report.php', 'a:3:{s:2:"id";s:0:"";s:4:"name";s:0:"";s:5:"class";s:17:"bx-report-do-form";}', 'submit', '', 'id', '', '', '', 0, 1, '', '');
+('bx_tasks_time', 'bx_tasks', '_bx_tasks_form_time', 'report.php', 'a:3:{s:2:"id";s:0:"";s:4:"name";s:0:"";s:5:"class";s:17:"bx-report-do-form";}', 'submit', '', 'id', '', '', '', 0, 1, 'BxTasksFormTime', 'modules/boonex/tasks/classes/BxTasksFormTime.php');
 
 INSERT INTO `sys_form_displays` (`display_name`, `module`, `object`, `title`, `view_mode`) VALUES
 ('bx_tasks_time_add', 'bx_tasks', 'bx_tasks_time', '_bx_tasks_form_display_time_add', 0),
@@ -554,9 +554,9 @@ INSERT INTO `sys_form_inputs` (`object`, `module`, `name`, `value`, `values`, `c
 ('bx_tasks_time', 'bx_tasks', 'object_id', '', '', 0, 'hidden', '_bx_tasks_form_time_input_sys_object_id', '_bx_tasks_form_time_input_object_id', '', 0, 0, 0, '', '', '', '', '', '', 'Int', '', 0, 0),
 ('bx_tasks_time', 'bx_tasks', 'action', '', '', 0, 'hidden', '_bx_tasks_form_time_input_sys_action', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0),
 ('bx_tasks_time', 'bx_tasks', 'value', '', 'value_h,value_div,value_m', 0, 'input_set', '_bx_tasks_form_time_input_sys_value', '_bx_tasks_form_time_input_value', '', 1, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
-('bx_tasks_time', 'bx_tasks', 'value_h', '', '', 0, 'text', '_bx_tasks_form_time_input_sys_value_h', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
+('bx_tasks_time', 'bx_tasks', 'value_h', '', '', 0, 'text', '_bx_tasks_form_time_input_sys_value_h', '', '', 0, 0, 0, 'a:1:{s:11:"placeholder";s:45:"_bx_tasks_form_time_input_value_h_placeholder";}', '', '', '', '', '', '', '', 1, 0),
 ('bx_tasks_time', 'bx_tasks', 'value_div', '_bx_tasks_form_time_input_value_div', '', 0, 'value', '_bx_tasks_form_time_input_sys_value_div', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
-('bx_tasks_time', 'bx_tasks', 'value_m', '', '', 0, 'text', '_bx_tasks_form_time_input_sys_value_m', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
+('bx_tasks_time', 'bx_tasks', 'value_m', '', '', 0, 'text', '_bx_tasks_form_time_input_sys_value_m', '', '', 0, 0, 0, 'a:1:{s:11:"placeholder";s:45:"_bx_tasks_form_time_input_value_m_placeholder";}', '', '', '', '', '', '', '', 1, 0),
 ('bx_tasks_time', 'bx_tasks', 'value_date', '', '', 0, 'datepicker', '_bx_tasks_form_time_input_sys_value_date', '_bx_tasks_form_time_input_value_date', '_bx_tasks_form_time_input_value_date_inf', 0, 0, 0, '', '', '', '', '', '', 'DateUtc', '', 1, 0),
 ('bx_tasks_time', 'bx_tasks', 'text', '', '', 0, 'textarea', '_bx_tasks_form_time_input_sys_text', '_bx_tasks_form_time_input_text', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 1, 0),
 ('bx_tasks_time', 'bx_tasks', 'submit', '_bx_tasks_form_time_input_submit', '', 0, 'submit', '_bx_tasks_form_time_input_sys_submit', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0),

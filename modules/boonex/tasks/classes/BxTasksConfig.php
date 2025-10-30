@@ -12,6 +12,8 @@ bx_import('BxDolInformer');
 
 class BxTasksConfig extends BxBaseModTextConfig
 {
+    protected $_aProperties;
+
     function __construct($aModule)
     {
         parent::__construct($aModule);
@@ -250,13 +252,26 @@ class BxTasksConfig extends BxBaseModTextConfig
         ]);
 
         $this->_bAttachmentsInTimeline = true;
+
+        $this->_aProperties = [
+            $this->CNF['FIELD_TYPE'], 
+            $this->CNF['FIELD_PRIORITY'], 
+            $this->CNF['FIELD_ESTIMATE'], 
+            $this->CNF['FIELD_DUE_DATE'], 
+            $this->CNF['FIELD_STATE']
+        ];
     }
 
     public function isCompleted($iState)
     {
         return in_array($iState, [BX_TASKS_STATE_CANCELLED, BX_TASKS_STATE_DUPLICATE, BX_TASKS_STATE_DONE]);
     }
-    
+
+    public function getProperties()
+    {
+        return $this->_aProperties;
+    }
+
     public function getTypeTitle($iValue)
     {
         $aItems = BxDolFormQuery::getDataItems($this->CNF['OBJECT_PRE_LIST_TYPES'], false, BX_DATA_VALUES_ALL);

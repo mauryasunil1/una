@@ -117,9 +117,11 @@
     <string name="_bx_tasks_form_time_input_value"><![CDATA[Time]]></string>
     <string name="_bx_tasks_form_time_input_value_err"><![CDATA[If you want to log some time fill this field in.]]></string>
     <string name="_bx_tasks_form_time_input_sys_value_h"><![CDATA[Time: Hours]]></string>
+    <string name="_bx_tasks_form_time_input_value_h_placeholder"><![CDATA[hours]]></string>
     <string name="_bx_tasks_form_time_input_sys_value_div"><![CDATA[Time: Divider]]></string>
     <string name="_bx_tasks_form_time_input_value_div"><![CDATA[<div>:</div>]]></string>
     <string name="_bx_tasks_form_time_input_sys_value_m"><![CDATA[Time: Minutes]]></string>
+    <string name="_bx_tasks_form_time_input_value_m_placeholder"><![CDATA[minutes]]></string>
     <string name="_bx_tasks_form_time_input_sys_value_date"><![CDATA[Date]]></string>
     <string name="_bx_tasks_form_time_input_value_date"><![CDATA[Date]]></string>
     <string name="_bx_tasks_form_time_input_value_date_inf"><![CDATA[Leave empty to use today date.]]></string>

@@ -117,9 +117,11 @@
     <string name="_bx_tasks_form_time_input_value"><![CDATA[Время]]></string>
     <string name="_bx_tasks_form_time_input_value_err"><![CDATA[Если Вы хотите внести временя, заполните это поле.]]></string>
     <string name="_bx_tasks_form_time_input_sys_value_h"><![CDATA[Время: Часы]]></string>
+    <string name="_bx_tasks_form_time_input_value_h_placeholder"><![CDATA[часы]]></string>
     <string name="_bx_tasks_form_time_input_sys_value_div"><![CDATA[Время: Разделитель]]></string>
     <string name="_bx_tasks_form_time_input_value_div"><![CDATA[<div>:</div>]]></string>
     <string name="_bx_tasks_form_time_input_sys_value_m"><![CDATA[Время: Минуты]]></string>
+    <string name="_bx_tasks_form_time_input_value_m_placeholder"><![CDATA[минуты]]></string>
     <string name="_bx_tasks_form_time_input_sys_value_date"><![CDATA[Дата]]></string>
     <string name="_bx_tasks_form_time_input_value_date"><![CDATA[Дата]]></string>
     <string name="_bx_tasks_form_time_input_value_date_inf"><![CDATA[Оставьте поле пустым, чтобы использовать сегодняшнюю дату.]]></string>

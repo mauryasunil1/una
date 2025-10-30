@@ -114,6 +114,9 @@
     margin-top: 1.0rem;
     margin-bottom: 1.0rem;
 }
+.cmts .cmt:last-child {
+    margin-bottom: 1.0rem;
+}
 .cmts .cmt.cmt-auto .cmt-avatar {
     height: 0;
 }
