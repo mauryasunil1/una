@@ -21,8 +21,12 @@ class BxTasksCmts extends BxTemplCmts
 
         $this->_sModule = 'bx_tasks';
         $this->_oModule = BxDolModule::getInstance($this->_sModule);
-        
+
         $this->_iAuthorAuto = (int)getParam('sys_profile_bot');
+
+        $this->_aT = array_merge($this->_aT, [
+            'block_comments_title' => '_bx_tasks_page_block_title_entry_comments'
+        ]);
     }
 
     public function addAuto($aText)
@@ -36,6 +40,20 @@ class BxTasksCmts extends BxTemplCmts
         return $this->add($aValues);
     }
     
+    public function getViewText($mixedItem)
+    {
+        if(!is_array($mixedItem))
+            $mixedItem = $this->getCommentSimple((int)$mixedItem);
+
+        if(empty($mixedItem) || !is_array($mixedItem))
+            return '';
+
+        if($this->_isAutoComment($mixedItem) && isset($mixedItem['cmt_text']))
+            $mixedItem['cmt_text'] = $this->_getAutoCommentText($mixedItem['cmt_text']);
+
+        return $this->_prepareTextForOutput($mixedItem['cmt_text'], (int)$mixedItem['cmt_id']);
+    }
+
     public function getComment($mixedCmt, $aBp = [], $aDp = [])
     {
         $aCmt = !is_array($mixedCmt) ? $this->getCommentRow((int)$mixedCmt) : $mixedCmt;
@@ -81,26 +99,42 @@ class BxTasksCmts extends BxTemplCmts
     {
         $aTmplVarsText = parent::_getTmplVarsText($aCmt);
 
-        if($this->_isAutoComment($aCmt) && isset($aTmplVarsText['text'])) {
-            $aText = json_decode($aTmplVarsText['text'], true);
-
-            $sText = isset($aText['key']) ? _t($aText['key']) : '';
-            if(($aMarkers = $aText['markers'] ?? false) && is_array($aMarkers)) {
-                if(($sValue = $aMarkers['value'] ?? false) && substr($sValue, 0, 1) == '_')
-                    $aMarkers['value'] = _t($sValue);
-    
-                $sText = bx_replace_markers($sText, $aMarkers);
-            }
-
-            $aTmplVarsText['text'] = _t('_bx_tasks_txt_msg_format', $sText, bx_time_js($aCmt['cmt_time'], BX_FORMAT_DATE, true));
-        }
+        if($this->_isAutoComment($aCmt) && isset($aTmplVarsText['text']))
+            $aTmplVarsText['text'] = $this->_getAutoCommentText($aTmplVarsText['text'], $aCmt['cmt_time']);
 
         return $aTmplVarsText;
+    }
+
+    protected function _prepareAlertParams($aCmt)
+    {
+        $aResult = parent::_prepareAlertParams($aCmt);
+        if($this->_isAutoComment($aCmt) && isset($aResult['comment_text']))
+            $aResult['comment_text'] = $this->_getAutoCommentText($aTmplVarsText['text']);
+
+        return $aResult;
     }
 
     protected function _isAutoComment($aCmt)
     {
         return (int)$aCmt['cmt_author_id'] == $this->_iAuthorAuto;
+    }
+
+    protected function _getAutoCommentText($sTextCode, $iDate = false)
+    {
+        $aText = json_decode($sTextCode, true);
+
+        $sText = isset($aText['key']) ? _t($aText['key']) : '';
+        if(($aMarkers = $aText['markers'] ?? false) && is_array($aMarkers)) {
+            if(($sValue = $aMarkers['value'] ?? false) && substr($sValue, 0, 1) == '_')
+                $aMarkers['value'] = _t($sValue);
+
+            $sText = bx_replace_markers($sText, $aMarkers);
+        }
+
+        if($iDate !== false)
+            $sText = _t('_bx_tasks_txt_msg_format', $sText, bx_time_js((int)$iDate, BX_FORMAT_DATE, true));
+
+        return $sText;
     }
 }
 

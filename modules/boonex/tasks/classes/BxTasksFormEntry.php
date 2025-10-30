@@ -87,8 +87,6 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
 
     public function genViewRowValue(&$aInput)
     {
-        $CNF = &$this->_oModule->_oConfig->CNF;
-        
         $sValue = parent::genViewRowValue($aInput);
         if($this->_oModule->isAllowManage($this->_iContentId) && !empty($aInput['name']) && in_array($aInput['name'], $this->_aProperties))
             $sValue = $this->_oModule->_oTemplate->parseLink('javascript:void(0)', $sValue ?: _t('_undefined'), [

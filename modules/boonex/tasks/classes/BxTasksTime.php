@@ -128,7 +128,7 @@ class BxTasksTime extends BxTemplReport
         $iValue = $this->_oModule->_oConfig->timeA2I([$iVh, $iVm]);
 
         $sText = $this->_bApi ? $aParams['text'] : $oForm->getCleanValue('text');
-        $sText = bx_process_input($sText, BX_DATA_TEXT_MULTILINE);
+        $sText = bx_process_input($sText);
 
         $iId = (int)$oForm->insert(['object_id' => $iObjectId, 'author_id' => $iAuthorId, 'author_nip' => $iAuthorNip, 'value' => $iValue,  'text' => $sText,  'date' => time()]);
         if($iId != 0 && $this->putReport($iObjectId, $iAuthorId, $iId)) {
