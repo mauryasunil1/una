@@ -1810,16 +1810,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v18.0.0",
+            "version": "v18.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "70d6c286f0eca002b60ccd62afa7140c43c14bbb"
+                "reference": "1fd80dbcf1add025d66284c5be4e80255b8d51f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/70d6c286f0eca002b60ccd62afa7140c43c14bbb",
-                "reference": "70d6c286f0eca002b60ccd62afa7140c43c14bbb",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/1fd80dbcf1add025d66284c5be4e80255b8d51f0",
+                "reference": "1fd80dbcf1add025d66284c5be4e80255b8d51f0",
                 "shasum": ""
             },
             "require": {
@@ -1863,9 +1863,9 @@
             ],
             "support": {
                 "issues": "https://github.com/stripe/stripe-php/issues",
-                "source": "https://github.com/stripe/stripe-php/tree/v18.0.0"
+                "source": "https://github.com/stripe/stripe-php/tree/v18.1.0"
             },
-            "time": "2025-09-30T22:56:22+00:00"
+            "time": "2025-10-29T22:46:48+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -1976,16 +1976,16 @@
         },
         {
             "name": "twilio/sdk",
-            "version": "8.8.4",
+            "version": "8.8.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twilio/twilio-php",
-                "reference": "8bcc603a4cf92b7f268a97662e9185c0ec31dda5"
+                "reference": "248dce83f5a0a21905cd4bf445080252cb04a8a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/8bcc603a4cf92b7f268a97662e9185c0ec31dda5",
-                "reference": "8bcc603a4cf92b7f268a97662e9185c0ec31dda5",
+                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/248dce83f5a0a21905cd4bf445080252cb04a8a6",
+                "reference": "248dce83f5a0a21905cd4bf445080252cb04a8a6",
                 "shasum": ""
             },
             "require": {
@@ -2022,7 +2022,7 @@
                 "sms",
                 "twilio"
             ],
-            "time": "2025-10-14T11:55:16+00:00"
+            "time": "2025-10-28T10:01:47+00:00"
         },
         {
             "name": "unaio/amazon-s3-php-class-hmac-v2",
