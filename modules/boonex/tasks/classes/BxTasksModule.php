@@ -53,55 +53,12 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         echo(json_encode($a));
     }
           
-    public function actionSetCompleted($iContentId, $iValue)
+    public function actionSetCompleted($iContentId, $iCompleted)
     {
-        if (!$this->isAllowManage($iContentId))
-            return;
-        
-        $CNF = &$this->_oConfig->CNF;
+        if(!$this->isAllowManage($iContentId) || !$this->complete($iContentId, $iCompleted))
+            return echoJson(['code' => 1]);
 
-        $this->_oDb->updateEntriesBy(array($CNF['FIELD_COMPLETED'] => $iValue), array($CNF['FIELD_ID'] => (int)$iContentId));
-
-        $sActionName = 'completed';
-        if($iValue == '0')
-            $sActionName = 'reopened';
-
-        $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
-
-        $iContentAuthor = (int)$aContentInfo[$CNF['FIELD_AUTHOR']];
-        /**
-         * @hooks
-         * @hookdef hook-bx_tasks-completed 'bx_tasks', 'completed' - hook on task unassigned to profile
-         * - $unit_name - equals `bx_tasks`
-         * - $action - can be `completed` or `reopened`
-         * - $object_id - task id 
-         * - $sender_id - not used 
-         * - $extra_params - array of additional params with the following array keys:
-         *      - `object_author_id` - [int] profile_id for task's author
-         *      - `privacy_view` - [string] privacy view value
-         * @hook @ref hook-bx_tasks-completed
-         */
-        bx_alert($this->getName(), $sActionName, $iContentId, false, array(
-            'object_author_id' => $iContentAuthor,
-            'privacy_view' => $aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]
-        ));
-
-        $oConnection = BxDolConnection::getObjectInstance($CNF['OBJECT_CONNECTION']);
-        if($oConnection) {
-            $aProfileIds = $oConnection->getConnectedContent($iContentId);
-            if(!empty($aProfileIds) && is_array($aProfileIds))
-                foreach($aProfileIds as $iProfileId) {
-                    if($iProfileId == $iContentAuthor)
-                        continue;
-
-                    bx_alert($this->getName(), $sActionName, $iContentId, false, array(
-                        'object_author_id' => $iProfileId,
-                        'privacy_view' => $aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]
-                    ));
-                }
-        }
-
-        echo 'ok';
+        return echoJson(['code' => 0, 'reload' => 1]);
     }
 	
     public function actionSetFilterValue($iListId, $sValue)
@@ -762,6 +719,54 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         return (bool)$aContentInfo[$CNF['FIELD_COMPLETED']];
     }
 
+    public function complete($iContentId, $iCompleted)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $iCompleted = (int)$iCompleted;
+        $this->_oDb->updateEntriesBy([$CNF['FIELD_COMPLETED'] => $iCompleted], [$CNF['FIELD_ID'] => (int)$iContentId]);
+
+        $sModule = $this->getName();
+        $sAction = !$iCompleted ? 'reopened' : 'completed';
+
+        $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
+        $iContentAuthor = (int)$aContentInfo[$CNF['FIELD_AUTHOR']];
+        /**
+         * @hooks
+         * @hookdef hook-bx_tasks-completed 'bx_tasks', 'completed' - hook on task unassigned to profile
+         * - $unit_name - equals `bx_tasks`
+         * - $action - can be `completed` or `reopened`
+         * - $object_id - task id 
+         * - $sender_id - not used 
+         * - $extra_params - array of additional params with the following array keys:
+         *      - `object_author_id` - [int] profile_id for task's author
+         *      - `privacy_view` - [string] privacy view value
+         * @hook @ref hook-bx_tasks-completed
+         */
+        bx_alert($sModule, $sAction, $iContentId, false, array(
+            'object_author_id' => $iContentAuthor,
+            'privacy_view' => $aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]
+        ));
+
+        if(($oConnection = BxDolConnection::getObjectInstance($CNF['OBJECT_CONNECTION'])) !== false) {
+            $aProfileIds = $oConnection->getConnectedContent($iContentId);
+            if(!empty($aProfileIds) && is_array($aProfileIds))
+                foreach($aProfileIds as $iProfileId) {
+                    if($iProfileId == $iContentAuthor)
+                        continue;
+
+                    bx_alert($sModule, $sAction, $iContentId, false, array(
+                        'object_author_id' => $iProfileId,
+                        'privacy_view' => $aContentInfo[$CNF['FIELD_ALLOW_VIEW_TO']]
+                    ));
+                }
+        }
+
+        $this->logActivity($iContentId, ['key' => '_bx_tasks_txt_msg_' . ($iCompleted ? '' : 'un') . 'completed']);
+
+        return true;
+    }
+
     public function logActivity($iContentId, $aMessage)
     {
         $CNF = &$this->_oConfig->CNF;
@@ -805,15 +810,8 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         $this->logActivity($iContentId, ['key' => '_bx_tasks_txt_msg_edit_state', 'markers' => ['value' => $this->_oConfig->getStateTitle($iState)]]);
 
         $iCompleted = (int)$this->_oConfig->isCompleted($iState);
-        if($iCompleted != (int)$this->_oConfig->isCompleted($aContentInfo[$CNF['FIELD_STATE']])) {
-            $this->_oDb->updateEntriesBy([
-                $CNF['FIELD_COMPLETED'] => $iCompleted,
-            ], [
-                $CNF['FIELD_ID'] => $iContentId
-            ]);
-
-            $this->logActivity($iContentId, ['key' => '_bx_tasks_txt_msg_' . ($iCompleted ? '' : 'un') . 'completed']);
-        }
+        if($iCompleted != (int)$this->_oConfig->isCompleted($aContentInfo[$CNF['FIELD_STATE']]))
+            $this->complete($iContentId, $iCompleted);
     }
 }
 

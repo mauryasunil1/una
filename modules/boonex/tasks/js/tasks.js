@@ -21,20 +21,24 @@ BxTasksView.prototype.init = function () {
 };
 
 BxTasksView.prototype.setCompleted = function (iId, oObj) {
-    var $this = this;
     var iVal = ($(oObj).prop('checked') ? 1 : 0);
-    $this._setCompleted(iId, iVal);
+
+    this._setCompleted(iId, iVal);
 };
 
 BxTasksView.prototype.setCompletedByMenu = function (iId, iValue, oObj) {
-    var $this = this;
     $(oObj).addClass('bx-btn-disabled');
-    $this._setCompleted(iId, iValue);
-    document.location.reload(true);
+
+    this._setCompleted(iId, iValue, function(oData) {
+        processJsonData(oData);
+    });
 };
 
-BxTasksView.prototype._setCompleted = function (iId, iValue) {
-    $.getJSON(this._oOptions.sActionUrl + 'set_completed/' + iId + '/' + iValue + '/', {}, function() {});
+BxTasksView.prototype._setCompleted = function (iId, iValue, onComplete) {
+    $.getJSON(this._oOptions.sActionUrl + 'set_completed/' + iId + '/' + iValue + '/', function(oData) {
+        if(typeof onComplete === 'function')
+            onComplete(oData);
+    });
 };
 	
 BxTasksView.prototype.processTaskList = function (iContextId, iId, obj) {

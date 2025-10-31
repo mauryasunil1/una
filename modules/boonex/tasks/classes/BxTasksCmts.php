@@ -109,7 +109,7 @@ class BxTasksCmts extends BxTemplCmts
     {
         $aResult = parent::_prepareAlertParams($aCmt);
         if($this->_isAutoComment($aCmt) && isset($aResult['comment_text']))
-            $aResult['comment_text'] = $this->_getAutoCommentText($aTmplVarsText['text']);
+            $aResult['comment_text'] = $this->_getAutoCommentText($aResult['comment_text']);
 
         return $aResult;
     }
