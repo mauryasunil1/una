@@ -468,13 +468,7 @@ class BxBaseCmts extends BxDolCmts
             'header' => $sHeader,
             'content' => $sContent,
             'actions' => $sActions,
-            'bx_if:show_replies' => [
-                'condition' => !empty($sReplies),
-                'content' => [
-                    'style_prefix' => $this->_sStylePrefix,
-                    'replies' =>  $sReplies,
-                ]
-            ],
+            'replies' =>  $sReplies,
         ], $this->_getTmplVarsAuthor($aCmt));
         
         $sResult = $this->_oTemplate->parseHtmlByName($this->_sTmplNameItem, $aVars);
@@ -1621,7 +1615,7 @@ class BxBaseCmts extends BxDolCmts
             return ''; 
 
         $aFiles = $this->_oQuery->getFiles($this->_aSystem['system_id'], $aCmt['cmt_id']);
-        if(!empty($aFiles) && is_array($aFilecounterss)) {
+        if(!empty($aFiles) && is_array($aFiles)) {
             $oStorage = BxDolStorage::getObjectInstance($this->getStorageObjectName());
             $oTranscoder = BxDolTranscoderImage::getObjectInstance($this->getTranscoderPreviewName());
 

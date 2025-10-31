@@ -125,3 +125,6 @@
     margin-top: 0;
     font-size: 0.75rem;
 }
+.cmts .cmt.cmt-auto .cmts.cmts-margin {
+    display: none;
+}
