@@ -71,12 +71,7 @@ class BxBaseStudioAPI extends BxDolStudioAPI
             'api_config'
         ]);
 
-        $this->aPageCss = array_merge($this->aPageCss, $oOptions->getCss(), [BX_DIRECTORY_PATH_PLUGINS_PUBLIC . 'codemirror/|codemirror.css']);
-        $this->aPageJs = array_merge($this->aPageJs, $oOptions->getJs(), ['codemirror/codemirror.min.js']);
-
-        return $oOptions->getCode() . $this->getPageJsCode([
-            'sCodeMirror' => "textarea[name='sys_api_config']"
-        ]);
+        return $oOptions->getCode() . $this->getPageJsCode();
     }
 
     protected function getKeys()
