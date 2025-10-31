@@ -21,6 +21,7 @@ class BxBaseIconsetLucide extends BxBaseIconset
 
         $this->_aMap = [
             'ad' => 'circle-star',
+            'address-book' => 'contact-round',
             'address-card' => 'id-card',
             'angle-double-left' => 'chevrons-left',
             'angle-double-right' => 'chevrons-right',
@@ -108,11 +109,14 @@ class BxBaseIconsetLucide extends BxBaseIconset
             'toolbox' => 'tool-case',
             'trash2' => 'trash-2',
             'unlock-alt' => 'unlock',
+            'user' => 'user-round',
             'user-friends' => 'users',
-            'user-round' => 'user-round',
+            'user-plus' => 'user-round-plus',
             'user-slash' => 'user-x',
+            'user-shield' => 'user-round-search',
+            'user-check' => 'user-round-check',
             'user-times' => 'user-x',
-            'users-round' => 'users-round',
+            'users' => 'users-round',
             'video-camera' => 'video',
         ];
     }
