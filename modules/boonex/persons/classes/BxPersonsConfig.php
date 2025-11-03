@@ -52,6 +52,8 @@ class BxPersonsConfig extends BxBaseModProfileConfig
             'FIELD_COVER_POSITION' => 'cover_data',
             'FIELD_BADGE' => 'badge',
             'FIELD_BADGE_LINK' => 'badge_link',
+            'FIELD_BADGE_LINK_SELECT' => 'badge_link_select',
+            'FIELD_BADGE_LINK_CUSTOM' => 'badge_link_custom',
             'FIELD_BIRTHDAY' => 'birthday',
             'FIELD_ALLOW_VIEW_TO' => 'allow_view_to',
             'FIELD_ALLOW_POST_TO' => 'allow_post_to',

@@ -321,7 +321,8 @@ INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `ch
 ('bx_person', 'bx_persons', 'cover', 'a:1:{i:0;s:21:"bx_persons_cover_crop";}', 'a:1:{s:21:"bx_persons_cover_crop";s:24:"_sys_uploader_crop_title";}', 0, 'files', '_bx_persons_form_profile_input_sys_cover', '_bx_persons_form_profile_input_cover', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0, ''),
 ('bx_person', 'bx_persons', 'picture', 'a:1:{i:0;s:23:"bx_persons_picture_crop";}', 'a:1:{s:23:"bx_persons_picture_crop";s:24:"_sys_uploader_crop_title";}', 0, 'files', '_bx_persons_form_profile_input_sys_picture', '_bx_persons_form_profile_input_picture', '', 0, 0, 0, '', '', '', '', '', '_bx_persons_form_profile_input_picture_err', '', '', 1, 0, ''),
 ('bx_person', 'bx_persons', 'badge', 'a:1:{i:0;s:21:"bx_persons_badge_crop";}', 'a:1:{s:21:"bx_persons_badge_crop";s:24:"_sys_uploader_crop_title";}', 0, 'files', '_bx_persons_form_profile_input_sys_badge', '_bx_persons_form_profile_input_badge', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0, ''),
-('bx_person', 'bx_persons', 'badge_link', '', '', 0, 'text', '_bx_persons_form_profile_input_sys_badge_link', '_bx_persons_form_profile_input_badge_link', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 1, 0, ''),
+('bx_person', 'bx_persons', 'badge_link_select', '', '', 0, 'select', '_bx_persons_form_profile_input_sys_badge_link_select', '_bx_persons_form_profile_input_badge_link_select', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0, ''),
+('bx_person', 'bx_persons', 'badge_link_custom', '', '', 0, 'text', '_bx_persons_form_profile_input_sys_badge_link_custom', '_bx_persons_form_profile_input_badge_link_custom', '', 0, 0, 0, 'a:1:{s:11:"placeholder";s:60:"_bx_persons_form_profile_input_badge_link_custom_placeholder";}', '', '', '', '', '', '', '', 1, 0, ''),
 ('bx_person', 'bx_persons', 'location', '', '', 0, 'location', '_sys_form_input_sys_location', '_sys_form_input_location', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0, ''),
 ('bx_person', 'bx_persons', 'birthday', '0', '', 0, 'datepicker', '_bx_persons_form_profile_input_sys_birthday', '_bx_persons_form_profile_input_birthday', '', 1, 0, 0, '', '', '', 'date_range', 'a:3:{s:3:"min";i:18;s:3:"max";i:99;s:8:"required";b:0;}', '_bx_persons_form_profile_input_birthday_err', 'Date', '', 1, 0, ''),
 ('bx_person', 'bx_persons', 'gender', '', '#!Sex', 0, 'select', '_bx_persons_form_profile_input_sys_gender', '_bx_persons_form_profile_input_gender', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 1, 0, ''),
@@ -378,8 +379,9 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_person_edit_cover', 'do_submit', 2147483647, 1, 8),
 
 ('bx_person_edit_badge', 'badge', 2147483647, 1, 1),
-('bx_person_edit_badge', 'badge_link', 2147483647, 1, 2),
-('bx_person_edit_badge', 'do_submit', 2147483647, 1, 3),
+('bx_person_edit_badge', 'badge_link_select', 2147483647, 1, 2),
+('bx_person_edit_badge', 'badge_link_custom', 2147483647, 0, 3),
+('bx_person_edit_badge', 'do_submit', 2147483647, 1, 4),
 
 ('bx_person_view', 'gender', 2147483647, 1, 1),
 ('bx_person_view', 'birthday', 2147483647, 1, 2),

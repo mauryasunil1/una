@@ -67,6 +67,35 @@ class BxBaseModProfileFormEntry extends BxBaseModGeneralFormEntry
             ];
         }
 
+        if (($sKey = 'FIELD_BADGE_LINK_SELECT') && !empty($CNF[$sKey]) && isset($this->aInputs[$CNF[$sKey]])) {
+            $oProfile = BxDolProfile::getInstance();
+            $iProfile = $oProfile->id();
+
+            $aValues = [
+                ['key' => '', 'value' => _t('_sys_please_select')]
+            ];
+
+            $aContexts = bx_srv('system', 'get_modules_by_type', ['context']);
+            foreach($aContexts as $aContext) {
+                $aCpIds = bx_srv($aContext['name'], 'get_participating_profiles', [$iProfile]);
+                foreach($aCpIds as $iCpId)
+                    if(($sCpLink = $oProfile->getUrl($iCpId)) && ($sCpName = $oProfile->getDisplayName($iCpId)))
+                        $aValues[] = [
+                            'key' => $sCpLink, 
+                            'value' => $sCpName
+                        ];
+            }
+
+            $this->aInputs[$CNF[$sKey]] = array_merge($this->aInputs[$CNF[$sKey]], [
+                'values' => $aValues
+            ]);
+        }
+
+        if (($sKey = 'FIELD_BADGE_LINK_CUSTOM') && !empty($CNF[$sKey]) && isset($this->aInputs[$CNF[$sKey]])) {
+            if(!empty($this->aInputs[$CNF[$sKey]]['attrs']['placeholder']))
+                $this->aInputs[$CNF[$sKey]]['attrs']['placeholder'] = _t($this->aInputs[$CNF[$sKey]]['attrs']['placeholder']);
+        }
+
         foreach ($this->_aImageFields as $sField => $aParams) {
             $this->aInputs[$sField]['storage_object'] = $aParams['storage_object'];
             $this->aInputs[$sField]['uploaders'] = !empty($this->aInputs[$sField]['value']) ? unserialize($this->aInputs[$sField]['value']) : $aParams['uploaders'];
@@ -114,6 +143,22 @@ class BxBaseModProfileFormEntry extends BxBaseModGeneralFormEntry
 
         if(($sField = 'FIELD_STG_TABS') && !empty($CNF[$sField]) && !empty($this->aInputs[$CNF[$sField]]) && is_array($this->aInputs[$CNF[$sField]]) && ($sValue = $this->aInputs[$CNF[$sField]]['value']))
             $this->aInputs[$CNF[$sField]]['value'] = !is_array($sValue) ? explode(',', $sValue) : [];
+
+        if(($sDisplay = 'OBJECT_FORM_ENTRY_DISPLAY_EDIT_BADGE') && !empty($CNF[$sDisplay]) && $this->aParams['display'] == $CNF[$sDisplay]) {
+            $sBadgeLink = $aContentInfo[$CNF['FIELD_BADGE_LINK']] ?? '';
+
+            $bFilledIn = false;
+            if(($sKey = 'FIELD_BADGE_LINK_SELECT') && !empty($CNF[$sKey]) && isset($this->aInputs[$CNF[$sKey]]))
+                foreach($this->aInputs[$CNF[$sKey]]['values'] as $aValue)
+                    if($aValue['key'] == $sBadgeLink) {
+                        $this->aInputs[$CNF[$sKey]]['value'] = $sBadgeLink;
+                        $bFilledIn = true;
+                        break;
+                    }
+    
+            if(!$bFilledIn && ($sKey = 'FIELD_BADGE_LINK_CUSTOM') && !empty($CNF[$sKey]) && isset($this->aInputs[$CNF[$sKey]]))
+                $this->aInputs[$CNF[$sKey]]['value'] = $sBadgeLink;
+        }
     }
 
     function update ($iContentId, $aValsToAdd = array(), &$aTrackTextFieldsChanges = null)
@@ -124,6 +169,10 @@ class BxBaseModProfileFormEntry extends BxBaseModGeneralFormEntry
             $mixedValue = $this->getCleanValue($CNF[$sField]);
             if(is_array($mixedValue))
                 self::setSubmittedValue($CNF[$sField], implode(',', $mixedValue), $this->aFormAttrs['method']);
+        }
+
+        if((($sFldS = 'FIELD_BADGE_LINK_SELECT') && !empty($CNF[$sFldS]) && ($sValS = $this->getCleanValue($CNF[$sFldS]))) || (($sFldC = 'FIELD_BADGE_LINK_CUSTOM') && !empty($CNF[$sFldC]) && ($sValC = $this->getCleanValue($CNF[$sFldC])))) {
+            $aValsToAdd[$CNF['FIELD_BADGE_LINK']] = $sValS ?: ($sValC ?: '');
         }
 
         return parent::update($iContentId, $aValsToAdd, $aTrackTextFieldsChanges);
