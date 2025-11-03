@@ -381,7 +381,8 @@ INSERT INTO `sys_form_inputs`(`object`, `module`, `name`, `value`, `values`, `ch
 ('bx_organization', 'bx_organizations', 'cover', 'a:1:{i:0;s:27:"bx_organizations_cover_crop";}', 'a:1:{s:27:"bx_organizations_cover_crop";s:24:"_sys_uploader_crop_title";}', 0, 'files', '_bx_orgs_form_profile_input_sys_cover', '_bx_orgs_form_profile_input_cover', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_organization', 'bx_organizations', 'picture', 'a:1:{i:0;s:29:"bx_organizations_picture_crop";}', 'a:1:{s:29:"bx_organizations_picture_crop";s:24:"_sys_uploader_crop_title";}', 0, 'files', '_bx_orgs_form_profile_input_sys_picture', '_bx_orgs_form_profile_input_picture', '', 0, 0, 0, '', '', '', '', '', '_bx_orgs_form_profile_input_picture_err', '', '', 1, 0),
 ('bx_organization', 'bx_organizations', 'badge', 'a:1:{i:0;s:27:"bx_organizations_badge_crop";}', 'a:1:{s:27:"bx_organizations_badge_crop";s:24:"_sys_uploader_crop_title";}', 0, 'files', '_bx_orgs_form_profile_input_sys_badge', '_bx_orgs_form_profile_input_badge', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
-('bx_organization', 'bx_organizations', 'badge_link', '', '', 0, 'text', '_bx_orgs_form_profile_input_sys_badge_link', '_bx_orgs_form_profile_input_badge_link', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 1, 0),
+('bx_organization', 'bx_organizations', 'badge_link_select', '', '', 0, 'select', '_bx_orgs_form_profile_input_sys_badge_link_select', '_bx_orgs_form_profile_input_badge_link_select', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
+('bx_organization', 'bx_organizations', 'badge_link_custom', '', '', 0, 'text', '_bx_orgs_form_profile_input_sys_badge_link_custom', '_bx_orgs_form_profile_input_badge_link_custom', '', 0, 0, 0, 'a:1:{s:11:"placeholder";s:57:"_bx_orgs_form_profile_input_badge_link_custom_placeholder";}', '', '', '', '', '', '', '', 1, 0),
 ('bx_organization', 'bx_organizations', 'location', '', '', 0, 'location', '_sys_form_input_sys_location', '_sys_form_input_location', '', 0, 0, 0, '', '', '', '', '', '', '', '', 1, 0),
 ('bx_organization', 'bx_organizations', 'profile_email', '', '', 0, 'text', '_bx_orgs_form_profile_input_sys_profile_email', '_bx_orgs_form_profile_input_profile_email', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
 ('bx_organization', 'bx_organizations', 'profile_status', '', '', 0, 'custom', '_bx_orgs_form_profile_input_sys_profile_status', '_bx_orgs_form_profile_input_profile_status', '', 0, 0, 0, '', '', '', '', '', '', 'Xss', '', 0, 0),
@@ -429,8 +430,9 @@ INSERT INTO `sys_form_display_inputs`(`display_name`, `input_name`, `visible_for
 ('bx_organization_edit_cover', 'do_submit', 2147483647, 1, 2),
 
 ('bx_organization_edit_badge', 'badge', 2147483647, 1, 1),
-('bx_organization_edit_badge', 'badge_link', 2147483647, 1, 2),
-('bx_organization_edit_badge', 'do_submit', 2147483647, 1, 3),
+('bx_organization_edit_badge', 'badge_link_select', 2147483647, 1, 2),
+('bx_organization_edit_badge', 'badge_link_custom', 2147483647, 0, 3),
+('bx_organization_edit_badge', 'do_submit', 2147483647, 1, 4),
 
 ('bx_organization_view', 'org_name', 2147483647, 1, 1),
 ('bx_organization_view', 'org_cat', 2147483647, 1, 2),
