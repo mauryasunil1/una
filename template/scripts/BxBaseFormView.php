@@ -383,134 +383,141 @@ class BxBaseFormView extends BxDolForm
 
         if($this->sCode === false)
             $this->genForm();
-        
+
+        $oIconset = BxDolIconset::getObjectInstance();
+        $oFunctions = BxTemplFunctions::getInstanceWithTemplate($this->oTemplate);
+
         // TODO: process inputs to translate titles, alerts, etc
-        $keysToRemove = [];
-        
-        foreach ($this->aInputs as $key => &$aInput) {
-            if (!isset($aInput['visible_for_levels']) || self::isVisible($aInput)) {
-                $aInput['info'] = strip_tags($aInput['info']);
-                $aInput['error'] = strip_tags($aInput['error']);
 
-                if (isset($aInput['type']) && 'files' == $aInput['type']){
-                    $oStorage = BxDolStorage::getObjectInstance($aInput['storage_object']);
-                    $aInput['ext_allow'] = $oStorage->getObjectData()['ext_allow'];
-                    $aInput['ext_deny'] = $oStorage->getObjectData()['ext_deny'];
-                    $aInput['ghost_template'] = '';
-                    $aInput['value'] = '';
-                    $aInput['values'] = '';
-                    $aInput['values_src'] = '';
-                    if(!empty($aInput['content_id']) && ($sUpr = reset($aInput['uploaders'])) && isset($aInput['storage_object']) && ($sStg = $aInput['storage_object']) && ($oUploader = BxDolUploader::getObjectInstance($sUpr, $sStg, genRndPwd(8))) !== false){
-                        $sData = $oUploader->getGhostsWithOrder((int)bx_get_logged_profile_id(), 'json', $aInput['images_transcoder'], $aInput['content_id']);
-                        if($sData && ($aData = json_decode($sData, true)) && !empty($aData['g']) && is_array($aData['g'])) {
-                            $aInput['values_src'] = array_values($aData['g']);
+        $aInputs = [];
+        foreach($this->aInputs as $sKey => $aInput) {
+            if(isset($aInput['visible_for_levels']) && !self::isVisible($aInput)) 
+                continue;
 
-                            $aGhostIds = [];
-                            array_walk($aData['g'], function($aGhost) use (&$aGhostIds) {
-                                $aGhostIds[] = $aGhost['file_id'];
-                            });
+            list($sIcon, $sIconUrl, $sIconA, $sIconHtml) = $oFunctions->getIcon($aInput['icon'] ?? '');
 
-                            $aInput['value'] = implode(',', $aGhostIds);
+            $aInput['icon'] = $sIcon ? $oIconset->getIcon($sIcon) : ($sIconHtml ? $sIconHtml : '');
+            $aInput['info'] = strip_tags($aInput['info']);
+            $aInput['help'] = strip_tags($aInput['help']);
+            $aInput['error'] = strip_tags($aInput['error']);
+
+            if (isset($aInput['type']) && 'files' == $aInput['type']){
+                $oStorage = BxDolStorage::getObjectInstance($aInput['storage_object']);
+                $aInput['ext_allow'] = $oStorage->getObjectData()['ext_allow'];
+                $aInput['ext_deny'] = $oStorage->getObjectData()['ext_deny'];
+                $aInput['ghost_template'] = '';
+                $aInput['value'] = '';
+                $aInput['values'] = '';
+                $aInput['values_src'] = '';
+                if(!empty($aInput['content_id']) && ($sUpr = reset($aInput['uploaders'])) && isset($aInput['storage_object']) && ($sStg = $aInput['storage_object']) && ($oUploader = BxDolUploader::getObjectInstance($sUpr, $sStg, genRndPwd(8))) !== false){
+                    $sData = $oUploader->getGhostsWithOrder((int)bx_get_logged_profile_id(), 'json', $aInput['images_transcoder'], $aInput['content_id']);
+                    if($sData && ($aData = json_decode($sData, true)) && !empty($aData['g']) && is_array($aData['g'])) {
+                        $aInput['values_src'] = array_values($aData['g']);
+
+                        $aGhostIds = [];
+                        array_walk($aData['g'], function($aGhost) use (&$aGhostIds) {
+                            $aGhostIds[] = $aGhost['file_id'];
+                        });
+
+                        $aInput['value'] = implode(',', $aGhostIds);
+                    }
+                }
+            }
+
+            if (isset($aInput['type']) && 'custom' == $aInput['type']){
+                $sCustomMethod = 'genCustomInput' . $this->_genMethodName($aInput['name']);
+                if (method_exists($this, $sCustomMethod))
+                     $aInput = $this->$sCustomMethod($aInput);
+            }
+
+            if (isset($aInput['type']) && 'block_header' == $aInput['type']){
+                $aInput['name'] = $sKey;
+            }
+
+            if (isset($aInput['type']) && 'block_header' == $aInput['type']){
+                $aInput['name'] = $sKey;
+            }
+
+            if (isset($aInput['type']) && 'location' == $aInput['type']){
+                $oLocation = BxDolLocationField::getObjectInstance(getParam('sys_location_field_default'));
+
+                $aVars = [];
+                foreach(BxDolForm::$LOCATION_INDEXES as $sKey)
+                    $aVars[$sKey] = $oLocation->getLocationVal($aInput, $sKey, $this);
+
+                if(($sLocationString = bx_api_get_location_string($aVars)))
+                    $aVars['location_string'] = $sLocationString;
+
+                $aInput['value'] = $aVars;
+            }
+
+            if (isset($aInput['type']) && 'textarea' == $aInput['type']){
+                if (isset($aInput['value'], $aInput['html']) && (int)$aInput['html'] == 0)
+                    $aInput['value'] = strip_tags($aInput['value']);
+            }
+
+            if (isset($aInput['type'], $aInput['values_src']) && in_array($aInput['type'], ['select', 'select_multiple', 'checkbox_set', 'radio_set']) && strncmp(BX_DATA_LISTS_KEY_PREFIX, $aInput['values_src'], 2) === 0) {
+                $aInput['values'] = array_map(function($sKey) use($aInput) {
+                    return ['key' => $sKey, 'value' => $aInput['values'][$sKey]];
+                }, array_keys($aInput['values']));
+            }
+
+            if(isset($aInput['name']) && in_array($aInput['name'], ['allow_view_to', 'object_privacy_view'])) {
+                $aParams = bx_get('params');
+                if(empty($aParams) || !is_array($aParams))
+                    $aParams = [];
+
+                if(!isset($aParams['context_id']) || ($iContextId = (int)$aParams['context_id']) >= 0) {
+                    $oProfile = BxDolProfile::getInstance();
+
+                    foreach($aInput['values'] as $aValue) {
+                        //--- Selected friends
+                        if(isset($aValue['key']) && (int)$aValue['key'] == BX_DOL_PG_FRIENDS_SELECTED) {
+                            $aIds = BxDolConnection::getObjectInstance('sys_profiles_friends')->getConnectedContent($oProfile->id(), true, 0, 20);
+                            if(!empty($aIds) && is_array($aIds)) {
+                                $aInput['values_friends'] = [];
+                                foreach($aIds as $iId)
+                                    $aInput['values_friends'][] = ['key' => $iId, 'value' => BxDolProfile::getData($iId)];
+                            }
+                        }
+
+                        //--- Selected relations
+                        if(isset($aValue['key']) && (int)$aValue['key'] == BX_DOL_PG_RELATIONS_SELECTED) {
+                            $aIds = BxDolConnection::getObjectInstance('sys_profiles_relations')->getConnectedContent($oProfile->id(), true, 0, 20);
+                            if(!empty($aIds) && is_array($aIds)) {
+                                $aInput['values_relations'] = [];
+                                foreach($aIds as $iId)
+                                    $aInput['values_relations'][] = ['key' => $iId, 'value' => BxDolProfile::getData($iId)];
+                            }
+                        }
+
+                        //--- Selected memberships
+                        if(isset($aValue['key']) && (int)$aValue['key'] == BX_DOL_PG_MEMBERSHIPS_SELECTED) {
+                            $aLevels = BxDolAcl::getInstance()->getMemberships(false, true, true, true);
+                            if(!empty($aLevels) && is_array($aLevels)) {
+                                $aInput['values_memberships'] = [];
+                                foreach($aLevels as $iId => $sTitle)
+                                    $aInput['values_memberships'][] = ['key' => $iId, 'value' => $sTitle];
+                            }
                         }
                     }
                 }
-
-                if (isset($aInput['type']) && 'custom' == $aInput['type']){
-                    $sCustomMethod = 'genCustomInput' . $this->_genMethodName($aInput['name']);
-                    if (method_exists($this, $sCustomMethod))
-                         $aInput = $this->$sCustomMethod($aInput);
-                }
-
-                if (isset($aInput['type']) && 'block_header' == $aInput['type']){
-                    $aInput['name'] = $key;
-                }
-
-                if (isset($aInput['type']) && 'block_header' == $aInput['type']){
-                    $aInput['name'] = $key;
-                }
-
-                if (isset($aInput['type']) && 'location' == $aInput['type']){
-                    $oLocation = BxDolLocationField::getObjectInstance(getParam('sys_location_field_default'));
-
-                    $aVars = [];
-                    foreach(BxDolForm::$LOCATION_INDEXES as $sKey)
-                        $aVars[$sKey] = $oLocation->getLocationVal($aInput, $sKey, $this);
-
-                    if(($sLocationString = bx_api_get_location_string($aVars)))
-                        $aVars['location_string'] = $sLocationString;
-
-                    $aInput['value'] = $aVars;
-                }
-
-                if (isset($aInput['type']) && 'textarea' == $aInput['type']){
-                    if (isset($aInput['value'], $aInput['html']) && (int)$aInput['html'] == 0)
-                        $aInput['value'] = strip_tags($aInput['value']);
-                }
-
-                if (isset($aInput['type'], $aInput['values_src']) && in_array($aInput['type'], ['select', 'select_multiple', 'checkbox_set', 'radio_set']) && strncmp(BX_DATA_LISTS_KEY_PREFIX, $aInput['values_src'], 2) === 0) {
-                    $aInput['values'] = array_map(function($sKey) use($aInput) {
-                        return ['key' => $sKey, 'value' => $aInput['values'][$sKey]];
-                    }, array_keys($aInput['values']));
-                }
-
-                if(isset($aInput['name']) && in_array($aInput['name'], ['allow_view_to', 'object_privacy_view'])) {
-                    $aParams = bx_get('params');
-                    if(empty($aParams) || !is_array($aParams))
-                        $aParams = [];
-
-                    if(!isset($aParams['context_id']) || ($iContextId = (int)$aParams['context_id']) >= 0) {
-                        $oProfile = BxDolProfile::getInstance();
-
-                        foreach($aInput['values'] as $aValue) {
-                            //--- Selected friends
-                            if(isset($aValue['key']) && (int)$aValue['key'] == BX_DOL_PG_FRIENDS_SELECTED) {
-                                $aIds = BxDolConnection::getObjectInstance('sys_profiles_friends')->getConnectedContent($oProfile->id(), true, 0, 20);
-                                if(!empty($aIds) && is_array($aIds)) {
-                                    $aInput['values_friends'] = [];
-                                    foreach($aIds as $iId)
-                                        $aInput['values_friends'][] = ['key' => $iId, 'value' => BxDolProfile::getData($iId)];
-                                }
-                            }
-
-                            //--- Selected relations
-                            if(isset($aValue['key']) && (int)$aValue['key'] == BX_DOL_PG_RELATIONS_SELECTED) {
-                                $aIds = BxDolConnection::getObjectInstance('sys_profiles_relations')->getConnectedContent($oProfile->id(), true, 0, 20);
-                                if(!empty($aIds) && is_array($aIds)) {
-                                    $aInput['values_relations'] = [];
-                                    foreach($aIds as $iId)
-                                        $aInput['values_relations'][] = ['key' => $iId, 'value' => BxDolProfile::getData($iId)];
-                                }
-                            }
-
-                            //--- Selected memberships
-                            if(isset($aValue['key']) && (int)$aValue['key'] == BX_DOL_PG_MEMBERSHIPS_SELECTED) {
-                                $aLevels = BxDolAcl::getInstance()->getMemberships(false, true, true, true);
-                                if(!empty($aLevels) && is_array($aLevels)) {
-                                    $aInput['values_memberships'] = [];
-                                    foreach($aLevels as $iId => $sTitle)
-                                        $aInput['values_memberships'][] = ['key' => $iId, 'value' => $sTitle];
-                                }
-                            }
-                        }
-                    }
-                    else
-                        $aInput = array_merge($aInput, [
-                            'type' => 'hidden',
-                            'value' => $iContextId,
-                            'owner_info' => BxDolProfile::getData(abs($iContextId))
-                        ]);
-                }
+                else
+                    $aInput = array_merge($aInput, [
+                        'type' => 'hidden',
+                        'value' => $iContextId,
+                        'owner_info' => BxDolProfile::getData(abs($iContextId))
+                    ]);
             }
-            else{
-                $keysToRemove[] = $key;
-            }
+
+            $aInputs[$sKey] = $aInput;
         }
-        
-        foreach ($keysToRemove as $key) {
-            unset($this->aInputs[$key]);
-        }
-    
-        return ['inputs' => $this->aInputs, 'attrs' => $this->aFormAttrs, 'params' => $this->aParams];
+
+        return [
+            'inputs' => $aInputs, 
+            'attrs' => $this->aFormAttrs, 
+            'params' => $this->aParams
+        ];
     }
 
     public function getJsClassName()
