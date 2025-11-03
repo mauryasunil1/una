@@ -221,6 +221,14 @@ class BxBaseModGroupsTemplate extends BxBaseModProfileTemplate
 
         return parent::_image($sField, $sTranscodeObject, $sNoImage, $aData, $bSubstituteNoImage);
     }
+
+    protected function _isTemplateWithMeta(string $sTemplateName = 'unit.html'): bool
+    {
+        $bResult = parent::_isTemplateWithMeta($sTemplateName);
+        if (!$bResult && 'unit.html' == $sTemplateName)
+            $bResult = true;
+        return $bResult;
+    }
 }
 
 /** @} */

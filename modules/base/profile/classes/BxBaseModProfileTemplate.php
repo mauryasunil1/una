@@ -870,7 +870,7 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
         return $sImageUrl;
     }
 
-    protected function _isTemplateWithMeta($sTemplateName = 'unit.html')
+    protected function _isTemplateWithMeta(string $sTemplateName = 'unit.html'): bool
     {
         $sResult = '';
         switch($sTemplateName) {
