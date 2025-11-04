@@ -1181,14 +1181,13 @@ class BxBaseModGeneralTemplate extends BxDolModuleTemplate
 
         return array($oPlayer, $oStorage, $aContentInfo, $a);
     }
-    
-    function _getImageSettings($sSettings)
+
+    function _getImageSettings($sField, $sSettings, $sUsage = '')
     {
         $sCoverSettings = '';
-        $aCoverData = json_decode($sSettings, true);
-        if (!empty($aCoverData)){
+        if(($aCoverData = json_decode($sSettings, true)) && is_array($aCoverData))
             $sCoverSettings = 'background-position: ' . $aCoverData['x'] . '% ' . $aCoverData['y'] . '%';
-        }
+
         return $sCoverSettings;
     }
 

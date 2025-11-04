@@ -389,7 +389,7 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
             'condition' => !empty($sImage),
             'content' => array(
                 'entry_image' => $sImage,
-                'image_settings' => $aImageParams['field_position'] ? $this->_getImageSettings($aData[$aImageParams['field_position']]) : '',
+                'image_settings' => $aImageParams['field_position'] ? $this->_getImageSettings($aImageParams['field'], $aData[$aImageParams['field_position']], 'page_cover') : '',
                 'add_class' => $sAddClassPicture,
                 'img_class' => $sAddClassPicture != '' ? 'bx-media-editable-src' : '',
                 'additional_code' => $sAddCode,
@@ -636,7 +636,8 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
         $bBadgesSingle = isset($aParams['badges_single']) ? $aParams['badges_single'] : false;
         $bBadgesCompact = isset($aParams['badges_compact']) ? $aParams['badges_compact'] : false;
 
-        $sCoverData = isset($aData['thumb_data']) ? $aData['thumb_data'] : '';
+        $sCoverData = $aData[$CNF['FIELD_THUMB_POSITION']] ?? '';
+        $sCoverSettings = $this->_getImageSettings($CNF['FIELD_THUMB'], $sCoverData, 'unit_cover');
 
         $aTmplVars = array (
             'class' => $this->_getUnitClass($aData,(isset($aParams['template_name']) ? $aParams['template_name'] : '')),
@@ -680,7 +681,7 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
                     ],
                     'thumb_url' => $sPhotoThumb ? $sPhotoThumb : '',
                     'gallery_url' => $sPhotoGallery ? $sPhotoGallery : '',
-                    'image_settings' => $this->_getImageSettings($sCoverData),
+                    'image_settings' => $sCoverSettings,
                     'strecher' => str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ', 40),
                 ),
             ),

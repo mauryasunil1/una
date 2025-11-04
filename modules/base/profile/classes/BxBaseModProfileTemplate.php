@@ -297,8 +297,9 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
             'badges' => $oModule->serviceGetBadges($iContentId, false, true),
             'thumb_url' => $bThumbUrl ? $sThumbUrl : $this->getImageUrl('no-picture-thumb.png'),
         );
-        
-        $sCoverData = isset($aData['cover_data']) ? $aData['cover_data'] : '';
+
+        $sCoverData = $aData['cover_data'] ?? '';
+        $sCoverSettings = $this->_getImageSettings($CNF['FIELD_COVER'], $sCoverData, 'unit_cover');
 
         return array_merge(array (
             'class' => $this->_getUnitClass($aData, $sTemplate) . (!$bCoverUrl ? ' bx-cover-empty' : ''),
@@ -309,12 +310,12 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
                 'content' => $aTmplVarsThumbnail
             ),
             'cover_url' => $sCoverUrl,
-            'cover_settings' => $this->_getImageSettings($sCoverData),
+            'cover_settings' => $sCoverSettings,
             'bx_if:show_cover' => array(
                 'condition' => $bCoverUrl,
                 'content' => array(
                     'cover_url' => $sCoverUrl,
-                    'cover_settins' => $this->_getImageSettings($sCoverData),
+                    'cover_settins' => $sCoverSettings,
                     'title' => $sTitle,
                 )
             ),
@@ -503,7 +504,7 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
                 'cover_popup_id' => $sCoverPopupId,
                 'cover_url' => $sUrlCover,
                 'unique_id' => $sUniqIdCover,
-                'cover_settins' => isset($CNF['FIELD_COVER_POSITION']) ? $this->_getImageSettings($aData[$CNF['FIELD_COVER_POSITION']]) : '',
+                'cover_settins' => isset($CNF['FIELD_COVER_POSITION']) ? $this->_getImageSettings($CNF['FIELD_COVER'], $aData[$CNF['FIELD_COVER_POSITION']], 'page_cover') : '',
                 'add_class' => $sAddClassCover,
                 'img_class' => $sAddClassCover != '' ? 'bx-media-editable-src' : '',
             ];
@@ -601,7 +602,7 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
                 'picture_avatar_url' => $bUrlAvatar ? $sUrlAvatar : $this->getImageUrl('no-picture-preview.png'),
                 'unique_id' => $sUniqIdPicture,
                 'picture_tweak' => $sPictureTweak, 
-                'cover_settins' => isset($CNF['FIELD_PICTURE_POSITION']) ? $this->_getImageSettings($aData[$CNF['FIELD_PICTURE_POSITION']]) : '',
+                'cover_settins' => isset($CNF['FIELD_PICTURE_POSITION']) ? $this->_getImageSettings($CNF['FIELD_PICTURE'], $aData[$CNF['FIELD_PICTURE_POSITION']], 'page_cover') : '',
                 'picture_href' => (!$CNF['FIELD_PICTURE'] || !$aData[$CNF['FIELD_PICTURE']]) && CHECK_ACTION_RESULT_ALLOWED === $oModule->checkAllowedEdit($aData) ? $sUrlPictureChange : 'javascript:void(0);',
             );
 
@@ -868,6 +869,16 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
             $sImageUrl = bx_is_api() ? '' : $this->getImageUrl(substr($sNoImage, 0, strrpos($sNoImage, '-')) . '.svg');
 
         return $sImageUrl;
+    }
+
+    function _getImageSettings($sField, $sSettings, $sUsage = '')
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        if(isset($CNF['FIELD_COVER']) && $sField == $CNF['FIELD_COVER'] && $sUsage == 'unit_cover')
+            return '';
+
+        return parent::_getImageSettings($sField, $sSettings, $sUsage);
     }
 
     protected function _isTemplateWithMeta($sTemplateName = 'unit.html')
