@@ -121,11 +121,11 @@ class BxStoriesDb extends BxBaseModTextDb
         return $this->getAll("SELECT " . $sSelectClause . " FROM `" . $CNF['TABLE_ENTRIES_MEDIA'] . "` AS `f2e` " . $sJoinClause . " WHERE `f2e`.`content_id` = :id " . $sOrderClause . " " . $sLimitQuery, $aBindings);
     }
 
-    function getMediaBy($aParams = array())
+    public function getMediaBy($aParams = [])
     {
         $CNF = &$this->_oConfig->CNF;
 
-    	$aMethod = array('name' => 'getAll', 'params' => array(0 => 'query', 1 => array()));
+    	$aMethod = ['name' => 'getAll', 'params' => [0 => 'query', 1 => []]];
         $sSelectClause = $sJoinClause = $sWhereClause = $sOrderClause = $sLimitClause = "";
 
         $sSelectClause = "`{$CNF['TABLE_ENTRIES_MEDIA']}`.*";
@@ -136,59 +136,6 @@ class BxStoriesDb extends BxBaseModTextDb
                 $aMethod['params'][1]['id'] = (int)$aParams['id'];
 
                 $sWhereClause .= " AND `{$CNF['TABLE_ENTRIES_MEDIA']}`.`id` = :id";
-                break;
-
-            case 'search_ids':
-                $aMethod['name'] = 'getColumn';
-                
-                $sSelectClause = "`{$CNF['TABLE_ENTRIES_MEDIA']}`.`id`";
-
-                if (!empty($aParams['start']) && !empty($aParams['per_page']))
-                    $sLimitClause = $this->prepareAsString("?, ?", $aParams['start'], $aParams['per_page']);
-                elseif (!empty($aParams['per_page']))
-                    $sLimitClause = $this->prepareAsString("?", $aParams['per_page']);
-
-                $sWhereConditions = "1";
-                foreach($aParams['search_params'] as $sSearchParam => $aSearchParam) {
-                    $sSearchValue = "";
-                    switch ($aSearchParam['operator']) {
-                        case 'like':
-                            $sSearchValue = " LIKE " . $this->escape("%" . $aSearchParam['value'] . "%");
-                            break;
-
-                        case 'in':
-                            $sSearchValue = " IN (" . $this->implode_escape($aSearchParam['value']) . ")";
-                            break;
-
-                        case 'and':
-                            $iResult = 0;
-                            if (is_array($aSearchParam['value']))
-                                foreach ($aSearchParam['value'] as $iValue)
-                                    $iResult |= pow (2, $iValue - 1);
-                            else 
-                                $iResult = (int)$aSearchParam['value'];
-
-                            $sSearchValue = " & " . $iResult . "";
-                            break;
-
-                        default:
-                             $sSearchValue = " " . $aSearchParam['operator'] . " :" . $sSearchParam;
-                             $aMethod['params'][1][$sSearchParam] = $aSearchParam['value'];                             
-                    }
-
-                    $sWhereConditions .= " AND `{$CNF['TABLE_ENTRIES_MEDIA']}`.`" . $sSearchParam . "`" . $sSearchValue;
-                }
-
-                $sWhereClause .= " AND (" . $sWhereConditions . ")"; 
-
-                $sOrderClause .=  "`{$CNF['TABLE_ENTRIES_MEDIA']}`.`id` ASC";
-                break;
-
-            case 'all_ids':
-                $aMethod['name'] = 'getColumn';
-
-                $sSelectClause = "`{$CNF['TABLE_ENTRIES_MEDIA']}`.`id`";
-                $sOrderClause .=  "`{$CNF['TABLE_ENTRIES_MEDIA']}`.`id` ASC";
                 break;
 
             case 'all':
@@ -203,7 +150,7 @@ class BxStoriesDb extends BxBaseModTextDb
             $sLimitClause = 'LIMIT ' . $sLimitClause;
 
         $aMethod['params'][0] = "SELECT " . $sSelectClause . " FROM `{$CNF['TABLE_ENTRIES_MEDIA']}` " . $sJoinClause . " WHERE 1 " . $sWhereClause . " " . $sOrderClause . " " . $sLimitClause;
-		return call_user_func_array(array($this, $aMethod['name']), $aMethod['params']);
+        return call_user_func_array([$this, $aMethod['name']], $aMethod['params']);
     }
     
     public function updateMedia($aParamsSet, $aParamsWhere)

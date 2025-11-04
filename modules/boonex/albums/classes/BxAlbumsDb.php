@@ -123,38 +123,11 @@ class BxAlbumsDb extends BxBaseModTextDb
                 elseif (!empty($aParams['per_page']))
                     $sLimitClause = $this->prepareAsString("?", $aParams['per_page']);
 
-                $sWhereConditions = "1";
-                foreach($aParams['search_params'] as $sSearchParam => $aSearchParam) {
-                    $sSearchValue = "";
-                    switch ($aSearchParam['operator']) {
-                        case 'like':
-                            $sSearchValue = " LIKE " . $this->escape("%" . $aSearchParam['value'] . "%");
-                            break;
-
-                        case 'in':
-                            $sSearchValue = " IN (" . $this->implode_escape($aSearchParam['value']) . ")";
-                            break;
-
-                        case 'and':
-                            $iResult = 0;
-                            if (is_array($aSearchParam['value']))
-                                foreach ($aSearchParam['value'] as $iValue)
-                                    $iResult |= pow (2, $iValue - 1);
-                            else 
-                                $iResult = (int)$aSearchParam['value'];
-
-                            $sSearchValue = " & " . $iResult . "";
-                            break;
-
-                        default:
-                             $sSearchValue = " " . $aSearchParam['operator'] . " :" . $sSearchParam;
-                             $aMethod['params'][1][$sSearchParam] = $aSearchParam['value'];                             
-                    }
-
-                    $sWhereConditions .= " AND `{$CNF['TABLE_FILES2ENTRIES']}`.`" . $sSearchParam . "`" . $sSearchValue;
-                }
-
-                $sWhereClause .= " AND (" . $sWhereConditions . ")"; 
+                BxDolSearchExtended::processParams($aParams['search_params'], [
+                    'table' => $CNF['TABLE_FILES2ENTRIES'],
+                    'bindings' => &$aMethod['params'][1],
+                    'where_clause' => &$sWhereClause
+                ]);
 
                 $sOrderClause .=  "`{$CNF['TABLE_FILES2ENTRIES']}`.`id` ASC";
                 break;
