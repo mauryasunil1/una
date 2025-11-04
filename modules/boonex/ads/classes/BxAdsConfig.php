@@ -305,6 +305,8 @@ class BxAdsConfig extends BxBaseModTextConfig
                 'txt_status_offer' => '_bx_ads_txt_status_offer',
                 'txt_status_sold' => '_bx_ads_txt_status_sold',
                 'form_field_author' => '_bx_ads_form_entry_input_author',
+                'form_field_covers_uploader_simple' => '_bx_ads_form_entry_input_covers_uploader_simple_title',
+                'form_field_covers_uploader_html5' => '_bx_ads_form_entry_input_covers_uploader_html5_title',
             	'grid_action_err_delete' => '_bx_ads_grid_action_err_delete',
             	'grid_txt_account_manager' => '_bx_ads_grid_txt_account_manager',
                 'filter_item_active' => '_bx_ads_grid_filter_item_title_adm_active',

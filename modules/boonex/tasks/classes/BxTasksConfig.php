@@ -216,6 +216,8 @@ class BxTasksConfig extends BxBaseModTextConfig
                 'txt_sample_score_up_single' => '_bx_tasks_txt_sample_score_up_single',
                 'txt_sample_score_down_single' => '_bx_tasks_txt_sample_score_down_single',
                 'form_field_author' => '_bx_tasks_form_entry_input_author',
+                'form_field_covers_uploader_simple' => '_bx_tasks_form_entry_input_covers_uploader_simple_title',
+                'form_field_covers_uploader_html5' => '_bx_tasks_form_entry_input_covers_uploader_html5_title',
             	'filter_item_select_one_filter1' => '_bx_tasks_grid_filter_item_title_tm_select_one_author_id',
                 'filter_item_select_one_filter2' => '_bx_tasks_grid_filter_item_title_tm_select_one_object_id',
             	'menu_item_manage_my' => '_bx_tasks_menu_item_title_manage_my',
