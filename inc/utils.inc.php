@@ -2823,37 +2823,44 @@ function bx_get_context_workspace($bFromCache = true)
     return ($GLOBALS['bxWorkspaceContext'] = array_pop($a));
 }
 
-function bx_content_cache_get($sKey, $iTTL = false)
+function bx_content_cache_get(string $sKey, int|false $iTTL = false): mixed
 {
     if (!getParam('sys_content_cache_enable'))
         return null;
 
     $oCache = bx_content_cache_obj();
-    return $oCache->getData('content_' . $sKey . '_' . bx_site_hash() . '.php', $iTTL);
+    return $oCache->getData(bx_content_cache_key($sKey), $iTTL);
 }
 
-function bx_content_cache_set($sKey, $mixedData, $iTTL = false)
+function bx_content_cache_set(string $sKey, mixed $mixedData, int|false $iTTL = false): bool
 {
     if (!getParam('sys_content_cache_enable'))
         return false;
 
     $oCache = bx_content_cache_obj();
-    return $oCache->setData('content_' . $sKey . '_' . bx_site_hash() . '.php', $mixedData, $iTTL);
+    return (bool)$oCache->setData(bx_content_cache_key($sKey), $mixedData, $iTTL);
 }
 
-function bx_content_cache_del($sKey)
+function bx_content_cache_del(string $sKey): bool
 {
     $oCache = bx_content_cache_obj();
-    return $oCache->delData('content_' . $sKey . '_' . bx_site_hash() . '.php');
+    return (bool)$oCache->delData(bx_content_cache_key($sKey));
 }
 
-function bx_content_cache_del_by_prefix($sPrefix)
+function bx_content_cache_del_by_prefix(string $sPrefix): bool
 {
     $oCache = bx_content_cache_obj();
-    return $oCache->removeAllByPrefix('content_' . $sPrefix);
+    return (bool)$oCache->removeAllByPrefix(bx_content_cache_key($sPrefix, true));
 }
 
-function bx_content_cache_obj()
+function bx_content_cache_key(string $sKey, bool $bPrefixOnly = false): string
+{
+    if ($bPrefixOnly)
+        return 'content_' . $sKey;
+    return 'content_' . $sKey . '_' . bx_lang_name() . '_' . bx_site_hash() . '.php';
+}
+
+function bx_content_cache_obj(): object
 {
     if (isset($GLOBALS['bxCacheContentObj']))
         return $GLOBALS['bxCacheContentObj'];
@@ -2866,7 +2873,7 @@ function bx_content_cache_obj()
     return $GLOBALS['bxCacheContentObj'] = $oCacheObject;
 }
 
-function bx_mem_cache_get($sKey)
+function bx_mem_cache_get(string $sKey): mixed
 {
     if(isset($GLOBALS['glMemCache']) && array_key_exists($sKey, $GLOBALS['glMemCache']) && !defined('BX_DOL_INSTALL') && !defined('BX_DOL_CRON_EXECUTE'))
         return $GLOBALS['glMemCache'][$sKey];
@@ -2874,7 +2881,7 @@ function bx_mem_cache_get($sKey)
     return null;
 }
 
-function bx_mem_cache_set($sKey, $mixedData)
+function bx_mem_cache_set(string $sKey, mixed $mixedData): mixed
 {
     if(!isset($GLOBALS['glMemCache']))
         $GLOBALS['glMemCache'] = [];

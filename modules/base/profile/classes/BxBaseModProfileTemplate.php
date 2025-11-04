@@ -881,7 +881,7 @@ class BxBaseModProfileTemplate extends BxBaseModGeneralTemplate
         return parent::_getImageSettings($sField, $sSettings, $sUsage);
     }
 
-    protected function _isTemplateWithMeta($sTemplateName = 'unit.html')
+    protected function _isTemplateWithMeta(string $sTemplateName = 'unit.html'): bool
     {
         $sResult = '';
         switch($sTemplateName) {

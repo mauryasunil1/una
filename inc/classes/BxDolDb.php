@@ -999,8 +999,17 @@ class BxDolDb extends BxDolFactory implements iBxDolSingleton
         return $s;
     }
 
-    public function isValidFieldName($s) 
+    public function isValidFieldName($s)
     {
+        if (false !== strpos($s, '`.`')) {
+            $a = explode('`.`', $s, 2);
+            foreach ($a as $sField) {
+                if (false === $this->isValidFieldName($sField))
+                    return false;
+            }
+            return true;
+        }
+
         $inner = $s;
 
         // Disallow trailing space
