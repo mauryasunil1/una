@@ -1694,10 +1694,10 @@ class BxBaseCmts extends BxDolCmts
 
     protected function _getTmplVarsNotes($aCmt)
     {
-        $aTmplVars = array();
+        $aTmplVars = [];
         
         //--- Pending status related notes.
-        if($aCmt['cmt_status_admin'] == BX_CMT_STATUS_PENDING)
+        if(isset($aCmt['cmt_status_admin']) && $aCmt['cmt_status_admin'] == BX_CMT_STATUS_PENDING)
             $aTmplVars[] = [
                 'style_prefix' => $this->_sStylePrefix,
                 'bx_if:show_note_color' => [
