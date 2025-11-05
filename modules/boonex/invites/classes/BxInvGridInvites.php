@@ -8,25 +8,17 @@
  * 
  * @{
  */
+
+require_once('BxInvGrid.php');
+
 define('BX_INV_FILTER_STATUS_ACCEPTED', 1);
 define('BX_INV_FILTER_STATUS_NOT_ACCEPTED', 2);
 
-class BxInvGridInvites extends BxTemplGrid
-{
-    protected $_sModule;
-    protected $_oModule;
-
-    protected $_sFilter1Name;
-    protected $_sFilter1Value;
-    protected $_aFilter1Values;
-    protected $_sParamsDivider;
-    
+class BxInvGridInvites extends BxInvGrid
+{    
     public function __construct ($aOptions, $oTemplate = false)
     {
         parent::__construct ($aOptions, $oTemplate);
-
-        $this->_sModule = 'bx_invites';
-        $this->_oModule = BxDolModule::getInstance($this->_sModule);
 
         $this->_sDefaultSortingOrder = 'DESC';
 
@@ -42,50 +34,6 @@ class BxInvGridInvites extends BxTemplGrid
             $this->_sFilter1Value = bx_process_input($sFilter1);
             $this->_aQueryAppend['filter1'] = $this->_sFilter1Value;
         }
-        $this->_sParamsDivider = '#-#';
-    }
-
-    public function getFormCallBackUrlAPI($sAction, $iId = 0)
-    {
-         return '/api.php?r=system/perfom_action_api/TemplServiceGrid/&params[]=&o=' . $this->_sObject . '&a=' . $sAction;
-    }
-    
-    public function performActionAdd()
-    {
-        $sAction = 'add';
-
-        $oForm = $this->_oModule->getFormObjectInvite();
-        if(!$oForm)
-            return $this->_getActionResult([]);
-
-        $oForm->aInputs['text']['value'] = _t('_bx_invites_msg_invitation');
-        $oForm->aFormAttrs['action'] = BX_DOL_URL_ROOT . 'grid.php?' . bx_encode_url_params($_GET, array('ids', '_r'));
-        $oForm->initChecker();
-
-        $aResult = [];
-        if($oForm->isSubmittedAndValid()) {
-            $sResult = $this->_oModule->processFormObjectInvite($oForm);
-            if($this->_bIsApi)
-                $aResult = [bx_api_get_msg($sResult)];
-            else
-                $aResult = ['msg' => $sResult];
-        }
-        else {
-            if($this->_bIsApi)
-                $aResult = $this->getFormBlockAPI($oForm, $sAction);
-            else
-                $aResult = ['popup' => [
-                    'html' => BxTemplFunctions::getInstance()->popupBox('_bx_invites_form_invite', _t('_bx_invites_form_invite'), $this->_oModule->_oTemplate->parseHtmlByName('popup_invite.html', array(
-                        'form_id' => $oForm->id,
-                        'form' => $oForm->getCode(true),
-                        'object' => $this->_sObject,
-                        'action' => $sAction
-                    ))), 
-                    'options' => ['closeOnOuterClick' => true]
-                ]];
-        }
-
-        return $this->_getActionResult($aResult);
     }
     
     public function performActionDelete($aParams = array())
@@ -117,55 +65,6 @@ class BxInvGridInvites extends BxTemplGrid
         }
 
         echoJson($iAffected ? array('grid' => $this->getCode(false), 'blink' => $aIdsAffected) : array('msg' => _t('_bx_invites_err_delete_invite')));
-    }
-    
-    protected function _getFilterControls ()
-    {
-        parent::_getFilterControls();
-        return  $this->_getFilterSelectOne($this->_sFilter1Name, $this->_sFilter1Value, $this->_aFilter1Values) . $this->_getSearchInput();
-    }
-    
-    protected function _getSearchInput()
-    {
-        $sJsObject = $this->_oModule->_oConfig->getJsObject('main');
-        $aInputSearch = array(
-            'type' => 'text',
-            'name' => 'search',
-            'attrs' => array(
-                'id' => 'bx-grid-search-' . $this->_sObject,
-                'onKeyup' => 'javascript:$(this).off(\'keyup focusout\'); ' . $sJsObject . '.onChangeFilter(this)',
-                'onBlur' => 'javascript:' . $sJsObject . '.onChangeFilter(this)',
-            )
-        );
-
-        $oForm = new BxTemplFormView(array());
-        return $oForm->genRow($aInputSearch);
-    }
-    
-    protected function _getFilterSelectOne($sFilterName, $sFilterValue, $aFilterValues)
-    {
-        if(empty($sFilterName) || empty($aFilterValues))
-            return '';
-
-        $CNF = &$this->_oModule->_oConfig->CNF;
-        $sJsObject = $this->_oModule->_oConfig->getJsObject('main');
-
-        foreach($aFilterValues as $sKey => $sValue)
-            $aFilterValues[$sKey] = _t($sValue);
-
-        $aInputModules = array(
-            'type' => 'select',
-            'name' => $sFilterName,
-            'attrs' => array(
-                'id' => 'bx-grid-' . $sFilterName . '-' . $this->_sObject,
-                'onChange' => 'javascript:' . $sJsObject . '.onChangeFilter(this)'
-            ),
-            'value' => $sFilterValue,
-            'values' => $aFilterValues
-        );
-
-        $oForm = new BxTemplFormView(array());
-        return $oForm->genRow($aInputModules);
     }
 
     protected function _getCellEmail($mixedValue, $sKey, $aField, $aRow)

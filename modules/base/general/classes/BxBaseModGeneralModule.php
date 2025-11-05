@@ -3876,10 +3876,20 @@ class BxBaseModGeneralModule extends BxDolModule
     }
 
     public function processMetasAdd($iContentId)
+    {        
+        return $this->processMetas('add', $iContentId);
+    }
+
+    public function processMetasEdit($iContentId, $oForm)
+    {
+        return $this->processMetas('edit', $iContentId, $oForm);
+    }
+
+    public function processMetas($aAction, $iContentId, $oForm = false)
     {
         $CNF = &$this->_oConfig->CNF;
 
-        if(empty($CNF['OBJECT_METATAGS'])) 
+        if(empty($CNF['OBJECT_METATAGS']))
             return false;
 
         $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
@@ -3891,57 +3901,15 @@ class BxBaseModGeneralModule extends BxDolModule
             return false;
 
         $oMetatags = BxDolMetatags::getObjectInstance($CNF['OBJECT_METATAGS']);
-        $oMetatags->metaAddAuto($iContentId, $aContentInfo, $CNF, $CNF['OBJECT_FORM_ENTRY_DISPLAY_ADD']);
+        $oMetatags->metaAddAuto($iContentId, $aContentInfo, $CNF, $CNF['OBJECT_FORM_ENTRY_DISPLAY_' . strtoupper($aAction)]);
 
-        $sKey = 'FIELD_LOCATION';
-        if($oMetatags->locationsIsEnabled() && !empty($CNF[$sKey]) && !empty($aContentInfo[$CNF[$sKey]])) {
+        if($oMetatags->locationsIsEnabled() && ($sKey = 'FIELD_LOCATION') && !empty($CNF[$sKey]) && !empty($aContentInfo[$CNF[$sKey]])) {
             $aLocation = unserialize($aContentInfo[$CNF[$sKey]]);
             if(!empty($aLocation) && is_array($aLocation))
                 call_user_func_array(array($oMetatags, 'locationsAdd'), array_merge(array($iContentId), array_values($aLocation)));
         }
 
-        $sKey = 'FIELD_LABELS';
-        if($oMetatags->keywordsIsEnabled() && !empty($CNF[$sKey]) && !empty($aContentInfo[$CNF[$sKey]])) {
-            $aLabels = unserialize($aContentInfo[$CNF[$sKey]]);
-            if(!empty($aLabels) && is_array($aLabels))
-                foreach ($aLabels as $sLabel) {
-                    if(!preg_match("/(\pL[\pL\pN_]+)/u", $sLabel)) 
-                        continue;
-
-                    $oMetatags->keywordsAddOne($iContentId, $sLabel, false);
-                }
-        }
-        
-        return true;
-    }
-
-    public function processMetasEdit($iContentId, $oForm)
-    {
-        $CNF = &$this->_oConfig->CNF;
-
-        if(empty($CNF['OBJECT_METATAGS']))
-            return false;
-
-        $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
-
-        $bFldStatus = isset($CNF['FIELD_STATUS']);
-        $bFldStatusAdmin = isset($CNF['FIELD_STATUS_ADMIN']);
-        $bContentInfo = $aContentInfo && (!$bFldStatus || ($bFldStatus && $aContentInfo[$CNF['FIELD_STATUS']] == 'active')) && (!$bFldStatusAdmin || ($bFldStatusAdmin && $aContentInfo[$CNF['FIELD_STATUS_ADMIN']] == 'active'));
-        if(!$bContentInfo)
-            return false;
-
-        $oMetatags = BxDolMetatags::getObjectInstance($CNF['OBJECT_METATAGS']);
-        $oMetatags->metaAddAuto($iContentId, $aContentInfo, $CNF, $CNF['OBJECT_FORM_ENTRY_DISPLAY_EDIT']);
-
-        $sKey = 'FIELD_LOCATION';
-        if($oMetatags->locationsIsEnabled() && !empty($CNF[$sKey]) && !empty($aContentInfo[$CNF[$sKey]])) {
-            $aLocation = unserialize($aContentInfo[$CNF[$sKey]]);
-            if(!empty($aLocation) && is_array($aLocation))
-                call_user_func_array(array($oMetatags, 'locationsAdd'), array_merge(array($iContentId), array_values($aLocation)));
-        }
-
-        $sKey = 'FIELD_LABELS';
-        if($oMetatags->keywordsIsEnabled() && !empty($CNF[$sKey]) && !empty($aContentInfo[$CNF[$sKey]])) {
+        if($oMetatags->keywordsIsEnabled() && ($sKey = 'FIELD_LABELS') && !empty($CNF[$sKey]) && !empty($aContentInfo[$CNF[$sKey]])) {
             $aLabels = unserialize($aContentInfo[$CNF[$sKey]]);
             if(!empty($aLabels) && is_array($aLabels))
                 foreach ($aLabels as $sLabel) {
