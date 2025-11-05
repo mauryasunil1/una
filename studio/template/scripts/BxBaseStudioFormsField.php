@@ -482,7 +482,7 @@ class BxBaseStudioFormsField extends BxDolStudioFormsField
         if($bRelated) {
             $aField['db'] = array('pass' => 'Xss');
             if((int)$this->aTypesRelated[$sValue]['reload_on_change'] == 1)
-                $aField['attrs']['onchange'] = $this->getJsObject() . '.onChangeType(' . $this->aField['di_id'] . ')';
+                $aField['attrs']['onchange'] = $this->getJsObject() . '.onChangeType(' . $this->aField['di_id'] . ', this)';
             unset($aField['attrs']['disabled']);
         }
 
@@ -948,20 +948,18 @@ class BxBaseStudioFormsField extends BxDolStudioFormsField
     protected function onSubmitFieldValues(&$oForm)
     {
     	$sValues = $oForm->getCleanValue('values');
-		if(is_string($sValues) && strpos($sValues, BX_DATA_LISTS_KEY_PREFIX) === false)
-        	BxDolForm::setSubmittedValue('values', serialize(explode("\n", $sValues)), $oForm->aFormAttrs['method']);
+        if(is_string($sValues) && strpos($sValues, BX_DATA_LISTS_KEY_PREFIX) === false)
+            BxDolForm::setSubmittedValue('values', serialize(explode("\n", $sValues)), $oForm->aFormAttrs['method']);
     }
 }
 
-class BxBaseStudioFormsFieldBlockHeader extends BxBaseStudioFormsField
+class BxBaseStudioFormsFieldBlockPart extends BxBaseStudioFormsField
 {
-    protected $sType = 'block_header';
-
     public function init()
-	{
-		parent::init();
+    {
+        parent::init();
 
-		$this->aForm = array(
+        $this->aForm = array(
             'form_attrs' => array(
                 'id' => '',
                 'action' => '',
@@ -1021,95 +1019,6 @@ class BxBaseStudioFormsFieldBlockHeader extends BxBaseStudioFormsField
                     )
                 ),
                 'type_display' => $this->getFieldTypesSelector('type_display', $this->sType),
-                'caption_system' => array(
-                    'type' => 'text_translatable',
-                    'name' => 'caption_system',
-                    'caption' => _t('_adm_form_txt_field_caption_system'),
-                    'info' => _t('_adm_form_dsc_field_caption_system'),
-                    'value' => '_sys_form_txt_field',
-                    'required' => '0',
-                    'db' => array (
-                        'pass' => 'Xss',
-                    ),
-                ),
-                'caption' => array(
-                    'type' => 'text_translatable',
-                    'name' => 'caption',
-                    'caption' => _t('_adm_form_txt_field_caption'),
-                    'info' => _t('_adm_form_dsc_field_caption_block_header'),
-                    'value' => '_sys_form_txt_field',
-                    'required' => '1',
-                    'db' => array (
-                        'pass' => 'Xss',
-                    ),
-                    'checker' => array (
-                        'func' => 'LengthTranslatable',
-                        'params' => array(3, 100, 'caption'),
-                        'error' => _t('_adm_form_err_field_caption'),
-                    ),
-                ),
-                'collapsed' => array(
-                    'type' => 'checkbox',
-                    'name' => 'collapsed',
-                    'caption' => _t('_adm_form_txt_field_collapsed'),
-                    'info' => _t('_adm_form_dsc_field_collapsed'),
-                    'value' => '1',
-                    'required' => '0',
-                    'db' => array (
-                        'pass' => 'Int',
-                    )
-                ),
-                'privacy' => array(
-                    'type' => 'switcher',
-                    'name' => 'privacy',
-                    'caption' => _t('_adm_form_txt_field_privacy'),
-                    'info' => _t('_adm_form_dsc_field_privacy'),
-                    'value' => '1',
-                    'required' => '0',
-                    'attrs' => array(
-                        'id' => 'bx-form-field-privacy'
-                    ),
-                    'db' => array (
-                        'pass' => 'Int',
-                    )
-                ),
-                'rateable' => array(
-                    'type' => 'select',
-                    'name' => 'rateable',
-                    'caption' => _t('_adm_form_txt_field_rateable'),
-                    'info' => _t('_adm_form_dsc_field_rateable'),
-                    'values' => array(
-                        array('key' => '', 'value' => _t('_adm_form_txt_field_rateable_value_non')),
-                        array('key' => 'sys_form_fields_votes', 'value' => _t('_adm_form_txt_field_rateable_value_votes')),
-                        array('key' => 'sys_form_fields_reaction', 'value' => _t('_adm_form_txt_field_rateable_value_reactions'))
-                	),
-                    'required' => '0',
-                    'attrs' => array(
-                        'id' => 'bx-form-field-rateable'
-                    ),
-                    'db' => array (
-                        'pass' => 'Xss',
-                    )
-                ),
-                'icon' => array(
-                    'type' => 'textarea',
-                    'name' => 'icon',
-                    'caption' => _t('_adm_form_txt_field_icon'),
-                    'info' => _t('_adm_form_dsc_field_icon'),
-                    'value' => '',
-                    'code' => 1,
-                    'required' => '0',
-                    'attrs' => array('class' => 'bx-form-input-textarea-small'),
-                    'db' => array (
-                        'pass' => 'Xss',
-                    ),
-                ),
-                'icon_preview' => array(
-                    'type' => 'custom',
-                    'name' => 'icon_preview',
-                    'caption' => _t('_adm_form_txt_field_icon_preview'),
-                    'content' => ''
-                ),
                 'controls' => array(
                     'name' => 'controls',
                     'type' => 'input_set',
@@ -1130,14 +1039,116 @@ class BxBaseStudioFormsFieldBlockHeader extends BxBaseStudioFormsField
                 )
             )
         );
-        
-        if ($this->isNested()){
-            unset($this->aForm['inputs']['rateable']);
-        }
     }
 }
 
-class BxBaseStudioFormsFieldBlockEnd extends BxBaseStudioFormsField
+class BxBaseStudioFormsFieldBlockHeader extends BxBaseStudioFormsFieldBlockPart
+{
+    protected $sType = 'block_header';
+
+    public function init()
+    {
+        parent::init();
+
+        $aFields = array(
+            'caption_system' => array(
+                'type' => 'text_translatable',
+                'name' => 'caption_system',
+                'caption' => _t('_adm_form_txt_field_caption_system'),
+                'info' => _t('_adm_form_dsc_field_caption_system'),
+                'value' => '_sys_form_txt_field',
+                'required' => '0',
+                'db' => array (
+                    'pass' => 'Xss',
+                ),
+            ),
+            'caption' => array(
+                'type' => 'text_translatable',
+                'name' => 'caption',
+                'caption' => _t('_adm_form_txt_field_caption'),
+                'info' => _t('_adm_form_dsc_field_caption_block_header'),
+                'value' => '_sys_form_txt_field',
+                'required' => '1',
+                'db' => array (
+                    'pass' => 'Xss',
+                ),
+                'checker' => array (
+                    'func' => 'LengthTranslatable',
+                    'params' => array(3, 100, 'caption'),
+                    'error' => _t('_adm_form_err_field_caption'),
+                ),
+            ),
+            'collapsed' => array(
+                'type' => 'checkbox',
+                'name' => 'collapsed',
+                'caption' => _t('_adm_form_txt_field_collapsed'),
+                'info' => _t('_adm_form_dsc_field_collapsed'),
+                'value' => '1',
+                'required' => '0',
+                'db' => array (
+                    'pass' => 'Int',
+                )
+            ),
+            'privacy' => array(
+                'type' => 'switcher',
+                'name' => 'privacy',
+                'caption' => _t('_adm_form_txt_field_privacy'),
+                'info' => _t('_adm_form_dsc_field_privacy'),
+                'value' => '1',
+                'required' => '0',
+                'attrs' => array(
+                    'id' => 'bx-form-field-privacy'
+                ),
+                'db' => array (
+                    'pass' => 'Int',
+                )
+            ),
+            'rateable' => array(
+                'type' => 'select',
+                'name' => 'rateable',
+                'caption' => _t('_adm_form_txt_field_rateable'),
+                'info' => _t('_adm_form_dsc_field_rateable'),
+                'values' => array(
+                    array('key' => '', 'value' => _t('_adm_form_txt_field_rateable_value_non')),
+                    array('key' => 'sys_form_fields_votes', 'value' => _t('_adm_form_txt_field_rateable_value_votes')),
+                    array('key' => 'sys_form_fields_reaction', 'value' => _t('_adm_form_txt_field_rateable_value_reactions'))
+                ),
+                'required' => '0',
+                'attrs' => array(
+                    'id' => 'bx-form-field-rateable'
+                ),
+                'db' => array (
+                    'pass' => 'Xss',
+                )
+            ),
+            'icon' => array(
+                'type' => 'textarea',
+                'name' => 'icon',
+                'caption' => _t('_adm_form_txt_field_icon'),
+                'info' => _t('_adm_form_dsc_field_icon'),
+                'value' => '',
+                'code' => 1,
+                'required' => '0',
+                'attrs' => array('class' => 'bx-form-input-textarea-small'),
+                'db' => array (
+                    'pass' => 'Xss',
+                ),
+            ),
+            'icon_preview' => array(
+                'type' => 'custom',
+                'name' => 'icon_preview',
+                'caption' => _t('_adm_form_txt_field_icon_preview'),
+                'content' => ''
+            ),
+        );
+        $this->aForm['inputs'] = $this->addInArray($this->aForm['inputs'], 'type_display', $aFields);
+
+        if($this->isNested())
+            unset($this->aForm['inputs']['rateable']);
+    }
+}
+
+class BxBaseStudioFormsFieldBlockEnd extends BxBaseStudioFormsFieldBlockPart
 {
     protected $sType = 'block_end';
 
@@ -1145,102 +1156,25 @@ class BxBaseStudioFormsFieldBlockEnd extends BxBaseStudioFormsField
     {
         parent::init();
 
-        $this->aForm = array(
-            'form_attrs' => array(
-                'id' => '',
-                'action' => '',
-                'method' => 'post'
-            ),
-            'params' => array (
-                'db' => array(
-                    'table' => 'sys_form_inputs',
-                    'key' => 'id',
-                    'uri' => '',
-                    'uri_title' => '',
-                    'submit_name' => 'do_submit'
+        $aFields = array(
+            'caption_system' => array(
+                'type' => 'text_translatable',
+                'name' => 'caption_system',
+                'caption' => _t('_adm_form_txt_field_caption_system'),
+                'info' => _t('_adm_form_dsc_field_caption_system'),
+                'value' => '_sys_form_txt_field',
+                'required' => '1',
+                'db' => array (
+                    'pass' => 'Xss',
+                ),
+                'checker' => array (
+                    'func' => 'LengthTranslatable',
+                    'params' => array(3,100, 'caption_system'),
+                    'error' => _t('_adm_form_err_field_caption_system'),
                 ),
             ),
-            'inputs' => array (
-                'module' => array(
-                    'type' => 'hidden',
-                    'name' => 'module',
-                    'caption' => _t('_adm_form_txt_field_module'),
-                    'value' => 'custom',
-                    'db' => array (
-                        'pass' => 'Xss',
-                    ),
-                ),
-                'object' => array(
-                    'type' => 'hidden',
-                    'name' => 'object',
-                    'caption' => _t('_adm_form_txt_field_object'),
-                    'value' => '',
-                    'db' => array (
-                        'pass' => 'Xss',
-                    ),
-                ),
-                'name' => array(
-                    'type' => 'hidden',
-                    'name' => 'name',
-                    'caption' => _t('_adm_form_txt_field_name'),
-                    'value' => '',
-                    'db' => array (
-                        'pass' => 'Xss',
-                    )
-                ),
-                'type' => array(
-                    'type' => 'hidden',
-                    'name' => 'type',
-                    'value' => $this->sType,
-                    'db' => array (
-                        'pass' => 'Xss',
-                    )
-                ),
-                'db_pass' => array(
-                    'type' => 'hidden',
-                    'name' => 'db_pass',
-                    'value' => $this->sDbPass,
-                    'db' => array (
-                        'pass' => 'Xss',
-                    )
-                ),
-                'type_display' => $this->getFieldTypesSelector('type_display', $this->sType),
-                'caption_system' => array(
-                    'type' => 'text_translatable',
-                    'name' => 'caption_system',
-                    'caption' => _t('_adm_form_txt_field_caption_system'),
-                    'info' => _t('_adm_form_dsc_field_caption_system'),
-                    'value' => '_sys_form_txt_field',
-                    'required' => '1',
-                    'db' => array (
-                        'pass' => 'Xss',
-                    ),
-                    'checker' => array (
-                        'func' => 'LengthTranslatable',
-                        'params' => array(3,100, 'caption_system'),
-                        'error' => _t('_adm_form_err_field_caption_system'),
-                    ),
-                ),
-                'controls' => array(
-                    'name' => 'controls',
-                    'type' => 'input_set',
-                    array(
-                        'type' => 'submit',
-                        'name' => 'do_submit',
-                        'value' => _t('_adm_form_btn_field_add'),
-                    ),
-                    array (
-                        'type' => 'reset',
-                        'name' => 'close',
-                        'value' => _t('_adm_form_btn_field_cancel'),
-                        'attrs' => array(
-                            'onclick' => "$('.bx-popup-applied:visible').dolPopupHide()",
-                            'class' => 'bx-def-margin-sec-left',
-                        ),
-                    )
-                )
-            )
         );
+        $this->aForm['inputs'] = $this->addInArray($this->aForm['inputs'], 'type_display', $aFields);
     }
 }
 
@@ -1431,8 +1365,8 @@ class BxBaseStudioFormsFieldDatepicker extends BxBaseStudioFormsFieldText
     );
 
     public function init()
-	{
-		parent::init();
+    {
+        parent::init();
 
         $this->aParams['table_field_type'] = 'int(11)';
 
@@ -1464,49 +1398,9 @@ class BxBaseStudioFormsFieldDatepicker extends BxBaseStudioFormsFieldText
     }
 }
 
-class BxBaseStudioFormsFieldDateselect extends BxBaseStudioFormsFieldText
+class BxBaseStudioFormsFieldDateselect extends BxBaseStudioFormsFieldDatepicker
 {
     protected $sType = 'dateselect';
-    protected $aCheckFunctions = array('date','date_range');
-    protected $sDbPass = 'DateTs';
-    protected $aDbPassDependency = array(
-        'Date' => array('alter' => 'date'),
-    	'DateTs' => array('alter' => 'int(11)'),
-    	'DateUtc' => array('alter' => 'int(11)'),
-    );
-
-    public function init()
-	{
-		parent::init();
-
-        $this->aParams['table_field_type'] = 'int(11)';
-
-        $this->aForm['inputs']['value']['type'] = $this->sType;
-        $this->aForm['inputs']['value']['db']['pass'] = $this->sDbPass;
-
-        $aFields = array(
-            'db_pass' => array(
-                'type' => 'select',
-                'name' => 'db_pass',
-                'caption' => _t('_adm_form_txt_field_db_pass'),
-                'info' => _t('_adm_form_dsc_field_db_pass'),
-                'value' => $this->sDbPass,
-                'values' => array(
-                    array('key' => '', 'value' => _t('_adm_form_txt_field_db_pass_select_value')),
-                    array('key' => 'Date', 'value' => _t('_adm_form_txt_field_db_pass_date')),
-                    array('key' => 'DateTs', 'value' => _t('_adm_form_txt_field_db_pass_date_ts')),
-                    array('key' => 'DateUtc', 'value' => _t('_adm_form_txt_field_db_pass_date_utc')),
-                ),
-                'required' => '0',
-                'db' => array (
-                    'pass' => 'Xss',
-                )
-            ),
-        );
-
-        unset($this->aForm['inputs']['db_pass']);
-        $this->aForm['inputs'] = $this->addInArray($this->aForm['inputs'], 'controls', $aFields, false);
-    }
 }
 
 class BxBaseStudioFormsFieldDatetime extends BxBaseStudioFormsFieldDatepicker
@@ -1709,173 +1603,45 @@ class BxBaseStudioFormsFieldPrice extends BxBaseStudioFormsFieldText
     }
 }
 
-class BxBaseStudioFormsFieldNestedForm extends BxBaseStudioFormsField
+class BxBaseStudioFormsFieldNestedForm extends BxBaseStudioFormsFieldBlockHeader
 {
     protected $sType = 'nested_form';
 
     public function init()
-	{
-		parent::init();
-        $aFormsData = array();
-		$aParams = array('type' => 'nested', 'parent_form' => $this->aParams['object']);
-		if (bx_get('ids'))
-			$aParams['ids'] = implode(',', bx_get('ids'));
-        $this->oDb->getForms($aParams, $aFormsData, false);
-        foreach($aFormsData as $sKey => $sValue){
+    {
+        parent::init();
+
+        $aFormsParams = ['type' => 'nested', 'parent_form' => $this->aParams['object']];
+        if(bx_get('ids'))
+            $aFormsParams['ids'] = implode(',', bx_get('ids'));
+        
+        $aFormsData = [];
+        $this->oDb->getForms($aFormsParams, $aFormsData, false);
+        foreach($aFormsData as $sKey => $sValue)
             $aFormsData[$sKey] = _t($sValue);
-        }
-		$this->aForm = array(
-            'form_attrs' => array(
-                'id' => '',
-                'action' => '',
-                'method' => 'post'
-            ),
-            'params' => array (
-                'db' => array(
-                    'table' => 'sys_form_inputs',
-                    'key' => 'id',
-                    'uri' => '',
-                    'uri_title' => '',
-                    'submit_name' => 'do_submit'
+
+        $aFields = array(
+            'value' => array(
+                'type' => 'select',
+                'name' => 'value',
+                'caption' => _t('_adm_form_txt_field_select_nested_form'),
+                'values' => $aFormsData,
+                'required' => '1',
+                'db' => array (
+                    'pass' => 'Xss',
+                ),
+                'checker' => array (
+                    'func' => 'avail',
+                    'error' => _t('_adm_form_err_field_select_nested_form'),
                 ),
             ),
-            'inputs' => array (
-                'module' => array(
-                    'type' => 'hidden',
-                    'name' => 'module',
-                    'caption' => _t('_adm_form_txt_field_module'),
-                    'value' => 'custom',
-                    'db' => array (
-                        'pass' => 'Xss',
-                    ),
-                ),
-                'object' => array(
-                    'type' => 'hidden',
-                    'name' => 'object',
-                    'caption' => _t('_adm_form_txt_field_object'),
-                    'value' => '',
-                    'db' => array (
-                        'pass' => 'Xss',
-                    ),
-                ),
-                'name' => array(
-                    'type' => 'hidden',
-                    'name' => 'name',
-                	'caption' => _t('_adm_form_txt_field_name'),
-                    'value' => '',
-                    'db' => array (
-                        'pass' => 'Xss',
-                    )
-                ),
-                'type' => array(
-                    'type' => 'hidden',
-                    'name' => 'type',
-                    'value' => $this->sType,
-                    'db' => array (
-                        'pass' => 'Xss',
-                    )
-                ),
-                'db_pass' => array(
-                    'type' => 'hidden',
-                    'name' => 'db_pass',
-                    'value' => $this->sDbPass,
-                    'db' => array (
-                        'pass' => 'Xss',
-                    )
-                ),
-                'type_display' => $this->getFieldTypesSelector('type_display', $this->sType),
-                'caption_system' => array(
-                    'type' => 'text_translatable',
-                    'name' => 'caption_system',
-                    'caption' => _t('_adm_form_txt_field_caption_system'),
-                    'info' => _t('_adm_form_dsc_field_caption_system'),
-                    'value' => '_sys_form_txt_field',
-                    'required' => '0',
-                    'db' => array (
-                        'pass' => 'Xss',
-                    ),
-                ),
-                'caption' => array(
-                    'type' => 'text_translatable',
-                    'name' => 'caption',
-                    'caption' => _t('_adm_form_txt_field_caption'),
-                    'info' => _t('_adm_form_dsc_field_caption_block_header'),
-                    'value' => '_sys_form_txt_field',
-                    'required' => '1',
-                    'db' => array (
-                        'pass' => 'Xss',
-                    ),
-                    'checker' => array (
-                        'func' => 'LengthTranslatable',
-                        'params' => array(3, 100, 'caption'),
-                        'error' => _t('_adm_form_err_field_caption'),
-                    ),
-                ),
-                'value' => array(
-                    'type' => 'select',
-                    'name' => 'value',
-                    'caption' => _t('_adm_form_txt_field_select_nested_form'),
-                    'values' => $aFormsData,
-                    'required' => '1',
-                    'db' => array (
-                        'pass' => 'Xss',
-                    ),
-                    'checker' => array (
-                        'func' => 'avail',
-                        'error' => _t('_adm_form_err_field_select_nested_form'),
-                    ),
-                ),
-                'privacy' => array(
-                    'type' => 'switcher',
-                    'name' => 'privacy',
-                    'caption' => _t('_adm_form_txt_field_privacy'),
-                    'info' => _t('_adm_form_dsc_field_privacy'),
-                    'value' => '1',
-                    'required' => '0',
-                    'attrs' => array(
-                        'id' => 'bx-form-field-privacy'
-                    ),
-                    'db' => array (
-                        'pass' => 'Int',
-                    )
-                ),
-                'rateable' => array(
-                    'type' => 'select',
-                    'name' => 'rateable',
-                    'caption' => _t('_adm_form_txt_field_rateable'),
-                    'info' => _t('_adm_form_dsc_field_rateable'),
-                    'values' => array(
-                		array('key' => '', 'value' => _t('_adm_form_txt_field_rateable_value_non')),
-                        array('key' => 'sys_form_fields_votes', 'value' => _t('_adm_form_txt_field_rateable_value_votes')),
-                        array('key' => 'sys_form_fields_reaction', 'value' => _t('_adm_form_txt_field_rateable_value_reactions'))
-                	),
-                    'required' => '0',
-                    'attrs' => array(
-                        'id' => 'bx-form-field-rateable'
-                    ),
-                    'db' => array (
-                        'pass' => 'Xss',
-                    )
-                ),
-                'controls' => array(
-                    'name' => 'controls',
-                    'type' => 'input_set',
-                    array(
-                        'type' => 'submit',
-                        'name' => 'do_submit',
-                        'value' => _t('_adm_form_btn_field_add'),
-                    ),
-                    array (
-                        'type' => 'reset',
-                        'name' => 'close',
-                        'value' => _t('_adm_form_btn_field_cancel'),
-                        'attrs' => array(
-                            'onclick' => "$('.bx-popup-applied:visible').dolPopupHide()",
-                            'class' => 'bx-def-margin-sec-left',
-                        ),
-                    )
-                )
-            )
+        );
+        $this->aForm['inputs'] = $this->addInArray($this->aForm['inputs'], 'caption', $aFields);
+
+        unset(
+            $this->aForm['inputs']['collapsed'],
+            $this->aForm['inputs']['icon'],
+            $this->aForm['inputs']['icon_preview']
         );
     }
 }
