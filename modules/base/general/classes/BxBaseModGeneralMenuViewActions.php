@@ -232,97 +232,48 @@ class BxBaseModGeneralMenuViewActions extends BxTemplMenuCustom
         return array($sResult, $this->_sClassMiSa);
     }
 
-    protected function _getMenuItemVote($aItem, $aParams = array())
+    protected function _getMenuItemVote($aItem, $aParams = [])
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
 
-        $sObject = !empty($aParams['object']) ? $aParams['object'] : '';
-        if(empty($sObject) && !empty($CNF['OBJECT_VOTES']))
-            $sObject = $CNF['OBJECT_VOTES'];
+        if(empty($aParams['object']) && !empty($CNF['OBJECT_VOTES']))
+            $aParams['object'] = $CNF['OBJECT_VOTES'];
 
-        $iId = !empty($aParams['id']) ? (int)$aParams['id'] : '';
-        if(empty($iId))
-            $iId = $this->_iContentId;
-
-        $oObject = !empty($sObject) ? BxDolVote::getObjectInstance($sObject, $iId) : false;
-        if(!$oObject || !$oObject->isEnabled())
-            return '';
-
-        $aObjectOptions = array(
-            'dynamic_mode' => $this->_bDynamicMode,
-            'show_do_vote_as_button' => $this->_bShowAsButton,
-            'show_do_vote_label' => $this->_bShowTitle
-        );
-        if(!empty($aParams['object_options']) && is_array($aParams['object_options']))
-            $aObjectOptions = array_merge($aObjectOptions, $aParams['object_options']);
-
-        if($this->_bIsApi)
-            return [
-                'id' => $aItem['id'],
-                'name' => $aItem['name'],
-                'display_type' => 'element',
-                'data' => $oObject->getElementApi($aObjectOptions)
-            ];
-
-        $sResult = $oObject->getElementBlock($aObjectOptions);
-        if(empty($sResult))
-            return '';
-
-    	return array($sResult, $this->_sClassMiSa);
+        return $this->__getMenuItemVote($aItem, $aParams);
     }
 
-    protected function _getMenuItemReaction($aItem, $aParams = array())
+    protected function _getMenuItemReaction($aItem, $aParams = [])
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
 
-        $sObject = !empty($aParams['object']) ? $aParams['object'] : '';
-        if(empty($sObject) && !empty($CNF['OBJECT_REACTIONS']))
-            $sObject = $CNF['OBJECT_REACTIONS'];
+        if(empty($aParams['object']) && !empty($CNF['OBJECT_REACTIONS']))
+            $aParams['object'] = $CNF['OBJECT_REACTIONS'];
 
-        $iId = !empty($aParams['id']) ? (int)$aParams['id'] : '';
-        if(empty($iId))
-            $iId = $this->_iContentId;
-
-        $oObject = !empty($sObject) ? BxDolVote::getObjectInstance($sObject, $iId) : false;
-        if(!$oObject || !$oObject->isEnabled())
-            return '';
-
-        $aObjectOptions = array(
-            'dynamic_mode' => $this->_bDynamicMode,
-            'show_do_vote_as_button' => $this->_bShowAsButton,
-            'show_do_vote_label' => $this->_bShowTitle
-        );
-        if(!empty($aParams['object_options']) && is_array($aParams['object_options']))
-            $aObjectOptions = array_merge($aObjectOptions, $aParams['object_options']);
-
-        if($this->_bIsApi)
-            return [
-                'id' => $aItem['id'],
-                'name' => $aItem['name'],
-                'display_type' => 'element',
-                'data' => $oObject->getElementApi($aObjectOptions)
-            ];
-
-        $sResult = $oObject->getElementBlock($aObjectOptions);
-        if(empty($sResult))
-            return '';
-
-    	return array($sResult, $this->_sClassMiSa);
+        return $this->__getMenuItemVote($aItem, $aParams);
     }
 
-    protected function _getMenuItemScore($aItem, $aParams = array())
+    protected function _getMenuItemScore($aItem, $aParams = [])
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
 
-        $sObject = !empty($aParams['object']) ? $aParams['object'] : '';
-        if(empty($sObject) && !empty($CNF['OBJECT_SCORES']))
-            $sObject = $CNF['OBJECT_SCORES'];
+        $aParams['class'] = 'BxDolScore';
+                
+        if(empty($aParams['object']) && !empty($CNF['OBJECT_SCORES']))
+            $aParams['object'] = $CNF['OBJECT_SCORES'];
+
+        return $this->__getMenuItemVote($aItem, $aParams);
+    }
+
+    protected function __getMenuItemVote($aItem, $aParams = [])
+    {
+        $CNF = &$this->_oModule->_oConfig->CNF;
 
         $iId = !empty($aParams['id']) ? (int)$aParams['id'] : '';
         if(empty($iId))
             $iId = $this->_iContentId;
 
-        $oObject = !empty($sObject) ? BxDolScore::getObjectInstance($sObject, $iId) : false;
+        $sClass = $aParams['class'] ?? 'BxDolVote';
+        $oObject = ($sObject = $aParams['object'] ?? '') ? $sClass::getObjectInstance($sObject, $iId) : false;
         if(!$oObject || !$oObject->isEnabled())
             return '';
 
