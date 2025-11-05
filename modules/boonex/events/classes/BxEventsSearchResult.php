@@ -167,64 +167,38 @@ class BxEventsSearchResult extends BxBaseModGroupsSearchResult
 
         switch ($sMode) {
             case 'created_entries':
-                if(!$this->_setAuthorConditions($sMode, $aParams, $oJoinedProfile)) {
-                    $this->isError = true;
-                    break;
-                }
+                $this->_setAuthorConditions($sMode, $aParams, $oJoinedProfile);
                 break;
 
             case 'context':
                 $oProfileAuthor = null;
                 if(!$this->_updateCurrentForContext($sMode, $aParams, $oProfileAuthor))
-                    $this->isError = true;
+                    break;
+
+                if(!$this->aCurrent['title'])
+                    $this->aCurrent['title'] = _t('_bx_events_page_title_browse_by_context');
                 break;
 
             case 'joined_entries':
-                $oJoinedProfile = BxDolProfile::getInstance((int)$aParams['joined_profile']);
-                if (!$oJoinedProfile) {
-                    $this->isError = true;
+                $oJoinedProfile = null;
+                if(!$this->_updateCurrentForJoinedEntries($sMode, $aParams, $oJoinedProfile))
                     break;
-                }
 
                 $bProcessConditionsForPrivateContent = false;
 
-                $this->aCurrent['join']['fans'] = array(
-                    'type' => 'INNER',
-                    'table' => 'bx_events_fans',
-                    'mainField' => 'id',
-                    'onField' => 'content',
-                    'joinFields' => array('initiator'),
-                );
-
-                $this->aCurrent['restriction']['fans'] = array('value' => $oJoinedProfile->id(), 'field' => 'initiator', 'operator' => '=', 'table' => 'bx_events_fans');
-
-                $this->sBrowseUrl = 'page.php?i=' . $CNF['URI_JOINED_ENTRIES'] . '&profile_id={profile_id}';
-                $this->aCurrent['title'] = _t('_bx_events_page_title_joined_entries');
-                $this->aCurrent['rss']['link'] = 'modules/?r=events/rss/' . $sMode . '/' . $oJoinedProfile->id();
+                if(!$this->aCurrent['title'])
+                    $this->aCurrent['title'] = _t('_bx_events_page_title_joined_entries');
                 break;
-                
+
             case 'followed_entries':
-                $oJoinedProfile = BxDolProfile::getInstance((int)$aParams['followed_profile']);
-                if (!$oJoinedProfile) {
-                    $this->isError = true;
+                $oJoinedProfile = null;
+                if(!$this->_updateCurrentForFollowedEntries($sMode, $aParams, $oJoinedProfile))
                     break;
-                }
 
                 $bProcessConditionsForPrivateContent = false;
 
-                $this->aCurrent['join']['followed'] = array(
-                    'type' => 'INNER',
-                    'table' => 'sys_profiles_conn_subscriptions',
-                    'mainField' => 'id',
-                    'onField' => 'content',
-                    'joinFields' => array('initiator'),
-                );
-
-                $this->aCurrent['restriction']['followed'] = array('value' => $oJoinedProfile->id(), 'field' => 'initiator', 'operator' => '=', 'table' => 'sys_profiles_conn_subscriptions');
-
-                $this->sBrowseUrl = 'page.php?i=' . $CNF['URI_FOLLOWED_ENTRIES'] . '&profile_id={profile_id}';
-                $this->aCurrent['title'] = _t('_bx_events_page_title_followed_entries');
-                $this->aCurrent['rss']['link'] = 'modules/?r=events/rss/' . $sMode . '/' . $oJoinedProfile->id();
+                if(!$this->aCurrent['title'])
+                    $this->aCurrent['title'] = _t('_bx_events_page_title_followed_entries');
                 break;
 
             case 'connections':
@@ -243,10 +217,7 @@ class BxEventsSearchResult extends BxBaseModGroupsSearchResult
                 break;
 
             case 'favorite':
-                if(!$this->_setFavoriteConditions($sMode, $aParams, $oJoinedProfile)) {
-                    $this->isError = true;
-                    break;
-                }
+                $this->_setFavoriteConditions($sMode, $aParams, $oJoinedProfile);
                 break;
 
             case 'recent':

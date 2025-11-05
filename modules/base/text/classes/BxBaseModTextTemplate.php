@@ -636,7 +636,7 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
         $bBadgesSingle = isset($aParams['badges_single']) ? $aParams['badges_single'] : false;
         $bBadgesCompact = isset($aParams['badges_compact']) ? $aParams['badges_compact'] : false;
 
-        $sCoverData = $aData[$CNF['FIELD_THUMB_POSITION']] ?? '';
+        $sCoverData = ($sKey = 'FIELD_THUMB_POSITION') && isset($CNF[$sKey]) && $aData[$CNF[$sKey]] ?? '';
         $sCoverSettings = $this->_getImageSettings($CNF['FIELD_THUMB'], $sCoverData, 'unit_cover');
 
         $aTmplVars = array (
