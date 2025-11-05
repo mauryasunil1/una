@@ -9,6 +9,8 @@
  * @{
  */
 
+require_once('BxStripeConnectApi.php');
+
 define('BX_STRIPE_CONNECT_MODE_LIVE', 'live');
 define('BX_STRIPE_CONNECT_MODE_TEST', 'test');
 
