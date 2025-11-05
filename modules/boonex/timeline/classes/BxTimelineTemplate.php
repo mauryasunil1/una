@@ -2251,7 +2251,7 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
          */
 
         return array_intersect_key($aEvent, array_flip([
-            'id', 'type', 'object_privacy_view', 'content', 'labels', 'date', 'menu_actions', 'menu_counters', 'menu_manage', 'author_data', 'author_badges', 'author_actions', 'context_data', 'url', 'owners', 'cmts'
+            'id', 'type', 'object_privacy_view', 'content', 'labels', 'date', 'menu_actions', 'menu_counters', 'menu_manage', 'author_data', 'author_badges', 'author_actions', 'context_data', 'url', 'owners', 'cmts', 'module', 'title'
         ]));
     }
 

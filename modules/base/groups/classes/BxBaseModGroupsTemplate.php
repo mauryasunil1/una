@@ -144,8 +144,9 @@ class BxBaseModGroupsTemplate extends BxBaseModProfileTemplate
             if(($aCode = $oRecommendation->getCodeAPI($iProfileId)) && is_array($aCode))
                 $aResult = [
                     'id' => '',
-                    'type' => $sModule . '_recommendations',
-                    'object_privacy_view' => 3,
+                    'type' => 'timeline_recommendations',
+                    'module' => $sModule,
+                    'title' => _t($sModule . '_timeline_recommendations'),
                     'content' => $aCode
                 ];
 
