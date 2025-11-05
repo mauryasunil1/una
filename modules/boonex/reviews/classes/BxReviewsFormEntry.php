@@ -31,37 +31,9 @@ class BxReviewsFormEntry extends BxBaseModTextFormEntry
         }
     }
 
-    function initChecker ($aValues = array (), $aSpecificValues = array())
+    public function insert ($aValsToAdd = [], $isIgnore = false)
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
-
-        $bValues = $aValues && !empty($aValues['id']);
-        $aContentInfo = $bValues ? $this->_oModule->_oDb->getContentInfoById($aValues['id']) : false;
-
-        if (isset($CNF['FIELD_COVER']) && isset($this->aInputs[$CNF['FIELD_COVER']])) {
-            if($bValues)
-                $this->aInputs[$CNF['FIELD_COVER']]['content_id'] = $aValues['id'];
-
-            $this->aInputs[$CNF['FIELD_COVER']]['ghost_template'] = $this->_oModule->_oTemplate->parseHtmlByName($this->_sGhostTemplateCover, $this->_getCoverGhostTmplVars($aContentInfo));
-        }
-
-        parent::initChecker ($aValues, $aSpecificValues);
-    }
-
-    public function insert ($aValsToAdd = array(), $isIgnore = false)
-    {
-        $CNF = &$this->_oModule->_oConfig->CNF;
-
-        if(isset($CNF['FIELD_ADDED']) && empty($aValsToAdd[$CNF['FIELD_ADDED']])) {
-            $iAdded = 0;
-            if(isset($this->aInputs[$CNF['FIELD_ADDED']]))
-                $iAdded = $this->getCleanValue($CNF['FIELD_ADDED']);
-            
-            if(empty($iAdded))
-                 $iAdded = time();
-
-            $aValsToAdd[$CNF['FIELD_ADDED']] = $iAdded;
-        }
 
         if (($iReviewFor = $this->safeCustomPostToContext()))
             $aValsToAdd[$CNF['FIELD_ALLOW_VIEW_TO']] = $iReviewFor;
@@ -69,15 +41,11 @@ class BxReviewsFormEntry extends BxBaseModTextFormEntry
         $this->calcAvgVoting($aValsToAdd);
 
         $aValsToAdd[$CNF['FIELD_STATUS']] = 'active';
-
-        $iContentId = parent::insert ($aValsToAdd, $isIgnore);
-        if(!empty($iContentId)){
-            $this->processFiles($CNF['FIELD_COVER'], $iContentId, true);
-        }
-        return $iContentId;
+        
+        return parent::insert ($aValsToAdd, $isIgnore);
     }
 
-    function update ($iContentId, $aValsToAdd = array(), &$aTrackTextFieldsChanges = null)
+    public function update ($iContentId, $aValsToAdd = [], &$aTrackTextFieldsChanges = null)
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
 
@@ -85,10 +53,8 @@ class BxReviewsFormEntry extends BxBaseModTextFormEntry
             $aValsToAdd[$CNF['FIELD_ALLOW_VIEW_TO']] = $iReviewFor;
 
         $this->calcAvgVoting($aValsToAdd);
-        
-        $iResult = parent::update ($iContentId, $aValsToAdd, $aTrackTextFieldsChanges);
-        $this->processFiles($CNF['FIELD_COVER'], $iContentId, false);   
-        return $iResult;
+
+        return parent::update ($iContentId, $aValsToAdd, $aTrackTextFieldsChanges);
     }
 
     protected function calcAvgVoting(&$aValsToAdd) {
@@ -132,34 +98,6 @@ class BxReviewsFormEntry extends BxBaseModTextFormEntry
 
             return -$iProfile;
         } else return false;
-    }
-
-    protected function _getCoverGhostTmplVars($aContentInfo = array())
-    {
-    	$CNF = &$this->_oModule->_oConfig->CNF;
-
-    	return array (
-            'name' => $this->aInputs[$CNF['FIELD_COVER']]['name'],
-            'content_id' => $this->aInputs[$CNF['FIELD_COVER']]['content_id'],
-            'editor_id' => isset($CNF['FIELD_TEXT_ID']) ? $CNF['FIELD_TEXT_ID'] : '',
-            'thumb_id' => isset($CNF['FIELD_THUMB']) && isset($aContentInfo[$CNF['FIELD_THUMB']]) ? $aContentInfo[$CNF['FIELD_THUMB']] : 0,
-            'name_thumb' => isset($CNF['FIELD_THUMB']) ? $CNF['FIELD_THUMB'] : ''
-        );
-    }
-
-    protected function _getPhotoGhostTmplVars($aContentInfo = array())
-    {
-    	$CNF = &$this->_oModule->_oConfig->CNF;
-
-    	return array (
-            'name' => $this->aInputs[$CNF['FIELD_PHOTO']]['name'],
-            'content_id' => (int)$this->aInputs[$CNF['FIELD_PHOTO']]['content_id'],
-            'editor_id' => isset($CNF['FIELD_TEXT_ID']) ? $CNF['FIELD_TEXT_ID'] : '',
-            'bx_if:set_thumb' => [
-				'condition' => false,
-				'content' => []
-			],
-    	);
     }
 
     protected function genCustomInputVotingOptions ($aInput)

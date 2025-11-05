@@ -465,43 +465,7 @@ class BxBaseCmtsServices extends BxDol
      */
     public function serviceGetNotificationsVote($aEvent)
     {
-        $iCmtIdUnique = (int)$aEvent['object_id'];
-
-        $aCmtInfo = BxDolCmts::getGlobalInfo($iCmtIdUnique);
-        if(empty($aCmtInfo) || !is_array($aCmtInfo))
-            return array();
-
-        $oCmts = BxDolCmts::getObjectInstance($aCmtInfo['system_name'], 0, false);
-        if(!$oCmts || !$oCmts->isEnabled())
-            return array();
-
-        $oVote = $oCmts->getVoteObject($iCmtIdUnique);
-        if(!$oVote)
-            return array();
-
-        $iCmtId = (int)$aCmtInfo['cmt_id'];
-        $sCmtUrl = str_replace(BX_DOL_URL_ROOT, '{bx_url_root}', $oCmts->serviceGetLink($iCmtId));
-        $sCmtCaption = strmaxtextlen($oCmts->serviceGetText($iCmtId), 20, '...');
-
-        $sCmtUrlApi = '';
-        if(bx_is_api() && getParam('sys_api_comment_notif_link_content') == 'on') {
-            $aCmt = $oCmts->getCommentsBy(['type' => 'uniq_id', 'uniq_id' => $iCmtIdUnique]);
-            if(!empty($aCmt) && is_array($aCmt)) {
-                $oCmts->init($aCmt['cmt_object_id']);
-
-                $sCmtUrlApi = $oCmts->getBaseUrl('{bx_url_root}') . '#cid=' . $iCmtId;
-            }
-        }
-
-        return array(
-            'entry_sample' => $oCmts->getLanguageKey('txt_sample_single'),
-            'entry_url' => $sCmtUrl,
-            'entry_url_api' => $sCmtUrlApi,
-            'entry_caption' => $sCmtCaption,
-            'entry_author' => $aCmtInfo['author_id'],
-            'subentry_sample' => $oCmts->getLanguageKey('txt_sample_vote_single'),
-            'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
-        );
+        return $this->_serviceGetNotificationsVote($aEvent, 'vote');
     }
 
     /**
@@ -565,7 +529,7 @@ class BxBaseCmtsServices extends BxDol
      */
     public function serviceGetNotificationsScoreUp($aEvent)
     {
-    	return $this->_serviceGetNotificationsScore('up', $aEvent);
+    	return $this->_serviceGetNotificationsVote($aEvent, 'score', 'up');
     }
 
     /**
@@ -573,24 +537,24 @@ class BxBaseCmtsServices extends BxDol
      */
     public function serviceGetNotificationsScoreDown($aEvent)
     {
-    	return $this->_serviceGetNotificationsScore('down', $aEvent);
+    	return $this->_serviceGetNotificationsVote($aEvent, 'score', 'down');
     }
 
-    protected function _serviceGetNotificationsScore($sType, $aEvent)
+    protected function _serviceGetNotificationsVote($aEvent, $sAction, $sType = '')
     {
         $iCmtIdUnique = (int)$aEvent['object_id'];
 
         $aCmtInfo = BxDolCmts::getGlobalInfo($iCmtIdUnique);
         if(empty($aCmtInfo) || !is_array($aCmtInfo))
-            return array();
+            return [];
 
         $oCmts = BxDolCmts::getObjectInstance($aCmtInfo['system_name'], 0, false);
         if(!$oCmts || !$oCmts->isEnabled())
-            return array();
+            return [];
 
-        $oScore = $oCmts->getScoreObject($iCmtIdUnique);
-        if(!$oScore)
-            return array();
+        $oAction = $oCmts->{'get' . ucfirst($sAction) . 'Object'}($iCmtIdUnique);
+        if(!$oAction)
+            return [];
 
         $iCmtId = (int)$aCmtInfo['cmt_id'];
         $sCmtUrl = str_replace(BX_DOL_URL_ROOT, '{bx_url_root}', $oCmts->serviceGetLink($iCmtId));
@@ -606,15 +570,15 @@ class BxBaseCmtsServices extends BxDol
             }
         }
 
-        return array(
+        return [
             'entry_sample' => $oCmts->getLanguageKey('txt_sample_single'),
             'entry_url' => $sCmtUrl,
             'entry_url_api' => $sCmtUrlApi,
             'entry_caption' => $sCmtCaption,
             'entry_author' => $aCmtInfo['author_id'],
-            'subentry_sample' => $oCmts->getLanguageKey('txt_sample_score_' . $sType . '_single'),
+            'subentry_sample' => $oCmts->getLanguageKey('txt_sample_' . $sAction . ($sType ? '_' . $sType : '') . '_single'),
             'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
-        );
+        ];
     }
     
     /**

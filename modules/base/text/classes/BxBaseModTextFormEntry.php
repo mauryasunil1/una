@@ -128,7 +128,7 @@ class BxBaseModTextFormEntry extends BxBaseModGeneralFormEntry
     	return $sResult;
     }
 
-    function initChecker ($aValues = array (), $aSpecificValues = array())
+    function initChecker ($aValues = [], $aSpecificValues = [])
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
 
@@ -136,7 +136,18 @@ class BxBaseModTextFormEntry extends BxBaseModGeneralFormEntry
         $iValueId = $bValues ? (int)$aValues['id'] : 0;
         $iUserId = $this->_oModule->getUserId();
         $aContentInfo = $bValues ? $this->_oModule->_oDb->getContentInfoById($aValues['id']) : false;
-            
+
+        if($this->aParams['display'] == $CNF['OBJECT_FORM_ENTRY_DISPLAY_EDIT'] && isset($CNF['FIELD_PUBLISHED']) && isset($this->aInputs[$CNF['FIELD_PUBLISHED']]))
+            if($bValues && in_array($aValues[$CNF['FIELD_STATUS']], ['active', 'hidden']))
+                unset($this->aInputs[$CNF['FIELD_PUBLISHED']]);
+
+        if (isset($CNF['FIELD_COVER']) && isset($this->aInputs[$CNF['FIELD_COVER']])) {
+            if($bValues)
+                $this->aInputs[$CNF['FIELD_COVER']]['content_id'] = $aValues['id'];
+
+            $this->aInputs[$CNF['FIELD_COVER']]['ghost_template'] = $this->_oModule->_oTemplate->parseHtmlByName($this->_sGhostTemplateCover, $this->_getCoverGhostTmplVars($aContentInfo));
+        }
+
         if (isset($CNF['FIELD_VIDEO']) && isset($this->aInputs[$CNF['FIELD_VIDEO']])) {
             if ($bValues)
                 $this->aInputs[$CNF['FIELD_VIDEO']]['content_id'] = $aValues['id'];
@@ -168,9 +179,63 @@ class BxBaseModTextFormEntry extends BxBaseModGeneralFormEntry
         }
     }
 
-    function update ($iContentId, $aValsToAdd = array(), &$aTrackTextFieldsChanges = null)
+    public function insert ($aValsToAdd = [], $isIgnore = false)
     {
-       return parent::update ($iContentId, $aValsToAdd, $aTrackTextFieldsChanges);
+        $CNF = &$this->_oModule->_oConfig->CNF;
+
+        if(isset($CNF['FIELD_ADDED']) && empty($aValsToAdd[$CNF['FIELD_ADDED']])) {
+            $iAdded = 0;
+            if(isset($this->aInputs[$CNF['FIELD_ADDED']]))
+                $iAdded = $this->getCleanValue($CNF['FIELD_ADDED']);
+
+            if(empty($iAdded))
+                 $iAdded = time();
+
+            $aValsToAdd[$CNF['FIELD_ADDED']] = $iAdded;
+        }
+
+        if(isset($CNF['FIELD_PUBLISHED'])) {
+            if(empty($aValsToAdd[$CNF['FIELD_PUBLISHED']])) {
+                $iPublished = 0;
+                if(isset($this->aInputs[$CNF['FIELD_PUBLISHED']]))
+                    $iPublished = $this->getCleanValue($CNF['FIELD_PUBLISHED']);
+
+                 if(empty($iPublished))
+                     $iPublished = time();
+
+                 $aValsToAdd[$CNF['FIELD_PUBLISHED']] = $iPublished;
+            }
+
+            if(empty($aValsToAdd[$CNF['FIELD_STATUS']]))
+                $aValsToAdd[$CNF['FIELD_STATUS']] = $aValsToAdd[$CNF['FIELD_PUBLISHED']] > $aValsToAdd[$CNF['FIELD_ADDED']] ? 'awaiting' : 'active';
+        }
+        
+        $iContentId = parent::insert ($aValsToAdd, $isIgnore);
+
+        if(isset($CNF['FIELD_COVER']) && !empty($iContentId))
+            $this->processFiles($CNF['FIELD_COVER'], $iContentId, true);
+
+        return $iContentId;
+    }
+
+    public function update ($iContentId, $aValsToAdd = [], &$aTrackTextFieldsChanges = null)
+    {
+        $CNF = &$this->_oModule->_oConfig->CNF;
+
+        if(isset($CNF['FIELD_PUBLISHED']) && empty($aValsToAdd[$CNF['FIELD_PUBLISHED']]) && isset($this->aInputs[$CNF['FIELD_PUBLISHED']])) {
+            $iPublished = $this->getCleanValue($CNF['FIELD_PUBLISHED']);
+            if(empty($iPublished))
+                $iPublished = time();
+
+            $aValsToAdd[$CNF['FIELD_PUBLISHED']] = $iPublished;
+        }
+
+        $iResult = parent::update ($iContentId, $aValsToAdd, $aTrackTextFieldsChanges);
+
+        if(isset($CNF['FIELD_COVER']))
+            $this->processFiles($CNF['FIELD_COVER'], $iContentId, false);   
+
+        return $iResult;
     }
     
     protected function genCustomInputAttachments ($aInput)
@@ -191,41 +256,68 @@ class BxBaseModTextFormEntry extends BxBaseModGeneralFormEntry
         foreach($aLinkIds as $iLinkId)
             $this->_oModule->_oDb->saveLink($iContentId, $iLinkId);
     }
-    
 
-    protected function _getVideoGhostTmplVars($aContentInfo = array())
+    protected function _getCoverGhostTmplVars($aContentInfo = [])
     {
     	$CNF = &$this->_oModule->_oConfig->CNF;
 
-    	return array (
+    	return [
+            'name' => $this->aInputs[$CNF['FIELD_COVER']]['name'],
+            'content_id' => $this->aInputs[$CNF['FIELD_COVER']]['content_id'],
+            'editor_id' => isset($CNF['FIELD_TEXT_ID']) ? $CNF['FIELD_TEXT_ID'] : '',
+            'thumb_id' => isset($CNF['FIELD_THUMB']) && isset($aContentInfo[$CNF['FIELD_THUMB']]) ? $aContentInfo[$CNF['FIELD_THUMB']] : 0,
+            'name_thumb' => isset($CNF['FIELD_THUMB']) ? $CNF['FIELD_THUMB'] : ''
+        ];
+    }
+
+    protected function _getPhotoGhostTmplVars($aContentInfo = [])
+    {
+    	$CNF = &$this->_oModule->_oConfig->CNF;
+
+    	return [
+            'name' => $this->aInputs[$CNF['FIELD_PHOTO']]['name'],
+            'content_id' => (int)$this->aInputs[$CNF['FIELD_PHOTO']]['content_id'],
+            'editor_id' => isset($CNF['FIELD_TEXT_ID']) ? $CNF['FIELD_TEXT_ID'] : '',
+            'bx_if:set_thumb' => [
+                'condition' => false,
+                'content' => []
+            ],
+    	];
+    }
+
+    protected function _getVideoGhostTmplVars($aContentInfo = [])
+    {
+    	$CNF = &$this->_oModule->_oConfig->CNF;
+
+    	return [
             'name' => $this->aInputs[$CNF['FIELD_VIDEO']]['name'],
             'content_id' => (int)$this->aInputs[$CNF['FIELD_VIDEO']]['content_id'],
             'editor_id' => isset($CNF['FIELD_TEXT_ID']) ? $CNF['FIELD_TEXT_ID'] : '',
             'embed_url' => BX_DOL_URL_ROOT . $this->_oModule->_oConfig->getBaseUri() . 'file_embed_video/',
-    	);
+    	];
     }
 
-    protected function _getSoundGhostTmplVars($aContentInfo = array())
+    protected function _getSoundGhostTmplVars($aContentInfo = [])
     {
     	$CNF = &$this->_oModule->_oConfig->CNF;
 
-    	return array (
+    	return [
             'name' => $this->aInputs[$CNF['FIELD_SOUND']]['name'],
             'content_id' => (int)$this->aInputs[$CNF['FIELD_SOUND']]['content_id'],
             'editor_id' => isset($CNF['FIELD_TEXT_ID']) ? $CNF['FIELD_TEXT_ID'] : '',
             'embed_url' => BX_DOL_URL_ROOT . $this->_oModule->_oConfig->getBaseUri() . 'file_embed_sound/',
-    	);
+    	];
     }
 
-    protected function _getFileGhostTmplVars($aContentInfo = array())
+    protected function _getFileGhostTmplVars($aContentInfo = [])
     {
     	$CNF = &$this->_oModule->_oConfig->CNF;
 
-    	return array (
+    	return [
             'name' => $this->aInputs[$CNF['FIELD_FILE']]['name'],
             'content_id' => (int)$this->aInputs[$CNF['FIELD_FILE']]['content_id'],
             'editor_id' => isset($CNF['FIELD_TEXT_ID']) ? $CNF['FIELD_TEXT_ID'] : ''
-    	);
+    	];
     }
 }
 
