@@ -4831,7 +4831,7 @@ INSERT INTO `sys_objects_menu` (`object`, `title`, `title_public`, `set_name`, `
 ('sys_account_popup', '_sys_menu_title_account_popup', '', 'sys_account_popup', 'system', 12, 0, 1, 'BxTemplMenuAccountPopup', ''),
 ('sys_account_notifications', '_sys_menu_title_account_notifications', '', 'sys_account_notifications', 'system', 19, 0, 1, 'BxTemplMenuAccountNotifications', ''),
 ('sys_profile_stats', '_sys_menu_title_profile_stats', '', 'sys_profile_stats', 'system', 21, 0, 1, 'BxTemplMenuProfileStats', ''),
-('sys_tags_cloud', '_sys_menu_title_tags_cloud', '', '', 'system', 21, 0, 1, 'BxBaseMenuTagsCloud', ''),
+('sys_tags_cloud', '_sys_menu_title_tags_cloud', '', '', 'system', 21, 0, 1, 'BxTemplMenuTagsCloud', ''),
 ('sys_profile_followings', '_sys_menu_title_profile_followings', '', 'sys_profile_followings', 'system', 27, 0, 1, 'BxTemplMenuProfileFollowings', ''),
 ('sys_switch_language_popup', '_sys_menu_title_switch_language_popup', '', 'sys_switch_language', 'system', 6, 0, 1, 'BxTemplMenuSwitchLanguage', ''),
 ('sys_switch_language_inline', '_sys_menu_title_switch_language_inline', '', 'sys_switch_language', 'system', 3, 0, 1, 'BxTemplMenuSwitchLanguage', ''),
