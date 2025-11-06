@@ -668,6 +668,68 @@ class BxBaseModGeneralTemplate extends BxDolModuleTemplate
         return $aAttachmnts;
     }
 
+    public function getAttachLinkItem($iUserId, $mixedLink, $aParams = [])
+    {
+        $aLink = is_array($mixedLink) ? $mixedLink : $this->_oDb->getLinksBy(['type' => 'id', 'id' => (int)$mixedLink, 'profile_id' => $iUserId]);
+        if(empty($aLink) || !is_array($aLink))
+            return '';
+
+        $sStylePrefix = $aParams['style_prefix'] ?? '';
+        $sClass = $sStylePrefix . '-al-item';
+
+        $oEmbed = BxDolEmbed::getObjectInstance();
+        $bEmbed = $oEmbed !== false;
+
+        $sThumbnail = '';
+        $aLinkAttrs = [];
+        if(!$bEmbed) {
+            $aLinkAttrs = [
+            	'title' => bx_html_attribute($aLink['title'])
+            ];
+            if(!$this->_oConfig->isEqualUrls(BX_DOL_URL_ROOT, $aLink['url'])) {
+                $aLinkAttrs['target'] = '_blank';
+    
+                if($this->_oDb->getParam('sys_add_nofollow') == 'on')
+            	    $aLinkAttrs['rel'] = 'nofollow';
+            }
+
+            if((int)$aLink['media_id'] != 0 && ($aParams['transcoder'] ??= ''))
+                $sThumbnail = BxDolTranscoderImage::getObjectInstance($aParams['transcoder'])->getFileUrl($aLink['media_id']);
+        }
+        else
+            $sClass .= ' embed';
+
+        return $this->parseHtmlByName('attach_link_item.html', [
+            'html_id' => ($aParams['html_id_link_item'] ?? '') . $aLink['id'],
+            'style_prefix' => $sStylePrefix,
+            'class' => $sClass,
+            'js_object' => $aParams['js_object'] ?? '',
+            'id' => $aLink['id'],
+            'bx_if:show_embed_outer' => [
+                'condition' => $bEmbed,
+                'content' => [
+                    'style_prefix' => $sStylePrefix,
+                    'embed' => $bEmbed ? $oEmbed->getLinkHTML($aLink['url'], $aLink['title'], 300) : '',
+                ]
+            ],
+            'bx_if:show_embed_inner' => [
+                'condition' => !$bEmbed,
+                'content' => [
+                    'style_prefix' => $sStylePrefix,
+                    'bx_if:show_thumbnail' => [
+                        'condition' => !empty($sThumbnail),
+                        'content' => [
+                            'style_prefix' => $sStylePrefix,
+                            'thumbnail' => $sThumbnail
+                        ]
+                    ],
+                    'url' => $aLink['url'],
+                    'link' => $this->parseLink($aLink['url'], $aLink['title'], $aLinkAttrs)
+                ]
+            ],
+        ]);
+    }
+
     public function embedVideo($iFileId)
     {
         $CNF = $this->getModule()->_oConfig->CNF;

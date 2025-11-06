@@ -1639,68 +1639,14 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
         ));
     }
 
-    public function getAttachLinkItem($iUserId, $mixedLink)
+    public function getAttachLinkItem($iUserId, $mixedLink, $aParams = [])
     {
-        $aLink = is_array($mixedLink) ? $mixedLink : $this->_oDb->getLinksBy(array('type' => 'id', 'id' => (int)$mixedLink, 'profile_id' => $iUserId));
-        if(empty($aLink) || !is_array($aLink))
-            return '';
-
-        $sLinkIdPrefix = $this->_oConfig->getHtmlIds('post', 'attach_link_item');
-        $sStylePrefix = $this->_oConfig->getPrefix('style');
-        $sClass = $sStylePrefix . '-al-item';
-        $sJsObject = $this->_oConfig->getJsObject('post');
-
-        $oEmbed = BxDolEmbed::getObjectInstance();
-        $bEmbed = $oEmbed !== false;
-
-        $sThumbnail = '';
-        $aLinkAttrs = array();
-        if(!$bEmbed) {
-            $aLinkAttrs = array(
-            	'title' => bx_html_attribute($aLink['title'])
-            );
-            if(!$this->_oConfig->isEqualUrls(BX_DOL_URL_ROOT, $aLink['url'])) {
-                $aLinkAttrs['target'] = '_blank';
-    
-                if($this->_oDb->getParam('sys_add_nofollow') == 'on')
-            	    $aLinkAttrs['rel'] = 'nofollow';
-            }
-
-            if((int)$aLink['media_id'] != 0)
-                $sThumbnail = BxDolTranscoderImage::getObjectInstance($this->_oConfig->getObject('transcoder_photos_preview'))->getFileUrl($aLink['media_id']);
-        }
-        else
-            $sClass .= ' embed';
-
-        return $this->parseHtmlByName('attach_link_item.html', array(
-            'html_id' => $sLinkIdPrefix . $aLink['id'],
-            'style_prefix' => $sStylePrefix,
-            'class' => $sClass,
-            'js_object' => $sJsObject,
-            'id' => $aLink['id'],
-            'bx_if:show_embed_outer' => array(
-                'condition' => $bEmbed,
-                'content' => array(
-                    'style_prefix' => $sStylePrefix,
-                    'embed' => $bEmbed ? $oEmbed->getLinkHTML($aLink['url'], $aLink['title'], 300) : '',
-                )
-            ),
-            'bx_if:show_embed_inner' => array(
-                'condition' => !$bEmbed,
-                'content' => array(
-                    'style_prefix' => $sStylePrefix,
-                    'bx_if:show_thumbnail' => array(
-                        'condition' => !empty($sThumbnail),
-                        'content' => array(
-                            'style_prefix' => $sStylePrefix,
-                            'thumbnail' => $sThumbnail
-                        )
-                    ),
-                    'url' => $aLink['url'],
-                    'link' => $this->parseLink($aLink['url'], $aLink['title'], $aLinkAttrs)
-                )
-            ),
-        ));
+        return parent::getAttachLinkItem($iUserId, $mixedLink, array_merge($aParams ?? [], [
+            'html_id_link_item' => $this->_oConfig->getHtmlIds('post', 'attach_link_item'),
+            'style_prefix' => $this->_oConfig->getPrefix('style'),
+            'js_object' => $this->_oConfig->getJsObject('post'),
+            'transcoder' => $this->_oConfig->getObject('transcoder_photos_preview')
+        ]));
     }
 
     public function getData(&$aEvent, $aBrowseParams = array())
