@@ -583,7 +583,7 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
         $bBadgesCompact = isset($aParams['badges_compact']) ? $aParams['badges_compact'] : false;
 
         $sCoverData = ($sKey = 'FIELD_THUMB_POSITION') && isset($CNF[$sKey], $aData[$CNF[$sKey]]) ? $aData[$CNF[$sKey]] : '';
-        $sCoverSettings = $this->_getImageSettings($CNF['FIELD_THUMB'], $sCoverData, 'unit_cover');
+        $sCoverSettings = ($sKey = 'FIELD_THUMB') && isset($CNF[$sKey]) ? $this->_getImageSettings($CNF[$sKey], $sCoverData, 'unit_cover') : '';
 
         $aTmplVars = array (
             'class' => $this->_getUnitClass($aData,(isset($aParams['template_name']) ? $aParams['template_name'] : '')),

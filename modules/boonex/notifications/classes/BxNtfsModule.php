@@ -562,62 +562,12 @@ class BxNtfsModule extends BxBaseModNotificationsModule
 
     public function enableSettingsLike($iId, $bValue, $bAdministration = false)
     {
-        $aSetting = $this->_oDb->getSetting(array(
-            'by' => $bAdministration ? 'id' : 'tsu_id', 
-            'id' => (int)$iId
-        ));
-        if(empty($aSetting) || !is_array($aSetting))
-            return false;
-
-        $aSettingsIds = $this->_oDb->getSetting(array(
-            'by' => 'group_type_delivery', 
-            'group' => $aSetting['group'], 
-            'delivery' => $aSetting['delivery'], 
-            'type' => $aSetting['type'], 
-            'active' => !$bAdministration
-        ));
-        if(empty($aSettingsIds) || !is_array($aSettingsIds))
-            return false;
-
-        $iUserId = bx_get_logged_profile_id();
-
-        $mixedResult = false;
-        if($bAdministration)
-            $mixedResult =  $this->_oDb->activateSettingById($bValue, $aSettingsIds);
-        else
-            $mixedResult = $this->_oDb->activateSettingByIdUser($bValue, $iUserId, $aSettingsIds);
-
-        return $mixedResult;
+        return $this->_changeSettingsLike($iId, 'activate', [$bValue], $bAdministration);
     }
 
     public function changeSettingsValueLike($iId, $sField, $mixedValue, $bAdministration = false)
     {
-        $aSetting = $this->_oDb->getSetting(array(
-            'by' => $bAdministration ? 'id' : 'tsu_id', 
-            'id' => (int)$iId
-        ));
-        if(empty($aSetting) || !is_array($aSetting))
-            return false;
-
-        $aSettingsIds = $this->_oDb->getSetting(array(
-            'by' => 'group_type_delivery', 
-            'group' => $aSetting['group'], 
-            'delivery' => $aSetting['delivery'], 
-            'type' => $aSetting['type'], 
-            'active' => !$bAdministration
-        ));
-        if(empty($aSettingsIds) || !is_array($aSettingsIds))
-            return false;
-
-        $iUserId = bx_get_logged_profile_id();
-
-        $mixedResult = false;
-        if($bAdministration)
-            $mixedResult =  $this->_oDb->changeSettingById($sField, $mixedValue, $aSettingsIds);
-        else
-            $mixedResult = $this->_oDb->changeSettingByIdUser($sField, $mixedValue, $iUserId, $aSettingsIds);
-
-        return $mixedResult;
+        return $this->_changeSettingsLike($iId, 'change', [$sField, $mixedValue], $bAdministration);
     }
 
     public function sendNotificationEmail($iProfile, $aNotification)
@@ -807,6 +757,34 @@ class BxNtfsModule extends BxBaseModNotificationsModule
     /*
      * INTERNAL METHODS
      */
+    protected function _changeSettingsLike($iId, $sAction, $aArgs, $bAdministration = false)
+    {
+        $aSetting = $this->_oDb->getSetting(array(
+            'by' => $bAdministration ? 'id' : 'tsu_id', 
+            'id' => (int)$iId
+        ));
+        if(empty($aSetting) || !is_array($aSetting))
+            return false;
+
+        $aSettingsIds = $this->_oDb->getSetting(array(
+            'by' => 'group_type_delivery', 
+            'group' => $aSetting['group'], 
+            'delivery' => $aSetting['delivery'], 
+            'type' => $aSetting['type'], 
+            'active' => !$bAdministration
+        ));
+        if(empty($aSettingsIds) || !is_array($aSettingsIds))
+            return false;
+
+        $sMethod = $sAction . 'SettingById' . (!$bAdministration ? 'User' : '');
+
+        if(!$bAdministration)
+            $aArgs[] = bx_get_logged_profile_id();
+        $aArgs[] = $aSettingsIds;
+
+        return call_user_func_array([$this->_oDb, $sMethod], $aArgs);
+    }
+
     protected function _prepareParams($sType = '', $iOwnerId = 0, $iStart = -1, $iPerPage = -1, $aModules = [])
     {
         $iUserId = $this->getUserId();
