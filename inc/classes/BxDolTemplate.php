@@ -199,6 +199,7 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
     protected $_sFolderImages;
     protected $_sFolderIcons;
     protected $_aTemplates;
+    protected $_aTemplatePatterns;
 
     protected $_aLocations;
     protected $_aLocationsJs;
@@ -281,7 +282,24 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
         $this->_sFolderCss = 'css/';
         $this->_sFolderImages = 'images/';
         $this->_sFolderIcons = 'images/icons/';
-        $this->_aTemplates = array('html_tags', 'menu_item_addon', 'menu_item_addon_small', 'menu_item_addon_middle');
+        $this->_aTemplates = ['html_tags', 'menu_item_addon', 'menu_item_addon_small', 'menu_item_addon_middle'];
+        $this->_aTemplatePatterns = [
+            "'<bx_include_auto:([^\s]+) \/>'s" => BX_DOL_TEMPLATE_CHECK_IN_BOTH,
+            "'<bx_include_auto_mod_general:([^\s]+) \/>'s" => ['in' => BX_DOL_TEMPLATE_CHECK_IN_BOTH, 'sub' => 'mod_general'],
+            "'<bx_include_auto_mod_profile:([^\s]+) \/>'s" => ['in' => BX_DOL_TEMPLATE_CHECK_IN_BOTH, 'sub' => 'mod_profile'],
+            "'<bx_include_auto_mod_group:([^\s]+) \/>'s" => ['in' => BX_DOL_TEMPLATE_CHECK_IN_BOTH, 'sub' => 'mod_group'],
+            "'<bx_include_auto_mod_text:([^\s]+) \/>'s" => ['in' => BX_DOL_TEMPLATE_CHECK_IN_BOTH, 'sub' => 'mod_text'],
+            "'<bx_include_base:([^\s]+) \/>'s" => BX_DOL_TEMPLATE_CHECK_IN_BASE,
+            "'<bx_include_base_mod_general:([^\s]+) \/>'s" => ['in' => BX_DOL_TEMPLATE_CHECK_IN_BASE, 'sub' => 'mod_general'],
+            "'<bx_include_base_mod_profile:([^\s]+) \/>'s" => ['in' => BX_DOL_TEMPLATE_CHECK_IN_BASE, 'sub' => 'mod_profile'],
+            "'<bx_include_base_mod_group:([^\s]+) \/>'s" => ['in' => BX_DOL_TEMPLATE_CHECK_IN_BASE, 'sub' => 'mod_group'],
+            "'<bx_include_base_mod_text:([^\s]+) \/>'s" => ['in' => BX_DOL_TEMPLATE_CHECK_IN_BASE, 'sub' => 'mod_text'],
+            "'<bx_include_tmpl:([^\s]+) \/>'s" => BX_DOL_TEMPLATE_CHECK_IN_TMPL,
+            "'<bx_include_tmpl_mod_general:([^\s]+) \/>'s" => ['in' => BX_DOL_TEMPLATE_CHECK_IN_TMPL, 'sub' => 'mod_general'],
+            "'<bx_include_tmpl_mod_profile:([^\s]+) \/>'s" => ['in' => BX_DOL_TEMPLATE_CHECK_IN_TMPL, 'sub' => 'mod_profile'],
+            "'<bx_include_tmpl_mod_group:([^\s]+) \/>'s" => ['in' => BX_DOL_TEMPLATE_CHECK_IN_TMPL, 'sub' => 'mod_group'],
+            "'<bx_include_tmpl_mod_text:([^\s]+) \/>'s" => ['in' => BX_DOL_TEMPLATE_CHECK_IN_TMPL, 'sub' => 'mod_text']
+        ];
 
         $this->addLocation('system', $this->_sRootPath, $this->_sRootUrl);
 
@@ -314,8 +332,8 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
         $this->_bJsArchive = $this->_bJsCache && $bArchive;
         $this->_sJsCachePrefix = $this->_sCacheFilePrefix . 'js_';
 
-        $this->aPage = array();
-        $this->aPageContent = array();
+        $this->aPage = [];
+        $this->aPageContent = [];
     }
 
     /**
@@ -3122,24 +3140,7 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
         try {
             $oTemplate = &$this;
 
-            $aCallbackPatterns = array(
-                "'<bx_include_auto:([^\s]+) \/>'s" => BX_DOL_TEMPLATE_CHECK_IN_BOTH,
-                "'<bx_include_auto_mod_general:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_BOTH, 'sub' => 'mod_general'),
-                "'<bx_include_auto_mod_profile:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_BOTH, 'sub' => 'mod_profile'),
-                "'<bx_include_auto_mod_group:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_BOTH, 'sub' => 'mod_group'),
-                "'<bx_include_auto_mod_text:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_BOTH, 'sub' => 'mod_text'),
-                "'<bx_include_base:([^\s]+) \/>'s" => BX_DOL_TEMPLATE_CHECK_IN_BASE,
-                "'<bx_include_base_mod_general:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_BASE, 'sub' => 'mod_general'),
-                "'<bx_include_base_mod_profile:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_BASE, 'sub' => 'mod_profile'),
-                "'<bx_include_base_mod_group:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_BASE, 'sub' => 'mod_group'),
-                "'<bx_include_base_mod_text:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_BASE, 'sub' => 'mod_text'),
-                "'<bx_include_tmpl:([^\s]+) \/>'s" => BX_DOL_TEMPLATE_CHECK_IN_TMPL,
-                "'<bx_include_tmpl_mod_general:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_TMPL, 'sub' => 'mod_general'),
-                "'<bx_include_tmpl_mod_profile:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_TMPL, 'sub' => 'mod_profile'),
-                "'<bx_include_tmpl_mod_group:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_TMPL, 'sub' => 'mod_group'),
-                "'<bx_include_tmpl_mod_text:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_TMPL, 'sub' => 'mod_text')
-            );
-            foreach($aCallbackPatterns as $sPattern => $sCheckIn)
+            foreach($this->_aTemplatePatterns as $sPattern => $sCheckIn)
                 $sContent = preg_replace_callback($sPattern, function($aMatches) use($oTemplate, $aVariables, $mixedKeyWrapperHtml, $sCheckIn) {
                     return $oTemplate->parseHtmlByName($aMatches[1], $aVariables, $mixedKeyWrapperHtml, $sCheckIn);
                 }, $sContent);
@@ -3260,24 +3261,7 @@ class BxDolTemplate extends BxDolFactory implements iBxDolSingleton
         try {
             $oTemplate = &$this;
 
-            $aCallbackPatterns = array(
-                "'<bx_include_auto:([^\s]+) \/>'s" => BX_DOL_TEMPLATE_CHECK_IN_BOTH,
-                "'<bx_include_auto_mod_general:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_BOTH, 'sub' => 'mod_general'),
-                "'<bx_include_auto_mod_profile:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_BOTH, 'sub' => 'mod_profile'),
-                "'<bx_include_auto_mod_group:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_BOTH, 'sub' => 'mod_group'),
-                "'<bx_include_auto_mod_text:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_BOTH, 'sub' => 'mod_text'),
-                "'<bx_include_base:([^\s]+) \/>'s" => BX_DOL_TEMPLATE_CHECK_IN_BASE,
-                "'<bx_include_base_mod_general:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_BASE, 'sub' => 'mod_general'),
-                "'<bx_include_base_mod_profile:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_BASE, 'sub' => 'mod_profile'),
-                "'<bx_include_base_mod_group:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_BASE, 'sub' => 'mod_group'),
-                "'<bx_include_base_mod_text:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_BASE, 'sub' => 'mod_text'),
-                "'<bx_include_tmpl:([^\s]+) \/>'s" => BX_DOL_TEMPLATE_CHECK_IN_TMPL,
-                "'<bx_include_tmpl_mod_general:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_TMPL, 'sub' => 'mod_general'),
-                "'<bx_include_tmpl_mod_profile:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_TMPL, 'sub' => 'mod_profile'),
-                "'<bx_include_tmpl_mod_group:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_TMPL, 'sub' => 'mod_group'),
-                "'<bx_include_tmpl_mod_text:([^\s]+) \/>'s" => array('in' => BX_DOL_TEMPLATE_CHECK_IN_TMPL, 'sub' => 'mod_text')
-            );
-            foreach($aCallbackPatterns as $sPattern => $sCheckIn)
+            foreach($this->_aTemplatePatterns as $sPattern => $sCheckIn)
                 $sContent = preg_replace_callback($sPattern, function($aMatches) use($oTemplate, $aVarValues, $mixedKeyWrapperHtml, $sCheckIn) {
                     $mixedResult = $oTemplate->getCached($aMatches[1], $aVarValues, $mixedKeyWrapperHtml, $sCheckIn, false);
                     if($mixedResult === false)

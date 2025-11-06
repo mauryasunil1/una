@@ -36,55 +36,11 @@ class BxBaseServicePages extends BxDol
      */
     public function serviceGetPageByRequest ($sRequest, $sBlocks = '', $sParams = '')
     {
-        $mixed = null;
+        list($aRes, $aExtras) = $this->_getByRequest('page', $sRequest, $sBlocks, $sParams);
 
-        if (substr_count($sRequest, 'page/')> 0){
-            $_GET['i'] = str_replace('page/', '', $sRequest);
-            $aParams = json_decode($sParams, true);
-            if(!empty($aParams) && is_array($aParams))
-                $_GET = array_merge($_GET, $aParams);
-            
-            $mixed = BxDolPage::getObjectInstanceByURI();
-        }
-        else{
-            if(!empty($sParams)) {
-                $aParams = json_decode($sParams, true);
-                if(!empty($aParams) && is_array($aParams))
-                    $_GET = array_merge($_GET, $aParams);
-            }
-            $mixed = BxDolPage::getPageBySeoLink($sRequest);
-        }
-
-        $aExtras = [
-            'request' => $sRequest,
-        ];
-
-        if (($sUrl = $mixed) && is_string($sUrl)) {
-            $aRes = ['redirect' => $sUrl];
-
-            $aExtras = array_merge($aExtras, [
-                'url' => $sUrl
-            ]);
-        }
-        elseif (($oPage = $mixed) && is_object($oPage)) {
-            $aBlocks = [];
-            if(!empty($sBlocks))
-                $aBlocks = explode(',', $sBlocks);
-
-            $aRes = $oPage->getPageAPI($aBlocks);
-
-            $aExtras = array_merge($aExtras, [
-                'page' => $oPage,
-                'blocks' => $aBlocks
-            ]);
-        }
-        else {
-            $aRes = ['code' => 404, 'error' => _t("_sys_request_page_not_found_cpt"), 'data' => ['page_status' => 404]];
-
-            if(isLogged())
-                $aRes['data']['user'] = BxDolProfile::getDataForPage();
-        }
-
+        if(isset($aRes['code'], $aRes['data']) && (int)$aRes['code'] == 404 && isLogged())
+            $aRes['data']['user'] = BxDolProfile::getDataForPage();
+        
         $aExtras['data'] = &$aRes;
 
         /**
@@ -107,51 +63,7 @@ class BxBaseServicePages extends BxDol
 
     public function serviceGetPageContentByRequest ($sRequest, $sBlocks = '', $sParams = '')
     {
-        $mixed = null;
-
-        if (substr_count($sRequest, 'page/')> 0){
-            $_GET['i'] = str_replace('page/', '', $sRequest);
-            $aParams = json_decode($sParams, true);
-            if(!empty($aParams) && is_array($aParams))
-                $_GET = array_merge($_GET, $aParams);
-            
-            $mixed = BxDolPage::getObjectInstanceByURI();
-        }
-        else{
-            if(!empty($sParams)) {
-                $aParams = json_decode($sParams, true);
-                if(!empty($aParams) && is_array($aParams))
-                    $_GET = array_merge($_GET, $aParams);
-            }
-            $mixed = BxDolPage::getPageBySeoLink($sRequest);
-        }
-
-        $aExtras = [
-            'request' => $sRequest,
-        ];
-
-        if (($sUrl = $mixed) && is_string($sUrl)) {
-            $aRes = ['redirect' => $sUrl];
-
-            $aExtras = array_merge($aExtras, [
-                'url' => $sUrl
-            ]);
-        }
-        elseif (($oPage = $mixed) && is_object($oPage)) {
-            $aBlocks = [];
-            if(!empty($sBlocks))
-                $aBlocks = explode(',', $sBlocks);
-
-            $aRes = $oPage->getPageContentAPI($aBlocks);
-
-            $aExtras = array_merge($aExtras, [
-                'page' => $oPage,
-                'blocks' => $aBlocks
-            ]);
-        }
-        else {
-            $aRes = ['code' => 404, 'error' => _t("_sys_request_page_not_found_cpt"), 'data' => ['page_status' => 404]];
-        }
+        list($aRes, $aExtras) = $this->_getByRequest('page_content', $sRequest, $sBlocks, $sParams);
 
         $aExtras['data'] = &$aRes;
 
@@ -221,6 +133,62 @@ class BxBaseServicePages extends BxDol
     {
         $oEmbed = BxDolEmbed::getObjectInstance('sys_system');
         return $oEmbed->getData($sUrl, '');
+    }
+
+    protected function _getByRequest($sType, $sRequest, $sBlocks = '', $sParams = '')
+    {
+        $mixed = null;
+
+        if (substr_count($sRequest, 'page/')> 0){
+            $_GET['i'] = str_replace('page/', '', $sRequest);
+            $aParams = json_decode($sParams, true);
+            if(!empty($aParams) && is_array($aParams))
+                $_GET = array_merge($_GET, $aParams);
+            
+            $mixed = BxDolPage::getObjectInstanceByURI();
+        }
+        else{
+            if(!empty($sParams)) {
+                $aParams = json_decode($sParams, true);
+                if(!empty($aParams) && is_array($aParams))
+                    $_GET = array_merge($_GET, $aParams);
+            }
+            $mixed = BxDolPage::getPageBySeoLink($sRequest);
+        }
+
+        $aExtras = [
+            'request' => $sRequest,
+        ];
+
+        if(($sUrl = $mixed) && is_string($sUrl)) {
+            $aResult = ['redirect' => $sUrl];
+
+            $aExtras = array_merge($aExtras, [
+                'url' => $sUrl
+            ]);
+        }
+        else if(($oPage = $mixed) && is_object($oPage)) {
+            $aBlocks = [];
+            if(!empty($sBlocks))
+                $aBlocks = explode(',', $sBlocks);
+
+            $aResult = $oPage->{'get' . bx_gen_method_name($sType) . 'API'}($aBlocks);
+
+            $aExtras = array_merge($aExtras, [
+                'page' => $oPage,
+                'blocks' => $aBlocks
+            ]);
+        }
+        else
+            $aResult = [
+                'code' => 404, 
+                'error' => _t("_sys_request_page_not_found_cpt"), 
+                'data' => [
+                    'page_status' => 404
+                ]
+            ];
+
+        return [$aResult, $aExtras];
     }
 }
 

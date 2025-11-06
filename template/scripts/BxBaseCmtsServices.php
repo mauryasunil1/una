@@ -437,27 +437,7 @@ class BxBaseCmtsServices extends BxDol
         if(!$oCmts || !$oCmts->isEnabled())
             return [];
 
-        $iCmtId = (int)$aCmtInfo['cmt_id'];
-        $sCmtUrl = str_replace(BX_DOL_URL_ROOT, '{bx_url_root}', $oCmts->serviceGetLink($iCmtId));
-        $sCmtCaption = strmaxtextlen($oCmts->serviceGetText($iCmtId), 20, '...');
-
-        $sCmtUrlApi = '';
-        if(bx_is_api() && getParam('sys_api_comment_notif_link_content') == 'on') {
-            $aCmt = $oCmts->getCommentsBy(['type' => 'uniq_id', 'uniq_id' => $iCmtIdUnique]);
-            if(!empty($aCmt) && is_array($aCmt)) {
-                $oCmts->init($aCmt['cmt_object_id']);
-
-                $sCmtUrlApi = $oCmts->getBaseUrl('{bx_url_root}') . '#cid=' . $iCmtId;
-            }
-        }
-
-        return [
-            'entry_sample' => $oCmts->getLanguageKey('txt_sample_single'),
-            'entry_url' => $sCmtUrl,
-            'entry_url_api' => $sCmtUrlApi,
-            'entry_caption' => $sCmtCaption,
-            'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
-        ];
+        return $this->_getNotificationsData($iCmtIdUnique, (int)$aCmtInfo['cmt_id'], $oCmts);
     }
 
     /**
@@ -498,30 +478,11 @@ class BxBaseCmtsServices extends BxDol
         else
             $aSubentrySampleParams[] = '_undefined';
 
-        $iCmtId = (int)$aCmtInfo['cmt_id'];
-        $sCmtUrl = str_replace(BX_DOL_URL_ROOT, '{bx_url_root}', $oCmts->serviceGetLink($iCmtId));
-        $sCmtCaption = strmaxtextlen($oCmts->serviceGetText($iCmtId), 20, '...');
-
-        $sCmtUrlApi = '';
-        if(bx_is_api() && getParam('sys_api_comment_notif_link_content') == 'on') {
-            $aCmt = $oCmts->getCommentsBy(['type' => 'uniq_id', 'uniq_id' => $iCmtIdUnique]);
-            if(!empty($aCmt) && is_array($aCmt)) {
-                $oCmts->init($aCmt['cmt_object_id']);
-
-                $sCmtUrlApi = $oCmts->getBaseUrl('{bx_url_root}') . '#cid=' . $iCmtId;
-            }
-        }
-
-        return array(
-            'entry_sample' => $oCmts->getLanguageKey('txt_sample_single'),
-            'entry_url' => $sCmtUrl,
-            'entry_url_api' => $sCmtUrlApi,
-            'entry_caption' => $sCmtCaption,
+        return array_merge($this->_getNotificationsData($iCmtIdUnique, (int)$aCmtInfo['cmt_id'], $oCmts), [
             'entry_author' => $aCmtInfo['author_id'],
             'subentry_sample' => $oCmts->getLanguageKey('txt_sample_reaction_single'),
-            'subentry_sample_params' => $aSubentrySampleParams,
-            'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
-        );
+            'subentry_sample_params' => $aSubentrySampleParams
+        ]);
     }
 
     /**
@@ -556,7 +517,14 @@ class BxBaseCmtsServices extends BxDol
         if(!$oAction)
             return [];
 
-        $iCmtId = (int)$aCmtInfo['cmt_id'];
+        return array_merge($this->_getNotificationsData($iCmtIdUnique, (int)$aCmtInfo['cmt_id'], $oCmts), [
+            'entry_author' => $aCmtInfo['author_id'],
+            'subentry_sample' => $oCmts->getLanguageKey('txt_sample_' . $sAction . ($sType ? '_' . $sType : '') . '_single'),
+        ]);
+    }
+
+    protected function _getNotificationsData($iCmtIdUnique, $iCmtId, $oCmts)
+    {
         $sCmtUrl = str_replace(BX_DOL_URL_ROOT, '{bx_url_root}', $oCmts->serviceGetLink($iCmtId));
         $sCmtCaption = strmaxtextlen($oCmts->serviceGetText($iCmtId), 20, '...');
 
@@ -575,12 +543,10 @@ class BxBaseCmtsServices extends BxDol
             'entry_url' => $sCmtUrl,
             'entry_url_api' => $sCmtUrlApi,
             'entry_caption' => $sCmtCaption,
-            'entry_author' => $aCmtInfo['author_id'],
-            'subentry_sample' => $oCmts->getLanguageKey('txt_sample_' . $sAction . ($sType ? '_' . $sType : '') . '_single'),
             'lang_key' => '', //may be empty or not specified. In this case the default one from Notification module will be used.
         ];
     }
-    
+
     /**
      * @page service Service Calls
      * @section bx_system_cmts System Services 

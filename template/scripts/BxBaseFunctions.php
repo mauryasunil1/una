@@ -295,6 +295,36 @@ class BxBaseFunctions extends BxDolFactory implements iBxDolSingleton
         $aIcons = $this->getIcon($sCode, $aAttrs);
         return $aIcons[3] . $aIcons[4]; 
     }
+    
+    function getIconPreview($iId, $sIconImage = '', $sIcon = '')
+    {
+        $bIconImage = !empty($sIconImage);
+
+        $aIcons = $this->getIcon($sIcon);
+        $sIconHtml = $aIcons[2] . $aIcons[3] . $aIcons[4];
+        $bIconHtml = !empty($sIconHtml) && !$bIconImage;
+
+        return $this->_oTemplate->parseHtmlByName('item_icon_preview.html', [
+            'id' => $iId,
+            'bx_if:show_icon_empty' => [
+                'condition' => !$bIconImage && !$bIconHtml,
+                'content' => []
+            ],
+            'bx_if:show_icon_image' => [
+                'condition' => $bIconImage,
+                'content' => [
+                    'url' => $sIconImage,
+                    'id' => $iId
+                ]
+            ],
+            'bx_if:show_icon_html' => [
+                'condition' => $bIconHtml,
+                'content' => [
+                    'icon' => $sIconHtml
+                ]
+            ]
+        ]);
+    }
 
     function getTemplateIcon($sName)
     {
