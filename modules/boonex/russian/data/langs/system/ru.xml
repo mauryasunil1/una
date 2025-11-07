@@ -2038,7 +2038,7 @@
 	<string name="_cmt_display_threaded"><![CDATA[Поэтапно]]></string>
 	<string name="_cmt_err_cannot_perform_action"><![CDATA[Невозможно выполнить действие. Пожалуйста, оповестите нас об этой проблеме.]]></string>
 	<string name="_cmt_msg_login_required"><![CDATA[Чтобы оставить комментарий, вам необходимо <a href="{0}">войти</a> или <a href="{1}">зарегистрироваться</a>.]]></string>
-	<string name="_cmt_page_view_header"><![CDATA[Комментарий к '{object_title}']]></string>
+	<string name="_cmt_page_view_header"><![CDATA[Комментарий '{comment_snippet}' к '{object_title}']]></string>
 	<string name="_cmt_page_view_title"><![CDATA[Комментарий к <a href="{object_url}">{object_title}</a>]]></string>
         <string name="_cmt_page_view_title_author"><![CDATA[Автор комментария]]></string>
         <string name="_cmt_page_view_title_content"><![CDATA[Прокомментированный контент]]></string>

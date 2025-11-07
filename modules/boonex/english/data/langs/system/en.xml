@@ -2063,7 +2063,7 @@
 	<string name="_cmt_display_threaded"><![CDATA[Threaded]]></string>
 	<string name="_cmt_err_cannot_perform_action"><![CDATA[Cannot perform action. Please report.]]></string>
 	<string name="_cmt_msg_login_required"><![CDATA[<a href="{0}">Login</a> or <a href="{1}">Join</a> to comment.]]></string>
-	<string name="_cmt_page_view_header"><![CDATA[Comment to '{object_title}']]></string>
+	<string name="_cmt_page_view_header"><![CDATA[Comment '{comment_snippet}' to '{object_title}']]></string>
 	<string name="_cmt_page_view_title"><![CDATA[Comment to <a href="{object_url}">{object_title}</a>]]></string>
         <string name="_cmt_page_view_title_author"><![CDATA[Comment author]]></string>
         <string name="_cmt_page_view_title_content"><![CDATA[Comment content]]></string>
