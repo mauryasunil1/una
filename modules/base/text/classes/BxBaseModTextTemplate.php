@@ -343,71 +343,11 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
                 'unique_id' => $sUniqIdImage,
             )
         );
-        
+
         $aTmplVarsLinks = [];
-        
-        if(isset($CNF['FIELD_LINK'])){
-            $aLinks = $this->getEventLinks($aData[$CNF['FIELD_ID']]);
+        if(isset($CNF['FIELD_LINK']) && ($aLinks = $this->getEventLinks($aData[$CNF['FIELD_ID']])))
+            $aTmplVarsLinks = $this->getTmplVarsAttachedLinks($aLinks);
 
-            $sClass = $sStylePrefix . '-al-item';
-            
-            $bAddNofollow = $this->_oDb->getParam('sys_add_nofollow') == 'on';
-            
-            foreach($aLinks as $aLink) {
-                $sLink = '';
-
-                $oEmbed = BxDolEmbed::getObjectInstance();
-                if ($oEmbed) {
-                    $sLink = $this->parseHtmlByName('link_embed_provider.html', array(
-                        'style_prefix' => $sStylePrefix,
-                        'embed' => $oEmbed->getLinkHTML($aLink['url'], $aLink['title']),
-                    ));
-                }
-                else {
-                    $aLinkAttrs = array(
-                    	'title' => $aLink['title']
-                    );
-                    if(!$this->_oConfig->isEqualUrls(BX_DOL_URL_ROOT, $aLink['url'])) {
-                        $aLinkAttrs['target'] = '_blank';
-    
-                        if($bAddNofollow)
-                    	    $aLinkAttrs['rel'] = 'nofollow';
-                    }
-
-                    $sLinkAttrs = '';
-                    foreach($aLinkAttrs as $sKey => $sValue)
-                        $sLinkAttrs .= ' ' . $sKey . '="' . bx_html_attribute($sValue) . '"';
-
-                    $sLink = $this->parseHtmlByName('link_embed_common.html', array(
-                        'bx_if:show_thumbnail' => [
-                            'condition' => !empty($aLink['thumbnail']),
-                            'content' => [
-                                'style_prefix' => $sStylePrefix,
-                                'thumbnail' => $aLink['thumbnail'],
-                                'link' => !empty($aLink['url']) ? $aLink['url'] : 'javascript:void(0)',
-                                'attrs' => $sLinkAttrs
-                            ]
-                        ],
-                        'link' => !empty($aLink['url']) ? $aLink['url'] : 'javascript:void(0)',
-                        'attrs' => $sLinkAttrs,
-                        'content' => $aLink['title'],
-                        'bx_if:show_text' => [
-                            'condition' => !empty($aLink['text']),
-                            'content' => [
-                                'style_prefix' => $sStylePrefix,
-                                'text' => $aLink['text']
-                            ]
-                        ]
-                    ));
-                }
-                
-                $aTmplVarsLinks[] = [
-                    'style_prefix' => $sStylePrefix,
-                    'link' => $sLink
-                ];
-            }
-        }
-        
         $aVars['bx_if:show_links'] = [
             'condition' => count($aTmplVarsLinks) > 0,
             'content' => [

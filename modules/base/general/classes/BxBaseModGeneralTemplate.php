@@ -253,6 +253,72 @@ class BxBaseModGeneralTemplate extends BxDolModuleTemplate
         return $aVars;
     }
 
+    public function getTmplVarsAttachedLinks($aLinks)
+    {
+        if(empty($aLinks) || !is_array($aLinks))
+            return [];
+
+        $sStylePrefix = $this->_oConfig->getPrefix('style');
+        $bAddNofollow = $this->_oDb->getParam('sys_add_nofollow') == 'on';
+
+        $aTmplVarsLinks = [];
+        foreach($aLinks as $aLink) {
+            $sLink = '';
+
+            $oEmbed = BxDolEmbed::getObjectInstance();
+            if ($oEmbed) {
+                $sLink = $this->parseHtmlByName('link_embed_provider.html', [
+                    'style_prefix' => $sStylePrefix,
+                    'embed' => $oEmbed->getLinkHTML($aLink['url'], $aLink['title']),
+                ]);
+            }
+            else {
+                $aLinkAttrs = [
+                    'title' => $aLink['title']
+                ];
+                if(!$this->_oConfig->isEqualUrls(BX_DOL_URL_ROOT, $aLink['url'])) {
+                    $aLinkAttrs['target'] = '_blank';
+
+                    if($bAddNofollow)
+                        $aLinkAttrs['rel'] = 'nofollow';
+                }
+
+                $sLinkAttrs = '';
+                foreach($aLinkAttrs as $sKey => $sValue)
+                    $sLinkAttrs .= ' ' . $sKey . '="' . bx_html_attribute($sValue) . '"';
+
+                $sLink = $this->parseHtmlByName('link_embed_common.html', [
+                    'bx_if:show_thumbnail' => [
+                        'condition' => !empty($aLink['thumbnail']),
+                        'content' => [
+                            'style_prefix' => $sStylePrefix,
+                            'thumbnail' => $aLink['thumbnail'],
+                            'link' => !empty($aLink['url']) ? $aLink['url'] : 'javascript:void(0)',
+                            'attrs' => $sLinkAttrs
+                        ]
+                    ],
+                    'link' => !empty($aLink['url']) ? $aLink['url'] : 'javascript:void(0)',
+                    'attrs' => $sLinkAttrs,
+                    'content' => $aLink['title'],
+                    'bx_if:show_text' => [
+                        'condition' => !empty($aLink['text']),
+                        'content' => [
+                            'style_prefix' => $sStylePrefix,
+                            'text' => $aLink['text']
+                        ]
+                    ]
+                ]);
+            }
+
+            $aTmplVarsLinks[] = [
+                'style_prefix' => $sStylePrefix,
+                'link' => $sLink
+            ];
+        }
+
+        return $aTmplVarsLinks;
+    }
+
     public function entryBreadcrumb($aContentInfo, $aTmplVarsItems = array())
     {
     	$CNF = &BxDolModule::getInstance($this->MODULE)->_oConfig->CNF;

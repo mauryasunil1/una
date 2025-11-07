@@ -2570,63 +2570,7 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
         $sText = $this->$sMethodPrepare($sText, $aEvent['id']);
 
         //--- Process Links ---//
-        $bAddNofollow = $this->_oDb->getParam('sys_add_nofollow') == 'on';
-
-        $aTmplVarsLinks = [];
-        if(!empty($aContent['links']))
-            foreach($aContent['links'] as $aLink) {
-                $sLink = '';
-
-                $oEmbed = BxDolEmbed::getObjectInstance();
-                if ($oEmbed) {
-                    $sLink = $this->parseHtmlByName('link_embed_provider.html', array(
-                        'style_prefix' => $sStylePrefix,
-                        'embed' => $oEmbed->getLinkHTML($aLink['url'], $aLink['title']),
-                    ));
-                }
-                else {
-                    $aLinkAttrs = array(
-                    	'title' => $aLink['title']
-                    );
-                    if(!$this->_oConfig->isEqualUrls(BX_DOL_URL_ROOT, $aLink['url'])) {
-                        $aLinkAttrs['target'] = '_blank';
-    
-                        if($bAddNofollow)
-                    	    $aLinkAttrs['rel'] = 'nofollow';
-                    }
-
-                    $sLinkAttrs = '';
-                    foreach($aLinkAttrs as $sKey => $sValue)
-                        $sLinkAttrs .= ' ' . $sKey . '="' . bx_html_attribute($sValue) . '"';
-
-                    $sLink = $this->parseHtmlByName('link_embed_common.html', array(
-                        'bx_if:show_thumbnail' => [
-                            'condition' => !empty($aLink['thumbnail']),
-                            'content' => [
-                                'style_prefix' => $sStylePrefix,
-                                'thumbnail' => $aLink['thumbnail'],
-                                'link' => !empty($aLink['url']) ? $aLink['url'] : 'javascript:void(0)',
-                                'attrs' => $sLinkAttrs
-                            ]
-                        ],
-                        'link' => !empty($aLink['url']) ? $aLink['url'] : 'javascript:void(0)',
-                        'attrs' => $sLinkAttrs,
-                        'content' => $aLink['title'],
-                        'bx_if:show_text' => [
-                            'condition' => !empty($aLink['text']),
-                            'content' => [
-                                'style_prefix' => $sStylePrefix,
-                                'text' => $aLink['text']
-                            ]
-                        ]
-                    ));
-                }
-
-                $aTmplVarsLinks[] = [
-                    'style_prefix' => $sStylePrefix,
-                    'link' => $sLink
-                ];
-            }
+        $aTmplVarsLinks = isset($aContent['links']) ? $this->getTmplVarsAttachedLinks($aContent['links']) : [];
 
         //--- Process Polls ---//
         $aTmplVarsAttachmentsPolls = [];
