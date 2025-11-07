@@ -9,28 +9,20 @@
  * @{
  */
 
-class BxReputationGridHandlers extends BxTemplGrid
+class BxReputationGridHandlers extends BxBaseModGeneralGrid
 {
-    protected $_sModule;
-    protected $_oModule;
-
     protected $_sFilter;
     protected $_sFilter1Name;
     protected $_sFilter1Value;
     protected $_aFilter1Values;
 
-    protected $_sParamsDivider;
-    
     public function __construct ($aOptions, $oTemplate = false)
     {
         $this->_sModule = 'bx_reputation';
-        $this->_oModule = BxDolModule::getInstance($this->_sModule);
 
         parent::__construct ($aOptions, $oTemplate);
 
         $this->_aQueryReset = array($this->_aOptions['filter_get'], $this->_aOptions['paginate_get_start'], $this->_aOptions['paginate_get_per_page']);
-
-        $this->_sParamsDivider = '#-#';
 
         $this->_sFilter = '';
         if(($sFilter = $this->_getFilterValue()))
@@ -44,8 +36,7 @@ class BxReputationGridHandlers extends BxTemplGrid
             foreach($aUnits as $sUnit) 
                 $this->_aFilter1Values[$sUnit] = $this->_oModule->getUnitTitle($sUnit);
 
-    	$sFilter1 = bx_get($this->_sFilter1Name);
-        if(!empty($sFilter1)) {
+        if(($sFilter1 = bx_get($this->_sFilter1Name)) !== false) {
             $this->_sFilter1Value = bx_process_input($sFilter1);
             $this->_aQueryAppend['filter1'] = $this->_sFilter1Value;
         }
@@ -140,53 +131,10 @@ class BxReputationGridHandlers extends BxTemplGrid
         $sContent .= $this->_getSearchInput();
         return $sContent;
     }
-
-    protected function _getFilterSelectOne($sFilterName, $sFilterValue, $aFilterValues, $bAddSelectOne = true)
+    
+    protected function _getFilterOnChange()
     {
-        if(empty($sFilterName) || empty($aFilterValues))
-            return '';
-
-        $CNF = &$this->_oModule->_oConfig->CNF;
-        $sJsObject = $this->_oModule->_oConfig->getJsObject('handlers');
-
-        $aInputValues = [];
-        if($bAddSelectOne)
-            $aInputValues[''] = _t($CNF['T']['filter_item_select_one_' . $sFilterName]);
-
-        foreach($aFilterValues as $sKey => $sValue)
-            $aInputValues[$sKey] = _t($sValue);
-
-        $aInputModules = [
-            'type' => 'select',
-            'name' => $sFilterName,
-            'attrs' => [
-                'id' => 'bx-grid-' . $sFilterName . '-' . $this->_sObject,
-                'onChange' => 'javascript:' . $sJsObject . '.onChangeFilter(this)'
-            ],
-            'value' => $sFilterValue,
-            'values' => $aInputValues
-        ];
-
-        $oForm = new BxTemplFormView([]);
-        return $oForm->genRow($aInputModules);
-    }
-
-    protected function _getSearchInput()
-    {
-        $sJsObject = $this->_oModule->_oConfig->getJsObject('handlers');
-
-        $aInputSearch = [
-            'type' => 'text',
-            'name' => 'search',
-            'attrs' => [
-                'id' => 'bx-grid-search-' . $this->_sObject,
-                'onKeyup' => 'javascript:$(this).off(\'keyup focusout\'); ' . $sJsObject . '.onChangeFilter(this)',
-                'onBlur' => 'javascript:' . $sJsObject . '.onChangeFilter(this)',
-            ]
-        ];
-
-        $oForm = new BxTemplFormView([]);
-        return $oForm->genRow($aInputSearch);
+        return $this->_oModule->_oConfig->getJsObject('handlers') . '.onChangeFilter(this)';
     }
 
     protected function _getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage)

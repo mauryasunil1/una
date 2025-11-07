@@ -23,11 +23,10 @@ define('BX_FORUM_FILTER_ORDER_FEATURED', 'featured');
 define('BX_FORUM_FILTER_ORDER_FAVORITE', 'favorite');
 define('BX_FORUM_FILTER_ORDER_PARTAKEN', 'partaken');
 
-class BxForumGrid extends BxTemplGrid
+class BxForumGrid extends BxBaseModGeneralGrid
 {
-    protected $_oModule;
     protected $_sDefaultSource; 
-    
+
     protected $_sFilter1Name;
     protected $_sFilter1Value;
     protected $_aFilter1Values;
@@ -39,12 +38,10 @@ class BxForumGrid extends BxTemplGrid
     protected $_sFilter3Name;
     protected $_sFilter3Value;
     protected $_aFilter3Values;
-    
-    protected $_sParamsDivider;
 
     public function __construct ($aOptions, $oTemplate = false)
     {
-        $this->_oModule = BxDolModule::getInstance('bx_forum');
+        $this->_sModule = 'bx_forum';
 
         parent::__construct ($aOptions, $oTemplate);
         
@@ -55,7 +52,7 @@ class BxForumGrid extends BxTemplGrid
             BX_FORUM_FILTER_STATUS_UNRESOLVED => _t('_bx_forum_grid_filter_resolved_unresolved'),
         ];
 
-        if(($sFilter1 = bx_get($this->_sFilter1Name))) {
+        if(($sFilter1 = bx_get($this->_sFilter1Name)) !== false) {
             $this->_sFilter1Value = bx_process_input($sFilter1);
             $this->_aQueryAppend['filter1'] = $this->_sFilter1Value;
         }
@@ -71,11 +68,11 @@ class BxForumGrid extends BxTemplGrid
                 $this->_aFilter2Values[$aBadge['id']] = $aBadge['text'];
         }
 
-        if(($sFilter2 = bx_get($this->_sFilter2Name))) {
+        if(($sFilter2 = bx_get($this->_sFilter2Name)) !== false) {
             $this->_sFilter2Value = bx_process_input($sFilter2);
             $this->_aQueryAppend['filter2'] = $this->_sFilter2Value;
         }
-        
+
         $this->_sFilter3Name = 'filter3';
         $this->_aFilter3Values = [
             BX_FORUM_FILTER_ORDER_RECENT => _t('_bx_forum_grid_filter_order_updated'),
@@ -86,13 +83,11 @@ class BxForumGrid extends BxTemplGrid
             BX_FORUM_FILTER_ORDER_FAVORITE => _t('_bx_forum_grid_filter_order_favorite'),
             BX_FORUM_FILTER_ORDER_PARTAKEN => _t('_bx_forum_grid_filter_order_partaken'),
         ];
-        
-        if(($sFilter3 = bx_get($this->_sFilter3Name))) {
+
+        if(($sFilter3 = bx_get($this->_sFilter3Name)) !== false) {
             $this->_sFilter1Value = bx_process_input($sFilter3);
             $this->_aQueryAppend['filter3'] = $this->_sFilter1Value;
         }
-
-        $this->_sParamsDivider = '#-#';
 
         $this->_sDefaultSortingOrder = 'DESC';
         $this->_sDefaultSource = $this->_aOptions['source'];
@@ -647,48 +642,15 @@ class BxForumGrid extends BxTemplGrid
         parent::_getFilterControls();
         return  $this->_getFilterSelectOne($this->_sFilter3Name, $this->_sFilter3Value, $this->_aFilter3Values) . $this->_getFilterSelectOne($this->_sFilter1Name, $this->_sFilter1Value, $this->_aFilter1Values) . (count($this->_aFilter2Values) > 0 ? $this->_getFilterSelectOne($this->_sFilter2Name, $this->_sFilter2Value, $this->_aFilter2Values) : '') . $this->_getSearchInput();
     }
-    
-    protected function _getSearchInput()
-    {
-        $sJsObject = $this->_oModule->_oConfig->getJsObject('main');
-        $aInputSearch = array(
-            'type' => 'text',
-            'name' => 'search',
-            'attrs' => array(
-                'id' => 'bx-grid-search-' . $this->_sObject,
-                'onKeyup' => 'javascript:$(this).off(\'keyup focusout\'); ' . $sJsObject . '.onChangeFilter(this)',
-                'onBlur' => 'javascript:' . $sJsObject . '.onChangeFilter(this)',
-            )
-        );
 
-        $oForm = new BxTemplFormView(array());
-        return $oForm->genRow($aInputSearch);
+    protected function _getFilterOnChange()
+    {
+        return $this->_oModule->_oConfig->getJsObject('main') . '.onChangeFilter(this)';
     }
-    
-    protected function _getFilterSelectOne($sFilterName, $sFilterValue, $aFilterValues)
+
+    protected function _getFilterSelectOne($sFilterName, $sFilterValue, $aFilterValues, $bAddSelectOne = false)
     {
-        if(empty($sFilterName) || empty($aFilterValues))
-            return '';
-
-        $CNF = &$this->_oModule->_oConfig->CNF;
-        $sJsObject = $this->_oModule->_oConfig->getJsObject('main');
-
-        foreach($aFilterValues as $sKey => $sValue)
-            $aFilterValues[$sKey] = _t($sValue);
-
-        $aInputModules = array(
-            'type' => 'select',
-            'name' => $sFilterName,
-            'attrs' => array(
-                'id' => 'bx-grid-' . $sFilterName . '-' . $this->_sObject,
-                'onChange' => 'javascript:' . $sJsObject . '.onChangeFilter(this)'
-            ),
-            'value' => $sFilterValue,
-            'values' => $aFilterValues
-        );
-
-        $oForm = new BxTemplFormView(array());
-        return $oForm->genRow($aInputModules);
+        return parent::_getFilterSelectOne($sFilterName, $sFilterValue, $aFilterValues, $bAddSelectOne);
     }
 }
 

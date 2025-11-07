@@ -13,7 +13,6 @@ require_once(BX_DIRECTORY_PATH_INC . "design.inc.php");
 
 class BxCnvGrid extends BxBaseModGeneralGridAdministration
 {
-    protected $MODULE;
     protected $_sFilter1Name;
     protected $_sFilter1Value;
     protected $_aFilter1Values;
@@ -58,37 +57,11 @@ class BxCnvGrid extends BxBaseModGeneralGridAdministration
     }
     
     //--- Layout methods ---//
-	protected function _getFilterControls()
+    protected function _getFilterControls()
     {
         parent::_getFilterControls();
 
         return  $this->_getFilterSelectOne($this->_sFilter1Name, $this->_sFilter1Value, $this->_aFilter1Values) . $this->_getSearchInput();
-    }
-    
-    protected function _getFilterSelectOne($sFilterName, $sFilterValue, $aFilterValues, $bAddSelectOne = true)
-    {
-        if(empty($sFilterName) || empty($aFilterValues))
-            return '';
-
-        $CNF = &$this->_oModule->_oConfig->CNF;
-        $sJsObject = $this->_oModule->_oConfig->getJsObject('manage_tools');
-
-        foreach($aFilterValues as $sKey => $sValue)
-            $aFilterValues[$sKey] = _t($sValue);
-
-        $aInputModules = array(
-            'type' => 'select',
-            'name' => $sFilterName,
-            'attrs' => array(
-                'id' => 'bx-grid-' . $sFilterName . '-' . $this->_sObject,
-                'onChange' => 'javascript:' . $sJsObject . '.onChangeFilter(this)'
-            ),
-            'value' => $sFilterValue,
-            'values' => $aFilterValues
-        );
-
-        $oForm = new BxTemplFormView(array());
-        return $oForm->genRow($aInputModules);
     }
 
     public function performActionCompose()

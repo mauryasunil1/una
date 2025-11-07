@@ -9,11 +9,8 @@
  * @{
  */
 
-class BxInvGrid extends BxTemplGrid
+class BxInvGrid extends BxBaseModGeneralGrid
 {
-    protected $_sModule;
-    protected $_oModule;
-
     protected $_sFilter1Name;
     protected $_sFilter1Value;
     protected $_aFilter1Values;
@@ -21,12 +18,9 @@ class BxInvGrid extends BxTemplGrid
     
     public function __construct ($aOptions, $oTemplate = false)
     {
-        parent::__construct ($aOptions, $oTemplate);
-
         $this->_sModule = 'bx_invites';
-        $this->_oModule = BxDolModule::getInstance($this->_sModule);
 
-        $this->_sParamsDivider = '#-#';
+        parent::__construct ($aOptions, $oTemplate);
     }
 
     public function getFormCallBackUrlAPI($sAction, $iId = 0)
@@ -75,50 +69,13 @@ class BxInvGrid extends BxTemplGrid
     protected function _getFilterControls ()
     {
         parent::_getFilterControls();
+
         return  $this->_getFilterSelectOne($this->_sFilter1Name, $this->_sFilter1Value, $this->_aFilter1Values) . $this->_getSearchInput();
     }
     
-    protected function _getSearchInput()
+    protected function _getFilterOnChange()
     {
-        $sJsObject = $this->_oModule->_oConfig->getJsObject('main');
-        $aInputSearch = [
-            'type' => 'text',
-            'name' => 'search',
-            'attrs' => [
-                'id' => 'bx-grid-search-' . $this->_sObject,
-                'onKeyup' => 'javascript:$(this).off(\'keyup focusout\'); ' . $sJsObject . '.onChangeFilter(this)',
-                'onBlur' => 'javascript:' . $sJsObject . '.onChangeFilter(this)',
-            ]
-        ];
-
-        $oForm = new BxTemplFormView([]);
-        return $oForm->genRow($aInputSearch);
-    }
-    
-    protected function _getFilterSelectOne($sFilterName, $sFilterValue, $aFilterValues)
-    {
-        if(empty($sFilterName) || empty($aFilterValues))
-            return '';
-
-        $CNF = &$this->_oModule->_oConfig->CNF;
-        $sJsObject = $this->_oModule->_oConfig->getJsObject('main');
-
-        foreach($aFilterValues as $sKey => $sValue)
-            $aFilterValues[$sKey] = _t($sValue);
-
-        $aInputModules = [
-            'type' => 'select',
-            'name' => $sFilterName,
-            'attrs' => [
-                'id' => 'bx-grid-' . $sFilterName . '-' . $this->_sObject,
-                'onChange' => 'javascript:' . $sJsObject . '.onChangeFilter(this)'
-            ],
-            'value' => $sFilterValue,
-            'values' => $aFilterValues
-        ];
-
-        $oForm = new BxTemplFormView([]);
-        return $oForm->genRow($aInputModules);
+        return $this->_oModule->_oConfig->getJsObject('main') . '.onChangeFilter(this)';
     }
 
     protected function _getId()

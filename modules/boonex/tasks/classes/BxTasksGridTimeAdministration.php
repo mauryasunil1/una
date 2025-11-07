@@ -8,14 +8,10 @@
  * @{
  */
 
-class BxTasksGridTimeAdministration extends BxTemplGrid
+class BxTasksGridTimeAdministration extends BxBaseModGeneralGrid
 {
-    protected $_sModule;
-    protected $_oModule;
-
     protected $_iContextPid;
 
-    protected $_sParamsDivider;
     protected $_sFilter1Name;
     protected $_sFilter1Value;
     protected $_aFilter1Values;
@@ -26,9 +22,6 @@ class BxTasksGridTimeAdministration extends BxTemplGrid
     public function __construct ($aOptions, $oTemplate = false)
     {
         $this->_sModule = 'bx_tasks';
-    	$this->_oModule = BxDolModule::getInstance($this->_sModule);
-    	if(!$oTemplate)
-            $oTemplate = $this->_oModule->_oTemplate;
 
         parent::__construct ($aOptions, $oTemplate);
 
@@ -36,8 +29,6 @@ class BxTasksGridTimeAdministration extends BxTemplGrid
 
         if(($iContextPid = bx_get('context_pid')) !== false) 
             $this->setContextPid($iContextPid);
-
-        $this->_sParamsDivider = '#-#';
     }
 
     public function setContextPid($iContextPid)
@@ -184,6 +175,11 @@ class BxTasksGridTimeAdministration extends BxTemplGrid
         return $sContent;
     }
 
+    protected function _getFilterOnChange()
+    {
+        return $this->_oModule->_oConfig->getJsObject('manage_tools') . '.onChangeFilter(this)';
+    }
+
     protected function _getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage)
     {
         $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND ABS(`tt`.`allow_view_to`)=?", $this->_iContextPid);
@@ -206,54 +202,6 @@ class BxTasksGridTimeAdministration extends BxTemplGrid
             $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND `ttt`.`object_id`=?", $this->_sFilter2Value);
 
         return parent::_getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage);
-    }
-
-    protected function _getFilterSelectOne($sFilterName, $sFilterValue, $aFilterValues, $bAddSelectOne = true)
-    {
-        if(empty($sFilterName))
-            return '';
-
-        $CNF = &$this->_oModule->_oConfig->CNF;
-        $sJsObject = $this->_oModule->_oConfig->getJsObject('manage_tools');
-
-        $aInputValues = [];
-        if($bAddSelectOne)
-            $aInputValues[''] = _t($CNF['T']['filter_item_select_one_' . $sFilterName]);
-
-        foreach($aFilterValues as $sKey => $sValue)
-            $aInputValues[$sKey] = _t($sValue);
-
-        $aInputModules = [
-            'type' => 'select',
-            'name' => $sFilterName,
-            'attrs' => [
-                'id' => 'bx-grid-' . $sFilterName . '-' . $this->_sObject,
-                'onChange' => 'javascript:' . $sJsObject . '.onChangeFilter(this)'
-            ],
-            'value' => $sFilterValue,
-            'values' => $aInputValues
-        ];
-
-        $oForm = new BxTemplFormView([]);
-        return $oForm->genRow($aInputModules);
-    }
-
-    protected function _getSearchInput()
-    {
-        $sJsObject = $this->_oModule->_oConfig->getJsObject('manage_tools');
-
-        $aInputSearch = [
-            'type' => 'text',
-            'name' => 'search',
-            'attrs' => [
-                'id' => 'bx-grid-search-' . $this->_sObject,
-                'onKeyup' => 'javascript:$(this).off(\'keyup focusout\'); ' . $sJsObject . '.onChangeFilter(this)',
-                'onBlur' => 'javascript:' . $sJsObject . '.onChangeFilter(this)',
-            ]
-        ];
-
-        $oForm = new BxTemplFormView([]);
-        return $oForm->genRow($aInputSearch);
     }
 
     protected function _getEntryLink($sTitle, $sUrl, $aRow)
