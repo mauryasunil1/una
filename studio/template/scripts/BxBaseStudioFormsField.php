@@ -13,16 +13,16 @@ class BxBaseStudioFormsField extends BxDolStudioFormsField
     protected $aForm;
     protected $sTypeTitlePrefix = '_adm_form_txt_field_type_';
 
-    function __construct($aParams = array(), $aField = array())
+    public function __construct($aParams = [], $aField = [])
     {
         parent::__construct($aParams, $aField);
     }
 
-	public function init()
-	{
-		parent::init();
+    public function init()
+    {
+        parent::init();
 
-		$sJsObject = $this->getJsObject();
+        $sJsObject = $this->getJsObject();
 
         bx_import('BxTemplStudioFormView');
 
@@ -82,7 +82,7 @@ class BxBaseStudioFormsField extends BxDolStudioFormsField
 
         $oMenu = new BxTemplStudioMenu(array('template' => 'menu_vertical.html', 'menu_items' => $aMenu));
         $this->aForm['inputs']['type']['content'] = $oMenu->getCode();
-	}
+    }
 
     public function getJsObject()
     {
@@ -209,6 +209,9 @@ class BxBaseStudioFormsField extends BxDolStudioFormsField
 
         if(isset($aForm['inputs']['object']))
             $aForm['inputs']['object']['value'] = $this->aParams['object'];
+
+        if(($sClass = get_class($this)) && defined($sClass . '::mixedChangeFormAdd') && call_user_func_array('method_exists', $sClass::mixedChangeFormAdd))
+            $aForm = call_user_func($sClass::mixedChangeFormAdd, $sAction, $aForm, $this);
 
         return $aForm;
     }
@@ -405,9 +408,12 @@ class BxBaseStudioFormsField extends BxDolStudioFormsField
 
         $aForm['inputs']['controls'][0]['value'] = _t('_adm_form_btn_field_save');
 
+        if(($sClass = get_class($this)) && defined($sClass . '::mixedChangeFormEdit') && call_user_func_array('method_exists', $sClass::mixedChangeFormEdit))
+            $aForm = call_user_func($sClass::mixedChangeFormEdit, $sAction, $aForm, $this);
+
         return $aForm;
     }
-    
+
     //--- If field is rateable, check presence in 'sys_form_fields_ids' table, insertation, if not.
     protected function checkRateableFiledValue($sInputName, $sModuleName, $sFormObject, $sNestedForm)
     {

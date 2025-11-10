@@ -11,769 +11,212 @@
 
 require_once('BxDevFunctions.php');
 
+interface iBxDevFormsField
+{
+    const mixedChangeFormField = ['BxDevFunctions', 'changeFormField'];
+    const mixedChangeFormAdd = ['BxDevFunctions', 'changeForm'];
+    const mixedChangeFormEdit = ['BxDevFunctions', 'changeForm'];
+}
+
 class BxDevFormsField extends BxTemplStudioFormsField
 {
-    function __construct($aParams = array(), $aField = array())
+    public function __construct($aParams = [], $aField = [])
     {
         parent::__construct($aParams, $aField);
 
-        $this->aTypes = array_merge($this->aTypes, array(
-        	'captcha' => array('add' => 1),
-        	'location' => array('add' => 1), 
-        	'custom' => array('add' => 1)
-        ));
+        $this->aTypes = array_merge($this->aTypes, [
+            'captcha' => ['add' => 1],
+            'location' => ['add' => 1], 
+            'custom' => ['add' => 1]
+        ]);
     }
 }
 
-class BxDevFormsFieldBlockHeader extends BxTemplStudioFormsFieldBlockHeader
+class BxDevFormsFieldBlockHeader extends BxTemplStudioFormsFieldBlockHeader implements iBxDevFormsField
+{
+}
+
+class BxDevFormsFieldBlockEnd extends BxTemplStudioFormsFieldBlockEnd implements iBxDevFormsField
+{
+}
+
+class BxDevFormsFieldValue extends BxTemplStudioFormsFieldValue implements iBxDevFormsField
+{
+}
+
+class BxDevFormsFieldText extends BxTemplStudioFormsFieldText implements iBxDevFormsField
+{
+}
+
+class BxDevFormsFieldPassword extends BxTemplStudioFormsFieldPassword implements iBxDevFormsField
+{
+}
+
+class BxDevFormsFieldTextarea extends BxTemplStudioFormsFieldTextarea implements iBxDevFormsField
 {
     public function init()
     {
         parent::init();
 
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-}
-
-class BxDevFormsFieldBlockEnd extends BxTemplStudioFormsFieldBlockEnd
-{
-    public function init()
-    {
-        parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-}
-
-class BxDevFormsFieldValue extends BxTemplStudioFormsFieldValue
-{
-    public function init()
-    {
-        parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-}
-
-class BxDevFormsFieldText extends BxTemplStudioFormsFieldText
-{
-    public function init()
-    {
-        parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-}
-
-class BxDevFormsFieldPassword extends BxTemplStudioFormsFieldPassword
-{
-    public function init()
-    {
-        parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-}
-
-class BxDevFormsFieldTextarea extends BxTemplStudioFormsFieldTextarea
-{
-    public function init()
-    {
-        parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-
-        $this->aForm['inputs'] = $this->addInArray($this->aForm['inputs'], 'required', array(
+        $this->aForm['inputs'] = $this->addInArray($this->aForm['inputs'], 'required', [
             'unique' => $this->aFieldUnique
-        ));
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
+        ]);
     }
 }
 
-class BxDevFormsFieldNumber extends BxTemplStudioFormsFieldNumber
+class BxDevFormsFieldNumber extends BxTemplStudioFormsFieldNumber implements iBxDevFormsField
+{
+}
+
+class BxDevFormsFieldPrice extends BxTemplStudioFormsFieldPrice implements iBxDevFormsField
+{
+}
+
+class BxDevFormsFieldDatepicker extends BxTemplStudioFormsFieldDatepicker implements iBxDevFormsField
+{
+}
+
+class BxDevFormsFieldDateselect extends BxTemplStudioFormsFieldDateselect implements iBxDevFormsField
+{
+}
+
+class BxDevFormsFieldDatetime extends BxTemplStudioFormsFieldDatetime implements iBxDevFormsField
+{
+}
+
+class BxDevFormsFieldCheckbox extends BxTemplStudioFormsFieldCheckbox implements iBxDevFormsField
 {
     public function init()
     {
         parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-}
-
-class BxDevFormsFieldPrice extends BxTemplStudioFormsFieldPrice
-{
-    public function init()
-    {
-        parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-}
-
-class BxDevFormsFieldDatepicker extends BxTemplStudioFormsFieldDatepicker
-{
-    public function init()
-    {
-        parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-}
-
-class BxDevFormsFieldDateselect extends BxTemplStudioFormsFieldDateselect
-{
-    public function init()
-    {
-        parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-}
-
-class BxDevFormsFieldDatetime extends BxTemplStudioFormsFieldDatetime
-{
-    public function init()
-    {
-        parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-}
-
-class BxDevFormsFieldCheckbox extends BxTemplStudioFormsFieldCheckbox
-{
-    public function init()
-    {
-        parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
 
         $this->aForm['inputs']['value']['type'] = 'text';
     }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
 }
 
-class BxDevFormsFieldSwitcher extends BxTemplStudioFormsFieldSwitcher
+class BxDevFormsFieldSwitcher extends BxTemplStudioFormsFieldSwitcher implements iBxDevFormsField
 {
     public function init()
     {
         parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
 
         $this->aForm['inputs']['value']['type'] = 'text';
     }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
 }
 
-class BxDevFormsFieldFile extends BxTemplStudioFormsFieldFile
+class BxDevFormsFieldFile extends BxTemplStudioFormsFieldFile implements iBxDevFormsField
+{
+}
+
+class BxDevFormsFieldFiles extends BxTemplStudioFormsFieldFiles implements iBxDevFormsField
+{
+}
+
+class BxDevFormsFieldSlider extends BxTemplStudioFormsFieldSlider implements iBxDevFormsField
 {
     public function init()
     {
         parent::init();
 
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-}
-
-class BxDevFormsFieldFiles extends BxTemplStudioFormsFieldFiles
-{
-    public function init()
-    {
-        parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-}
-
-class BxDevFormsFieldSlider extends BxTemplStudioFormsFieldSlider
-{
-    public function init()
-    {
-        parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-
-        $this->aForm['inputs'] = $this->addInArray($this->aForm['inputs'], 'required', array(
+        $this->aForm['inputs'] = $this->addInArray($this->aForm['inputs'], 'required', [
             'unique' => $this->aFieldUnique
-        ));
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
+        ]);
     }
 }
 
-class BxDevFormsFieldDoublerange extends BxTemplStudioFormsFieldDoublerange
+class BxDevFormsFieldDoublerange extends BxTemplStudioFormsFieldDoublerange implements iBxDevFormsField
 {
     public function init()
     {
         parent::init();
 
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-
-        $this->aForm['inputs'] = $this->addInArray($this->aForm['inputs'], 'required', array(
+        $this->aForm['inputs'] = $this->addInArray($this->aForm['inputs'], 'required', [
             'unique' => $this->aFieldUnique
-        ));
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
+        ]);
     }
 }
 
-class BxDevFormsFieldHidden extends BxTemplStudioFormsFieldHidden
+class BxDevFormsFieldHidden extends BxTemplStudioFormsFieldHidden implements iBxDevFormsField
+{
+}
+
+class BxDevFormsFieldButton extends BxTemplStudioFormsFieldButton implements iBxDevFormsField
+{
+}
+
+class BxDevFormsFieldReset extends BxTemplStudioFormsFieldReset implements iBxDevFormsField
+{
+}
+
+class BxDevFormsFieldSubmit extends BxTemplStudioFormsFieldSubmit implements iBxDevFormsField
+{
+}
+
+class BxDevFormsFieldImage extends BxTemplStudioFormsFieldImage implements iBxDevFormsField
+{
+}
+
+class BxDevFormsFieldSelect extends BxTemplStudioFormsFieldSelect implements iBxDevFormsField
 {
     public function init()
     {
         parent::init();
 
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-}
-
-class BxDevFormsFieldButton extends BxTemplStudioFormsFieldButton
-{
-    public function init()
-    {
-        parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-}
-
-class BxDevFormsFieldReset extends BxTemplStudioFormsFieldReset
-{
-    public function init()
-    {
-        parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-}
-
-class BxDevFormsFieldSubmit extends BxTemplStudioFormsFieldSubmit
-{
-    public function init()
-    {
-        parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-}
-
-class BxDevFormsFieldImage extends BxTemplStudioFormsFieldImage
-{
-    public function init()
-    {
-        parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-}
-
-class BxDevFormsFieldSelect extends BxTemplStudioFormsFieldSelect
-{
-    public function init()
-    {
-        parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-
-        $this->aForm['inputs'] = $this->addInArray($this->aForm['inputs'], 'required', array(
+        $this->aForm['inputs'] = $this->addInArray($this->aForm['inputs'], 'required', [
             'unique' => $this->aFieldUnique
-        ));
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
+        ]);
     }
 }
 
-class BxDevFormsFieldSelectMultiple extends BxTemplStudioFormsFieldSelectMultiple
+class BxDevFormsFieldSelectMultiple extends BxTemplStudioFormsFieldSelectMultiple implements iBxDevFormsField
 {
     public function init()
     {
         parent::init();
 
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-
-        $this->aForm['inputs'] = $this->addInArray($this->aForm['inputs'], 'required', array(
+        $this->aForm['inputs'] = $this->addInArray($this->aForm['inputs'], 'required', [
             'unique' => $this->aFieldUnique
-        ));
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
+        ]);
     }
 }
 
-class BxDevFormsFieldCheckboxSet extends BxTemplStudioFormsFieldCheckboxSet
+class BxDevFormsFieldCheckboxSet extends BxTemplStudioFormsFieldCheckboxSet implements iBxDevFormsField
 {
     public function init()
     {
         parent::init();
 
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-
-        $this->aForm['inputs'] = $this->addInArray($this->aForm['inputs'], 'required', array(
+        $this->aForm['inputs'] = $this->addInArray($this->aForm['inputs'], 'required', [
             'unique' => $this->aFieldUnique
-        ));
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
+        ]);
     }
 }
 
-class BxDevFormsFieldRadioSet extends BxTemplStudioFormsFieldRadioSet
+class BxDevFormsFieldRadioSet extends BxTemplStudioFormsFieldRadioSet implements iBxDevFormsField
 {
     public function init()
     {
         parent::init();
 
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-
-        $this->aForm['inputs'] = $this->addInArray($this->aForm['inputs'], 'required', array(
+        $this->aForm['inputs'] = $this->addInArray($this->aForm['inputs'], 'required', [
             'unique' => $this->aFieldUnique
-        ));
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
+        ]);
     }
 }
 
-class BxDevFormsFieldCustom extends BxTemplStudioFormsFieldCustom
+class BxDevFormsFieldCustom extends BxTemplStudioFormsFieldCustom implements iBxDevFormsField
 {
-    public function init()
-    {
-        parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
 }
 
-class BxDevFormsFieldInputSet extends BxTemplStudioFormsFieldInputSet
+class BxDevFormsFieldInputSet extends BxTemplStudioFormsFieldInputSet implements iBxDevFormsField
 {
-    public function init()
-    {
-        parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
 }
 
-class BxDevFormsFieldCaptcha extends BxTemplStudioFormsFieldCaptcha
+class BxDevFormsFieldCaptcha extends BxTemplStudioFormsFieldCaptcha implements iBxDevFormsField
 {
-    public function init()
-    {
-        parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
 }
 
-class BxDevFormsFieldLocation extends BxTemplStudioFormsFieldLocation
+class BxDevFormsFieldLocation extends BxTemplStudioFormsFieldLocation implements iBxDevFormsField
 {
-    public function init()
-    {
-        parent::init();
-
-        BxDevFunctions::changeFormField($this->aParams, $this->aForm['inputs'], $this->oDb);
-    }
-
-    protected function getFormAdd($sAction, $sObject)
-    {
-        $aForm = parent::getFormAdd($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
-
-    protected function getFormEdit($sAction, $sObject)
-    {
-        $aForm = parent::getFormEdit($sAction, $sObject);
-        BxDevFunctions::changeForm($sAction, $aForm, $this);
-        return $aForm;
-    }
 }
 /** @} */

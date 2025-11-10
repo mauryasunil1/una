@@ -19,7 +19,7 @@ class BxDevFunctions
      *
      * @see BxDevFormsField
      */
-    public static function changeFormField($aParams, &$aInputs, &$oDb)
+    public static function changeFormField($aParams, $aInputs, $oDb)
     {
         $aInputs['module']['type'] = 'select';
         $aInputs['module']['values'] = array_merge(array('' => _t('_bx_dev_frm_txt_select_module')), BxDolStudioUtils::getModules());
@@ -81,6 +81,8 @@ class BxDevFunctions
             ),
         );
         $aInputs = BxDolStudioUtils::addInArray($aInputs, 'controls', $aFields, false);
+
+        return $aInputs;
     }
 
     /*
@@ -89,7 +91,7 @@ class BxDevFunctions
      *
      * @see BxDevFormsField
      */
-    public static function changeForm($sAction, &$aForm, &$oForm)
+    public static function changeForm($sAction, $aForm, $oForm)
     {
         switch($sAction) {
             case 'add':
@@ -106,6 +108,8 @@ class BxDevFunctions
                 }
                 break;
         }
+
+        return $aForm;
     }
 
     public static function serializeString($sValue)
