@@ -520,52 +520,9 @@ class BxBaseModGroupsGridConnections extends BxDolGridConnections
         return $sResult;
     }
 
-    protected function _getFilterSelectOne($sFilterName, $sFilterValue, $aFilterValues, $bAddSelectOne = true)
+    protected function _getFilterOnChange()
     {
-        if(empty($sFilterName) || empty($aFilterValues))
-            return '';
-
-        $CNF = &$this->_oModule->_oConfig->CNF;
-        $sJsObject = $this->_oModule->_oConfig->getJsObject('main');
-
-        $aInputValues = [];
-        if($bAddSelectOne && ($sLangKey = 'filter_item_select_one_' . $sFilterName))
-            $aInputValues[''] = _t(!empty($CNF['T'][$sLangKey]) ? $CNF['T'][$sLangKey] : '_Select_one');
-
-        foreach($aFilterValues as $aFilterValue)
-            $aInputValues[$aFilterValue['key']] = _t($aFilterValue['value']);
-
-        $aInputModules = [
-            'type' => 'select',
-            'name' => $sFilterName,
-            'attrs' => [
-                'id' => 'bx-grid-' . $sFilterName . '-' . $this->_sObject,
-                'onChange' => 'javascript:' . $sJsObject . '.onChangeMembersFilter(this)'
-            ],
-            'value' => $sFilterValue,
-            'values' => $aInputValues
-        ];
-
-        $oForm = new BxTemplFormView([]);
-        return $oForm->genRow($aInputModules);
-    }
-
-    protected function _getSearchInput()
-    {
-        $sJsObject = $this->_oModule->_oConfig->getJsObject('main');
-
-        $aInputSearch = [
-            'type' => 'text',
-            'name' => 'search',
-            'attrs' => [
-                'id' => 'bx-grid-search-' . $this->_sObject,
-                'onKeyup' => 'javascript:$(this).off(\'keyup focusout\'); ' . $sJsObject . '.onChangeMembersFilter(this)',
-                'onBlur' => 'javascript:' . $sJsObject . '.onChangeMembersFilter(this)',
-            ]
-        ];
-
-        $oForm = new BxTemplFormView([]);
-        return $oForm->genRow($aInputSearch);
+        return $this->_oModule->_oConfig->getJsObject('main') . '.onChangeMembersFilter(this)';
     }
 
     protected function _addJsCss()

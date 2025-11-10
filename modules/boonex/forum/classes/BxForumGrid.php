@@ -648,9 +648,9 @@ class BxForumGrid extends BxBaseModGeneralGrid
         return $this->_oModule->_oConfig->getJsObject('main') . '.onChangeFilter(this)';
     }
 
-    protected function _getFilterSelectOne($sFilterName, $sFilterValue, $aFilterValues, $bAddSelectOne = false)
+    protected function _getFilterSelectOne($sFilterName, $sFilterValue, $aFilterValues, $bAddSelectOne = false, $bAsArray = false)
     {
-        return parent::_getFilterSelectOne($sFilterName, $sFilterValue, $aFilterValues, $bAddSelectOne);
+        return parent::_getFilterSelectOne($sFilterName, $sFilterValue, $aFilterValues, $bAddSelectOne, $bAsArray);
     }
 }
 

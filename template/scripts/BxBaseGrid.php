@@ -855,7 +855,7 @@ class BxBaseGrid extends BxDolGrid
 
     protected function _getFilterControls ()
     {
-        $oForm = new BxTemplFormView(array());
+        $oForm = new BxTemplFormView([]);
 
         $aInput = array(
             'type' => 'text',
@@ -875,6 +875,86 @@ class BxBaseGrid extends BxDolGrid
             $aFilters['search'] = [];
 
         return $aFilters;
+    }
+
+    protected function _getFilterOnChange()
+    {
+        return '';
+    }
+
+    protected function _getFilterSelectOne($sFilterName, $sFilterValue, $aFilterValues, $mixedAddSelectOne = true, $bAsArray = false)
+    {
+        if(empty($sFilterName))
+            return '';
+
+        $aInputValues = [];
+        if(($mixedAddSelectOne === true && ($sKey = '_Select_one')) || (is_string($mixedAddSelectOne) && ($sKey = $mixedAddSelectOne)))
+            $aInputValues[''] = _t($sKey);
+
+        foreach($aFilterValues as $mixedKey => $mixedValue)
+            if(is_array($mixedValue) && isset($mixedValue['key'], $mixedValue['value']))
+                $aInputValues[$mixedValue['key']] = _t($mixedValue['value']);
+            else
+                $aInputValues[$mixedKey] = _t($mixedValue);
+
+        $aInputSelect = [
+            'type' => 'select',
+            'name' => $sFilterName,
+            'attrs' => [
+                'id' => 'bx-grid-' . $sFilterName . '-' . $this->_sObject,
+                'onChange' => ($sOnChange = $this->_getFilterOnChange()) ? 'javascript:' . $sOnChange : '',
+            ],
+            'value' => $sFilterValue,
+            'values' => $aInputValues
+        ];
+
+        if($bAsArray)
+            return $aInputSelect;
+
+        $oForm = new BxTemplFormView([]);
+        return $oForm->genRow($aInputSelect);
+    }
+
+    protected function _getFilterButton($bAsArray = false)
+    {
+        $sOnChange = $this->_getFilterOnChange();
+
+        $aInputButton = [
+            'type' => 'button',
+            'name' => 'button',
+            'attrs' => [
+                'id' => 'bx-grid-button-' . $this->_sObject,
+                'onClick' => 'javascript:' . $sOnChange,
+            ],
+            'value' => _t('_Search'),
+        ];
+
+        if($bAsArray)
+            return $aInputButton;
+
+        $oForm = new BxTemplFormView([]);
+        return $oForm->genRow($aInputButton);
+    }
+
+    protected function _getSearchInput($bAsArray = false)
+    {
+        $sOnChange = $this->_getFilterOnChange();
+
+        $aInputSearch = [
+            'type' => 'text',
+            'name' => 'search',
+            'attrs' => [
+                'id' => 'bx-grid-search-' . $this->_sObject,
+                'onKeyup' => 'javascript:$(this).off(\'keyup focusout\'); ' . $sOnChange,
+                'onBlur' => 'javascript:' . $sOnChange,
+            ]
+        ];
+
+        if($bAsArray)
+            return $aInputSearch;
+
+        $oForm = new BxTemplFormView([]);
+        return $oForm->genRow($aInputSearch);
     }
 
     protected function _getCounter()

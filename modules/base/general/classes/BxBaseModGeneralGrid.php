@@ -29,59 +29,14 @@ class BxBaseModGeneralGrid extends BxTemplGrid
         $this->_sParamsDivider = '#-#';
     }
 
-    protected function _getFilterOnChange()
+    protected function _getFilterSelectOne($sFilterName, $sFilterValue, $aFilterValues, $mixedAddSelectOne = true, $bAsArray = false)
     {
-        return '';
-    }
-
-    protected function _getFilterSelectOne($sFilterName, $sFilterValue, $aFilterValues, $bAddSelectOne = true)
-    {
-        if(empty($sFilterName))
-            return '';
-
         $CNF = &$this->_oModule->_oConfig->CNF;
 
-        $aInputValues = [];
-        if($bAddSelectOne)
-            $aInputValues[''] = _t($CNF['T']['filter_item_select_one_' . $sFilterName] ?? '_Select_one');
+        if($mixedAddSelectOne === true && ($sKey = $CNF['T']['filter_item_select_one_' . $sFilterName] ?? ''))
+            $mixedAddSelectOne = $sKey;
 
-        foreach($aFilterValues as $mixedKey => $mixedValue)
-            if(is_array($mixedValue) && isset($mixedValue['key'], $mixedValue['value']))
-                $aInputValues[$mixedValue['key']] = _t($mixedValue['value']);
-            else
-                $aInputValues[$mixedKey] = _t($mixedValue);
-
-        $aInputModules = [
-            'type' => 'select',
-            'name' => $sFilterName,
-            'attrs' => [
-                'id' => 'bx-grid-' . $sFilterName . '-' . $this->_sObject,
-                'onChange' => 'javascript:' . $this->_getFilterOnChange()
-            ],
-            'value' => $sFilterValue,
-            'values' => $aInputValues
-        ];
-
-        $oForm = new BxTemplFormView([]);
-        return $oForm->genRow($aInputModules);
-    }
-
-    protected function _getSearchInput()
-    {
-        $sOnChange = $this->_getFilterOnChange();
-
-        $aInputSearch = [
-            'type' => 'text',
-            'name' => 'search',
-            'attrs' => [
-                'id' => 'bx-grid-search-' . $this->_sObject,
-                'onKeyup' => 'javascript:$(this).off(\'keyup focusout\'); ' . $sOnChange,
-                'onBlur' => 'javascript:' . $sOnChange,
-            ]
-        ];
-
-        $oForm = new BxTemplFormView([]);
-        return $oForm->genRow($aInputSearch);
+        return parent::_getFilterSelectOne($sFilterName, $sFilterValue, $aFilterValues, $mixedAddSelectOne, $bAsArray);
     }
 }
 
