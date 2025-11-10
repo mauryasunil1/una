@@ -147,7 +147,9 @@ class BxBaseModGroupsTemplate extends BxBaseModProfileTemplate
                     'type' => 'timeline_recommendations',
                     'module' => $sModule,
                     'title' => _t($sModule . '_timeline_recommendations'),
-                    'content' => $aCode
+                    'content' => array_merge($aCode, [
+                        'page_url' => bx_api_get_relative_url(BX_DOL_URL_ROOT . BxDolPermalinks::getInstance()->permalink($CNF['URL_HOME'])),
+                    ])
                 ];
 
             return $aResult;

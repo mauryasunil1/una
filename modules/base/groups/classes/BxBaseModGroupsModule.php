@@ -1093,8 +1093,7 @@ class BxBaseModGroupsModule extends BxBaseModProfileModule
             $aData = array_merge($aData, [
                 'module' => 'system',
                 'unit' => 'mixed', 
-                'request_url' => '/api.php?r=' . $this->getName() .'/browse_recommendations_fans&params[]=' . $iProfileId . '&params[]=',
-                'page_url' => bx_api_get_relative_url(BX_DOL_URL_ROOT . BxDolPermalinks::getInstance()->permalink($CNF['URL_HOME']))
+                'request_url' => '/api.php?r=' . $this->getName() .'/browse_recommendations_fans&params[]=' . $iProfileId . '&params[]='
             ]);
 
             return [bx_api_get_block('browse', $aData)];
