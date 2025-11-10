@@ -74,6 +74,7 @@ class BxDolReport extends BxDolObject
     protected $_oTemplate;
 
     protected $_bUndo;
+    protected $_bProcessible;   ///< Determines whether the report should be processed by admins/moderators or not.
     protected $_sBaseUrl;
 
     protected $_sObjectCmts;
@@ -100,6 +101,7 @@ class BxDolReport extends BxDolObject
             $this->_oTemplate = BxDolTemplate::getInstance();
 
         $this->_bUndo = true;
+        $this->_bProcessible = true;
 
         $this->_sBaseUrl = BxDolPermalinks::getInstance()->permalink($this->_aSystem['base_url']);
         if(get_mb_substr($this->_sBaseUrl, 0, 4) != 'http')
@@ -191,6 +193,11 @@ class BxDolReport extends BxDolObject
     public function isUndo()
     {
         return (int)$this->_bUndo == 1;
+    }
+
+    public function isProcessible()
+    {
+        return $this->_bProcessible;
     }
 
     public function getBaseUrl()

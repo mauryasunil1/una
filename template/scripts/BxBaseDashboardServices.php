@@ -18,29 +18,30 @@ class BxBaseDashboardServices extends BxDol
         $oMenu = BxDolMenu::getObjectInstance('sys_dashboard_reports');
         if(!$oMenu)
             return '';
-        
+
         $aSystems = BxDolReport::getSystems();
-        $sSelected = bx_get('object');
-        
-        if ($sSelected == ''){
+
+        $sSelected = '';
+        if(($_sSelected = bx_get('object')) !== false)
+            $sSelected = bx_process_input($_sSelected);
+        if(!$sSelected)
             $sSelected = reset($aSystems)['name'];
-        }
-        
+
         $oGrid = BxDolGrid::getObjectInstance('sys_reports_administration');
         $oGrid->setObject($aSystems[$sSelected]['name']);
-        
+
         if(!$oGrid)
             return '';
 
         $oTemplate = BxDolTemplate::getInstance();
-        $oTemplate->addJs(array('BxDolReportsManageTools.js', 'BxDolGrid.js'));
-		$oTemplate->addCss(array('manage_tools.css'));
-        $oTemplate->addJsTranslation(array('_sys_grid_search'));
-        
-    	return array(
+        $oTemplate->addJs(['BxDolReportsManageTools.js', 'BxDolGrid.js']);
+        $oTemplate->addCss(['manage_tools.css']);
+        $oTemplate->addJsTranslation(['_sys_grid_search']);
+
+    	return [
             'content' =>$oGrid->getCode(),
             'menu' => $oMenu
-        );
+        ];
     }
     
     public function serviceGetReportsCount($sObjectReposrt, $iStatus)

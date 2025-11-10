@@ -27,6 +27,7 @@ class BxTasksTime extends BxTemplReport
         $this->_oQuery = new BxTasksTimeQuery($this);
 
         $this->_bUndo = false;
+        $this->_bProcessible = false;
 
         $this->_sFormObject = $CNF['OBJECT_FORM_TIME'];
         $this->_sFormDisplayPost = $CNF['OBJECT_FORM_TIME_DISPLAY_ADD'];

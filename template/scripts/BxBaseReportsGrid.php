@@ -40,20 +40,27 @@ class BxBaseReportsGrid extends BxTemplGrid
             $this->_aQueryAppend[$this->_sFilter1Name] = $this->_sFilter1Value;
         }
 
-        if (bx_get('object')){
-            $this->setObject(bx_get('object'));
-        }
+        $this->_aReportSystemInfo = [];
+        if(($sObject = bx_get('object')) !== false)
+            $this->setObject($sObject);
     }
-    
+
     public function getCode($isDisplayHeader = true)
     {
+        if(!$this->_aReportSystemInfo)
+            return '';
+
         return $this->getJsCode() . parent::getCode($isDisplayHeader);
     }
     
     public function setObject($sObjectName)
     {
-        $oReport = BxDolReport::getObjectInstance($sObjectName, -1, false);
+        $oReport = BxDolReport::getObjectInstance($sObjectName, 0, false);
+        if(!$oReport->isProcessible())
+            return;
+
         $this->_aReportSystemInfo = $oReport->getSystemInfo();
+
         $this->_aOptions['table'] = $this->_aReportSystemInfo['table_track'];
         $this->_aQueryAppend['object'] = $sObjectName;
     }
