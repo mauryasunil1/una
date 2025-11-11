@@ -198,6 +198,9 @@ class BxTasksGridTime extends BxTasksGridTimeAdministration
         $this->__getFilterControls();
 
         $sContent = $this->_getFilterSelectOne($this->_sFilter2Name, $this->_sFilter2Value, $this->_aFilter2Values);
+        $sContent .= $this->_getFilterDatePicker($this->_sFilter3Name, $this->_sFilter3Value);
+        $sContent .= $this->_getFilterLabel('-');
+        $sContent .= $this->_getFilterDatePicker($this->_sFilter4Name, $this->_sFilter4Value);
         $sContent .= $this->_getSearchInput();
 
         return $sContent;

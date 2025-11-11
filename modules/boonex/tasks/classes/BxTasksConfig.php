@@ -229,17 +229,19 @@ class BxTasksConfig extends BxBaseModTextConfig
                 'txt_err_cannot_perform_action' => '_bx_tasks_txt_err_cannot_perform_action',
             ),
         ));
-        
+
         $this->_aJsClasses = array_merge($this->_aJsClasses, [
             'manage_tools' => 'BxTasksManageTools',
             'categories' => 'BxDolCategories',
-            'tasks' => 'BxTasksView'
+            'tasks' => 'BxTasksView',
+            'time' => 'BxTasksTime'
         ]);
 
         $this->_aJsObjects = array_merge($this->_aJsObjects, [
             'manage_tools' => 'oBxTasksManageTools',
             'categories' => 'oBxDolCategories',
-            'tasks' => 'oBxTasksView'
+            'tasks' => 'oBxTasksView',
+            'time' => 'oBxTasksTime'
         ]);
 
         $this->_aGridObjects = [

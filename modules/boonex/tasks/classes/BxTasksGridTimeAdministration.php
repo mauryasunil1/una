@@ -18,6 +18,10 @@ class BxTasksGridTimeAdministration extends BxBaseModGeneralGrid
     protected $_sFilter2Name;
     protected $_sFilter2Value;
     protected $_aFilter2Values;
+    protected $_sFilter3Name;   //--- Date from
+    protected $_sFilter3Value;
+    protected $_sFilter4Name;   //--- Date to
+    protected $_sFilter4Value;
 
     public function __construct ($aOptions, $oTemplate = false)
     {
@@ -73,6 +77,12 @@ class BxTasksGridTimeAdministration extends BxBaseModGeneralGrid
             $this->_sFilter2Value = bx_process_input($sFilter2);
             $this->_aQueryAppend[$this->_sFilter2Name] = $this->_sFilter2Value;
         }
+
+        /*
+         * Filters by date from/to
+         */
+        $this->_sFilter3Name = 'filter3';
+        $this->_sFilter4Name = 'filter4';
     }
 
     public function performActionCalculate()
@@ -170,6 +180,9 @@ class BxTasksGridTimeAdministration extends BxBaseModGeneralGrid
 
         $sContent = $this->_getFilterSelectOne($this->_sFilter1Name, $this->_sFilter1Value, $this->_aFilter1Values);
         $sContent .= $this->_getFilterSelectOne($this->_sFilter2Name, $this->_sFilter2Value, $this->_aFilter2Values);
+        $sContent .= $this->_getFilterDatePicker($this->_sFilter3Name, $this->_sFilter3Value);
+        $sContent .= $this->_getFilterLabel('-');
+        $sContent .= $this->_getFilterDatePicker($this->_sFilter4Name, $this->_sFilter4Value);
         $sContent .= $this->_getSearchInput();
 
         return $sContent;
@@ -177,7 +190,7 @@ class BxTasksGridTimeAdministration extends BxBaseModGeneralGrid
 
     protected function _getFilterOnChange()
     {
-        return $this->_oModule->_oConfig->getJsObject('manage_tools') . '.onChangeFilter(this)';
+        return $this->_oModule->_oConfig->getJsObject('time') . '.onChangeFilter(this)';
     }
 
     protected function _getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage)
@@ -186,12 +199,12 @@ class BxTasksGridTimeAdministration extends BxBaseModGeneralGrid
 
         $aFilterParts = explode($this->_sParamsDivider, $sFilter);
         switch (substr_count($sFilter, $this->_sParamsDivider)) {
-            case 1:
-                list($this->_sFilter1Value, $sFilter) = $aFilterParts;
+            case 3:
+                list($this->_sFilter2Value, $this->_sFilter3Value, $this->_sFilter4Value, $sFilter) = $aFilterParts;
                 break;
 
-            case 2:
-                list($this->_sFilter1Value, $this->_sFilter2Value, $sFilter) = $aFilterParts;
+            case 4:
+                list($this->_sFilter1Value, $this->_sFilter2Value, $this->_sFilter3Value, $this->_sFilter4Value, $sFilter) = $aFilterParts;
                 break;
         }
 
@@ -200,6 +213,12 @@ class BxTasksGridTimeAdministration extends BxBaseModGeneralGrid
 
         if(!empty($this->_sFilter2Value))
             $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND `ttt`.`object_id`=?", $this->_sFilter2Value);
+        
+        if(!empty($this->_sFilter3Value))
+            $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND `ttt`.`value_date`>=?", strtotime($this->_sFilter3Value));
+
+        if(!empty($this->_sFilter4Value))
+            $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND `ttt`.`value_date`<=?", strtotime($this->_sFilter4Value));
 
         return parent::_getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage);
     }

@@ -299,10 +299,12 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
                 bx_api_get_block('grid', $oGrid->getCodeAPI())
             ];
 
-        $this->_oTemplate->addCss(['manage_tools.css']);
-        $this->_oTemplate->addJs(['modules/base/text/js/|manage_tools.js', 'manage_tools.js']);
+        list($aCssCalendar, $aJsCalendar) = BxBaseFormView::getCssJsCalendar();
+
+        $this->_oTemplate->addCss(array_merge($aCssCalendar, ['manage_tools.css', 'time.css']));
+        $this->_oTemplate->addJs(array_merge($aJsCalendar, ['modules/base/text/js/|manage_tools.js', 'time.js']));
         $this->_oTemplate->addJsTranslation(['_sys_grid_search']);
-        return $this->_oTemplate->getJsCode('manage_tools', [
+        return $this->_oTemplate->getJsCode('time', [
             'sObjNameGrid' => $sGridObject
         ]) . $oGrid->getCode();
     }
