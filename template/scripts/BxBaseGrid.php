@@ -915,6 +915,28 @@ class BxBaseGrid extends BxDolGrid
         return $oForm->genRow($aInputSelect);
     }
 
+    protected function _getFilterDatePicker($sFilterName, $sFilterValue, $bAsArray = false)
+    {
+        if(empty($sFilterName))
+            return '';
+
+        $aInputDatePicker = [
+            'type' => 'datepicker',
+            'name' => $sFilterName,
+            'attrs' => [
+                'id' => 'bx-grid-' . $sFilterName . '-' . $this->_sObject,
+                'onChange' => ($sOnChange = $this->_getFilterOnChange()) ? 'javascript:' . $sOnChange : '',
+            ],
+            'value' => $sFilterValue,
+        ];
+
+        if($bAsArray)
+            return $aInputDatePicker;
+
+        $oForm = new BxTemplFormView([]);
+        return $oForm->genRow($aInputDatePicker);
+    }
+
     protected function _getFilterButton($bAsArray = false)
     {
         $sOnChange = $this->_getFilterOnChange();
@@ -934,6 +956,21 @@ class BxBaseGrid extends BxDolGrid
 
         $oForm = new BxTemplFormView([]);
         return $oForm->genRow($aInputButton);
+    }
+
+    protected function _getFilterLabel($sFilterValue, $bAsArray = false)
+    {
+        $aInputLabel = [
+            'type' => 'value',
+            'value' => $sFilterValue,
+            'tr_attrs' => ['class' => 'bx-grid-controls-filter-label'],
+        ];
+
+        if($bAsArray)
+            return $aInputLabel;
+
+        $oForm = new BxTemplFormView([]);
+        return $oForm->genRow($aInputLabel);
     }
 
     protected function _getSearchInput($bAsArray = false)
