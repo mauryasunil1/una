@@ -260,6 +260,19 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         echo json_encode($aEntries);
     }
 
+    public function serviceManageTools($sType = 'common')
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $mixedResults = '';
+        if(!($mixedResults = parent::serviceManageTools($sType)))
+            return $mixedResults;
+
+        return array_merge(parent::serviceManageTools($sType), [
+            'menu' => BxDolMenu::getObjectInstance($CNF['OBJECT_MENU_MANAGE_TOOLS_SUBMENU'])
+        ]);
+    }
+
     public function serviceGetBlockMenuContext($iProfileId)
     {
         $CNF = &$this->_oConfig->CNF;
@@ -272,27 +285,19 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         return $oMenu->getCode();
     }
 
-    public function serviceGetBlockManageTimeContext($iContextPid)
+    public function serviceGetBlockManageTime($sType = 'common', $iContextPid = 0)
     {
         $CNF = &$this->_oConfig->CNF;
 
-        return $this->_getBlockManageTimeContext($CNF['OBJECT_GRID_TIME'], $iContextPid);
-    }
-    
-    public function serviceGetBlockAdministrateTimeContext($iContextPid)
-    {
-        $CNF = &$this->_oConfig->CNF;
-
-        return $this->_getBlockManageTimeContext($CNF['OBJECT_GRID_TIME_ADMINISTRATION'], $iContextPid);
-    }
-
-    protected function _getBlockManageTimeContext($sGridObject, $iContextPid)
-    {
-        $oGrid = BxDolGrid::getObjectInstance($sGridObject);
+        $bContextPid = !empty($iContextPid);
+        
+        $sGrid = $CNF['OBJECT_GRID_TIME_' . ($bContextPid ? 'CONTEXT_' : '') . strtoupper($sType)];
+        $oGrid = BxDolGrid::getObjectInstance($sGrid);
         if(!$oGrid)
             return $this->_bIsApi ? [] : '';
 
-        $oGrid->setContextPid($iContextPid);
+        if($bContextPid)
+            $oGrid->setContextPid($iContextPid);
 
         if($this->_bIsApi)
             return [
@@ -304,9 +309,16 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
         $this->_oTemplate->addCss(array_merge($aCssCalendar, ['manage_tools.css', 'time.css']));
         $this->_oTemplate->addJs(array_merge($aJsCalendar, ['modules/base/text/js/|manage_tools.js', 'time.js']));
         $this->_oTemplate->addJsTranslation(['_sys_grid_search']);
-        return $this->_oTemplate->getJsCode('time', [
-            'sObjNameGrid' => $sGridObject
-        ]) . $oGrid->getCode();
+        $aResult = [
+            'content' => $this->_oTemplate->getJsCode('time', [
+                'sObjNameGrid' => $sGrid
+            ]) . $oGrid->getCode()
+        ];
+
+        if(!$bContextPid)
+            $aResult['menu'] = BxDolMenu::getObjectInstance($CNF['OBJECT_MENU_MANAGE_TOOLS_SUBMENU']);
+
+        return $aResult;
     }
 
     /**
@@ -533,24 +545,30 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
     public function serviceCheckAllowedCommentsTask($iContentId, $sObjectComments) 
     {
         $CNF = &$this->_oConfig->CNF;
+
         $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
-        if ($aContentInfo[$CNF['FIELD_ALLOW_COMMENTS']] == 0)
+        if($aContentInfo[$CNF['FIELD_ALLOW_COMMENTS']] == 0)
             return false;
 
         return parent::serviceCheckAllowedCommentsTask($iContentId, $sObjectComments);
     }
-	
+
     public function serviceCheckAllowedCommentsView($iContentId, $sObjectComments) 
     {
         $CNF = &$this->_oConfig->CNF;
+
+        //negative id used in comments for reports
+        if($iContentId < 0)
+            return CHECK_ACTION_RESULT_ALLOWED;
+
         $aContentInfo = $this->_oDb->getContentInfoById($iContentId);
-        if ($aContentInfo[$CNF['FIELD_ALLOW_COMMENTS']] == 0)
+        if($aContentInfo[$CNF['FIELD_ALLOW_COMMENTS']] == 0)
             return false;
 
         return parent::serviceCheckAllowedCommentsView($iContentId, $sObjectComments);
     }
 	
-	/**
+    /**
      * @page service Service Calls
      * @section bx_tasks Tasks
      * @subsection bx_tasks-page_blocks Page Blocks
@@ -622,6 +640,51 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
     /**
      * Common methods
      */
+    public function getAssignees()
+    {
+        $aResults = [];
+        if(($oProfile = BxDolProfile::getInstance()) !== false && ($aIds = $this->_oDb->getTimeTracks(['sample' => 'assignees'])))
+            foreach($aIds as $iId)
+                $aResults[] = ['key' => $iId, 'value' => $oProfile->getDisplayName($iId)];
+
+        return $aResults;
+    }
+
+    public function getContexts()
+    {
+        $aContexts = [];
+
+        $aModules = bx_srv('system', 'get_modules_by_type', ['context', ['name_as_key' => true]]);
+        foreach($aModules as $sModule => $aModule)
+            $aContexts[$sModule] = ($_sTitle = '_' . $sModule) && ($sTitle = _t($_sTitle)) && strcmp($_sTitle, $sTitle) != 0 ? $sTitle : $aModule['title'];
+        
+        return $aContexts; 
+    }
+    
+    public function getContextMembers($iContextPid)
+    {
+        $aMembers = [];
+        if(($oContext = BxDolProfile::getInstance($iContextPid)) !== false) {
+            $aPids = bx_srv($oContext->getModule(), 'fans', [$oContext->getContentId(), true]);
+            foreach($aPids as $iPid)
+                $aMembers[$iPid] = $oContext->getDisplayName($iPid);
+        }
+
+        return $aMembers;
+    }
+
+    public function getContextEntries($iContextPid)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $aEntries = [];
+        if(($aTasks = $this->_oDb->getTasks(-$iContextPid)) && is_array($aTasks))
+            foreach($aTasks as $aTask)
+                $aEntries[$aTask[$CNF['FIELD_ID']]] = $aTask[$CNF['FIELD_TITLE']];
+
+        return $aEntries;
+    }
+
     public function onExpired($iContentId)
     {
         $CNF = &$this->_oConfig->CNF;

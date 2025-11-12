@@ -37,7 +37,7 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
     {
         $sValue = parent::genViewRowValue($aInput);
         if($this->_oModule->isAllowManage($this->_iContentId) && !empty($aInput['name']) && in_array($aInput['name'], $this->_aProperties))
-            $sValue = $this->_oModule->_oTemplate->parseLink('javascript:void(0)', $sValue ?: _t('_undefined'), [
+            $sValue = $this->_oModule->_oTemplate->parseLink('javascript:void(0)', $sValue ?: _t('_bx_tasks_txt_set'), [
                 'onclick' => 'javascript:' . $this->_oModule->_oConfig->getJsObject('tasks') . '.processTaskEdit' . bx_gen_method_name($aInput['name']) . '(' . $this->_iContentId . ', this)'
             ]);
 
@@ -88,6 +88,8 @@ class BxTasksFormEntry extends BxBaseModTextFormEntry
     public function insert ($aValsToAdd = array(), $isIgnore = false)
     {
         $CNF = &$this->_oModule->_oConfig->CNF;
+
+        $aValsToAdd[$CNF['FIELD_STATE']] ??= 1;
 
         if(isset($CNF['FIELD_ADDED']) && empty($aValsToAdd[$CNF['FIELD_ADDED']])) {
             $iAdded = 0;

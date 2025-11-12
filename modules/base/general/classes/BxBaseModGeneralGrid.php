@@ -38,6 +38,37 @@ class BxBaseModGeneralGrid extends BxTemplGrid
 
         return parent::_getFilterSelectOne($sFilterName, $sFilterValue, $aFilterValues, $mixedAddSelectOne, $bAsArray);
     }
+
+    protected function _initFilter($iNumber, $aValues = [])
+    {
+        $sFfName = '_sFilter' . $iNumber . 'Name';
+        $sFfValue = '_sFilter' . $iNumber . 'Value';
+        if(!property_exists($this, $sFfName) || !property_exists($this, $sFfValue))
+            return;
+
+        $this->$sFfName = 'filter' . $iNumber;
+        if(($sFfValues = '_aFilter' . $iNumber . 'Values') && property_exists($this, $sFfValues))
+            $this->$sFfValues = $aValues ?: [];
+
+        if(($sValue = bx_get($this->$sFfName)) !== false) {
+            $this->$sFfValue = bx_process_input($sValue);
+            $this->_aQueryAppend[$this->$sFfName] = $this->$sFfValue;
+        }
+    }
+
+    protected function _parseFilterValue(&$sFilter)
+    {
+        $iFilterParts = substr_count($sFilter, $this->_sParamsDivider);
+        if(!$iFilterParts)
+            return;
+
+        $aFilterParts = explode($this->_sParamsDivider, $sFilter);
+        for($i = 1; $i <= $iFilterParts; $i++)
+            if(($sField = '_sFilter' . $i . 'Value') && property_exists($this, $sField))
+                $this->$sField = $aFilterParts[$i - 1];
+
+        $sFilter = $aFilterParts[$iFilterParts];
+    }
 }
 
 /** @} */

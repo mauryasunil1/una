@@ -2,6 +2,7 @@
 /**
  * Copyright (c) UNA, Inc - https://una.io
  * MIT License - https://opensource.org/licenses/MIT 
+ * 
  * @defgroup    Tasks Tasks
  * @ingroup     UnaModules
  *
@@ -161,8 +162,14 @@ class BxTasksConfig extends BxBaseModTextConfig
             'OBJECT_MENU_SNIPPET_META' => 'bx_tasks_snippet_meta', // menu for snippet meta info
             'OBJECT_MENU_MANAGE_TOOLS' => 'bx_tasks_menu_manage_tools', //manage menu in content administration tools
             'OBJECT_MENU_SUBMENU_VIEW_CONTEXT' => 'bx_tasks_view_context_submenu',
+            'OBJECT_MENU_MANAGE_TOOLS_SUBMENU' => 'bx_tasks_manage_tools_submenu',
+            'OBJECT_MENU_MANAGE_TOOLS' => 'bx_tasks_menu_manage_tools', //manage item menu in content administration tools
+            'OBJECT_GRID_ADMINISTRATION' => 'bx_tasks_administration',
+            'OBJECT_GRID_COMMON' => 'bx_tasks_common',
             'OBJECT_GRID_TIME_ADMINISTRATION' => 'bx_tasks_time_administration',
-            'OBJECT_GRID_TIME' => 'bx_tasks_time',
+            'OBJECT_GRID_TIME_COMMON' => 'bx_tasks_time_common',
+            'OBJECT_GRID_TIME_CONTEXT_ADMINISTRATION' => 'bx_tasks_time_context_administration',
+            'OBJECT_GRID_TIME_CONTEXT_COMMON' => 'bx_tasks_time_context_common',
             'OBJECT_GRID_CATEGORIES' => 'bx_tasks_categories',
             'OBJECT_UPLOADERS' => array('bx_tasks_simple', 'bx_tasks_html5'),
             'OBJECT_CONTENT_INFO' => 'bx_tasks',
@@ -218,8 +225,14 @@ class BxTasksConfig extends BxBaseModTextConfig
                 'form_field_author' => '_bx_tasks_form_entry_input_author',
                 'form_field_covers_uploader_simple' => '_bx_tasks_form_entry_input_covers_uploader_simple_title',
                 'form_field_covers_uploader_html5' => '_bx_tasks_form_entry_input_covers_uploader_html5_title',
-            	'filter_item_select_one_filter1' => '_bx_tasks_grid_filter_item_title_tm_select_one_author_id',
-                'filter_item_select_one_filter2' => '_bx_tasks_grid_filter_item_title_tm_select_one_object_id',
+                'grid_action_err_delete' => '_bx_tasks_grid_action_err_delete',
+                'grid_txt_account_manager' => '_bx_tasks_grid_txt_account_manager',
+                'filter_item_active' => '_bx_tasks_grid_filter_item_title_adm_active',
+            	'filter_item_hidden' => '_bx_tasks_grid_filter_item_title_adm_hidden',
+                'filter_item_pending' => '_bx_tasks_grid_filter_item_title_adm_pending',
+            	'filter_item_select_one_filter1' => '_bx_tasks_grid_filter_item_title_adm_select_one_filter1',
+                'filter_item_select_one_filter2' => '_bx_tasks_grid_filter_item_title_adm_select_one_filter2',
+                'filter_item_select_one_filter3' => '_bx_tasks_grid_filter_item_title_adm_select_one_filter3',
             	'menu_item_manage_my' => '_bx_tasks_menu_item_title_manage_my',
             	'menu_item_manage_all' => '_bx_tasks_menu_item_title_manage_all',
                 'txt_all_entries_by' => '_bx_tasks_txt_all_entries_by',
@@ -245,8 +258,12 @@ class BxTasksConfig extends BxBaseModTextConfig
         ]);
 
         $this->_aGridObjects = [
-            'time' => $this->CNF['OBJECT_GRID_TIME'],
-            'time-administration' => $this->CNF['OBJECT_GRID_TIME_ADMINISTRATION'],
+            'common' => $this->CNF['OBJECT_GRID_COMMON'],
+            'administration' => $this->CNF['OBJECT_GRID_ADMINISTRATION'],
+            'time_common' => $this->CNF['OBJECT_GRID_TIME_COMMON'],
+            'time_administration' => $this->CNF['OBJECT_GRID_TIME_ADMINISTRATION'],
+            'time_context_common' => $this->CNF['OBJECT_GRID_TIME_CONTEXT_COMMON'],
+            'time_context_administration' => $this->CNF['OBJECT_GRID_TIME_CONTEXT_ADMINISTRATION'],
         ];
 
         $sPrefix = str_replace('_', '-', $this->_sName);

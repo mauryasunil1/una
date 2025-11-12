@@ -173,6 +173,12 @@ class BxTasksDb extends BxBaseModTextDb
 
                     $sWhereClause = "AND `ttt`.`id` = :id";
                     break;
+
+                case 'assignees':
+                    $aMethod['name'] = 'getColumn';
+
+                    $sSelectClause = 'DISTINCT `ttt`.`author_id`';
+                    break;
             }
 
         if(!empty($sOrderClause))

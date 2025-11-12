@@ -91,7 +91,7 @@ INSERT INTO `sys_objects_page`(`object`, `uri`, `title_system`, `title`, `module
 
 INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `active`, `order`) VALUES 
 ('bx_tasks_context_time', 2, 'bx_tasks', '_bx_tasks_page_block_title_sys_menu_in_context', '_bx_tasks_page_block_title_menu_in_context', 13, 2147483647, 'service', 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:22:"get_block_menu_context";s:6:"params";a:1:{i:0;s:12:"{profile_id}";}}', 0, 0, 1, 1),
-('bx_tasks_context_time', 3, 'bx_tasks', '_bx_tasks_page_block_title_sys_entries_time_in_context', '_bx_tasks_page_block_title_entries_time_in_context', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:29:"get_block_manage_time_context";s:6:"params";a:1:{i:0;s:12:"{profile_id}";}}', 0, 0, 1, 1);
+('bx_tasks_context_time', 3, 'bx_tasks', '_bx_tasks_page_block_title_sys_entries_time_in_context', '_bx_tasks_page_block_title_entries_time_in_context', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:21:"get_block_manage_time";s:6:"params";a:2:{i:0;s:6:"common";i:1;s:12:"{profile_id}";}}', 0, 0, 1, 1);
 
 -- PAGE: entries' time in context (all)
 INSERT INTO `sys_objects_page`(`object`, `uri`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
@@ -99,10 +99,44 @@ INSERT INTO `sys_objects_page`(`object`, `uri`, `title_system`, `title`, `module
 
 INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `active`, `order`) VALUES 
 ('bx_tasks_context_time_administration', 2, 'bx_tasks', '_bx_tasks_page_block_title_sys_menu_in_context', '_bx_tasks_page_block_title_menu_in_context', 13, 2147483647, 'service', 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:22:"get_block_menu_context";s:6:"params";a:1:{i:0;s:12:"{profile_id}";}}', 0, 0, 1, 1),
-('bx_tasks_context_time_administration', 3, 'bx_tasks', '_bx_tasks_page_block_title_sys_entries_time_in_context_administration', '_bx_tasks_page_block_title_entries_time_in_context_administration', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:35:"get_block_administrate_time_context";s:6:"params";a:1:{i:0;s:12:"{profile_id}";}}', 0, 0, 1, 1);
+('bx_tasks_context_time_administration', 3, 'bx_tasks', '_bx_tasks_page_block_title_sys_entries_time_in_context_administration', '_bx_tasks_page_block_title_entries_time_in_context_administration', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:21:"get_block_manage_time";s:6:"params";a:2:{i:0;s:14:"administration";i:1;s:12:"{profile_id}";}}', 0, 0, 1, 1);
+
+-- PAGE: manage own entries
+INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `uri`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
+('bx_tasks_manage', '_bx_tasks_page_title_sys_manage', '_bx_tasks_page_title_manage', 'bx_tasks', 5, 2147483647, 1, 'tasks-manage', 'page.php?i=tasks-manage', '', '', '', 0, 1, 0, 'BxTasksPageBrowse', 'modules/boonex/tasks/classes/BxTasksPageBrowse.php');
+
+INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`) VALUES 
+('bx_tasks_manage', 1, 'bx_tasks', '_bx_tasks_page_block_title_system_manage', '_bx_tasks_page_block_title_manage', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:12:"manage_tools";}', 0, 1, 0);
+
+-- PAGE: manage all entries
+INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `uri`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
+('bx_tasks_administration', '_bx_tasks_page_title_sys_manage_administration', '_bx_tasks_page_title_manage', 'bx_tasks', 5, 192, 1, 'tasks-administration', 'page.php?i=tasks-administration', '', '', '', 0, 1, 0, 'BxTasksPageBrowse', 'modules/boonex/tasks/classes/BxTasksPageBrowse.php');
+
+INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`) VALUES 
+('bx_tasks_administration', 1, 'bx_tasks', '_bx_tasks_page_block_title_system_manage_administration', '_bx_tasks_page_block_title_manage', 11, 192, 'service', 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:12:"manage_tools";s:6:"params";a:1:{i:0;s:14:"administration";}}', 0, 1, 0);
+
+-- PAGE: manage own time
+INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `uri`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
+('bx_tasks_time_manage', '_bx_tasks_page_title_sys_time_manage', '_bx_tasks_page_title_time_manage', 'bx_tasks', 5, 2147483647, 1, 'tasks-time-manage', 'page.php?i=tasks-time-manage', '', '', '', 0, 1, 0, 'BxTasksPageBrowse', 'modules/boonex/tasks/classes/BxTasksPageBrowse.php');
+
+INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`) VALUES 
+('bx_tasks_time_manage', 1, 'bx_tasks', '_bx_tasks_page_block_title_system_time_manage', '_bx_tasks_page_block_title_time_manage', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:21:"get_block_manage_time";s:6:"params";a:1:{i:0;s:6:"common";}}', 0, 1, 0);
+
+-- PAGE: manage all time
+INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `uri`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
+('bx_tasks_time_administration', '_bx_tasks_page_title_sys_time_manage_administration', '_bx_tasks_page_title_time_manage', 'bx_tasks', 5, 192, 1, 'tasks-time-administration', 'page.php?i=tasks-time-administration', '', '', '', 0, 1, 0, 'BxTasksPageBrowse', 'modules/boonex/tasks/classes/BxTasksPageBrowse.php');
+
+INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`) VALUES 
+('bx_tasks_time_administration', 1, 'bx_tasks', '_bx_tasks_page_block_title_system_time_manage_administration', '_bx_tasks_page_block_title_time_manage', 11, 192, 'service', 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:21:"get_block_manage_time";s:6:"params";a:1:{i:0;s:14:"administration";}}', 0, 1, 0);
+
+
+
+-- MENU: add to site menu
+SET @iSiteMenuOrder = (SELECT `order` FROM `sys_menu_items` WHERE `set_name` = 'sys_site' AND `active` = 1 AND `order` < 9999 ORDER BY `order` DESC LIMIT 1);
+INSERT INTO `sys_menu_items` (`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
+('sys_site', 'bx_tasks', 'tasks-manage', '_bx_tasks_menu_item_title_system_entries_home', '_bx_tasks_menu_item_title_entries_home', 'page.php?i=tasks-manage', '', '', 'tasks col-red3', '', 2147483647, 1, 1, IFNULL(@iSiteMenuOrder, 0) + 1);
 
 -- MENU: create task form attachments (link, photo, video, etc)
-
 INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
 ('bx_tasks_entry_attachments', '_bx_tasks_menu_title_entry_attachments', 'bx_tasks_entry_attachments', 'bx_tasks', 23, 0, 1, 'BxTasksMenuAttachments', 'modules/boonex/tasks/classes/BxTasksMenuAttachments.php');
 
@@ -185,6 +219,29 @@ INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `titl
 ('bx_tasks_view_context_submenu', 'bx_tasks', 'tasks-context', '_bx_tasks_menu_item_title_system_view_context_entries', '_bx_tasks_menu_item_title_view_context_entries', 'page.php?i=tasks-context&profile_id={profile_id}', '', '', '', '', 2147483647, '', 1, 0, 1),
 ('bx_tasks_view_context_submenu', 'bx_tasks', 'tasks-context-time', '_bx_tasks_menu_item_title_system_view_context_time', '_bx_tasks_menu_item_title_view_context_time', 'page.php?i=tasks-context-time&profile_id={profile_id}', '', '', '', '', 2147483647, '', 1, 0, 2),
 ('bx_tasks_view_context_submenu', 'bx_tasks', 'tasks-context-time-administration', '_bx_tasks_menu_item_title_system_view_context_time_administration', '_bx_tasks_menu_item_title_view_context_time_administration', 'page.php?i=tasks-context-time-administration&profile_id={profile_id}', '', '', '', '', 2147483647, 'a:3:{s:6:"module";s:8:"bx_tasks";s:6:"method";s:31:"check_allowed_manage_in_context";s:6:"params";a:1:{i:0;s:12:"{profile_id}";}}', 1, 0, 3);
+
+-- MENU: manage tools submenu
+INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
+('bx_tasks_manage_tools_submenu', '_bx_tasks_menu_title_manage_tools_submenu', 'bx_tasks_manage_tools_submenu', 'bx_tasks', 26, 0, 1, '', '');
+
+INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES 
+('bx_tasks_manage_tools_submenu', 'bx_tasks', '_bx_tasks_menu_set_title_manage_tools_submenu', 0);
+
+INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
+('bx_tasks_manage_tools_submenu', 'bx_tasks', 'tasks-manage', '', '_bx_tasks_menu_item_title_mt_submenu_entries_common', 'page.php?i=tasks-manage', '', '_self', '', '', 2147483647, 1, 0, 1),
+('bx_tasks_manage_tools_submenu', 'bx_tasks', 'tasks-administration', '', '_bx_tasks_menu_item_title_mt_submenu_entries_administration', 'page.php?i=tasks-administration', '', '_self', '', '', 128, 1, 0, 2),
+('bx_tasks_manage_tools_submenu', 'bx_tasks', 'tasks-time-manage', '', '_bx_tasks_menu_item_title_mt_submenu_time_common', 'page.php?i=tasks-time-manage', '', '_self', '', '', 2147483647, 1, 0, 3),
+('bx_tasks_manage_tools_submenu', 'bx_tasks', 'tasks-time-administration', '', '_bx_tasks_menu_item_title_mt_submenu_time_administration', 'page.php?i=tasks-time-administration', '', '_self', '', '', 128, 1, 0, 4);
+
+-- MENU: manage tools: item submenu
+INSERT INTO `sys_objects_menu`(`object`, `title`, `set_name`, `module`, `template_id`, `deletable`, `active`, `override_class_name`, `override_class_file`) VALUES 
+('bx_tasks_menu_manage_tools', '_bx_tasks_menu_title_manage_tools', 'bx_tasks_menu_manage_tools', 'bx_tasks', 6, 0, 1, 'BxTasksMenuManageTools', 'modules/boonex/tasks/classes/BxTasksMenuManageTools.php');
+
+INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES 
+('bx_tasks_menu_manage_tools', 'bx_tasks', '_bx_tasks_menu_set_title_manage_tools', 0);
+
+--INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
+--('bx_tasks_menu_manage_tools', 'bx_tasks', 'delete-with-content', '_bx_tasks_menu_item_title_system_delete_with_content', '_bx_tasks_menu_item_title_delete_with_content', 'javascript:void(0)', 'javascript:{js_object}.onClickDeleteWithContent({content_id});', '_self', 'far trash-alt', '', 128, 1, 0, 0);
 
 -- MENU: add menu item to profiles modules (trigger* menu sets are processed separately upon modules enable/disable)
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
@@ -297,35 +354,97 @@ INSERT INTO `sys_objects_chart` (`object`, `title`, `table`, `field_date_ts`, `f
 ('bx_tasks_growth', '_bx_tasks_chart_growth', 'bx_tasks_tasks', 'added', '', 'status,status_admin', '', 1, @iMaxOrderCharts + 1, 'BxDolChartGrowth', ''),
 ('bx_tasks_growth_speed', '_bx_tasks_chart_growth_speed', 'bx_tasks_tasks', 'added', '', 'status,status_admin', '', 1, @iMaxOrderCharts + 2, 'BxDolChartGrowthSpeed', '');
 
+-- GRIDS: moderation tools
+INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `override_class_name`, `override_class_file`) VALUES
+('bx_tasks_administration', 'Sql', 'SELECT `tt`.* FROM `bx_tasks_tasks` AS `tt` INNER JOIN `sys_profiles` AS `tp` ON ABS(`tt`.`allow_view_to`)=`tp`.`id` WHERE 1 ', 'bx_tasks_tasks', 'id', 'added', 'status_admin', '', 20, NULL, 'start', '', 'tt`.`title,tt`.`text', '', 'like', 'reports', '', 192, 'BxTasksGridAdministration', 'modules/boonex/tasks/classes/BxTasksGridAdministration.php'),
+('bx_tasks_common', 'Sql', 'SELECT `tt`.* FROM `bx_tasks_tasks` AS `tt` INNER JOIN `sys_profiles` AS `tp` ON ABS(`tt`.`allow_view_to`)=`tp`.`id` WHERE 1 ', 'bx_tasks_tasks', 'id', 'added', 'status', '', 20, NULL, 'start', '', 'tt`.`title,tt`.`text', '', 'like', '', '', 2147483647, 'BxTasksGridCommon', 'modules/boonex/tasks/classes/BxTasksGridCommon.php');
+
+INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `order`) VALUES
+('bx_tasks_administration', 'checkbox', '_sys_select', '2%', 0, '', '', 1),
+('bx_tasks_administration', 'switcher', '_bx_tasks_grid_column_title_adm_active', '8%', 0, '', '', 2),
+('bx_tasks_administration', 'reports', '_sys_txt_reports_title', '5%', 0, '', '', 3),
+('bx_tasks_administration', 'title', '_bx_tasks_grid_column_title_adm_title', '25%', 0, '25', '', 4),
+('bx_tasks_administration', 'added', '_bx_tasks_grid_column_title_adm_added', '20%', 1, '25', '', 5),
+('bx_tasks_administration', 'author', '_bx_tasks_grid_column_title_adm_author', '20%', 0, '25', '', 6),
+('bx_tasks_administration', 'actions', '', '20%', 0, '', '', 7),
+
+('bx_tasks_common', 'checkbox', '_sys_select', '2%', 0, '', '', 1),
+('bx_tasks_common', 'switcher', '_bx_tasks_grid_column_title_adm_active', '8%', 0, '', '', 2),
+('bx_tasks_common', 'title', '_bx_tasks_grid_column_title_adm_title', '40%', 0, '35', '', 3),
+('bx_tasks_common', 'added', '_bx_tasks_grid_column_title_adm_added', '15%', 1, '25', '', 4),
+('bx_tasks_common', 'status_admin', '_bx_tasks_grid_column_title_adm_status_admin', '15%', 0, '16', '', 5),
+('bx_tasks_common', 'actions', '', '20%', 0, '', '', 6);
+
+
+INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon_only`, `confirm`, `order`) VALUES
+('bx_tasks_administration', 'bulk', 'delete', '_bx_tasks_grid_action_title_adm_delete', '', 0, 1, 1),
+('bx_tasks_administration', 'bulk', 'clear_reports', '_bx_tasks_grid_action_title_adm_clear_reports', '', 0, 1, 1),
+('bx_tasks_administration', 'single', 'edit', '_bx_tasks_grid_action_title_adm_edit', 'pencil-alt', 1, 0, 1),
+('bx_tasks_administration', 'single', 'delete', '_bx_tasks_grid_action_title_adm_delete', 'remove', 1, 1, 2),
+('bx_tasks_administration', 'single', 'settings', '_bx_tasks_grid_action_title_adm_more_actions', 'cog', 1, 0, 3),
+('bx_tasks_administration', 'single', 'audit_content', '_bx_tasks_grid_action_title_adm_audit_content', 'search', 1, 0, 4),
+('bx_tasks_administration', 'single', 'clear_reports', '_bx_tasks_grid_action_title_adm_clear_reports', 'eraser', 1, 0, 5),
+
+('bx_tasks_common', 'bulk', 'delete', '_bx_tasks_grid_action_title_adm_delete', '', 0, 1, 1),
+('bx_tasks_common', 'single', 'edit', '_bx_tasks_grid_action_title_adm_edit', 'pencil-alt', 1, 0, 1),
+('bx_tasks_common', 'single', 'delete', '_bx_tasks_grid_action_title_adm_delete', 'remove', 1, 1, 2),
+('bx_tasks_common', 'single', 'settings', '_bx_tasks_grid_action_title_adm_more_actions', 'cog', 1, 0, 3);
+
 -- GRIDS: moderation time tools
 INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `override_class_name`, `override_class_file`) VALUES
-('bx_tasks_time_administration', 'Sql', 'SELECT `ttt`.*, `tt`.`title` FROM `bx_tasks_time_track` AS `ttt` INNER JOIN `bx_tasks_tasks` AS `tt` ON `ttt`.`object_id`=`tt`.`id` WHERE 1 ', 'bx_tasks_time_track', 'id', 'value_date', '', '', 20, NULL, 'start', '', 'ttt`.`text,tt`.`title,tt`.`text', '', 'like', 'date', '', 192, 'BxTasksGridTimeAdministration', 'modules/boonex/tasks/classes/BxTasksGridTimeAdministration.php'),
-('bx_tasks_time', 'Sql', 'SELECT `ttt`.*, `tt`.`title` FROM `bx_tasks_time_track` AS `ttt` INNER JOIN `bx_tasks_tasks` AS `tt` ON `ttt`.`object_id`=`tt`.`id` WHERE 1 ', 'bx_tasks_time_track', 'id', 'value_date', '', '', 20, NULL, 'start', '', 'ttt`.`text,tt`.`title,tt`.`text', '', 'like', 'date', '', 2147483647, 'BxTasksGridTime', 'modules/boonex/tasks/classes/BxTasksGridTime.php');
+('bx_tasks_time_administration', 'Sql', 'SELECT `ttt`.*, `tt`.`title`, `tp`.`id` AS `context_id`, `tp`.`type` AS `context_module` FROM `bx_tasks_time_track` AS `ttt` INNER JOIN `bx_tasks_tasks` AS `tt` ON `ttt`.`object_id`=`tt`.`id` INNER JOIN `sys_profiles` AS `tp` ON ABS(`tt`.`allow_view_to`)=`tp`.`id` WHERE 1 ', 'bx_tasks_time_track', 'id', 'value_date', '', '', 20, NULL, 'start', '', 'ttt`.`text,tt`.`title,tt`.`text', '', 'like', 'date', '', 192, 'BxTasksGridTimeAdministration', 'modules/boonex/tasks/classes/BxTasksGridTimeAdministration.php'),
+('bx_tasks_time_common', 'Sql', 'SELECT `ttt`.*, `tt`.`title`, `tp`.`id` AS `context_id`, `tp`.`type` AS `context_module` FROM `bx_tasks_time_track` AS `ttt` INNER JOIN `bx_tasks_tasks` AS `tt` ON `ttt`.`object_id`=`tt`.`id` INNER JOIN `sys_profiles` AS `tp` ON ABS(`tt`.`allow_view_to`)=`tp`.`id` WHERE 1 ', 'bx_tasks_time_track', 'id', 'value_date', '', '', 20, NULL, 'start', '', 'ttt`.`text,tt`.`title,tt`.`text', '', 'like', 'date', '', 2147483647, 'BxTasksGridTimeCommon', 'modules/boonex/tasks/classes/BxTasksGridTimeCommon.php'),
+
+('bx_tasks_time_context_administration', 'Sql', 'SELECT `ttt`.*, `tt`.`title` FROM `bx_tasks_time_track` AS `ttt` INNER JOIN `bx_tasks_tasks` AS `tt` ON `ttt`.`object_id`=`tt`.`id` WHERE 1 ', 'bx_tasks_time_track', 'id', 'value_date', '', '', 20, NULL, 'start', '', 'ttt`.`text,tt`.`title,tt`.`text', '', 'like', 'date', '', 192, 'BxTasksGridTimeContextAdministration', 'modules/boonex/tasks/classes/BxTasksGridTimeContextAdministration.php'),
+('bx_tasks_time_context_common', 'Sql', 'SELECT `ttt`.*, `tt`.`title` FROM `bx_tasks_time_track` AS `ttt` INNER JOIN `bx_tasks_tasks` AS `tt` ON `ttt`.`object_id`=`tt`.`id` WHERE 1 ', 'bx_tasks_time_track', 'id', 'value_date', '', '', 20, NULL, 'start', '', 'ttt`.`text,tt`.`title,tt`.`text', '', 'like', 'date', '', 2147483647, 'BxTasksGridTimeContextCommon', 'modules/boonex/tasks/classes/BxTasksGridTimeContextCommon.php');
 
 INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `order`) VALUES
 ('bx_tasks_time_administration', 'checkbox', '_sys_select', '2%', 0, 0, '', 1),
-('bx_tasks_time_administration', 'author_id', '_bx_tasks_grid_column_title_tm_author_id', '28%', 0, 0, '', 2),
-('bx_tasks_time_administration', 'object_id', '_bx_tasks_grid_column_title_tm_object_id', '30%', 0, 0, '', 3),
-('bx_tasks_time_administration', 'text', '_bx_tasks_grid_column_title_tm_text', '15%', 0, 16, '', 4),
-('bx_tasks_time_administration', 'value', '_bx_tasks_grid_column_title_tm_value', '10%', 0, 0, '', 5),
-('bx_tasks_time_administration', 'value_date', '_bx_tasks_grid_column_title_tm_value_date', '15%', 0, 0, '', 6),
+('bx_tasks_time_administration', 'author_id', '_bx_tasks_grid_column_title_tm_author_id', '18%', 0, 0, '', 2),
+('bx_tasks_time_administration', 'context_module', '_bx_tasks_grid_column_title_tm_context_module', '10%', 0, 0, '', 3),
+('bx_tasks_time_administration', 'context_id', '_bx_tasks_grid_column_title_tm_context_id', '15%', 0, 0, '', 4),
+('bx_tasks_time_administration', 'object_id', '_bx_tasks_grid_column_title_tm_object_id', '15%', 0, 0, '', 5),
+('bx_tasks_time_administration', 'text', '_bx_tasks_grid_column_title_tm_text', '15%', 0, 16, '', 6),
+('bx_tasks_time_administration', 'value', '_bx_tasks_grid_column_title_tm_value', '10%', 0, 0, '', 7),
+('bx_tasks_time_administration', 'value_date', '_bx_tasks_grid_column_title_tm_value_date', '15%', 0, 0, '', 8),
 
-('bx_tasks_time', 'checkbox', '_sys_select', '2%', 0, 0, '', 1),
-('bx_tasks_time', 'object_id', '_bx_tasks_grid_column_title_tm_object_id', '30%', 0, 0, '', 2),
-('bx_tasks_time', 'text', '_bx_tasks_grid_column_title_tm_text', '25%', 0, 32, '', 3),
-('bx_tasks_time', 'value', '_bx_tasks_grid_column_title_tm_value', '10%', 0, 0, '', 4),
-('bx_tasks_time', 'value_date', '_bx_tasks_grid_column_title_tm_value_date', '15%', 0, 0, '', 5),
-('bx_tasks_time', 'actions', '', '18%', 0, '', '', 6);
+('bx_tasks_time_common', 'checkbox', '_sys_select', '2%', 0, 0, '', 1),
+('bx_tasks_time_common', 'context_module', '_bx_tasks_grid_column_title_tm_context_module', '10%', 0, 0, '', 2),
+('bx_tasks_time_common', 'context_id', '_bx_tasks_grid_column_title_tm_context_id', '20%', 0, 0, '', 3),
+('bx_tasks_time_common', 'object_id', '_bx_tasks_grid_column_title_tm_object_id', '23%', 0, 0, '', 4),
+('bx_tasks_time_common', 'text', '_bx_tasks_grid_column_title_tm_text', '20%', 0, 32, '', 5),
+('bx_tasks_time_common', 'value', '_bx_tasks_grid_column_title_tm_value', '10%', 0, 0, '', 6),
+('bx_tasks_time_common', 'value_date', '_bx_tasks_grid_column_title_tm_value_date', '15%', 0, 0, '', 7),
+
+('bx_tasks_time_context_administration', 'checkbox', '_sys_select', '2%', 0, 0, '', 1),
+('bx_tasks_time_context_administration', 'author_id', '_bx_tasks_grid_column_title_tm_author_id', '28%', 0, 0, '', 2),
+('bx_tasks_time_context_administration', 'object_id', '_bx_tasks_grid_column_title_tm_object_id', '30%', 0, 0, '', 3),
+('bx_tasks_time_context_administration', 'text', '_bx_tasks_grid_column_title_tm_text', '15%', 0, 16, '', 4),
+('bx_tasks_time_context_administration', 'value', '_bx_tasks_grid_column_title_tm_value', '10%', 0, 0, '', 5),
+('bx_tasks_time_context_administration', 'value_date', '_bx_tasks_grid_column_title_tm_value_date', '15%', 0, 0, '', 6),
+
+('bx_tasks_time_context_common', 'checkbox', '_sys_select', '2%', 0, 0, '', 1),
+('bx_tasks_time_context_common', 'object_id', '_bx_tasks_grid_column_title_tm_object_id', '30%', 0, 0, '', 2),
+('bx_tasks_time_context_common', 'text', '_bx_tasks_grid_column_title_tm_text', '25%', 0, 32, '', 3),
+('bx_tasks_time_context_common', 'value', '_bx_tasks_grid_column_title_tm_value', '10%', 0, 0, '', 4),
+('bx_tasks_time_context_common', 'value_date', '_bx_tasks_grid_column_title_tm_value_date', '15%', 0, 0, '', 5),
+('bx_tasks_time_context_common', 'actions', '', '18%', 0, '', '', 6);
 
 INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon_only`, `confirm`, `order`) VALUES
 ('bx_tasks_time_administration', 'bulk', 'calculate', '_bx_tasks_grid_action_title_tm_calculate', '', 0, 0, 1),
 ('bx_tasks_time_administration', 'bulk', 'delete', '_bx_tasks_grid_action_title_tm_delete', '', 0, 1, 2),
 
-('bx_tasks_time', 'independent', 'add', '_bx_tasks_grid_action_title_tm_add', '', 0, 0, 1),
-('bx_tasks_time', 'bulk', 'calculate', '_bx_tasks_grid_action_title_tm_calculate', '', 0, 0, 1),
-('bx_tasks_time', 'bulk', 'delete', '_bx_tasks_grid_action_title_tm_delete', '', 0, 1, 2),
-('bx_tasks_time', 'single', 'edit', '_bx_tasks_grid_action_title_tm_edit', 'pencil-alt', 1, 0, 1),
-('bx_tasks_time', 'single', 'delete', '_bx_tasks_grid_action_title_tm_delete', 'remove', 1, 1, 2);
+('bx_tasks_time_common', 'bulk', 'calculate', '_bx_tasks_grid_action_title_tm_calculate', '', 0, 0, 1),
+('bx_tasks_time_common', 'bulk', 'delete', '_bx_tasks_grid_action_title_tm_delete', '', 0, 1, 2),
+
+('bx_tasks_time_context_administration', 'bulk', 'calculate', '_bx_tasks_grid_action_title_tm_calculate', '', 0, 0, 1),
+('bx_tasks_time_context_administration', 'bulk', 'delete', '_bx_tasks_grid_action_title_tm_delete', '', 0, 1, 2),
+
+('bx_tasks_time_context_common', 'independent', 'add', '_bx_tasks_grid_action_title_tm_add', '', 0, 0, 1),
+('bx_tasks_time_context_common', 'bulk', 'calculate', '_bx_tasks_grid_action_title_tm_calculate', '', 0, 0, 1),
+('bx_tasks_time_context_common', 'bulk', 'delete', '_bx_tasks_grid_action_title_tm_delete', '', 0, 1, 2),
+('bx_tasks_time_context_common', 'single', 'edit', '_bx_tasks_grid_action_title_tm_edit', 'pencil-alt', 1, 0, 1),
+('bx_tasks_time_context_common', 'single', 'delete', '_bx_tasks_grid_action_title_tm_delete', 'remove', 1, 1, 2);
 
 -- UPLOADERS
 

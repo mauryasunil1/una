@@ -10,34 +10,35 @@
 
 require_once('BxTasksGridTime.php');
 
-class BxTasksGridTimeAdministration extends BxTasksGridTime
+class BxTasksGridTimeContextAdministration extends BxTasksGridTime
 {
+    protected $_iContextPid;
+
     public function __construct ($aOptions, $oTemplate = false)
     {
         parent::__construct ($aOptions, $oTemplate);
 
+        if(($iContextPid = bx_get('context_pid')) !== false) 
+            $this->setContextPid($iContextPid);
+    }
+
+    public function setContextPid($iContextPid)
+    {
+        $CNF = &$this->_oModule->_oConfig->CNF;
+
+        $this->_iContextPid = (int)$iContextPid;
+        $this->_aQueryAppend['context_pid'] = $this->_iContextPid;
+
+        /*
+         * Filter by author_id
+         */
         if($this->_isAdministration())
-            $this->_initFilter(1, $this->_oModule->getAssignees());
+            $this->_initFilter(1, $this->_oModule->getContextMembers($this->_iContextPid));
 
-        $this->_initFilter(2, $this->_oModule->getContexts());
-    }
-
-    protected function _getCellContextModule($mixedValue, $sKey, $aField, $aRow)
-    {
-        if(($_sTitle = '_' . $mixedValue) && ($sTitle = _t($_sTitle)) && strcmp($_sTitle, $sTitle) != 0)
-            $mixedValue = $sTitle;
-        else if(($aModule = $this->_oModule->_oDb->getModuleByName($mixedValue)) && is_array($aModule))
-            $mixedValue = $aModule['title'] ?? _t('_undefined');
-
-        return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
-    }
-
-    protected function _getCellContextId($mixedValue, $sKey, $aField, $aRow)
-    {
-        if(($oContext = BxDolProfile::getInstance($mixedValue)) !== false)
-            $mixedValue = $oContext->getDisplayName();
-
-        return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
+        /*
+         * Filter by object_id
+         */
+        $this->_initFilter(2, $this->_oModule->getContextEntries($this->_iContextPid));
     }
 
     protected function _getFilterControls()
@@ -45,20 +46,22 @@ class BxTasksGridTimeAdministration extends BxTasksGridTime
         $this->_getFcDefault();
 
         $sContent = $this->_getFilterSelectOne($this->_sFilter1Name, $this->_sFilter1Value, $this->_aFilter1Values, '_bx_tasks_grid_filter_item_title_tm_select_one_author_id');
-        $sContent .= $this->_getFilterSelectOne($this->_sFilter2Name, $this->_sFilter2Value, $this->_aFilter2Values, '_bx_tasks_grid_filter_item_title_tm_select_one_context_module');
+        $sContent .= $this->_getFilterSelectOne($this->_sFilter2Name, $this->_sFilter2Value, $this->_aFilter2Values, '_bx_tasks_grid_filter_item_title_tm_select_one_object_id');
         $sContent .= $this->_getFcDateSearch();
         return $sContent;
     }
 
     protected function _getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage)
     {
+        $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND ABS(`tt`.`allow_view_to`)=?", $this->_iContextPid);
+
         $this->_parseFilterValue($sFilter);
 
     	if(!empty($this->_sFilter1Value))
             $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND `ttt`.`author_id`=?", $this->_sFilter1Value);
 
         if(!empty($this->_sFilter2Value))
-            $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND `tp`.`type`=?", $this->_sFilter2Value);
+            $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND `ttt`.`object_id`=?", $this->_sFilter2Value);
         
         if(!empty($this->_sFilter3Value))
             $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND `ttt`.`value_date`>=?", strtotime($this->_sFilter3Value));
@@ -66,7 +69,7 @@ class BxTasksGridTimeAdministration extends BxTasksGridTime
         if(!empty($this->_sFilter4Value))
             $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND `ttt`.`value_date`<=?", strtotime($this->_sFilter4Value));
 
-        return parent::_getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage);
+        return parent::__getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage);
     }
 }
 
