@@ -99,6 +99,7 @@ class BxBaseIconsetLucide extends BxBaseIconset
             'sign-in-alt' => 'log-in',
             'sign-out-alt' => 'log-out',
             'star-half-o' => 'star-half',
+            'stopwatch' => 'timer',
             'swatchbook' => 'swatch-book',
             'sync' => 'refresh-ccw',
             'tachometer-alt' => 'gauge',
