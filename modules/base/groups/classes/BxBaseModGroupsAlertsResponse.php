@@ -128,7 +128,15 @@ class BxBaseModGroupsAlertsResponse extends BxBaseModProfileAlertsResponse
 
     protected function _processBxTimelineGetExternalPost($oAlert)
     {
-        if(($sCode = $this->_oModule->_oTemplate->getTimelineCardRecommendations()) != '')
+        $aParams = $oAlert->aExtras['params'];
+        if(!isset($aParams['event_index'], $aParams['events_count'], $aParams['extenals_every']))
+            return true;
+
+        $iIndex = (int)$aParams['event_index'];
+        $iCount = (int)$aParams['events_count'];
+        $iEvery = (int)$aParams['extenals_every'];
+
+        if(($iIndex != 0 || $iEvery >= $iCount) && ($sCode = $this->_oModule->_oTemplate->getTimelineCardRecommendations()) != '')
             $oAlert->aExtras['override_result'] = $sCode;
 
         return true;

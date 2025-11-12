@@ -1018,10 +1018,7 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
         $mixedEvents = $bReturnArray ? [] : '';
         do {
             if($iExtenalsEvery > 0 && $iEventIndex % $iExtenalsEvery == 0) {
-                $aParams['event_index'] = $iEventIndex;
-
                 $mixedExternalPost = false;
-                
                 /**
                  * @hooks
                  * @hookdef hook-bx_timeline-get_external_post 'bx_timeline', 'get_external_post' - hook to override (add) external post(s) in timeline
@@ -1035,7 +1032,11 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
                  * @hook @ref hook-bx_timeline-get_external_post
                  */
                 bx_alert($this->_oConfig->getName(), 'get_external_post', 0, 0, [
-                    'params' => $aParams,
+                    'params' => array_merge($aParams, [
+                        'event_index' => $iEventIndex,
+                        'events_count' => $iEvents,
+                        'extenals_every' => $iExtenalsEvery,
+                    ]),
                     'override_result' => &$mixedExternalPost,
                 ]);
 

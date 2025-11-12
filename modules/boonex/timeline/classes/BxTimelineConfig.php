@@ -858,11 +858,12 @@ class BxTimelineConfig extends BxBaseModNotificationsConfig
         if(empty($iPerPage))
             $iPerPage = $this->getPerPage();
 
-        if($iExtenalsEvery > $iPerPage)
-            $iExtenalsEvery = $iPerPage;
+        if($iExtenalsEvery >= $iPerPage)
+            $iExtenalsEvery = $iPerPage - 1;
 
         return $iExtenalsEvery;
     }
+
     public function getPerPreload()
     {
         return $this->_iInfScrollPerPreload;
