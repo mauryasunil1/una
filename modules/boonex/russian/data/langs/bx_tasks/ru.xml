@@ -346,6 +346,7 @@
     <string name="_bx_tasks_grid_filter_item_title_adm_pending"><![CDATA[В ожидании]]></string>
     <string name="_bx_tasks_grid_column_title_adm_active"><![CDATA[Активные]]></string>
     <string name="_bx_tasks_grid_column_title_adm_title"><![CDATA[Заголовок]]></string>
+    <string name="_bx_tasks_grid_column_title_adm_context_module"><![CDATA[Модуль]]></string>
     <string name="_bx_tasks_grid_column_title_adm_added"><![CDATA[Добавленные]]></string>
     <string name="_bx_tasks_grid_column_title_adm_author"><![CDATA[Автор]]></string>
     <string name="_bx_tasks_grid_action_title_adm_edit"><![CDATA[Редактировать]]></string>

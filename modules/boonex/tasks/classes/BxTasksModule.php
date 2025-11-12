@@ -640,6 +640,18 @@ class BxTasksModule extends BxBaseModTextModule implements iBxDolCalendarService
     /**
      * Common methods
      */
+    public function getModuleTitle($sName)
+    {
+        $sResult = $sName;
+
+        if(($_sTitle = '_' . $sName) && ($sTitle = _t($_sTitle)) && strcmp($_sTitle, $sTitle) != 0)
+            $sResult = $sTitle;
+        else if(($aModule = $this->_oModule->_oDb->getModuleByName($sName)) && is_array($aModule))
+            $sResult = $aModule['title'] ?? _t('_undefined');
+
+        return $sResult;
+    }
+
     public function getAssignees()
     {
         $aResults = [];

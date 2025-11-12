@@ -356,24 +356,26 @@ INSERT INTO `sys_objects_chart` (`object`, `title`, `table`, `field_date_ts`, `f
 
 -- GRIDS: moderation tools
 INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `override_class_name`, `override_class_file`) VALUES
-('bx_tasks_administration', 'Sql', 'SELECT `tt`.* FROM `bx_tasks_tasks` AS `tt` INNER JOIN `sys_profiles` AS `tp` ON ABS(`tt`.`allow_view_to`)=`tp`.`id` WHERE 1 ', 'bx_tasks_tasks', 'id', 'added', 'status_admin', '', 20, NULL, 'start', '', 'tt`.`title,tt`.`text', '', 'like', 'reports', '', 192, 'BxTasksGridAdministration', 'modules/boonex/tasks/classes/BxTasksGridAdministration.php'),
-('bx_tasks_common', 'Sql', 'SELECT `tt`.* FROM `bx_tasks_tasks` AS `tt` INNER JOIN `sys_profiles` AS `tp` ON ABS(`tt`.`allow_view_to`)=`tp`.`id` WHERE 1 ', 'bx_tasks_tasks', 'id', 'added', 'status', '', 20, NULL, 'start', '', 'tt`.`title,tt`.`text', '', 'like', '', '', 2147483647, 'BxTasksGridCommon', 'modules/boonex/tasks/classes/BxTasksGridCommon.php');
+('bx_tasks_administration', 'Sql', 'SELECT `tt`.*, `tp`.`id` AS `context_id`, `tp`.`type` AS `context_module` FROM `bx_tasks_tasks` AS `tt` INNER JOIN `sys_profiles` AS `tp` ON ABS(`tt`.`allow_view_to`)=`tp`.`id` WHERE 1 ', 'bx_tasks_tasks', 'id', 'added', 'status_admin', '', 20, NULL, 'start', '', 'tt`.`title,tt`.`text', '', 'like', 'reports', '', 192, 'BxTasksGridAdministration', 'modules/boonex/tasks/classes/BxTasksGridAdministration.php'),
+('bx_tasks_common', 'Sql', 'SELECT `tt`.*, `tp`.`id` AS `context_id`, `tp`.`type` AS `context_module` FROM `bx_tasks_tasks` AS `tt` INNER JOIN `sys_profiles` AS `tp` ON ABS(`tt`.`allow_view_to`)=`tp`.`id` WHERE 1 ', 'bx_tasks_tasks', 'id', 'added', 'status', '', 20, NULL, 'start', '', 'tt`.`title,tt`.`text', '', 'like', '', '', 2147483647, 'BxTasksGridCommon', 'modules/boonex/tasks/classes/BxTasksGridCommon.php');
 
 INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `order`) VALUES
-('bx_tasks_administration', 'checkbox', '_sys_select', '2%', 0, '', '', 1),
-('bx_tasks_administration', 'switcher', '_bx_tasks_grid_column_title_adm_active', '8%', 0, '', '', 2),
-('bx_tasks_administration', 'reports', '_sys_txt_reports_title', '5%', 0, '', '', 3),
-('bx_tasks_administration', 'title', '_bx_tasks_grid_column_title_adm_title', '25%', 0, '25', '', 4),
-('bx_tasks_administration', 'added', '_bx_tasks_grid_column_title_adm_added', '20%', 1, '25', '', 5),
-('bx_tasks_administration', 'author', '_bx_tasks_grid_column_title_adm_author', '20%', 0, '25', '', 6),
-('bx_tasks_administration', 'actions', '', '20%', 0, '', '', 7),
+('bx_tasks_administration', 'checkbox', '_sys_select', '2%', 0, 0, '', 1),
+('bx_tasks_administration', 'switcher', '_bx_tasks_grid_column_title_adm_active', '8%', 0, 0, '', 2),
+('bx_tasks_administration', 'reports', '_sys_txt_reports_title', '5%', 0, 0, '', 3),
+('bx_tasks_administration', 'context_module', '_bx_tasks_grid_column_title_adm_context_module', '10%', 0, 0, '', 4),
+('bx_tasks_administration', 'title', '_bx_tasks_grid_column_title_adm_title', '25%', 0, 25, '', 5),
+('bx_tasks_administration', 'added', '_bx_tasks_grid_column_title_adm_added', '10%', 1, 25, '', 6),
+('bx_tasks_administration', 'author', '_bx_tasks_grid_column_title_adm_author', '20%', 0, 25, '', 7),
+('bx_tasks_administration', 'actions', '', '20%', 0, 0, '', 8),
 
-('bx_tasks_common', 'checkbox', '_sys_select', '2%', 0, '', '', 1),
-('bx_tasks_common', 'switcher', '_bx_tasks_grid_column_title_adm_active', '8%', 0, '', '', 2),
-('bx_tasks_common', 'title', '_bx_tasks_grid_column_title_adm_title', '40%', 0, '35', '', 3),
-('bx_tasks_common', 'added', '_bx_tasks_grid_column_title_adm_added', '15%', 1, '25', '', 4),
-('bx_tasks_common', 'status_admin', '_bx_tasks_grid_column_title_adm_status_admin', '15%', 0, '16', '', 5),
-('bx_tasks_common', 'actions', '', '20%', 0, '', '', 6);
+('bx_tasks_common', 'checkbox', '_sys_select', '2%', 0, 0, '', 1),
+('bx_tasks_common', 'switcher', '_bx_tasks_grid_column_title_adm_active', '8%', 0, 0, '', 2),
+('bx_tasks_common', 'title', '_bx_tasks_grid_column_title_adm_title', '35%', 0, 35, '', 3),
+('bx_tasks_common', 'context_module', '_bx_tasks_grid_column_title_adm_context_module', '10%', 0, 0, '', 4),
+('bx_tasks_common', 'added', '_bx_tasks_grid_column_title_adm_added', '10%', 1, 25, '', 5),
+('bx_tasks_common', 'status_admin', '_bx_tasks_grid_column_title_adm_status_admin', '15%', 0, 16, '', 6),
+('bx_tasks_common', 'actions', '', '20%', 0, 0, '', 7);
 
 
 INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon_only`, `confirm`, `order`) VALUES
@@ -392,11 +394,11 @@ INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon
 
 -- GRIDS: moderation time tools
 INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `override_class_name`, `override_class_file`) VALUES
-('bx_tasks_time_administration', 'Sql', 'SELECT `ttt`.*, `tt`.`title`, `tp`.`id` AS `context_id`, `tp`.`type` AS `context_module` FROM `bx_tasks_time_track` AS `ttt` INNER JOIN `bx_tasks_tasks` AS `tt` ON `ttt`.`object_id`=`tt`.`id` INNER JOIN `sys_profiles` AS `tp` ON ABS(`tt`.`allow_view_to`)=`tp`.`id` WHERE 1 ', 'bx_tasks_time_track', 'id', 'value_date', '', '', 20, NULL, 'start', '', 'ttt`.`text,tt`.`title,tt`.`text', '', 'like', 'date', '', 192, 'BxTasksGridTimeAdministration', 'modules/boonex/tasks/classes/BxTasksGridTimeAdministration.php'),
-('bx_tasks_time_common', 'Sql', 'SELECT `ttt`.*, `tt`.`title`, `tp`.`id` AS `context_id`, `tp`.`type` AS `context_module` FROM `bx_tasks_time_track` AS `ttt` INNER JOIN `bx_tasks_tasks` AS `tt` ON `ttt`.`object_id`=`tt`.`id` INNER JOIN `sys_profiles` AS `tp` ON ABS(`tt`.`allow_view_to`)=`tp`.`id` WHERE 1 ', 'bx_tasks_time_track', 'id', 'value_date', '', '', 20, NULL, 'start', '', 'ttt`.`text,tt`.`title,tt`.`text', '', 'like', 'date', '', 2147483647, 'BxTasksGridTimeCommon', 'modules/boonex/tasks/classes/BxTasksGridTimeCommon.php'),
+('bx_tasks_time_administration', 'Sql', 'SELECT `ttt`.*, `tt`.`title`, `tp`.`id` AS `context_id`, `tp`.`type` AS `context_module` FROM `bx_tasks_time_track` AS `ttt` INNER JOIN `bx_tasks_tasks` AS `tt` ON `ttt`.`object_id`=`tt`.`id` INNER JOIN `sys_profiles` AS `tp` ON ABS(`tt`.`allow_view_to`)=`tp`.`id` WHERE 1 ', 'bx_tasks_time_track', 'id', 'value_date', '', '', 100, NULL, 'start', '', 'ttt`.`text,tt`.`title,tt`.`text', '', 'like', 'date', '', 192, 'BxTasksGridTimeAdministration', 'modules/boonex/tasks/classes/BxTasksGridTimeAdministration.php'),
+('bx_tasks_time_common', 'Sql', 'SELECT `ttt`.*, `tt`.`title`, `tp`.`id` AS `context_id`, `tp`.`type` AS `context_module` FROM `bx_tasks_time_track` AS `ttt` INNER JOIN `bx_tasks_tasks` AS `tt` ON `ttt`.`object_id`=`tt`.`id` INNER JOIN `sys_profiles` AS `tp` ON ABS(`tt`.`allow_view_to`)=`tp`.`id` WHERE 1 ', 'bx_tasks_time_track', 'id', 'value_date', '', '', 100, NULL, 'start', '', 'ttt`.`text,tt`.`title,tt`.`text', '', 'like', 'date', '', 2147483647, 'BxTasksGridTimeCommon', 'modules/boonex/tasks/classes/BxTasksGridTimeCommon.php'),
 
-('bx_tasks_time_context_administration', 'Sql', 'SELECT `ttt`.*, `tt`.`title` FROM `bx_tasks_time_track` AS `ttt` INNER JOIN `bx_tasks_tasks` AS `tt` ON `ttt`.`object_id`=`tt`.`id` WHERE 1 ', 'bx_tasks_time_track', 'id', 'value_date', '', '', 20, NULL, 'start', '', 'ttt`.`text,tt`.`title,tt`.`text', '', 'like', 'date', '', 192, 'BxTasksGridTimeContextAdministration', 'modules/boonex/tasks/classes/BxTasksGridTimeContextAdministration.php'),
-('bx_tasks_time_context_common', 'Sql', 'SELECT `ttt`.*, `tt`.`title` FROM `bx_tasks_time_track` AS `ttt` INNER JOIN `bx_tasks_tasks` AS `tt` ON `ttt`.`object_id`=`tt`.`id` WHERE 1 ', 'bx_tasks_time_track', 'id', 'value_date', '', '', 20, NULL, 'start', '', 'ttt`.`text,tt`.`title,tt`.`text', '', 'like', 'date', '', 2147483647, 'BxTasksGridTimeContextCommon', 'modules/boonex/tasks/classes/BxTasksGridTimeContextCommon.php');
+('bx_tasks_time_context_administration', 'Sql', 'SELECT `ttt`.*, `tt`.`title` FROM `bx_tasks_time_track` AS `ttt` INNER JOIN `bx_tasks_tasks` AS `tt` ON `ttt`.`object_id`=`tt`.`id` WHERE 1 ', 'bx_tasks_time_track', 'id', 'value_date', '', '', 50, NULL, 'start', '', 'ttt`.`text,tt`.`title,tt`.`text', '', 'like', 'date', '', 192, 'BxTasksGridTimeContextAdministration', 'modules/boonex/tasks/classes/BxTasksGridTimeContextAdministration.php'),
+('bx_tasks_time_context_common', 'Sql', 'SELECT `ttt`.*, `tt`.`title` FROM `bx_tasks_time_track` AS `ttt` INNER JOIN `bx_tasks_tasks` AS `tt` ON `ttt`.`object_id`=`tt`.`id` WHERE 1 ', 'bx_tasks_time_track', 'id', 'value_date', '', '', 50, NULL, 'start', '', 'ttt`.`text,tt`.`title,tt`.`text', '', 'like', 'date', '', 2147483647, 'BxTasksGridTimeContextCommon', 'modules/boonex/tasks/classes/BxTasksGridTimeContextCommon.php');
 
 INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `order`) VALUES
 ('bx_tasks_time_administration', 'checkbox', '_sys_select', '2%', 0, 0, '', 1),

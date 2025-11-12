@@ -24,12 +24,7 @@ class BxTasksGridTimeAdministration extends BxTasksGridTime
 
     protected function _getCellContextModule($mixedValue, $sKey, $aField, $aRow)
     {
-        if(($_sTitle = '_' . $mixedValue) && ($sTitle = _t($_sTitle)) && strcmp($_sTitle, $sTitle) != 0)
-            $mixedValue = $sTitle;
-        else if(($aModule = $this->_oModule->_oDb->getModuleByName($mixedValue)) && is_array($aModule))
-            $mixedValue = $aModule['title'] ?? _t('_undefined');
-
-        return parent::_getCellDefault($mixedValue, $sKey, $aField, $aRow);
+        return parent::_getCellDefault($this->_oModule->getModuleTitle($mixedValue), $sKey, $aField, $aRow);
     }
 
     protected function _getCellContextId($mixedValue, $sKey, $aField, $aRow)

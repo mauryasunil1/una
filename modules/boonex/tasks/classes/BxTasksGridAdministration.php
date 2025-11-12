@@ -23,6 +23,11 @@ class BxTasksGridAdministration extends BxBaseModTextGridAdministration
         $this->_initFilter(3, $this->_oModule->getContexts());
     }
 
+    protected function _getCellContextModule($mixedValue, $sKey, $aField, $aRow)
+    {
+        return parent::_getCellDefault($this->_oModule->getModuleTitle($mixedValue), $sKey, $aField, $aRow);
+    }
+
     protected function _getFilterControls()
     {
         $sContent = $this->_getFilterSelectOne($this->_sFilter3Name, $this->_sFilter3Value, $this->_aFilter3Values);

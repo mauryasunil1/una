@@ -569,21 +569,23 @@ INSERT INTO `sys_form_display_inputs` (`display_name`, `input_name`, `visible_fo
 ('bx_tasks_time_add', 'action', 2147483647, 1, 3),
 ('bx_tasks_time_add', 'value', 2147483647, 1, 4),
 ('bx_tasks_time_add', 'value_h', 2147483647, 1, 5),
-('bx_tasks_time_add', 'value_m', 2147483647, 1, 6),
-('bx_tasks_time_add', 'value_date', 2147483647, 1, 7),
-('bx_tasks_time_add', 'text', 2147483647, 1, 8),
-('bx_tasks_time_add', 'controls', 2147483647, 1, 9),
-('bx_tasks_time_add', 'submit', 2147483647, 1, 10),
-('bx_tasks_time_add', 'cancel', 2147483647, 1, 11),
+('bx_tasks_time_add', 'value_div', 2147483647, 1, 6),
+('bx_tasks_time_add', 'value_m', 2147483647, 1, 7),
+('bx_tasks_time_add', 'value_date', 2147483647, 1, 8),
+('bx_tasks_time_add', 'text', 2147483647, 1, 9),
+('bx_tasks_time_add', 'controls', 2147483647, 1, 10),
+('bx_tasks_time_add', 'submit', 2147483647, 1, 11),
+('bx_tasks_time_add', 'cancel', 2147483647, 1, 12),
 
 ('bx_tasks_time_edit', 'value', 2147483647, 1, 1),
 ('bx_tasks_time_edit', 'value_h', 2147483647, 1, 2),
-('bx_tasks_time_edit', 'value_m', 2147483647, 1, 3),
-('bx_tasks_time_edit', 'value_date', 2147483647, 1, 4),
-('bx_tasks_time_edit', 'text', 2147483647, 1, 5),
-('bx_tasks_time_edit', 'controls', 2147483647, 1, 6),
-('bx_tasks_time_edit', 'submit', 2147483647, 1, 7),
-('bx_tasks_time_edit', 'cancel', 2147483647, 1, 8);
+('bx_tasks_time_edit', 'value_div', 2147483647, 1, 3),
+('bx_tasks_time_edit', 'value_m', 2147483647, 1, 4),
+('bx_tasks_time_edit', 'value_date', 2147483647, 1, 5),
+('bx_tasks_time_edit', 'text', 2147483647, 1, 6),
+('bx_tasks_time_edit', 'controls', 2147483647, 1, 7),
+('bx_tasks_time_edit', 'submit', 2147483647, 1, 8),
+('bx_tasks_time_edit', 'cancel', 2147483647, 1, 9);
 
 
 -- PRE-VALUES
