@@ -128,11 +128,14 @@ CREATE TABLE `sys_objects_embeds` (
 
 
 INSERT INTO `sys_objects_embeds` (`object`, `title`, `override_class_name`, `override_class_file`) VALUES
-('sys_system', 'System', 'BxTemplEmbedSystem', ''),
+('sys_system', '_adm_stg_cpt_option_sys_embed_system', 'BxTemplEmbedSystem', ''),
+('sys_microlink', '_adm_stg_cpt_option_sys_embed_microlink', 'BxTemplEmbedMicrolink', ''),
+('sys_peekalink', '_adm_stg_cpt_option_sys_embed_peekalink', 'BxTemplEmbedPeekalink', ''),
 ('sys_embedly', 'Embedly', 'BxTemplEmbedEmbedly', ''),
 ('sys_iframely', 'Iframely', 'BxTemplEmbedIframely', ''),
 ('sys_oembed', 'Oembed', 'BxTemplEmbedOembed', '');
 
+-- --------------------------------------------------------
 
 CREATE TABLE `sys_iframely_data` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -143,7 +146,7 @@ CREATE TABLE `sys_iframely_data` (
   PRIMARY KEY (id)
 );
 
-
+-- --------------------------------------------------------
 
 CREATE TABLE `sys_embeded_data` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -153,8 +156,8 @@ CREATE TABLE `sys_embeded_data` (
   `theme` varchar(10) DEFAULT NULL,
   PRIMARY KEY (id)
 );
--- --------------------------------------------------------
 
+-- --------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `sys_objects_file_handlers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -460,8 +463,6 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `ex
 (@iCategoryId, 'sys_std_show_header_right_site', '_adm_stg_cpt_option_sys_std_show_header_right_site', '', 'checkbox', '', '', '', '', 282),
 (@iCategoryId, 'sys_std_show_launcher_left', '_adm_stg_cpt_option_sys_std_show_launcher_left', '', 'checkbox', '', '', '', '', 285),
 
-(@iCategoryId, 'sys_embed_microlink_key', '_adm_stg_cpt_option_sys_embed_microlink_key', '', 'digit', '', '', '', '', 300),
-
 (@iCategoryId, 'sys_maintenance_mode', '_adm_stg_cpt_option_sys_maintenance_mode', '', 'checkbox', '', '', '', '', 400),
 (@iCategoryId, 'sys_maintenance_mode_html', '_adm_stg_cpt_option_sys_maintenance_mode_html', '', 'code', '', '', '', '', 402);
 
@@ -574,23 +575,27 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `info`, `value`, `ty
 INSERT INTO `sys_options_categories`(`type_id`, `name`, `caption`, `hidden`, `order`) VALUES (@iTypeId, 'general', '_adm_stg_cpt_category_general', 0, 5);
 SET @iCategoryId = LAST_INSERT_ID();
 
-INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `extra`, `check`, `check_error`, `order`) VALUES
-(@iCategoryId, 'sys_oauth_key', '_adm_stg_cpt_option_sys_oauth_key', '', 'digit', '', '', '', 20),
-(@iCategoryId, 'sys_oauth_secret', '_adm_stg_cpt_option_sys_oauth_secret', '', 'digit', '', '', '', 21),
+INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `info`, `value`, `type`, `extra`, `check`, `check_error`, `order`) VALUES
+(@iCategoryId, 'sys_oauth_key', '_adm_stg_cpt_option_sys_oauth_key', '', '', 'digit', '', '', '', 20),
+(@iCategoryId, 'sys_oauth_secret', '_adm_stg_cpt_option_sys_oauth_secret', '', '', 'digit', '', '', '', 21),
 
-(@iCategoryId, 'currency_code', '_adm_stg_cpt_option_currency_code', 'USD', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:33:"get_options_currency_code_default";s:5:"class";s:21:"TemplPaymentsServices";}', 'Avail', '_adm_stg_err_option_currency_code', 30),
-(@iCategoryId, 'currency_sign', '_adm_stg_cpt_option_currency_sign', '&#36;', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:33:"get_options_currency_sign_default";s:5:"class";s:21:"TemplPaymentsServices";}', 'Avail', '_adm_stg_err_option_currency_sign', 31),
-(@iCategoryId, 'sys_default_payment', '_adm_stg_cpt_option_sys_default_payment', '', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:12:"get_payments";s:5:"class";s:21:"TemplPaymentsServices";}', '', '', 35),
+(@iCategoryId, 'currency_code', '_adm_stg_cpt_option_currency_code', '', 'USD', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:33:"get_options_currency_code_default";s:5:"class";s:21:"TemplPaymentsServices";}', 'Avail', '_adm_stg_err_option_currency_code', 30),
+(@iCategoryId, 'currency_sign', '_adm_stg_cpt_option_currency_sign', '', '&#36;', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:33:"get_options_currency_sign_default";s:5:"class";s:21:"TemplPaymentsServices";}', 'Avail', '_adm_stg_err_option_currency_sign', 31),
+(@iCategoryId, 'sys_default_payment', '_adm_stg_cpt_option_sys_default_payment', '', '', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:12:"get_payments";s:5:"class";s:21:"TemplPaymentsServices";}', '', '', 35),
 
-(@iCategoryId, 'client_image_resize_width', '_adm_stg_cpt_option_client_image_resize_width', '0', 'digit', '', '', '', 42),
-(@iCategoryId, 'client_image_resize_height', '_adm_stg_cpt_option_client_image_resize_height', '0', 'digit', '', '', '', 43),
+(@iCategoryId, 'client_image_resize_width', '_adm_stg_cpt_option_client_image_resize_width', '', '0', 'digit', '', '', '', 42),
+(@iCategoryId, 'client_image_resize_height', '_adm_stg_cpt_option_client_image_resize_height', '', '0', 'digit', '', '', '', 43),
 
-(@iCategoryId, 'useLikeOperator', '_adm_stg_cpt_option_use_like_operator', 'on', 'checkbox', '', '', '', 45),
+(@iCategoryId, 'useLikeOperator', '_adm_stg_cpt_option_use_like_operator', '', 'on', 'checkbox', '', '', '', 45),
 
-(@iCategoryId, 'sys_embed_default', '_adm_stg_cpt_option_sys_embed_default', 'sys_system', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:25:"get_options_embed_default";s:5:"class";s:13:"TemplServices";}', '', '', 79),
-(@iCategoryId, 'sys_embedly_api_key', '_adm_stg_cpt_option_sys_embedly_api_key', '', 'digit', '', '', '', 80),
+(@iCategoryId, 'sys_embed_default', '_adm_stg_cpt_option_sys_embed_default', '', 'sys_system', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:25:"get_options_embed_default";s:5:"class";s:13:"TemplServices";}', '', '', 79),
+(@iCategoryId, 'sys_embedly_api_key', '_adm_stg_cpt_option_sys_embedly_api_key', '', '', 'digit', '', '', '', 80),
 
-(@iCategoryId, 'sys_iframely_api_key', '_adm_stg_cpt_option_sys_iframely_api_key', '', 'digit', '', '', '', 90);
+(@iCategoryId, 'sys_iframely_api_key', '_adm_stg_cpt_option_sys_iframely_api_key', '', '', 'digit', '', '', '', 90),
+
+(@iCategoryId, 'sys_embed_microlink_key', '_adm_stg_cpt_option_sys_embed_microlink_key', '_adm_stg_inf_option_sys_embed_microlink_key', '', 'digit', '', '', '', 100),
+
+(@iCategoryId, 'sys_embed_peekalink_api_key', '_adm_stg_cpt_option_sys_embed_peekalink_api_key', '', '', 'digit', '', '', '', 110);
 
 
 --

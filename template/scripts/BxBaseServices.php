@@ -1342,7 +1342,7 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
 
         $aObjects = BxDolEmbedQuery::getObjects();
         foreach($aObjects as $aObject)
-            $aResults[$aObject['object']] = $aObject['title'];
+            $aResults[$aObject['object']] = _t($aObject['title']);
 
         return $aResults;
     }
@@ -1701,6 +1701,11 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
     {
         header("Location:" . BX_DOL_URL_ROOT, true, 301);
         exit;        
+    }
+
+    public function serviceProcessEmbed($sUrl, $sTheme)
+    {
+        BxDolEmbed::getObjectInstance()->process($sUrl, $sTheme);
     }
 }
 

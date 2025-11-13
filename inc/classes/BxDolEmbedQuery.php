@@ -13,6 +13,8 @@
  */
 class BxDolEmbedQuery extends BxDolFactoryObjectQuery
 {
+    protected $_sTableData;
+
     static public function getObject($sObject)
     {
         return parent::getObjectFromTable($sObject, 'sys_objects_embeds', true);
@@ -22,19 +24,37 @@ class BxDolEmbedQuery extends BxDolFactoryObjectQuery
     {
         return parent::getObjectsFromTable('sys_objects_embeds');
     }
-    
-    static public function getLocal ($sUrl, $sTheme, $sTableName)
+
+    public function setParams($aParams)
     {
-        $oDb = BxDolDb::getInstance();
-        $sQuery = $oDb->prepare("SELECT `data` FROM `" . $sTableName . "` WHERE `url` = ? AND  `theme` = ?", $sUrl, $sTheme);
-        return $oDb->getOne($sQuery);
+        $this->_sTableData = $aParams['table_data'] ?? '';
     }
-    
-    static public function setLocal ($sUrl, $sTheme, $sTableName, $sData)
+
+    public function getLocal ($sUrl, $sTheme)
     {
-        $oDb = BxDolDb::getInstance();
-        $sQuery = $oDb->prepare("INSERT INTO `" . $sTableName . "` (`url`, `theme`, `data`, `added`) VALUES (?, ?, ?, ?)", $sUrl, $sTheme, $sData, time());
-        $oDb->query($sQuery);
+        return $this->getOne("SELECT `data` FROM `" . $this->_sTableData . "` WHERE `url` = :url AND  `theme` = :theme", [
+            'url' => $sUrl, 
+            'theme' => $sTheme
+        ]);
+    }
+
+    public function insertLocal ($sUrl, $sTheme, $sData = '')
+    {
+        return (int)$this->query("INSERT INTO `" . $this->_sTableData . "` (`url`, `theme`, `data`, `added`) VALUES (:url, :theme, :data, :added)", [
+            'url' => $sUrl,
+            'theme' => $sTheme,
+            'data' => $sData,
+            'added' => time(),
+        ]) > 0;
+    }
+
+    public function updateLocal ($sUrl, $sTheme, $sData = '')
+    {
+        return (int)$this->query("UPDATE `" . $this->_sTableData . "` SET `data` = :data WHERE `url` = :url AND `theme` = :theme", [
+            'url' => $sUrl,
+            'theme' => $sTheme,
+            'data' => $sData
+        ]) > 0;
     }
 }
 

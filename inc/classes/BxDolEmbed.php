@@ -38,8 +38,21 @@
  */
 class BxDolEmbed extends BxDolFactoryObject
 {
+    protected $_bAsync = false;
+
+    protected $_sTableData = '';
+
     protected $_bCssJsAdded = false;
-    protected $_sTableName = '';
+        
+    public function __construct ($aObject, $oTemplate = null)
+    {
+        parent::__construct($aObject, $oTemplate, 'BxDolEmbedQuery');
+
+        $this->_oDb->setParams([
+            'table_data' => $this->_sTableData
+        ]);
+    }
+
     /**
      * Get embed provider object instance by object name
      * @param $sObject object name
@@ -80,16 +93,14 @@ class BxDolEmbed extends BxDolFactoryObject
     {
         // override this function in particular embed provider class
     }
-    
+
     public function getData ($sUrl, $sTheme)
     {
         $sUrl = $this->cleanYoutubeUrl($sUrl);
-        $sData = BxDolEmbedQuery::getLocal($sUrl, $sTheme, $this->_sTableName);
-        if(!$sData) {
-            $sData = $this->getDataFromApi($sUrl, $sTheme); 
-            if($sData)
-                BxDolEmbedQuery::setLocal($sUrl, $sTheme, $this->_sTableName, $sData);
-        }
+
+        $sData = $this->_oDb->getLocal($sUrl, $sTheme);
+        if(!$sData)
+            $sData = $this->{'_getData' . ($this->_bAsync ? 'Async' : '')}($sUrl, $sTheme);
 
         return json_decode($sData, true);
     }
@@ -98,8 +109,23 @@ class BxDolEmbed extends BxDolFactoryObject
     {
         // override this function in particular embed provider class
     }
-    
-    function cleanYoutubeUrl($url) {
+
+    public function process ($sUrl, $sTheme)
+    {
+        $sData = $this->getDataFromApi($sUrl, $sTheme);
+        if($sData) {
+            $this->_oDb->updateLocal($sUrl, $sTheme, $sData);
+
+            bx_alert('embed', 'processed', 0, false, [
+                'url' => $sUrl,
+                'theme' => $sTheme,
+                'data' => $sData
+            ]);
+        }
+    }
+
+    public function cleanYoutubeUrl($url)
+    {
         $parsedUrl = parse_url($url);
         if (isset($parsedUrl['host']) && $parsedUrl['host'] === 'youtu.be') {
             if (isset($parsedUrl['query'])) {
@@ -117,6 +143,31 @@ class BxDolEmbed extends BxDolFactoryObject
             return $url;
         }
         return $url;
+    }
+    
+    protected function _getData($sUrl, $sTheme)
+    {
+        $sData = $this->getDataFromApi($sUrl, $sTheme);
+        if($sData)
+            $this->_oDb->insertLocal($sUrl, $sTheme, $sData);
+
+        return $sData;
+    }
+
+    protected function _getDataAsync($sUrl, $sTheme)
+    {
+        $sName = 'embed_for_' . $sUrl . ($sTheme ? '_' . $sTheme : '');
+        if(($oCronQuery = BxDolCronQuery::getInstance()) && !$oCronQuery->isTransientJobService($sName)) {
+            $this->_oDb->insertLocal($sUrl, $sTheme);
+
+            $oCronQuery->addTransientJobService($sName, ['system', 'process_embed', [$sUrl, $sTheme], 'TemplServices']);
+        }
+
+        return json_encode([
+            'url' => $sUrl,
+            'title' => $sUrl,
+            'domain' => parse_url($sUrl, PHP_URL_HOST)
+        ]);
     }
 }
 

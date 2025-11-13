@@ -1685,9 +1685,14 @@
     <string name="_adm_stg_cpt_option_sys_location_normalize_names"><![CDATA[Normalize geographic names]]></string>
     <string name="_adm_stg_cpt_option_sys_maps_api_key"><![CDATA[Google Maps API key]]></string>
     <string name="_adm_stg_cpt_option_sys_embed_default"><![CDATA[Embeds provider]]></string>
-    <string name="_adm_stg_cpt_option_sys_embedly_api_key"><![CDATA[Embed.ly API key (fill in to use instead of Iframely)]]></string>
-    <string name="_adm_stg_cpt_option_sys_embedly_api_pattern"><![CDATA[Embed.ly API pattern (fill in to use instead of Iframely)]]></string>
+    <string name="_adm_stg_cpt_option_sys_embed_system"><![CDATA[System]]></string>
+    <string name="_adm_stg_cpt_option_sys_embed_microlink"><![CDATA[Microlink]]></string>
+    <string name="_adm_stg_cpt_option_sys_embed_peekalink"><![CDATA[Peekalink]]></string>
+    <string name="_adm_stg_cpt_option_sys_embedly_api_key"><![CDATA[Embed.ly API key]]></string>
     <string name="_adm_stg_cpt_option_sys_iframely_api_key"><![CDATA[Iframely API key]]></string>
+    <string name="_adm_stg_cpt_option_sys_embed_microlink_key"><![CDATA[Microlink API key]]></string>
+    <string name="_adm_stg_inf_option_sys_embed_microlink_key"><![CDATA[Leave empty to use in Free mode.]]></string>
+    <string name="_adm_stg_cpt_option_sys_embed_peekalink_api_key"><![CDATA[Peekalink API key]]></string>
     <string name="_adm_stg_cpt_option_sys_eq_time"><![CDATA[Email queue execution flag]]></string>
     <string name="_adm_stg_cpt_option_sys_eq_send_per_start"><![CDATA[Number of messages to send from mail queue per run]]></string>
     <string name="_adm_stg_cpt_option_sys_eq_send_per_start_to_recipient"><![CDATA[Number of messages to send from mail queue per run to the same recipient]]></string>
@@ -1864,7 +1869,6 @@
     <string name="_adm_stg_cpt_option_sys_std_show_header_right_search"><![CDATA[Studio: Show search in header right]]></string>
     <string name="_adm_stg_cpt_option_sys_std_show_header_right_site"><![CDATA[Studio: Show 'site' link in header]]></string>
     <string name="_adm_stg_cpt_option_sys_std_show_launcher_left"><![CDATA[Studio: Show left area with menu in Launcher]]></string>
-    <string name="_adm_stg_cpt_option_sys_embed_microlink_key"><![CDATA[Studio: Microlink API key for embeds processing]]></string>
     <string name="_adm_stg_cpt_option_sys_maintenance_mode"><![CDATA[Maintenance mode]]></string>
     <string name="_adm_stg_cpt_option_sys_maintenance_mode_html"><![CDATA[Maintenance mode custom HTML code]]></string>
 
