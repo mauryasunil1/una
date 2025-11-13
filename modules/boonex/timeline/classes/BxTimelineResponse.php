@@ -367,6 +367,20 @@ class BxTimelineResponse extends BxBaseModNotificationsResponse
         $this->_oModule->getCacheItemObject()->removeAllByPrefix($this->_oModule->_oConfig->getPrefix('cache_item'));
     }
 
+    protected function _processEmbedProcessed($oAlert)
+    {
+        $aIds = $this->_oModule->_oDb->getEvents([
+            'browse' => 'attached_url',
+            'url' => $oAlert->aExtras['url']
+        ]);
+
+        foreach($aIds as $iId) {
+            $this->_oModule->deleteCacheItem($iId);
+
+            $this->_oModule->onEdit($iId);
+        }
+    }
+
     protected function _processBxTimelineVideosMp4Transcoded($oAlert)
     {
         $this->_onVideoTranscoded($oAlert->iObject, $oAlert->aExtras['ret']);

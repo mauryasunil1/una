@@ -915,6 +915,13 @@ class BxTimelineDb extends BxBaseModNotificationsDb
                 $sWhereClause = "AND `{$sTableAlias}`.`id` IN (" . $this->implode_escape($aParams['ids']) . ") ";
                 break;
 
+            case 'attached_url':
+                $sMethod = 'getColumn';
+                $sSelectClause = "DISTINCT `{$sTableAlias}`.`id`";
+                $sJoinClause = "LEFT JOIN `" . $this->_sPrefix . "links2events` AS `tle` ON `{$sTableAlias}`.`id`=`tle`.`event_id` LEFT JOIN `" . $this->_sPrefix . "links` AS `tl` ON `tle`.`link_id`=`tl`.`id`";
+                $sWhereClause = $this->prepareAsString("AND `tl`.`url`=? ", $aParams['url']);
+                break;
+
             default:
             	list($sMethod, $sSelectClause, $sJoinClause, $sWhereClause, $sOrderClause, $sLimitClause) = parent::_getSqlPartsEvents($aParams);
         }
