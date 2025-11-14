@@ -136,7 +136,7 @@ class BxBaseModGroupsAlertsResponse extends BxBaseModProfileAlertsResponse
         $iCount = (int)$aParams['events_count'];
         $iEvery = (int)$aParams['extenals_every'];
 
-        if(($iIndex != 0 || $iEvery >= $iCount) && ($sCode = $this->_oModule->_oTemplate->getTimelineCardRecommendations()) != '')
+        if(($iIndex != 0 || $iEvery >= $iCount) && ($sCode = $this->_oModule->_oTemplate->getTimelineCardRecommendations($aParams)) != '')
             $oAlert->aExtras['override_result'] = $sCode;
 
         return true;

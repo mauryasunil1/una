@@ -126,7 +126,7 @@ class BxBaseModGroupsTemplate extends BxBaseModProfileTemplate
         return $this->parseHtmlByName('popup_qnr_answers.html', ['bx_repeat:answers' => $aTmplVarsAnswers]);
     }
 
-    public function getTimelineCardRecommendations()
+    public function getTimelineCardRecommendations($aParams)
     {
         $CNF = &$this->_oConfig->CNF;
         $sModule = $this->_oConfig->getName();
@@ -139,11 +139,13 @@ class BxBaseModGroupsTemplate extends BxBaseModProfileTemplate
         if(($sKey = 'OBJECT_RECOMMENDATIONS_FANS') && (empty($CNF[$sKey]) || !($oRecommendation = BxDolRecommendation::getObjectInstance($CNF[$sKey]))))
             return $this->_bIsApi ? [] : '';
 
+        $sId = 'rc' . ((int)($aParams['start'] ?? 0) + (int)($aParams['event_index'] ?? 0));
+
         if($this->_bIsApi) {
             $aResult = [];
             if(($aCode = $oRecommendation->getCodeAPI($iProfileId)) && is_array($aCode))
                 $aResult = [
-                    'id' => '',
+                    'id' => $sId,
                     'type' => 'timeline_recommendations',
                     'module' => $sModule,
                     'title' => _t($sModule . '_timeline_recommendations'),
@@ -160,7 +162,7 @@ class BxBaseModGroupsTemplate extends BxBaseModProfileTemplate
             return '';
 
         return $this->parseHtmlByName('timeline_post_recommendation.html', [
-            'html_id' => $this->_oConfig->getHtmlIds('timeline_card_recommendations'),
+            'html_id' => $this->_oConfig->getHtmlIds('timeline_card_recommendations') . $sId,
             'class' => str_replace('_', '-', $sModule),
             'code' => $sCode
         ]) . $this->addCss(['timeline.css'], true);
