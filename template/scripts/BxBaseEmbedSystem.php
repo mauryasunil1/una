@@ -71,7 +71,7 @@ class BxBaseEmbedSystem extends BxDolEmbed
                     'logo' => $sLogo,
                 ]
             ],
-            'title' => $aData['title'],
+            'title' => $aData['title'] ?? '',
             'description' => $aData['description'] ?? '',
             'domain' => $aData['domain'],
         ]);

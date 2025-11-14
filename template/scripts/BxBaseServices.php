@@ -1703,9 +1703,9 @@ class BxBaseServices extends BxDol implements iBxDolProfileService
         exit;        
     }
 
-    public function serviceProcessEmbed($sUrl, $sTheme)
+    public function serviceProcessEmbed()
     {
-        BxDolEmbed::getObjectInstance()->process($sUrl, $sTheme);
+        BxDolEmbed::getObjectInstance()->process();
     }
 }
 

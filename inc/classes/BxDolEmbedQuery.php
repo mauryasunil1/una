@@ -38,6 +38,11 @@ class BxDolEmbedQuery extends BxDolFactoryObjectQuery
         ]);
     }
 
+    public function getLocalUnprocessed ()
+    {
+        return $this->getAll("SELECT * FROM `" . $this->_sTableData . "` WHERE `data` = ''");
+    }
+
     public function insertLocal ($sUrl, $sTheme, $sData = '')
     {
         return (int)$this->query("INSERT INTO `" . $this->_sTableData . "` (`url`, `theme`, `data`, `added`) VALUES (:url, :theme, :data, :added)", [
@@ -45,16 +50,15 @@ class BxDolEmbedQuery extends BxDolFactoryObjectQuery
             'theme' => $sTheme,
             'data' => $sData,
             'added' => time(),
-        ]) > 0;
+        ]) > 0 ? $this->lastId() : false;
     }
 
-    public function updateLocal ($sUrl, $sTheme, $sData = '')
+    public function updateLocal($aParamsSet, $aParamsWhere)
     {
-        return (int)$this->query("UPDATE `" . $this->_sTableData . "` SET `data` = :data WHERE `url` = :url AND `theme` = :theme", [
-            'url' => $sUrl,
-            'theme' => $sTheme,
-            'data' => $sData
-        ]) > 0;
+        if(empty($aParamsSet) || empty($aParamsWhere))
+            return false;
+
+        return $this->query("UPDATE `{$this->_sTableData}` SET " . $this->arrayToSQL($aParamsSet) . " WHERE " . $this->arrayToSQL($aParamsWhere, " AND "));
     }
 }
 

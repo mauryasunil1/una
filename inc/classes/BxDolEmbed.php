@@ -39,6 +39,7 @@
 class BxDolEmbed extends BxDolFactoryObject
 {
     protected $_bAsync = false;
+    protected $_sSocketName = 'sys_embed';
 
     protected $_sTableData = '';
 
@@ -100,7 +101,7 @@ class BxDolEmbed extends BxDolFactoryObject
 
         $sData = $this->_oDb->getLocal($sUrl, $sTheme);
         if(!$sData)
-            $sData = $this->{'_getData' . ($this->_bAsync ? 'Async' : '')}($sUrl, $sTheme);
+            $sData = $this->{'_getData' . ($sData !== false ? 'Empty' : ($this->_bAsync ? 'Async' : ''))}($sUrl, $sTheme);
 
         return json_decode($sData, true);
     }
@@ -110,18 +111,22 @@ class BxDolEmbed extends BxDolFactoryObject
         // override this function in particular embed provider class
     }
 
-    public function process ($sUrl, $sTheme)
+    public function process ()
     {
-        $sData = $this->getDataFromApi($sUrl, $sTheme);
-        if($sData) {
-            $this->_oDb->updateLocal($sUrl, $sTheme, $sData);
+        $aEmbeds = $this->_oDb->getLocalUnprocessed();
+        if(empty($aEmbeds) || !is_array($aEmbeds))
+            return;
 
-            bx_alert('embed', 'processed', 0, false, [
-                'url' => $sUrl,
-                'theme' => $sTheme,
-                'data' => $sData
-            ]);
-        }
+        $oSockets = BxDolSockets::getInstance();
+        $bSockets = $oSockets->isEnabled();
+
+        foreach($aEmbeds as $aEmbed)
+            if(($sData = $this->getDataFromApi($aEmbed['url'], $aEmbed['theme']))) {
+                $this->_oDb->updateLocal(['data' => $sData], ['id' => $aEmbed['id']]);
+
+                if($bSockets)
+                    $oSockets->sendEvent($this->_sSocketName, $aEmbed['id'], 'processed', $sData);
+            }
     }
 
     public function cleanYoutubeUrl($url)
@@ -156,18 +161,23 @@ class BxDolEmbed extends BxDolFactoryObject
 
     protected function _getDataAsync($sUrl, $sTheme)
     {
-        $sName = 'embed_for_' . $sUrl . ($sTheme ? '_' . $sTheme : '');
-        if(($oCronQuery = BxDolCronQuery::getInstance()) && !$oCronQuery->isTransientJobService($sName)) {
-            $this->_oDb->insertLocal($sUrl, $sTheme);
+        $iId = $this->_oDb->insertLocal($sUrl, $sTheme);
 
-            $oCronQuery->addTransientJobService($sName, ['system', 'process_embed', [$sUrl, $sTheme], 'TemplServices']);
-        }
+        if(($sName = 'bx_embed_processing') && ($oCronQuery = BxDolCronQuery::getInstance()) && !$oCronQuery->isTransientJobService($sName))
+            $oCronQuery->addTransientJobService($sName, ['system', 'process_embed', [], 'TemplServices']);
 
-        return json_encode([
-            'url' => $sUrl,
-            'title' => $sUrl,
-            'domain' => parse_url($sUrl, PHP_URL_HOST)
+        return $this->_getDataEmpty($sUrl, $sTheme, [
+            'id' => $iId,
+            'processing' => true
         ]);
+    }
+
+    protected function _getDataEmpty($sUrl, $sTheme, $aAddons = [])
+    {
+        return json_encode(array_merge([
+            'url' => $sUrl,
+            'domain' => parse_url($sUrl, PHP_URL_HOST),
+        ], $aAddons));
     }
 }
 
