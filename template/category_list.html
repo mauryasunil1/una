@@ -1,6 +1,10 @@
 <div class="bx-category-list space-y-1">
     <bx_if:show_all>
-        <div class="bx-category-list-item"><a href="__url__">__name__</a></div>
+        <div class="bx-category-list-item bx-stl-mil-wo-gaps">
+            <a class="bx-stl-mil-gaps flex items-center" href="__url__">
+                <span class="bx-cli-text bx-stl-mit">__name__</span>
+            </a>
+        </div>
     </bx_if:show_all>
     <bx_repeat:cats>
         <div class="bx-category-list-item __selected_class__ bx-stl-mil-wo-gaps">
