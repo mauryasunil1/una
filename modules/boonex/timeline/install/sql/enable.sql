@@ -544,8 +544,6 @@ INSERT INTO `sys_alerts` (`unit`, `action`, `handler_id`) VALUES
 ('comment', 'edited', @iHandler),
 ('comment', 'deleted', @iHandler),
 
-('embed', 'processed', @iHandler),
-
 ('bx_timeline_videos_mp4', 'transcoded', @iHandler);
 
 
