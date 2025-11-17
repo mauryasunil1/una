@@ -197,14 +197,15 @@ class BxMarketFormEntry extends BxBaseModTextFormEntry
             }
         }
 
-        //TODO: Continue from here. Do the same for Thumb.
-        if(($aCover = bx_get($CNF['FIELD_COVER'])) !== false && $this->_oModule->checkAllowedSetCover() === CHECK_ACTION_RESULT_ALLOWED) {
-            $aCover = bx_process_input($aCover, BX_DATA_INT);
+        $bSetImage = $this->_oModule->checkAllowedSetCover() === CHECK_ACTION_RESULT_ALLOWED; //--- Allow to set both Thumb and Cover.
+        foreach(['FIELD_THUMB', 'FIELD_COVER'] as $sKey)
+            if($bSetImage && ($aImage = bx_get($CNF[$sKey])) !== false) {
+                $aImage = bx_process_input($aImage, BX_DATA_INT);
 
-            $aValsToAdd[$CNF['FIELD_COVER']] = 0;
-            if(!empty($aCover) && is_array($aCover) && ($iFileCover = array_pop($aCover)))
-                $aValsToAdd[$CNF['FIELD_COVER']] = $iFileCover;
-        }
+                $aValsToAdd[$CNF[$sKey]] = 0;
+                if(!empty($aImage) && is_array($aImage) && ($iFileImage = array_pop($aImage)))
+                    $aValsToAdd[$CNF[$sKey]] = $iFileImage;
+            }
 
         $aPackage = bx_process_input(bx_get($CNF['FIELD_PACKAGE']), BX_DATA_INT);
         $aValsToAdd[$CNF['FIELD_PACKAGE']] = 0;
@@ -247,31 +248,31 @@ class BxMarketFormEntry extends BxBaseModTextFormEntry
         $sStorage = $oStorage->getObject();
         switch($sStorage) {
         	case $this->_oModule->_oConfig->CNF['OBJECT_STORAGE']:
-        		$this->_oModule->_oDb->associatePhotoWithContent($iContentId, $iFileId, $this->getCleanValue('title-' . $iFileId));
-        		break;
+                    $this->_oModule->_oDb->associatePhotoWithContent($iContentId, $iFileId, $this->getCleanValue('title-' . $iFileId));
+                    break;
 
         	case $this->_oModule->_oConfig->CNF['OBJECT_STORAGE_FILES']:
-        		$aParams = array(
-        			'type' => $this->getCleanValue('type-' . $iFileId)        			
-        		);
+                    $aParams = array(
+                        'type' => $this->getCleanValue('type-' . $iFileId)        			
+                    );
 
-        		switch ($aParams['type']) {
-        			case BX_MARKET_FILE_TYPE_VERSION:
-        				$aParams = array_merge($aParams, array(
-        					'version' => $this->getCleanValue('version-' . $iFileId),
-        				));
-        				break;
-        				
-        			case BX_MARKET_FILE_TYPE_UPDATE:
-        				$aParams = array_merge($aParams, array(
-        					'version' => $this->getCleanValue('version-from-' . $iFileId),
-        					'version_to' => $this->getCleanValue('version-to-' . $iFileId),
-        				));
-        				break;
-        		}
+                    switch ($aParams['type']) {
+                        case BX_MARKET_FILE_TYPE_VERSION:
+                            $aParams = array_merge($aParams, array(
+                                'version' => $this->getCleanValue('version-' . $iFileId),
+                            ));
+                            break;
 
-        		$this->_oModule->_oDb->associateFileWithContent($iContentId, $iFileId, $aParams);
-        		break;
+                        case BX_MARKET_FILE_TYPE_UPDATE:
+                            $aParams = array_merge($aParams, array(
+                                'version' => $this->getCleanValue('version-from-' . $iFileId),
+                                'version_to' => $this->getCleanValue('version-to-' . $iFileId),
+                            ));
+                            break;
+                    }
+
+                    $this->_oModule->_oDb->associateFileWithContent($iContentId, $iFileId, $aParams);
+                    break;
         }
     }
 
@@ -285,7 +286,8 @@ class BxMarketFormEntry extends BxBaseModTextFormEntry
             $aResult['bx_if:set_thumb']['condition'] = $this->_bPhotoGhostCheckboxes && $aResult['bx_if:set_thumb']['condition'];
 
         return array_merge($aResult, [
-            'cover_id' => isset($aContentInfo[$CNF['FIELD_COVER']]) ? $aContentInfo[$CNF['FIELD_COVER']] : 0,
+            'thumb_id' => $aContentInfo[$CNF['FIELD_THUMB']] ?? 0,
+            'cover_id' => $aContentInfo[$CNF['FIELD_COVER']] ?? 0,
             'bx_if:set_cover' => [
                 'condition' => $this->_bPhotoGhostCheckboxes && $this->_oModule->checkAllowedSetCover() === CHECK_ACTION_RESULT_ALLOWED,
                 'content' => [

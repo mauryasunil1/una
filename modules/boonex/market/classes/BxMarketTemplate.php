@@ -64,7 +64,7 @@ class BxMarketTemplate extends BxBaseModTextTemplate
         ];
 
         //--- Process Cover
-        $bIsAllowEditCover = $oModule->checkAllowedEdit($aData) === CHECK_ACTION_RESULT_ALLOWED;
+        $bIsAllowEditCover = $oModule->checkAllowedEdit($aData) === CHECK_ACTION_RESULT_ALLOWED && $oModule->checkAllowedSetCover() === CHECK_ACTION_RESULT_ALLOWED;
         $bShowImage = $aVars['bx_if:show_image']['condition'];
 
         $aVars['bx_if:show_entry_cover'] = [

@@ -32,7 +32,7 @@ class BxBaseModTextFormEntry extends BxBaseModGeneralFormEntry
                     'Simple' => _t($CNF['T']['form_field_covers_uploader_simple']), 
                     'HTML5' => _t($CNF['T']['form_field_covers_uploader_html5'])
                 );
-                $this->aInputs[$CNF[$sKf]]['images_transcoder'] = $CNF['OBJECT_IMAGES_TRANSCODER_PREVIEW'];
+                $this->aInputs[$CNF[$sKf]]['images_transcoder'] = $CNF['OBJECT_IMAGES_TRANSCODER_PREVIEW'] ?? '';
                 $this->aInputs[$CNF[$sKf]]['storage_private'] = 0;
                 $this->aInputs[$CNF[$sKf]]['multiple'] = false;
                 $this->aInputs[$CNF[$sKf]]['content_id'] = 0;
@@ -45,7 +45,7 @@ class BxBaseModTextFormEntry extends BxBaseModGeneralFormEntry
         if(($sKf = 'FIELD_PHOTO') && ($sKs = 'OBJECT_STORAGE_PHOTOS') && isset($CNF[$sKf], $CNF[$sKs]) && isset($this->aInputs[$CNF[$sKf]])) {
             $this->aInputs[$CNF[$sKf]]['storage_object'] = $CNF[$sKs];
             $this->aInputs[$CNF[$sKf]]['uploaders'] = !empty($this->aInputs[$CNF[$sKf]]['value']) ? unserialize($this->aInputs[$CNF[$sKf]]['value']) : $CNF['OBJECT_UPLOADERS'];
-            $this->aInputs[$CNF[$sKf]]['images_transcoder'] = $CNF['OBJECT_IMAGES_TRANSCODER_PREVIEW_PHOTOS'];
+            $this->aInputs[$CNF[$sKf]]['images_transcoder'] = $CNF['OBJECT_IMAGES_TRANSCODER_PREVIEW_PHOTOS'] ?? '';
             $this->aInputs[$CNF[$sKf]]['storage_private'] = 0;
             $this->aInputs[$CNF[$sKf]]['multiple'] = true;
             $this->aInputs[$CNF[$sKf]]['content_id'] = 0;
@@ -56,7 +56,7 @@ class BxBaseModTextFormEntry extends BxBaseModGeneralFormEntry
         if(($sKf = 'FIELD_SOUND') && ($sKs = 'OBJECT_STORAGE_SOUNDS')  && isset($CNF[$sKf], $CNF[$sKs]) && isset($this->aInputs[$CNF[$sKf]])) {
             $this->aInputs[$CNF[$sKf]]['storage_object'] = $CNF[$sKs];
             $this->aInputs[$CNF[$sKf]]['uploaders'] = !empty($this->aInputs[$CNF[$sKf]]['value']) ? unserialize($this->aInputs[$CNF[$sKf]]['value']) : $CNF['OBJECT_UPLOADERS'];
-            $this->aInputs[$CNF[$sKf]]['images_transcoder'] = $CNF['OBJECT_IMAGES_TRANSCODER_PREVIEW_FILES'];
+            $this->aInputs[$CNF[$sKf]]['images_transcoder'] = $CNF['OBJECT_IMAGES_TRANSCODER_PREVIEW_FILES'] ?? '';
             $this->aInputs[$CNF[$sKf]]['storage_private'] = 0;
             $this->aInputs[$CNF[$sKf]]['multiple'] = true;
             $this->aInputs[$CNF[$sKf]]['content_id'] = 0;
@@ -67,7 +67,7 @@ class BxBaseModTextFormEntry extends BxBaseModGeneralFormEntry
         if(($sKf = 'FIELD_VIDEO') && ($sKs = 'OBJECT_STORAGE_VIDEOS') && isset($CNF[$sKf], $CNF[$sKs]) && isset($this->aInputs[$CNF[$sKf]])) {
             $this->aInputs[$CNF[$sKf]]['storage_object'] = $CNF[$sKs];
             $this->aInputs[$CNF[$sKf]]['uploaders'] = !empty($this->aInputs[$CNF[$sKf]]['value']) ? unserialize($this->aInputs[$CNF[$sKf]]['value']) : $CNF['OBJECT_UPLOADERS'];
-            $this->aInputs[$CNF[$sKf]]['images_transcoder'] = $CNF['OBJECT_VIDEOS_TRANSCODERS']['poster_preview'];
+            $this->aInputs[$CNF[$sKf]]['images_transcoder'] = $CNF['OBJECT_VIDEOS_TRANSCODERS']['poster_preview'] ?? '';
             $this->aInputs[$CNF[$sKf]]['storage_private'] = 0;
             $this->aInputs[$CNF[$sKf]]['multiple'] = true;
             $this->aInputs[$CNF[$sKf]]['content_id'] = 0;
@@ -78,7 +78,7 @@ class BxBaseModTextFormEntry extends BxBaseModGeneralFormEntry
         if(($sKf = 'FIELD_FILE') && ($sKs = 'OBJECT_STORAGE_FILES') && isset($CNF[$sKf], $CNF[$sKs]) && isset($this->aInputs[$CNF[$sKf]])) {
             $this->aInputs[$CNF[$sKf]]['storage_object'] = $CNF[$sKs];
             $this->aInputs[$CNF[$sKf]]['uploaders'] = !empty($this->aInputs[$CNF[$sKf]]['value']) ? unserialize($this->aInputs[$CNF[$sKf]]['value']) : $CNF['OBJECT_UPLOADERS'];
-            $this->aInputs[$CNF[$sKf]]['images_transcoder'] = $CNF['OBJECT_IMAGES_TRANSCODER_PREVIEW_FILES'];
+            $this->aInputs[$CNF[$sKf]]['images_transcoder'] = $CNF['OBJECT_IMAGES_TRANSCODER_PREVIEW_FILES'] ?? '';
             $this->aInputs[$CNF[$sKf]]['storage_private'] = 0;
             $this->aInputs[$CNF[$sKf]]['multiple'] = true;
             $this->aInputs[$CNF[$sKf]]['content_id'] = 0;
