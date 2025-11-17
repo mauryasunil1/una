@@ -17,23 +17,7 @@ function BxMarketForm(oOptions) {
     this._iAnimationSpeed = oOptions.iAnimationSpeed == undefined ? 'fast' : oOptions.iAnimationSpeed;
     this._aHtmlIds = oOptions.aHtmlIds == undefined ? {} : oOptions.aHtmlIds;
     this._oRequestParams = oOptions.oRequestParams == undefined ? {} : oOptions.oRequestParams;
-    
-    var $this = this;
-    jQuery(document).ready(function() {
-        $this.init();
-    });
 }
-
-BxMarketForm.prototype.init = function() {
-    jQuery("textarea[name='cover_raw']").each(function() {
-        CodeMirror.fromTextArea(this, {
-            lineNumbers: true,
-            mode: "htmlmixed",
-            htmlMode: true,
-            matchBrackets: true
-        });
-    });
-};
 
 BxMarketForm.prototype.initGhost = function(oGhost, iFileId, iThumbnailId, iCoverId) {
     oGhost.find('.bx-base-general-use-as-thumb input[value="' + iThumbnailId + '"]').prop('checked', true);

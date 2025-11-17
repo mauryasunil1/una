@@ -108,9 +108,8 @@ class BxMarketFormEntry extends BxBaseModTextFormEntry
 
     function getCode($bDynamicMode = false)
     {
-        $sCss = $this->_oModule->_oTemplate->addCss([BX_DIRECTORY_PATH_PLUGINS_PUBLIC . 'codemirror/|codemirror.css'], $bDynamicMode);
+        $sCss = '';
     	$sJs = $this->_oModule->_oTemplate->addJs([
-            'codemirror/codemirror.min.js',
             'form.js'
         ], $bDynamicMode);
 
