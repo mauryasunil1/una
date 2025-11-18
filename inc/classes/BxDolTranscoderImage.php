@@ -111,7 +111,7 @@ class BxDolTranscoderImage extends BxDolTranscoder implements iBxDolFactoryObjec
 
     public function isMimeTypeSvg($sMimeType)
     {
-        return strncmp('image/svg', $sMimeType, 9) === 0;
+        return $this->_oStorage->isMimeTypeSvg($sMimeType);
     }
 
     /**

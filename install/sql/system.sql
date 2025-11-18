@@ -445,7 +445,7 @@ INSERT INTO `sys_options`(`category_id`, `name`, `caption`, `value`, `type`, `ex
 (@iCategoryId, 'sys_css_tailwind_default', '_adm_stg_cpt_option_sys_css_tailwind_default', 'tailwind.min.css', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:27:"get_options_taiwind_default";s:5:"class";s:13:"TemplServices";}', '', '', '', 181),
 (@iCategoryId, 'sys_iconset_default', '_adm_stg_cpt_option_sys_iconset_default', 'sys_fontawesome', 'select', 'a:3:{s:6:"module";s:6:"system";s:6:"method";s:27:"get_options_iconset_default";s:5:"class";s:13:"TemplServices";}', '', '', '', 185),
 
-(@iCategoryId, 'sys_files_ext_images', '_adm_stg_cpt_option_sys_files_ext_images', 'jpg,jpeg,jpe,gif,png,webp', 'digit', '', '', '', '', 200),
+(@iCategoryId, 'sys_files_ext_images', '_adm_stg_cpt_option_sys_files_ext_images', 'jpg,jpeg,jpe,gif,png,webp,svg', 'digit', '', '', '', '', 200),
 (@iCategoryId, 'sys_files_ext_video', '_adm_stg_cpt_option_sys_files_ext_video', 'avi,flv,mpg,mpeg,wmv,mp4,m4v,mov,qt,divx,xvid,3gp,3g2,webm,mkv,ogv,ogg,rm,rmvb,asf,drc,ts', 'digit', '', '', '', '', 210),
 (@iCategoryId, 'sys_files_ext_audio', '_adm_stg_cpt_option_sys_files_ext_audio', 'mp3,m4a,m4b,wma,wav,3gp', 'digit', '', '', '', '', 220),
 (@iCategoryId, 'sys_files_ext_imagevideo', '_adm_stg_cpt_option_sys_files_ext_imagevideo', 'jpg,jpeg,jpe,gif,png,svg,webp,avi,flv,mpg,mpeg,wmv,mp4,m4v,mov,qt,divx,xvid,3gp,3g2,webm,mkv,ogv,ogg,rm,rmvb,asf,drc,ts', 'digit', '', '', '', '', 230),
@@ -2657,11 +2657,11 @@ CREATE TABLE IF NOT EXISTS `sys_objects_storage` (
 );
 
 INSERT INTO `sys_objects_storage` (`object`, `engine`, `params`, `token_life`, `cache_control`, `levels`, `table_files`, `ext_mode`, `ext_allow`, `ext_deny`, `quota_size`, `current_size`, `quota_number`, `current_number`, `max_file_size`, `ts`) VALUES
-('sys_images', 'Local', '', 360, 2592000, 0, 'sys_images', 'allow-deny', '{image},svg', '', 0, 0, 0, 0, 0, 0),
-('sys_images_custom', 'Local', '', 360, 2592000, 0, 'sys_images_custom', 'allow-deny', '{image},svg', '', 0, 0, 0, 0, 0, 0),
-('sys_images_resized', 'Local', '', 360, 2592000, 0, 'sys_images_resized', 'allow-deny', '{image},svg', '', 0, 0, 0, 0, 0, 0),
-('sys_cmts_images', 'Local', '', 360, 2592000, 3, 'sys_cmts_images', 'allow-deny', '{image},svg', '', 0, 0, 0, 0, 0, 0),
-('sys_cmts_images_preview', 'Local', '', 360, 2592000, 3, 'sys_cmts_images_preview', 'allow-deny', '{image},svg', '', 0, 0, 0, 0, 0, 0),
+('sys_images', 'Local', '', 360, 2592000, 0, 'sys_images', 'allow-deny', '{image}', '', 0, 0, 0, 0, 0, 0),
+('sys_images_custom', 'Local', '', 360, 2592000, 0, 'sys_images_custom', 'allow-deny', '{image}', '', 0, 0, 0, 0, 0, 0),
+('sys_images_resized', 'Local', '', 360, 2592000, 0, 'sys_images_resized', 'allow-deny', '{image}', '', 0, 0, 0, 0, 0, 0),
+('sys_cmts_images', 'Local', '', 360, 2592000, 3, 'sys_cmts_images', 'allow-deny', '{image}', '', 0, 0, 0, 0, 0, 0),
+('sys_cmts_images_preview', 'Local', '', 360, 2592000, 3, 'sys_cmts_images_preview', 'allow-deny', '{image}', '', 0, 0, 0, 0, 0, 0),
 ('sys_transcoder_queue_files', 'Local', '', 3600, 2592000, 0, 'sys_transcoder_queue_files', 'allow-deny', 'avi,flv,mpg,mpeg,wmv,mp4,m4v,mov,divx,xvid,3gp,webm,jpg', '', 0, 0, 0, 0, 0, 0),
 ('sys_files', 'Local', '', 360, 2592000, 3, 'sys_files', 'deny-allow', '', '{dangerous}', 0, 0, 0, 0, 0, 0),
 ('sys_images_editor', 'Local', '', 360, 2592000, 3, 'sys_images_editor', 'allow-deny', '{image}', '', 0, 0, 0, 0, 0, 0),

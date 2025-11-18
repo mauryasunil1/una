@@ -187,6 +187,7 @@ define('BX_DOL_STORAGE_QUEUED_DELETIONS_PER_RUN', 200); ///< max number of file 
  * you control this period using 'token_life' field in 'sys_objects_storage' table.
  *
  */
+
 abstract class BxDolStorage extends BxDolFactory implements iBxDolFactoryObject
 {
     protected $_aObject; ///< object properties
@@ -195,6 +196,7 @@ abstract class BxDolStorage extends BxDolFactory implements iBxDolFactoryObject
     protected $_iErrorCode; ///< last error code
     protected $_oDb; ///< database relates function are in this object
     protected $_aMimeTypesViewable = ['audio/', 'image/', 'video/']; ///< file types (by mime type) to allow view file in browser instead of downloading
+    protected $_bSanitizeSvg = true; ///< enable/disable SVG sanitization
     
     /**
      * constructor
@@ -461,6 +463,26 @@ abstract class BxDolStorage extends BxDolFactory implements iBxDolFactoryObject
         if (!$oHelper->save($sTmpFile)) {
             $this->setErrorCode(BX_DOL_STORAGE_INVALID_FILE);
             return false;
+        }
+
+        // perform SVG sanitization
+
+        if($this->isMimeTypeSvg($sMimeType) && $this->isSanitizeSvg()) {
+            $oSanitizer = new enshrined\svgSanitize\Sanitizer();
+
+            $sSvgOrig = @file_get_contents($sTmpFile);
+            if($sSvgOrig === false) {
+                $this->setErrorCode(BX_DOL_STORAGE_INVALID_FILE);
+                return false;
+            }
+
+            $sSvgClean = $oSanitizer->sanitize($sSvgOrig);
+            if($sSvgClean === false) {
+                $this->setErrorCode(BX_DOL_STORAGE_INVALID_FILE);
+                return false;
+            }
+
+            file_put_contents($sTmpFile, $sSvgClean);
         }
 
         // process additional custom fields, like video duration and video dimension
@@ -1103,7 +1125,22 @@ abstract class BxDolStorage extends BxDolFactory implements iBxDolFactoryObject
             $sIcon = BX_DOL_STORAGE_DEFAULT_ICON_FONT;
         return $sIcon;
     }
-    
+
+    public function setSanitizeSvg($bSanitize)
+    {
+        $this->_bSanitizeSvg = $bSanitize;
+    }
+
+    public function isSanitizeSvg()
+    {
+        return $this->_bSanitizeSvg && !isAdmin();
+    }
+
+    public function isMimeTypeSvg($sMimeType)
+    {
+        return strncmp('image/svg', $sMimeType, 9) === 0;
+    }
+
     // ------------ internal functions - events
 
     protected function onBeforeFileAdd ($aFileInfo)
