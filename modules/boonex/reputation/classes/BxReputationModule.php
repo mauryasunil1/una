@@ -230,17 +230,28 @@ class BxReputationModule extends BxBaseModNotificationsModule
 
     private function _getTabDataLeaderboardWeek($iProfileId, $iContextId)
     {
-        return $this->_oTemplate->getBlockLeaderboard($iContextId, 7);
+        return $this->_oTemplate->getBlockLeaderboard([
+            'profile_id' => $iProfileId,
+            'context_id' => $iContextId,
+            'days' => 7
+        ]);
     }
 
     private function _getTabDataLeaderboardMonth($iProfileId, $iContextId)
     {
-        return $this->_oTemplate->getBlockLeaderboard($iContextId, 30);
+        return $this->_oTemplate->getBlockLeaderboard([
+            'profile_id' => $iProfileId,
+            'context_id' => $iContextId,
+            'days' => 30
+        ]);
     }
 
     private function _getTabDataLeaderboardAllTime($iProfileId, $iContextId)
     {
-        return $this->_oTemplate->getBlockLeaderboard($iContextId);
+        return $this->_oTemplate->getBlockLeaderboard([
+            'profile_id' => $iProfileId,
+            'context_id' => $iContextId
+        ]);
     }
 
     private function _getTabDataSummary($iProfileId, $iContextId)
