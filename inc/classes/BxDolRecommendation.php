@@ -66,7 +66,7 @@ class BxDolRecommendation extends BxDolFactory implements iBxDolFactoryObject
         return ($GLOBALS['bxDolClasses']['BxDolRecommendation!' . $sObject] = $o);
     }
 
-    public static function updateData($iProfileId = 0)
+    public static function updateData($iProfileId = 0, $bImmediate = false)
     {
         if(!$iProfileId) {
             if(isLogged())
@@ -75,13 +75,25 @@ class BxDolRecommendation extends BxDolFactory implements iBxDolFactoryObject
                 return false;
         }
 
-        $oCronQuery = BxDolCronQuery::getInstance();
+        $mixedResult = true;
+        if($bImmediate) {
+            $mixedResult = [];
 
-        $sName = 'recommendations_for_' . $iProfileId;
-        if(!$oCronQuery->isTransientJobService($sName))
-            $oCronQuery->addTransientJobService($sName, ['system', 'update_data', [$iProfileId], 'TemplServiceRecommendations']);
-        
-        return true;
+            $aObjects = BxDolRecommendationQuery::getObjects();
+            foreach($aObjects as $aObject)
+                if(($oRecommendation = BxDolRecommendation::getObjectInstance($aObject['name'])) !== false)
+                    $mixedResult[] = [
+                        'object' => $aObject['name'],
+                        'items' => $oRecommendation->processCriteria($iProfileId)
+                    ];
+        }
+        else {
+            $sName = 'recommendations_for_' . $iProfileId;
+            if(($oCronQuery = BxDolCronQuery::getInstance()) && !$oCronQuery->isTransientJobService($sName))
+                $oCronQuery->addTransientJobService($sName, ['system', 'update_data', [$iProfileId], 'TemplServiceRecommendations']);
+        }
+
+        return $mixedResult;
     }
 
     public static function getContextName($sObject)

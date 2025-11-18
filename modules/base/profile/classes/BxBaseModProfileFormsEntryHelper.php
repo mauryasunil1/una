@@ -236,7 +236,7 @@ class BxBaseModProfileFormsEntryHelper extends BxBaseModGeneralFormsEntryHelper
             $oAccount->updateProfileContext($iProfileId);
 
             //update recomedations
-            BxDolRecommendation::updateData($iProfileId);
+            BxDolRecommendation::updateData($iProfileId, true);
 
             // update content filters
             BxDolContentFilter::getInstance()->updateValuesByProfile($oProfile->getInfo());
