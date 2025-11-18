@@ -96,12 +96,11 @@ class BxBaseSearchExtended extends BxDolSearchExtended
         }
 
         if(!$oForm->isSubmittedAndValid() && !$this->_bFilterMode  && (!$this->_bIsApi || !isset($aParams['search_params'])))
-            return '';
+            return $this->_bIsApi ? [$this->getResultsAPI($mixedResults, $iStart, $iPerPage)] : '';
 
         $oContentInfo = BxDolContentInfo::getObjectInstance($this->_aObject['object_content_info']);
-        
         if(!$oContentInfo)
-            return '';
+            return $this->_bIsApi ? [$this->getResultsAPI($mixedResults, $iStart, $iPerPage)] : '';
 
         $aParamsSearch = [];
         if(empty($aParams['search_params'])) {
@@ -142,7 +141,7 @@ class BxBaseSearchExtended extends BxDolSearchExtended
             $aParamsSearch = $aParams['search_params'];
 
         if((empty($aParamsSearch) || !is_array($aParamsSearch)) && !$this->_bFilterMode)
-            return $this->_bIsApi ? bx_api_get_msg(_t('Not Found'), ['ext' => ['msg_type' => 'result']]) : '';
+            return $this->_bIsApi ? [$this->getResultsAPI($mixedResults, $iStart, $iPerPage, $aParamsSearch)] : '';
 
         if (!$iPerPage) {
             bx_import('BxDolSearch');
@@ -215,12 +214,8 @@ class BxBaseSearchExtended extends BxDolSearchExtended
                 $mixedResults .= $mixedResult;
         }
 
-        if($this->_bIsApi) {
-            if(isset($aParams['search_params']))
-                return [$this->getResultsAPI($mixedResults, $iPerPage, $iStart, $aParamsSearch)];
-            else
-                return [$this->getResultsAPI($mixedResults, $iPerPage, $iStart, $aParamsSearch)];
-        }
+        if($this->_bIsApi)
+            return [$this->getResultsAPI($mixedResults, $iStart, $iPerPage, $aParamsSearch)];
 
         return $this->_oTemplate->parseHtmlByName('search_extended_results.html', [
             'class' => str_replace('_', '-', $this->_sObject),
@@ -233,7 +228,7 @@ class BxBaseSearchExtended extends BxDolSearchExtended
         ]);
     }
 
-    public function getResultsAPI($aData, $iPerPage, $iStart, $aParamsSearch = '')
+    public function getResultsAPI($aData, $iStart, $iPerPage, $aParamsSearch = '')
     {
         return bx_api_get_block('browse', [
             'nocache' => true,
