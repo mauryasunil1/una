@@ -56,13 +56,11 @@ class BxBaseModProfilePageEntry extends BxBaseModGeneralPageEntry
                 $a[$CNF['URI_VIEW_FRIENDS']] = ['profile_id', 'id'];
             if (isset($CNF['URI_VIEW_RELATIONS']))
                 $a[$CNF['URI_VIEW_RELATIONS']] = ['profile_id', 'id'];
-            
+
             foreach ($a as $sUri => $r) {
-                if ($this->_aObject['uri'] == $sUri) {
-                    $oProfile = BxDolProfile::getInstance();
-                    $sUrl = bx_absolute_url(BxDolPermalinks::getInstance()->permalink('page.php?i=' . $sUri . '&' . $r[0] . '=' . $oProfile->{$r[1]}()));
-                    header("Location: " . $sUrl);
-                    exit;
+                if ($this->_aObject['uri'] == $sUri && ($oProfile = BxDolProfile::getInstance()) !== false) {
+                    $this->setForceRedirect(bx_absolute_url(BxDolPermalinks::getInstance()->permalink('page.php?i=' . $sUri . '&' . $r[0] . '=' . $oProfile->{$r[1]}())));
+                    return;
                 }
             }
         }

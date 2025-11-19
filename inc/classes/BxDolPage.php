@@ -116,7 +116,9 @@ class BxDolPage extends BxDolFactory implements iBxDolFactoryObject, iBxDolRepla
     protected $_sObject;
     protected $_aObject;
     protected $_oQuery;
-    protected $_aMarkers = array ();
+    protected $_aMarkers = [];
+
+    protected $_sForceRedirect = false;
 
     /**
      * Constructor
@@ -156,21 +158,35 @@ class BxDolPage extends BxDolFactory implements iBxDolFactoryObject, iBxDolRepla
      */
     static public function getObjectInstanceByURI($sURI = '', $oTemplate = false, $bRedirectCheck = false)
     {
-    	if(empty($sURI) && bx_get('i') !== false)
-    		$sURI = bx_process_input(bx_get('i'));
+        if(empty($sURI) && bx_get('i') !== false)
+            $sURI = bx_process_input(bx_get('i'));
 
-    	if(empty($sURI))
-			return false;
+        if(empty($sURI))
+            return false;
 
         $sObject = BxDolPageQuery::getPageObjectNameByURI($sURI);
-        if ($bRedirectCheck && !$sObject && '/' == substr($sURI, -1)) {
-            header("HTTP/1.1 301 Moved Permanently");
+        if($bRedirectCheck && !$sObject && '/' == substr($sURI, -1)) {
             unset($_GET['i']);
-            header ('Location:' . bx_append_url_params(bx_absolute_url(BxDolPermalinks::getInstance()->permalink('page.php?i=' . trim($sURI, '/'))), $_GET));
+
+            header("HTTP/1.1 301 Moved Permanently");
+            header('Location:' . bx_append_url_params(bx_absolute_url(BxDolPermalinks::getInstance()->permalink('page.php?i=' . trim($sURI, '/'))), $_GET));
             exit;
         }
 
-        return $sObject ? self::getObjectInstance($sObject, $oTemplate) : false;
+        if(!$sObject)
+            return false;
+
+        $oObject = self::getObjectInstance($sObject, $oTemplate);
+        if(($sRedirectUrl = $oObject->getForceRedirect()) !== false) {
+            if(!bx_is_api()) {
+                header("Location: " . $sRedirectUrl);
+                exit;
+            }
+            else 
+                $oObject = bx_api_get_relative_url($sRedirectUrl);
+        }
+
+        return $oObject;
     }
 
     /**
@@ -794,7 +810,7 @@ class BxDolPage extends BxDolFactory implements iBxDolFactoryObject, iBxDolRepla
     	return $this->_aObject;
     }
     
-    public function getInjections()
+    public function getInjections ()
     {
         $aResult = array();
 
@@ -803,6 +819,16 @@ class BxDolPage extends BxDolFactory implements iBxDolFactoryObject, iBxDolRepla
                 $aResult[substr($sKey, 4)] = $sValue;
 
         return $aResult;
+    }
+
+    public function getForceRedirect ()
+    {
+        return $this->_sForceRedirect ?: false;
+    }
+
+    public function setForceRedirect ($sUrl)
+    {
+        $this->_sForceRedirect = $sUrl;
     }
 
     public function setTitle ($sTitle)
