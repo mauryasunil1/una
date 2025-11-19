@@ -679,8 +679,6 @@ class BxTimelineDb extends BxBaseModNotificationsDb
             'params' => &$aParams,
         ]);
 
-        $bValidate = !empty($aParams['validate']) && is_array($aParams['validate']);
-
         $sTable = isset($aParams['from_cache']) && $aParams['from_cache'] === true ? $this->_sTableSlice : $this->_sTable;
         $sTableAlias = $this->getTableAlias();
 
@@ -772,16 +770,10 @@ class BxTimelineDb extends BxBaseModNotificationsDb
         if($bCount)
             return array_sum($aSqlParts);
 
-        $sSqlMaskUnion = '(' . implode(') UNION (', $aSqlParts) . ')';
-        if($bValidate)
-            $sSqlMaskUnion = 'SELECT MIN(`tu`.`id`) AS `min_id`, MAX(`tu`.`id`) AS `max_id` FROM (' . $sSqlMaskUnion . ') AS `tu` GROUP BY `tu`.`source`';
-        else
-            $sSqlMaskUnion = 'SELECT *, GROUP_CONCAT(`owner_id`) AS `owner_id_grouped` FROM (' . $sSqlMaskUnion . ') AS `tu` GROUP BY `tu`.`source`';
-        $sSqlMaskUnion .= ' {order} {limit}';
-
+        $sSqlMaskUnion = 'SELECT *, GROUP_CONCAT(`owner_id`) AS `owner_id_grouped` FROM ((' . implode(') UNION (', $aSqlParts) . ')) AS `tu` GROUP BY `tu`.`source` {order} {limit}';
         $sSql = bx_replace_markers($sSqlMaskUnion, [
-            'order' => str_replace("`{$sTableAlias}`.", $bValidate ? '`tu`.' : '', $sOrderClause),
-            'limit' => str_replace("`{$sTableAlias}`.", $bValidate ? '`tu`.' : '', $sLimitClause),
+            'order' => str_replace("`{$sTableAlias}`.", '', $sOrderClause),
+            'limit' => str_replace("`{$sTableAlias}`.", '', $sLimitClause),
         ]);
 
         //echoDbg($sSql); exit;

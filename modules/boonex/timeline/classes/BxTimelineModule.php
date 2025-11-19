@@ -5841,56 +5841,7 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
         $aParams = $this->_prepareParams($aBrowseParams);
         $this->_iOwnerId = $aParams['owner_id'];
 
-        if(isset($aParams['validate']) && is_array($aParams['validate'])) {
-            $iSlice = count($aParams['validate']);
-
-            $aEventsIds = $this->_oDb->getEvents(array_merge($aParams, [
-                'start' => 0,
-                'per_page' => 2 * $iSlice,
-                'from_cache' => $this->_oConfig->isCacheTable()
-            ]));
-
-            $iIds = 0;
-            $aIds = [];
-            $sModule = $this->_oConfig->getName();
-            foreach($aEventsIds as $aEventId) {
-                $aEvent = [];
-                if((int)$aEventId['min_id'] != (int)$aEventId['max_id']) {
-                    $aEs = [
-                        $this->_oDb->getEvents(['browse' => 'id', 'value' => (int)$aEventId['min_id']]),
-                        $this->_oDb->getEvents(['browse' => 'id', 'value' => (int)$aEventId['max_id']])
-                    ];
-
-                    foreach($aEs as $aE) {
-                        $bEs = (int)$aE['system'] != 0;
-                        if(($bEs ? $aE['type'] : $sModule) . '_' . abs($aE['object_owner_id']) . '_' . ($bEs ? $aE['object_id'] : $aE['id']) != $aE['source']) 
-                            continue;
-
-                        $aEvent = $aE;
-                        break;
-                    }
-                }
-                else 
-                    $aEvent = $this->_oDb->getEvents(['browse' => 'id', 'value' => (int)$aEventId['min_id']]);
-
-                if(empty($aEvent) || !is_array($aEvent))
-                    continue;
-
-                $sEvent = $this->_oTemplate->getPost($aEvent, $aParams);
-                if(empty($sEvent))
-                    continue;
-
-                $aIds[] = $aEvent['id'];
-                if(++$iIds == $iSlice)
-                    break;
-            }
-
-            sort($aIds);
-            sort($aParams['validate']);
-            $aResult = $aIds == $aParams['validate'] ? 'valid' : 'invalid';
-        }
-        else 
-            $aResult = $this->_oTemplate->getViewBlock($aParams);
+        $aResult = $this->_oTemplate->getViewBlock($aParams);
 
         return $this->_bIsApi ? [bx_api_get_block('browse', [
             'unit' => 'feed',  
@@ -6343,9 +6294,6 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
         if(empty($aParams['viewer_id']) || (int)$aParams['viewer_id'] != $iViewerId)
             $aParams['viewer_id'] = $iViewerId;
 
-        if(isset($aParams['validate']) && !is_array($aParams['validate']))
-            $aParams['validate'] = !empty($aParams['validate']) ? explode(',', $aParams['validate']) : [];
-
         if(empty($aParams['status']))
             $aParams['status'] = BX_TIMELINE_STATUS_ACTIVE;
 
@@ -6360,7 +6308,7 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
 
     protected function _prepareParamsGet($mParams = false)
     {
-        $aKeys = ['name', 'view', 'type', 'owner_id', 'start', 'per_page', 'per_page_default', 'timeline', 'filter', 'modules', 'media', 'context', 'blink', 'viewer_id', 'validate'];
+        $aKeys = ['name', 'view', 'type', 'owner_id', 'start', 'per_page', 'per_page_default', 'timeline', 'filter', 'modules', 'media', 'context', 'blink', 'viewer_id'];
 
         $aParams = [];
         if(!empty($mParams) && is_array($mParams))
@@ -6394,17 +6342,12 @@ class BxTimelineModule extends BxBaseModNotificationsModule implements iBxDolCon
         if(!$aParams['viewer_id'] || $aParams['viewer_id'] != $iViewerId)
             $aParams['viewer_id'] = $iViewerId;
 
-        if(isset($aParams['validate']) && !is_array($aParams['validate']))
-            $aParams['validate'] = !empty($aParams['validate']) ? explode(',', $aParams['validate']) : [];
-
-        $aParams = array_merge($aParams, [
+        return array_merge($aParams, [
             'browse' => 'list',
             'status' => BX_TIMELINE_STATUS_ACTIVE,
             'moderator' => $this->isModeratorForProfile($aParams['viewer_id']),
             'dynamic_mode' => true,
         ]);
-
-        return $aParams;
     }
 
     protected function _prepareTextForSave($s)
