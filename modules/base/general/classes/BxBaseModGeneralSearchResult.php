@@ -24,8 +24,6 @@ class BxBaseModGeneralSearchResult extends BxTemplSearchResult
         $this->_sMode = $sMode;
         $this->_aParams = $aParams;
 
-        $this->_bValidate = isset($this->_aParams['validate']) && is_array($this->_aParams['validate']);
-
         parent::__construct();
     }
 
