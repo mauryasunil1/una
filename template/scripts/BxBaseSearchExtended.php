@@ -173,8 +173,8 @@ class BxBaseSearchExtended extends BxDolSearchExtended
     	if($aResults === false)
     	    $aResults = $oContentInfo->getSearchResultExtended($aParamsSearch, $iStart, $iPerPage + 1, $this->_bFilterMode);
 
-    	if((empty($aResults) || !is_array($aResults)) && !$this->_bIsApi)
-            return _t('Nothing found');
+        if(empty($aResults) || !is_array($aResults))
+            return $this->_bIsApi ? [$this->getResultsAPI($mixedResults, $iStart, $iPerPage, $aParamsSearch)] : _t('Nothing found');
 
         if(!empty($aParams['cond']) && is_array($aParams['cond']))
             $aParams['cond'] = self::encodeConditions($aParams['cond']);
