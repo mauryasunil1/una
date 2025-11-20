@@ -94,7 +94,7 @@ INSERT INTO `sys_options_categories` (`type_id`, `name`, `caption`, `hidden`, `o
 SET @iCategId = LAST_INSERT_ID();
 
 INSERT INTO `sys_options` (`name`, `value`, `category_id`, `caption`, `type`, `check`, `check_params`, `check_error`, `extra`, `order`) VALUES
-('bx_notifications_events_per_page', '12', @iCategId, '_bx_ntfs_option_events_per_page', 'digit', '', '', '', '', 1),
+('bx_notifications_events_per_page', '24', @iCategId, '_bx_ntfs_option_events_per_page', 'digit', '', '', '', '', 1),
 ('bx_notifications_events_per_preview', '5', @iCategId, '_bx_ntfs_option_events_per_preview', 'digit', '', '', '', '', 5),
 ('bx_notifications_enable_group_settings', 'on', @iCategId, '_bx_ntfs_option_enable_group_settings', 'checkbox', '', '', '', '', 10), 
 ('bx_notifications_enable_group_events', 'on', @iCategId, '_bx_ntfs_option_enable_group_events', 'checkbox', '', '', '', '', 11), 
