@@ -21,6 +21,7 @@
     <string name="_bx_groups_form_profile_display_add"><![CDATA[Add Group]]></string>
     <string name="_bx_groups_form_profile_display_edit"><![CDATA[Edit Group]]></string>
     <string name="_bx_groups_form_profile_display_edit_cover"><![CDATA[Edit Cover]]></string>
+    <string name="_bx_groups_form_profile_display_edit_settings"><![CDATA[Edit Settings]]></string>
     <string name="_bx_groups_form_profile_display_delete"><![CDATA[Delete Group]]></string>
     <string name="_bx_groups_form_profile_display_view"><![CDATA[View Group]]></string>
     <string name="_bx_groups_form_profile_display_view_full"><![CDATA[Full View Group]]></string>
@@ -50,6 +51,8 @@
     <string name="_bx_groups_form_profile_input_picture_err"><![CDATA[Group picture is mandatory.]]></string>
     <string name="_bx_groups_form_profile_input_sys_cover"><![CDATA[Cover Picture]]></string>
     <string name="_bx_groups_form_profile_input_cover"><![CDATA[Upload New Cover Picture]]></string>
+    <string name="_bx_groups_form_profile_input_sys_stg_tabs"><![CDATA[Hide tabs]]></string>
+    <string name="_bx_groups_form_profile_input_stg_tabs"><![CDATA[Hide tabs]]></string>
     <string name="_bx_groups_form_profile_input_sys_delete_confirm"><![CDATA[Delete confirmation]]></string>
     <string name="_bx_groups_form_profile_input_delete_confirm"><![CDATA[I am sure I want to delete this group]]></string>
     <string name="_bx_groups_form_profile_input_delete_confirm_info"><![CDATA[This action can not be undone.]]></string>
@@ -105,6 +108,8 @@
     <string name="_bx_groups_page_title_edit_profile"><![CDATA[Edit Group]]></string>
     <string name="_bx_groups_page_title_sys_edit_profile_cover"><![CDATA[Edit Group Cover]]></string>
     <string name="_bx_groups_page_title_edit_profile_cover"><![CDATA[Edit Cover]]></string>
+    <string name="_bx_groups_page_title_sys_edit_profile_settings"><![CDATA[Edit Group Settings]]></string>
+    <string name="_bx_groups_page_title_edit_profile_settings"><![CDATA[Edit Settings]]></string>
     <string name="_bx_groups_page_title_manage_profile"><![CDATA[Manage]]></string>
     <string name="_bx_groups_page_title_sys_manage_profile"><![CDATA[Manage]]></string>
     <string name="_bx_groups_page_title_sys_delete_profile"><![CDATA[Delete Group]]></string>
@@ -171,6 +176,7 @@
     <string name="_bx_groups_page_block_title_create_profile"><![CDATA[Create Group]]></string>
     <string name="_bx_groups_page_block_title_edit_profile"><![CDATA[Edit Group]]></string>
     <string name="_bx_groups_page_block_title_edit_profile_cover"><![CDATA[Edit Cover]]></string>
+    <string name="_bx_groups_page_block_title_edit_profile_settings"><![CDATA[Edit Settings]]></string>
     <string name="_bx_groups_page_block_title_delete_profile"><![CDATA[Delete Group]]></string>
     <string name="_bx_groups_page_block_title_join_profile"><![CDATA[Join Group]]></string>
     <string name="_bx_groups_page_block_title_profile_info_link"><![CDATA[About <a href="{profile_link}">{display_name}</a>]]></string>
@@ -256,6 +262,8 @@
     <string name="_bx_groups_menu_item_title_edit_pricing"><![CDATA[Edit Pricing]]></string>
     <string name="_bx_groups_menu_item_title_system_edit_profile"><![CDATA[Edit Group]]></string>
     <string name="_bx_groups_menu_item_title_edit_profile"><![CDATA[Edit Group]]></string>
+    <string name="_bx_groups_menu_item_title_system_edit_settings"><![CDATA[Edit Settings]]></string>
+    <string name="_bx_groups_menu_item_title_edit_settings"><![CDATA[Edit Settings]]></string>
     <string name="_bx_groups_menu_item_title_system_delete_profile"><![CDATA[Delete Group]]></string>
     <string name="_bx_groups_menu_item_title_delete_profile"><![CDATA[Delete Group]]></string>
     <string name="_bx_groups_menu_item_title_system_delete_account"><![CDATA[Delete Account]]></string>

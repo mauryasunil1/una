@@ -21,6 +21,7 @@
     <string name="_bx_groups_form_profile_display_add"><![CDATA[Добавление группы]]></string>
     <string name="_bx_groups_form_profile_display_edit"><![CDATA[Редактирование группы]]></string>
     <string name="_bx_groups_form_profile_display_edit_cover"><![CDATA[Редактирование обложки]]></string>
+    <string name="_bx_groups_form_profile_display_edit_settings"><![CDATA[Редактирование настроек]]></string>
     <string name="_bx_groups_form_profile_display_delete"><![CDATA[Удаление группы]]></string>
     <string name="_bx_groups_form_profile_display_view"><![CDATA[Просмотр группы]]></string>
     <string name="_bx_groups_form_profile_display_view_full"><![CDATA[Полный просмотр группы]]></string>
@@ -49,6 +50,8 @@
     <string name="_bx_groups_form_profile_input_picture_err"><![CDATA[Необходима картинка группы.]]></string>
     <string name="_bx_groups_form_profile_input_sys_cover"><![CDATA[Картинка обложки]]></string>
     <string name="_bx_groups_form_profile_input_cover"><![CDATA[Загрузить новую картинку обложки]]></string>
+    <string name="_bx_groups_form_profile_input_sys_stg_tabs"><![CDATA[Скрыть вкладки]]></string>
+    <string name="_bx_groups_form_profile_input_stg_tabs"><![CDATA[Скрыть вкладки]]></string>
     <string name="_bx_groups_form_profile_input_sys_delete_confirm"><![CDATA[Подтверждение на удаление]]></string>
     <string name="_bx_groups_form_profile_input_delete_confirm"><![CDATA[Я уверен, что хочу удалить эту группу]]></string>
     <string name="_bx_groups_form_profile_input_delete_confirm_info"><![CDATA[Это действие не может быть отменено.]]></string>
@@ -107,6 +110,8 @@
     <string name="_bx_groups_page_title_edit_profile"><![CDATA[Редактировать группу]]></string>
     <string name="_bx_groups_page_title_sys_edit_profile_cover"><![CDATA[Редактировать обложку группы]]></string>
     <string name="_bx_groups_page_title_edit_profile_cover"><![CDATA[Редактировать обложку]]></string>
+    <string name="_bx_groups_page_title_sys_edit_profile_settings"><![CDATA[Редактировать настройки группы]]></string>
+    <string name="_bx_groups_page_title_edit_profile_settings"><![CDATA[Редактировать настройки]]></string>
     <string name="_bx_groups_page_title_manage_profile"><![CDATA[Управление]]></string>
     <string name="_bx_groups_page_title_sys_manage_profile"><![CDATA[Управление группой]]></string>
     <string name="_bx_groups_page_title_sys_delete_profile"><![CDATA[Удалить группу]]></string>
@@ -164,6 +169,7 @@
     <string name="_bx_groups_page_block_title_create_profile"><![CDATA[Создать группу]]></string>
     <string name="_bx_groups_page_block_title_edit_profile"><![CDATA[Редактировать группу]]></string>
     <string name="_bx_groups_page_block_title_edit_profile_cover"><![CDATA[Редактировать обложку]]></string>
+    <string name="_bx_groups_page_block_title_edit_profile_settings"><![CDATA[Редактировать настройки]]></string>
     <string name="_bx_groups_page_block_title_delete_profile"><![CDATA[Удалить группу]]></string>
     <string name="_bx_groups_page_block_title_join_profile"><![CDATA[Присоединиться к группе]]></string>
     <string name="_bx_groups_page_block_title_profile_info_link"><![CDATA[<a href="{profile_link}">{display_name}</a> - Инфо]]></string>
@@ -252,6 +258,8 @@
     <string name="_bx_groups_menu_item_title_edit_pricing"><![CDATA[Редактировать цены]]></string>
     <string name="_bx_groups_menu_item_title_system_edit_profile"><![CDATA[Редактировать группу]]></string>
     <string name="_bx_groups_menu_item_title_edit_profile"><![CDATA[Редактировать группу]]></string>
+    <string name="_bx_groups_menu_item_title_system_edit_settings"><![CDATA[Редактировать настройки]]></string>
+    <string name="_bx_groups_menu_item_title_edit_settings"><![CDATA[Редактировать настройки]]></string>
     <string name="_bx_groups_menu_item_title_system_delete_profile"><![CDATA[Удалить группу]]></string>
     <string name="_bx_groups_menu_item_title_delete_profile"><![CDATA[Удалить группу]]></string>
     <string name="_bx_groups_menu_item_title_system_delete_account"><![CDATA[Удалить аккаунт]]></string>

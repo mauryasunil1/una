@@ -20,6 +20,7 @@ class BxGroupsConfig extends BxBaseModGroupsConfig
             'edit-group-profile' => 'checkAllowedEdit',
             'group-manage' => 'checkAllowedEdit',
             'edit-group-cover' => 'checkAllowedChangeCover',
+            'edit-group-settings' => 'checkAllowedChangeSettings',
             'invite-to-group' => 'checkAllowedInvite',
             'delete-group-profile' => 'checkAllowedDelete',
             'approve-group-profile' => 'checkAllowedApprove',
@@ -68,6 +69,7 @@ class BxGroupsConfig extends BxBaseModGroupsConfig
             'FIELD_LOCATION' => 'location',
             'FIELD_LOCATION_PREFIX' => 'location',
             'FIELD_LABELS' => 'labels',
+            'FIELD_STG_TABS' => 'stg_tabs',
             'FIELDS_WITH_KEYWORDS' => 'auto', // can be 'auto', array of fields or comma separated string of field names, works only when OBJECT_METATAGS is specified
 
             'FIELD_PRICE_ROLE_ID' => 'role_id',
@@ -135,6 +137,7 @@ class BxGroupsConfig extends BxBaseModGroupsConfig
             'OBJECT_FORM_ENTRY_DISPLAY_ADD' => 'bx_group_add',
             'OBJECT_FORM_ENTRY_DISPLAY_EDIT' => 'bx_group_edit',
             'OBJECT_FORM_ENTRY_DISPLAY_EDIT_COVER' => 'bx_group_edit_cover',
+            'OBJECT_FORM_ENTRY_DISPLAY_EDIT_SETTINGS' => 'bx_group_edit_settings',
             'OBJECT_FORM_ENTRY_DISPLAY_DELETE' => 'bx_group_delete',
             'OBJECT_FORM_ENTRY_DISPLAY_INVITE' => 'bx_group_invite',
             'OBJECT_FORM_PRICE' => 'bx_groups_price',
