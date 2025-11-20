@@ -25,18 +25,20 @@ class BxBaseModProfileUploaderCrop extends BxTemplUploaderCrop
         parent::__construct($aObject, $sStorageObject, $sUniqId, $oTemplate ? $oTemplate : $this->_oModule->_oTemplate);
     }
 
-    public function deleteGhostsForProfile($iProfileId, $iContentId = false)
+    public function deleteGhostsForProfile($iProfileId, $mixedContent = false)
     {
-        if (!$iContentId)
-            return parent::deleteGhostsForProfile($iProfileId, $iContentId);
+        if(!$mixedContent)
+            return parent::deleteGhostsForProfile($iProfileId, $mixedContent);
 
-        $CNF = $this->_oModule->_oConfig->CNF;
-        $aContentInfo = $this->_oModule->_oDb->getContentInfoById($iContentId);
-        
         $iCount = 0;
 
         $oStorage = BxDolStorage::getObjectInstance($this->_sStorageObject);
-        $aGhosts = $oStorage->getGhosts($iProfileId, $iContentId, $iContentId ? true : false);
+        if($oStorage === false)
+            return $iCount;
+
+        $aContentInfo = $this->_oModule->_oDb->getContentInfoById(is_array($mixedContent) ? reset($mixedContent) : $mixedContent);
+
+        $aGhosts = $oStorage->getGhosts($iProfileId, $mixedContent, $mixedContent ? true : false);
         foreach ($aGhosts as $aFile) {
             // for requested image type delete only unassigned ghosts and currently set images
             if ($aFile['id'] == $aContentInfo[$this->_sImage] || !in_array($aFile['id'], array_map(function($sField) use ($aContentInfo) {

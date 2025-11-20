@@ -172,22 +172,24 @@ class BxBaseUploaderHTML5 extends BxDolUploader
         $oStorage = BxDolStorage::getObjectInstance($this->_sStorageObject);
 
         if (!$isMultiple)
-            $this->deleteGhostsForProfile($iProfileId, $iContentId);
+            $this->deleteGhostsForProfile($iProfileId, [$iContentId, $this->_aObject['id']]);
 
-        if (bx_get('file')) {
-            $iId = $oStorage->storeFileFromXhr(bx_get('file'), $bPrivate, $iProfileId, $iContentId);
-        } 
-        else {
+        if (($sFile = bx_get('file')) !== false)
+            $iId = $oStorage->storeFileFromXhr($sFile, $bPrivate, $iProfileId, $iContentId);
+        else
             $iId = $oStorage->storeFileFromForm($_FILES['file'], $bPrivate, $iProfileId, $iContentId);
-        }
 
         if ($iId) {
-            $aResponse = array ('success' => 1, 'id' => $iId);
+            $oStorage->updateGhostsUploaderId($iId, $this->_aObject['id']);
+
+            $aResponse = ['success' => 1, 'id' => $iId];
         } else {
             $this->appendUploadErrorMessage(_t('_sys_uploader_err_msg', isset($_FILES['file']['name']) ? $_FILES['file']['name'] : bx_get('file'), $oStorage->getErrorString()));
-            $aResponse = array ('error' => $this->getUploadErrorMessages());
+
+            $aResponse = ['error' => $this->getUploadErrorMessages()];
         }
-        if (bx_is_api())
+
+        if ($this->_bIsApi)
             return $aResponse;
         else
             echo htmlspecialchars(json_encode($aResponse), ENT_NOQUOTES);

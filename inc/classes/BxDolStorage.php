@@ -816,20 +816,17 @@ abstract class BxDolStorage extends BxDolFactory implements iBxDolFactoryObject
     /**
      * Get ghost/orphaned files for particular user.
      * @param $iProfileId profile id
-     * @param $iContentId content id, or false to not consider content id at all
+     * @param $mixedContent - int Content ID | array Content ID + Uploader ID | false to not consider content id at all
      * @param $isCheckAllAccountProfiles get all files associated with all account profiles
      * @param $isAdmin if true, then don't check files ownership, it makes sense when $iContentId is provided, so it will return all files assiciated with content
      * @return array of arrays
      */
-    public function getGhosts($iProfileId, $iContentId = false, $isCheckAllAccountProfiles = false, $isAdmin = false)
+    public function getGhosts($iProfileId, $mixedContent = false, $isCheckAllAccountProfiles = false, $isAdmin = false)
     {
-        if ($isCheckAllAccountProfiles && ($oProfile = BxDolProfile::getInstance($iProfileId))) {
-            $oAccount = $oProfile->getAccountObject();
-            $aProfiles = $oAccount->getProfilesIds(false, false);
-            return $this->_oDb->getGhosts($aProfiles, $iContentId, $isAdmin);
-        }
-        
-        return $this->_oDb->getGhosts($iProfileId, $iContentId, $isAdmin);
+        if($isCheckAllAccountProfiles && ($oProfile = BxDolProfile::getInstance($iProfileId)) !== false && ($oAccount = $oProfile->getAccountObject()) !== false)
+            $iProfileId = $oAccount->getProfilesIds(false, false);
+
+        return $this->_oDb->getGhosts($iProfileId, $mixedContent, $isAdmin);
     }
     
     /**
@@ -867,6 +864,17 @@ abstract class BxDolStorage extends BxDolFactory implements iBxDolFactoryObject
         }
 
         return $this->_oDb->updateGhostsContentId($mixedFileIds, $iProfileId, $iContentId, $aProfiles, $isAdmin);
+    }
+    
+    /**
+     * Update ghosts' uploader id.
+     * @param $mixedFileIds array of file ids or just one file id
+     * @param $iUploaderId uploader id
+     * @return true on success or false otherwise
+     */
+    public function updateGhostsUploaderId($mixedFileIds, $iUploaderId)
+    {
+        return $this->_oDb->updateGhostsUploaderId($mixedFileIds, $iUploaderId);
     }
 
     /**

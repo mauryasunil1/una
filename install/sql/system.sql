@@ -2696,6 +2696,7 @@ CREATE TABLE IF NOT EXISTS `sys_storage_ghosts` (
   `id` int(11) NOT NULL,
   `profile_id` int(10) unsigned NOT NULL,
   `object` varchar(64) NOT NULL,
+  `uploader_id` int(11) NOT NULL default '0',
   `content_id` int(11) NOT NULL,
   `created` int(10) unsigned NOT NULL,
   `order` int(11) NOT NULL default '0',

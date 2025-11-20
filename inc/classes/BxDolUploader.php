@@ -101,6 +101,7 @@
  */
 abstract class BxDolUploader extends BxDolFactory
 {
+    protected $_bIsApi;
     protected $_oTemplate;
 
     protected $_aObject; ///< object properties
@@ -130,6 +131,7 @@ abstract class BxDolUploader extends BxDolFactory
     protected function __construct($aObject, $sStorageObject, $sUniqId, $oTemplate)
     {
         parent::__construct();
+        $this->_bIsApi = bx_is_api();
         $this->_oTemplate = $oTemplate ? $oTemplate : BxDolTemplate::getInstance();
 
         $this->_aObject = $aObject;
@@ -217,28 +219,31 @@ abstract class BxDolUploader extends BxDolFactory
      */
     public function handleUploads ($iProfileId, $mixedFiles, $isMultiple = true, $iContentId = false, $bPrivate = true)
     {
-        $oStorage = BxDolStorage::getObjectInstance($this->_sStorageObject);
+        $oStorage = BxDolStorage::getObjectInstance($this->_sStorageObject);       
 
-        if (false == ($aMultipleFiles = $oStorage->convertMultipleFilesArray($mixedFiles)))
-            $aMultipleFiles = array($mixedFiles);
+        if(!$isMultiple)
+            $this->deleteGhostsForProfile($iProfileId, [$iContentId, $this->_aObject['id']]);
 
-        if (!$isMultiple)
-            $this->deleteGhostsForProfile($iProfileId, $iContentId);
+        if($this->_bIsApi && $mixedFiles) {
+            if(($iId = $oStorage->storeFileFromForm($mixedFiles, $bPrivate, $iProfileId, $iContentId)))
+                $oStorage->updateGhostsUploaderId($iId, $this->_aObject['id']);
 
-        
-        if (bx_is_api() && $_FILES['file']) {
-            $iId = $oStorage->storeFileFromForm($_FILES['file'], $bPrivate, $iProfileId, $iContentId);
-            $aResponse = array ('success' => 1, 'id' => $iId);
-            return $aResponse;
-        } 
-        
-        foreach ($aMultipleFiles as $aFile) {
+            return [
+                'success' => 1, 
+                'id' => $iId
+            ];
+        }
 
-            $iId = $oStorage->storeFileFromForm($aFile, $bPrivate, $iProfileId, $iContentId);
-            if (!$iId)
+        if(($aMultipleFiles = $oStorage->convertMultipleFilesArray($mixedFiles)) === false)
+            $aMultipleFiles = [$mixedFiles];
+
+        foreach($aMultipleFiles as $aFile) {
+            if(($iId = $oStorage->storeFileFromForm($aFile, $bPrivate, $iProfileId, $iContentId)))
+                $oStorage->updateGhostsUploaderId($iId, $this->_aObject['id']);
+            else 
                 $this->appendUploadErrorMessage(_t('_sys_uploader_err_msg', $aFile['name'], $oStorage->getErrorString()));
 
-            if (!$isMultiple)
+            if(!$isMultiple)
                 break;
         }
 
@@ -485,15 +490,19 @@ abstract class BxDolUploader extends BxDolFactory
 
     /**
      * Delete all ghosts files for the specified profile
+     * @param $iProfileId - profile id to get orphaned files from
+     * @param $mixedContent - int Content ID | array Content ID + Uploader ID | false
      * @return number of delete ghost files
      */
-    public function deleteGhostsForProfile($iProfileId, $iContentId = false)
+    public function deleteGhostsForProfile($iProfileId, $mixedContent = false)
     {
         $iCount = 0;
 
         $oStorage = BxDolStorage::getObjectInstance($this->_sStorageObject);
+        if($oStorage === false)
+            return $iCount;
 
-        $aGhosts = $oStorage->getGhosts($iProfileId, $iContentId, $iContentId ? true : false);
+        $aGhosts = $oStorage->getGhosts($iProfileId, $mixedContent, $mixedContent ? true : false);
         foreach ($aGhosts as $aFile)
             $iCount += $oStorage->deleteFile($aFile['id']);
 
