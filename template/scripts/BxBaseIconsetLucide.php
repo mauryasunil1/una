@@ -64,6 +64,7 @@ class BxBaseIconsetLucide extends BxBaseIconset
             'fa-check-circle' => 'circle-check', 
             'fa-smile' => 'smile',
             'fa-thumbs-up' => 'thumbs-up',
+            'facebook-square' => 'facebook',
             'file-alt' => 'file',
             'file-alt' => 'file-text',
             'file-export' => 'file-output',
@@ -71,6 +72,7 @@ class BxBaseIconsetLucide extends BxBaseIconset
             'file-word' => 'file-text',
             'fire' => 'flame',
             'group' => 'users',
+            'google' => 'log-in', //TODO: Brand icon. Update later.
             'hand-holding-usd' => 'hand-coins',
             'hashtag' => 'hash',
             'helpcircle' => 'help-circle',
@@ -79,6 +81,7 @@ class BxBaseIconsetLucide extends BxBaseIconset
             'info-circle' => 'info',
             'keyround' => 'key-round',
             'language' => 'languages',
+            'linkedin-in' => 'linkedin',
             'lockopen' => 'unlock',
             'mail-bulk' => 'mails',
             'map-marker' => 'map-pin',
