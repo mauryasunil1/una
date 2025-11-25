@@ -70,7 +70,7 @@ yarn
 
 Install PHP dependences:
 ```bash
-docker run --rm -it -v "$(pwd):/app" composer/composer installdocker run --rm -it -v "$(pwd):/app" composer/composer install --ignore-platform-reqs
+docker run --rm -it -v "$(pwd):/app" composer/composer install --ignore-platform-reqs
 ```
 
 Run UNA and related services:
