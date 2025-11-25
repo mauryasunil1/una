@@ -1347,10 +1347,10 @@ filepond-plugin-image-transform@^3.8.7:
   resolved "https://registry.yarnpkg.com/filepond-plugin-image-transform/-/filepond-plugin-image-transform-3.8.7.tgz#6d32fff899366359a77b158f9ac75ae5971e768a"
   integrity sha512-vgKwyIDG2y5twanf7YpqZvxkaLudTjwd9vRcoq5sQDB8egUlX5/NA0bQ0823pocrm0fjbFeetICu44mkqeDkIA==
 
-filepond@^4.32.9:
-  version "4.32.9"
-  resolved "https://registry.yarnpkg.com/filepond/-/filepond-4.32.9.tgz#52798d4adcb95bb11f381b292c03052a5aa29de2"
-  integrity sha512-MnNnRrTS1M/6C/puIs5dNkbP1RMGANFxnygwdweNXAxyeCS4S68UM4CdvmyF7UrZB93Fhop7Bea2Ib6rkrYHUw==
+filepond@^4.32.10:
+  version "4.32.10"
+  resolved "https://registry.yarnpkg.com/filepond/-/filepond-4.32.10.tgz#7085b534480313c8d58a317dc0081bfd76743271"
+  integrity sha512-uflpIL+rfAgsYk7HgXugh7ELlHNHLTPtIHfvuq0gv3x2qNfVxdGA6T7RPxMh9Vji8ysXstXkDHVXQ4hY38MPTQ==
 
 fizzy-ui-utils@^2.0.0:
   version "2.0.7"
