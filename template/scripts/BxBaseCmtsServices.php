@@ -525,17 +525,14 @@ class BxBaseCmtsServices extends BxDol
 
     protected function _getNotificationsData($iCmtIdUnique, $iCmtId, $oCmts)
     {
-        $sCmtUrl = str_replace(BX_DOL_URL_ROOT, '{bx_url_root}', $oCmts->serviceGetLink($iCmtId));
         $sCmtCaption = strmaxtextlen($oCmts->serviceGetText($iCmtId), 20, '...');
 
-        $sCmtUrlApi = '';
-        if(bx_is_api() && getParam('sys_api_comment_notif_link_content') == 'on') {
-            $aCmt = $oCmts->getCommentsBy(['type' => 'uniq_id', 'uniq_id' => $iCmtIdUnique]);
-            if(!empty($aCmt) && is_array($aCmt)) {
-                $oCmts->init($aCmt['cmt_object_id']);
+        $sCmtUrl = $sCmtUrlApi = '';
+        if(($aCmt = $oCmts->getCommentsBy(['type' => 'uniq_id', 'uniq_id' => $iCmtIdUnique])) && is_array($aCmt)) {
+            $oCmts->init($aCmt['cmt_object_id']);
 
-                $sCmtUrlApi = $oCmts->getBaseUrl('{bx_url_root}') . '#cid=' . $iCmtId;
-            }
+            $sCmtUrl = $oCmts->getItemUrl($iCmtId, '{bx_url_root}');
+            $sCmtUrlApi = $oCmts->getItemUrlApi($iCmtId, '{bx_url_root}');
         }
 
         return [
