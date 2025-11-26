@@ -228,7 +228,7 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
         ]));
     }
 
-    public function getEventLinks($iContentId)
+    public function getAttachLinks($iContentId)
     {
         $CNF = &$this->getModule()->_oConfig->CNF;
         
@@ -345,7 +345,7 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
         );
 
         $aTmplVarsLinks = [];
-        if(isset($CNF['FIELD_LINK']) && ($aLinks = $this->getEventLinks($aData[$CNF['FIELD_ID']])))
+        if(isset($CNF['FIELD_LINK']) && ($aLinks = $this->getAttachLinks($aData[$CNF['FIELD_ID']])))
             $aTmplVarsLinks = $this->getTmplVarsAttachedLinks($aLinks);
 
         $aVars['bx_if:show_links'] = [
@@ -490,14 +490,12 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
             }
         }
 
-        // get entry url
-        $sUrl = $this->_oConfig->getViewEntryUrl($aData[$CNF['FIELD_ID']]);
-
         $oProfile = BxDolProfile::getInstanceMagic($aData[$CNF['FIELD_AUTHOR']]);
-        
-        $sTitle = $this->getTitle($aData);
-        $sText = $this->getText($aData);
-        $sSummary = $this->getSummary($aData, $sTitle, $sText, $sUrl);
+
+        $sUrl = $this->getUnitLink($aData);
+        $sTitle = $this->getUnitTitle($aData);
+        $sText = $this->getUnitText($aData);
+        $sSummary = $this->getUnitSummary($aData, $sTitle, $sText, $sUrl);
         $sSummaryPlain = isset($CNF['PARAM_CHARS_SUMMARY_PLAIN']) && $CNF['PARAM_CHARS_SUMMARY_PLAIN'] ? BxTemplFunctions::getInstance()->getStringWithLimitedLength(strip_tags($sSummary), (int)getParam($CNF['PARAM_CHARS_SUMMARY_PLAIN'])) : '';
 
         if(!empty($CNF['OBJECT_METATAGS'])) {

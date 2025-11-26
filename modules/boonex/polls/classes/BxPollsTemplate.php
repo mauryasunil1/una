@@ -164,7 +164,7 @@ class BxPollsTemplate extends BxBaseModTextTemplate
         return $sResult;
     }
 
-    protected function getSummary($aData, $sTitle = '', $sText = '', $sUrl = '')
+    public function getSummary($aData, $sTitle = '', $sText = '', $sUrl = '')
     {
         $oModule = $this->getModule();
         $CNF = &$oModule->_oConfig->CNF;

@@ -160,7 +160,7 @@ class BxBaseModGeneralTemplate extends BxDolModuleTemplate
         return $sResult;
     }
 
-    protected function getSummary($aData, $sTitle = '', $sText = '', $sUrl = '')
+    public function getSummary($aData, $sTitle = '', $sText = '', $sUrl = '')
     {
         $sAbstract = $this->getAbstract($aData);
         if(!empty($sAbstract))
@@ -173,6 +173,26 @@ class BxBaseModGeneralTemplate extends BxDolModuleTemplate
         // get summary
         $sLinkMore = ' <a title="' . bx_html_attribute(_t('_sys_read_more', $sTitle)) . '" href="' . $sUrl . '"><i class="sys-icon ellipsis-h"></i></a>';
         return strmaxtextlen($sText, (int)getParam($CNF['PARAM_CHARS_SUMMARY']), $sLinkMore);
+    }
+
+    public function getUnitLink ($aData, $aParams = [])
+    {
+        return $this->_oConfig->getViewEntryUrl($aData);
+    }
+
+    public function getUnitTitle ($aData, $aParams = [])
+    {
+        return $this->getTitle($aData, $aParams['process_output'] ?? null);
+    }
+
+    public function getUnitText ($aData, $aParams = [])
+    {
+        return $this->getText($aData, $aParams['process_output'] ?? null);
+    }
+
+    public function getUnitSummary ($aData, $sTitle = '', $sText = '', $sUrl = '')
+    {
+        return $this->getSummary($aData, $sTitle, $sText, $sUrl);
     }
 
     public function getProfileLink($mixedProfile)
