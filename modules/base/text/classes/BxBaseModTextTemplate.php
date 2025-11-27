@@ -528,6 +528,7 @@ class BxBaseModTextTemplate extends BxBaseModGeneralTemplate
             'html_id' => $this->_getUnitHtmlId($aData,(isset($aParams['template_name']) ? $aParams['template_name'] : '')),
             'id' => $aData[$CNF['FIELD_ID']],
             'content_url' => $sUrl,
+            'content_url_attrs' => '',
             'bx_if:show_onclick' => [
                 'condition' => false,
                 'content' => [
