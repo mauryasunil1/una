@@ -20,19 +20,16 @@
 /*--- Resource ---*/
 .bx-resources-entry {
     display: flex;
-    justify-content: space-between;
     align-items: center
 }
-.bx-resources-entry .bx-badges-list {
-    display: inline-block;
-}
-.bx-resources-entry .bx-resources-entry-name {
+.bx-resources-entry .bx-resources-e-title {
+    flex: 2 1 0%;
     max-width: 50%;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: inline-block;
+}
+.bx-resources-entry .bx-resources-e-category {
+    flex-grow: 1;
 }
 .bx-media-desktop .bx-resources-form-cnt {
-    width: 800px;
+    width: 50rem;
 }

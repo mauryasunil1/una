@@ -67,6 +67,13 @@ INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `lay
 INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`) VALUES 
 ('bx_resources_view_entry_comments', 1, 'bx_resources', '_bx_resources_page_block_title_sys_entry_comments', '_bx_resources_page_block_title_entry_comments_link', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:12:"bx_resources";s:6:"method";s:15:"entity_comments";}', 0, 0, 1);
 
+-- PAGE: entries of author
+INSERT INTO `sys_objects_page`(`object`, `uri`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
+('bx_resources_author', 'resources-author', '_bx_resources_page_title_sys_entries_of_author', '_bx_resources_page_title_entries_of_author', 'bx_resources', 5, 2147483647, 1, '', '', '', '', 0, 1, 0, 'BxResourcesPageAuthor', 'modules/boonex/resources/classes/BxResourcesPageAuthor.php');
+
+INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `active`, `order`) VALUES 
+('bx_resources_author', 1, 'bx_resources', '_bx_resources_page_block_title_sys_entries_of_author', '_bx_resources_page_block_title_entries_of_author', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:12:"bx_resources";s:6:"method";s:16:"browse_resources";}', 0, 0, 1, 1);
+
 -- PAGE: entries in context
 INSERT INTO `sys_objects_page`(`object`, `uri`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
 ('bx_resources_context', 'resources-context', '_bx_resources_page_title_sys_entries_in_context', '_bx_resources_page_title_entries_in_context', 'bx_resources', 5, 2147483647, 1, '', '', '', '', 0, 1, 0, 'BxResourcesPageAuthor', 'modules/boonex/resources/classes/BxResourcesPageAuthor.php');
@@ -91,11 +98,16 @@ INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `t
 -- PAGES: add page block to profiles modules (trigger* page objects are processed separately upon modules enable/disable)
 SET @iPBCellProfile = 0;
 INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`, `active`) VALUES
-('trigger_page_profile_view_entry', @iPBCellProfile, 'bx_resources', '_bx_resources_page_block_title_sys_entries_of_author', '_bx_resources_page_block_title_entries_of_author', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:12:"bx_resources";s:6:"method";s:13:"browse_author";s:6:"params";a:2:{i:0;s:12:"{profile_id}";i:1;a:2:{s:8:"per_page";s:25:"bx_posts_per_page_profile";s:13:"empty_message";b:0;}}}', 0, 0, 0, 1);
+('trigger_page_profile_view_entry', @iPBCellProfile, 'bx_resources', '_bx_resources_page_block_title_sys_entries_of_author', '_bx_resources_page_block_title_entries_of_author', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:12:"bx_resources";s:6:"method";s:14:"browse_context";s:6:"params";a:2:{i:0;s:12:"{profile_id}";i:1;a:2:{s:8:"per_page";s:25:"bx_posts_per_page_profile";s:13:"empty_message";b:0;}}}', 0, 0, 0, 1);
 
 SET @iPBCellContext = 0;
 INSERT INTO `sys_pages_blocks` (`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`, `active`) VALUES
 ('trigger_page_group_view_entry', @iPBCellContext, 'bx_resources', '_bx_resources_page_block_title_sys_entries_in_context', '_bx_resources_page_block_title_entries_in_context', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:12:"bx_resources";s:6:"method";s:14:"browse_context";s:6:"params";a:2:{i:0;s:12:"{profile_id}";i:1;a:2:{s:8:"per_page";s:25:"bx_posts_per_page_profile";s:13:"empty_message";b:0;}}}', 0, 0, 0, 1);
+
+-- PAGE: service blocks
+SET @iBlockOrder = (SELECT `order` FROM `sys_pages_blocks` WHERE `object` = '' AND `cell_id` = 0 ORDER BY `order` DESC LIMIT 1);
+INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system` , `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`) VALUES 
+('', 0, 'bx_resources', '', '_bx_resources_page_block_title_entries_in_context_by_category', 11, 2147483647, 'service', 'a:3:{s:6:"module";s:12:"bx_resources";s:6:"method";s:26:"browse_context_by_category";s:6:"params";a:2:{i:0;s:12:"{profile_id}";i:1;i:1;}}', 0, 1, IFNULL(@iBlockOrder, 0) + 1);
 
 
 -- MENU: actions menu for view entry 
@@ -259,16 +271,15 @@ INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable
 ('bx_resources_administration', 'checkbox', '_sys_select', '2%', 0, 0, '', 1),
 ('bx_resources_administration', 'switcher', '_bx_resources_grid_column_title_adm_active', '8%', 0, 0, '', 2),
 ('bx_resources_administration', 'reports', '_sys_txt_reports_title', '5%', 0, 0, '', 3),
-('bx_resources_administration', 'context_module', '_bx_resources_grid_column_title_adm_context_module', '10%', 0, 0, '', 4),
-('bx_resources_administration', 'title', '_bx_resources_grid_column_title_adm_title', '25%', 0, 25, '', 5),
-('bx_resources_administration', 'added', '_bx_resources_grid_column_title_adm_added', '10%', 1, 25, '', 6),
-('bx_resources_administration', 'author', '_bx_resources_grid_column_title_adm_author', '20%', 0, 25, '', 7),
-('bx_resources_administration', 'actions', '', '20%', 0, 0, '', 8),
+('bx_resources_administration', 'title', '_bx_resources_grid_column_title_adm_title', '35%', 0, 25, '', 4),
+('bx_resources_administration', 'added', '_bx_resources_grid_column_title_adm_added', '10%', 1, 25, '', 5),
+('bx_resources_administration', 'author', '_bx_resources_grid_column_title_adm_author', '20%', 0, 25, '', 6),
+('bx_resources_administration', 'actions', '', '20%', 0, 0, '', 7),
 
 ('bx_resources_common', 'checkbox', '_sys_select', '2%', 0, 0, '', 1),
 ('bx_resources_common', 'switcher', '_bx_resources_grid_column_title_adm_active', '8%', 0, 0, '', 2),
-('bx_resources_common', 'title', '_bx_resources_grid_column_title_adm_title', '35%', 0, 35, '', 3),
-('bx_resources_common', 'context_module', '_bx_resources_grid_column_title_adm_context_module', '10%', 0, 0, '', 4),
+('bx_resources_common', 'title', '_bx_resources_grid_column_title_adm_title', '30%', 0, 35, '', 3),
+('bx_resources_common', 'cat', '_bx_resources_grid_column_title_adm_cat', '15%', 0, 0, '', 4),
 ('bx_resources_common', 'added', '_bx_resources_grid_column_title_adm_added', '10%', 1, 25, '', 5),
 ('bx_resources_common', 'status_admin', '_bx_resources_grid_column_title_adm_status_admin', '15%', 0, 16, '', 6),
 ('bx_resources_common', 'actions', '', '20%', 0, 0, '', 7);

@@ -8,7 +8,7 @@ DELETE FROM `sys_options_types` WHERE `id` = @iTypeId;
 
 -- PAGES
 DELETE FROM `sys_objects_page` WHERE `module` = 'bx_resources';
-DELETE FROM `sys_pages_blocks` WHERE `module` = 'bx_resources' OR `object` IN('bx_resources_create_entry', 'bx_resources_edit_entry', 'bx_resources_delete_entry', 'bx_resources_view_entry', 'bx_resources_view_entry_comments', 'bx_resources_context', 'bx_resources_manage', 'bx_resources_administration');
+DELETE FROM `sys_pages_blocks` WHERE `module` = 'bx_resources' OR `object` IN('bx_resources_create_entry', 'bx_resources_edit_entry', 'bx_resources_delete_entry', 'bx_resources_view_entry', 'bx_resources_view_entry_comments', 'bx_resources_author', 'bx_resources_context', 'bx_resources_manage', 'bx_resources_administration');
 
 -- MENU
 DELETE FROM `sys_objects_menu` WHERE `module` = 'bx_resources';

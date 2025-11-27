@@ -77,6 +77,7 @@ class BxResourcesConfig extends BxBaseModTextConfig
 
             // page URIs
             'URI_VIEW_ENTRY' => 'view-resource',
+            'URI_AUTHOR_ENTRIES' => 'resources-author',
             'URI_ENTRIES_BY_CONTEXT' => 'resources-context',
             'URI_ADD_ENTRY' => 'create-resource',
             'URI_EDIT_ENTRY' => 'edit-resource',

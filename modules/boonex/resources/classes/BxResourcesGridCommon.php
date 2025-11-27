@@ -11,32 +11,45 @@
 
 class BxResourcesGridCommon extends BxBaseModTextGridCommon
 {
-    protected $_sFilter3Name;
-    protected $_sFilter3Value;
-    protected $_aFilter3Values;
+    protected $_aCategories;
+
+    protected $_iContextPid;
 
     public function __construct ($aOptions, $oTemplate = false)
     {
     	$this->MODULE = 'bx_resources';
+
         parent::__construct ($aOptions, $oTemplate);
 
-        $this->_initFilter(3, $this->_oModule->getContexts());
+        $CNF = &$this->_oModule->_oConfig->CNF;
+
+        $this->_aCategories = BxDolFormQuery::getDataItems($CNF['OBJECT_CATEGORY']);
+
+        if(($iContextPid = bx_get('context_pid')) !== false) 
+            $this->setContextPid($iContextPid);
     }
 
-    protected function _getFilterControls()
+    public function setContextPid($iContextPid)
     {
-        $sContent = $this->_getFilterSelectOne($this->_sFilter3Name, $this->_sFilter3Value, $this->_aFilter3Values);
-        return $sContent . parent::_getFilterControls();
+        $CNF = &$this->_oModule->_oConfig->CNF;
+
+        $this->_iContextPid = (int)$iContextPid;
+        $this->_aQueryAppend['context_pid'] = $this->_iContextPid;   
+    }
+
+    protected function _getCellCat($mixedValue, $sKey, $aField, $aRow)
+    {
+        $CNF = &$this->_oModule->_oConfig->CNF;
+
+        return parent::_getCellDefault($this->_aCategories[$aRow[$CNF['FIELD_CATEGORY']]] ?? '', $sKey, $aField, $aRow);
     }
 
     protected function _getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage)
     {
-        $this->_parseFilterValue($sFilter);
+        if($this->_iContextPid)
+            $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND ABS(`allow_view_to`)=?", $this->_iContextPid);
 
-        if(!empty($this->_sFilter3Value))
-            $this->_aOptions['source'] .= $this->_oModule->_oDb->prepareAsString(" AND `tp`.`type`=?", $this->_sFilter3Value);
-
-        return parent::_getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage);
+        return $this->__getDataSql($sFilter, $sOrderField, $sOrderDir, $iStart, $iPerPage);
     }
 }
 

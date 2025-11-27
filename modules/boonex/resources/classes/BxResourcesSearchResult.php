@@ -24,6 +24,7 @@ class BxResourcesSearchResult extends BxBaseModTextSearchResult
             'searchFields' => array(),
             'restriction' => array(
                 'author' => array('value' => '', 'field' => 'author', 'operator' => '='),
+                'cat' => array('value' => '', 'field' => 'cat', 'operator' => '='),
                 'status' => array('value' => 'active', 'field' => 'status', 'operator' => '='),
                 'statusAdmin' => array('value' => 'active', 'field' => 'status_admin', 'operator' => '='),
             ),
@@ -63,8 +64,13 @@ class BxResourcesSearchResult extends BxBaseModTextSearchResult
                 break;
 
             case 'context':
-                if(!$this->_updateCurrentForContext($sMode, $aParams, $oProfileAuthor))
+                if(!$this->_updateCurrentForContext($sMode, $aParams, $oProfileAuthor)) {
                     $this->isError = true;
+                    break;
+                }
+
+                if(($sCategory = $aParams['category'] ?? false))
+                    $this->aCurrent['restriction']['cat']['value'] = $sCategory;
                 break;
 
             case '': // search results

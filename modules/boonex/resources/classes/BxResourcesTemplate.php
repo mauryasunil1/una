@@ -54,6 +54,8 @@ class BxResourcesTemplate extends BxBaseModTextTemplate
         if($aTmplVars['bx_if:no_thumb']['condition'])
             $aTmplVars['bx_if:no_thumb']['condition'] = false;
 
+        $aTmplVars['content_url_attrs'] = bx_convert_array2attrs(['target' => '_blank']);
+
         return $aTmplVars;
     }
 
@@ -81,6 +83,8 @@ class BxResourcesTemplate extends BxBaseModTextTemplate
         $sJsObject = $this->_oConfig->getJsObject('main');
         $oPermalinks = BxDolPermalinks::getInstance();
 
+        $aCategories = BxDolFormQuery::getDataItems($CNF['OBJECT_CATEGORY']);
+
         $oModule = $this->getModule();
         $bAllowAdd = $oModule->isAllowAdd($iContextId);
         $bAllowManage = $oModule->isAllowManageByContext($iContextId);
@@ -99,6 +103,7 @@ class BxResourcesTemplate extends BxBaseModTextTemplate
                     'js_object' => $sJsObject,
                     'id' => $aResource[$CNF['FIELD_ID']],
                     'title' => $this->getUnitLink($aResource),
+                    'category' => $aCategories[$aResource[$CNF['FIELD_CATEGORY']]] ?? '',
                     'created' => bx_time_js($aResource[$CNF['FIELD_ADDED']]),
                     'badges' => $oModule->serviceGetBadges($aResource[$CNF['FIELD_ID']], true),
                     'url' => bx_absolute_url($oPermalinks->permalink('page.php?i=' . $CNF['URI_VIEW_ENTRY'] . '&id=' . $aResource[$CNF['FIELD_ID']])),

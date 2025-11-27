@@ -136,19 +136,6 @@ class BxResourcesModule extends BxBaseModTextModule
         }
     }
 
-    public function serviceManageTools($sType = 'common')
-    {
-        $CNF = &$this->_oConfig->CNF;
-
-        $mixedResults = '';
-        if(!($mixedResults = parent::serviceManageTools($sType)))
-            return $mixedResults;
-
-        return array_merge(parent::serviceManageTools($sType), [
-            'menu' => BxDolMenu::getObjectInstance($CNF['OBJECT_MENU_MANAGE_TOOLS_SUBMENU'])
-        ]);
-    }
-
     public function serviceCheckAllowedManageInContext($iContextPid)
     {
         if(!$this->isAllowManageByContext($iContextPid))
@@ -200,6 +187,15 @@ class BxResourcesModule extends BxBaseModTextModule
             return false;
 
         return parent::serviceCheckAllowedCommentsView($iContentId, $sObjectComments);
+    }
+
+    public function serviceBrowseContextByCategory($iProfileId = 0, $mixedCategory = false)
+    {
+        $aParams = [];
+        if($mixedCategory)
+            $aParams['category'] = $mixedCategory;
+
+        return parent::serviceBrowseContext($iProfileId, $aParams);
     }
 
     public function serviceBrowseResources($iContextId = 0, $aParams = [])
