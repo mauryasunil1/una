@@ -107,15 +107,7 @@ class BxResourcesModule extends BxBaseModTextModule
 
         $oForm->initChecker();
         if($oForm->isSubmittedAndValid()) {
-            if(!$iListId) {
-                $aList = $this->_oDb->getListDefault($iContextId);
-                if(empty($aList) || !is_array($aList))
-                    $iListId = $this->_oDb->addListDefault($iContextId);
-                else
-                    $iListId = (int)$aList[$CNF['FIELD_LIST_ID']];
-            }
-
-            $iContentId = $oForm->insert([$CNF['FIELD_ALLOW_VIEW_TO'] => -$iContextId, $CNF['FIELD_LIST'] => $iListId]);
+            $iContentId = $oForm->insert([$CNF['FIELD_ALLOW_VIEW_TO'] => -$iContextId, $CNF['FIELD_LIST'] => $iListId ?: $this->getListDefault($iContextId)]);
             if($iContentId)
                 $this->onPublished($iContentId);
 
@@ -187,6 +179,15 @@ class BxResourcesModule extends BxBaseModTextModule
             return false;
 
         return parent::serviceCheckAllowedCommentsView($iContentId, $sObjectComments);
+    }
+
+    public function serviceManageTools($sType = 'common')
+    {
+        $aResult = parent::serviceManageTools('common');
+        if($sType == 'common' && isset($aResult['menu']))
+            unset($aResult['menu']);
+
+        return $aResult;
     }
 
     public function serviceBrowseContextByCategory($iProfileId = 0, $mixedCategory = false)
@@ -262,6 +263,21 @@ class BxResourcesModule extends BxBaseModTextModule
             return true;
 
         return false;
+    }
+    
+    public function getListDefault($iContextId)
+    {
+        $CNF = &$this->_oConfig->CNF;
+
+        $aList = $this->_oDb->getListDefault($iContextId);
+
+        $iListId = 0;
+        if(empty($aList) || !is_array($aList))
+            $iListId = $this->_oDb->addListDefault($iContextId);
+        else
+            $iListId = (int)$aList[$CNF['FIELD_LIST_ID']];
+
+        return $iListId;
     }
 
     /**

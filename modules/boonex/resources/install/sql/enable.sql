@@ -83,7 +83,7 @@ INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `t
 
 -- PAGE: manage own entries
 INSERT INTO `sys_objects_page`(`object`, `title_system`, `title`, `module`, `layout_id`, `visible_for_levels`, `visible_for_levels_editable`, `uri`, `url`, `meta_description`, `meta_keywords`, `meta_robots`, `cache_lifetime`, `cache_editable`, `deletable`, `override_class_name`, `override_class_file`) VALUES 
-('bx_resources_manage', '_bx_resources_page_title_sys_manage', '_bx_resources_page_title_manage', 'bx_resources', 5, 2147483647, 1, 'resources-manage', 'page.php?i=resources-manage', '', '', '', 0, 1, 0, 'BxResourcesPageBrowse', 'modules/boonex/resources/classes/BxResourcesPageBrowse.php');
+('bx_resources_manage', '_bx_resources_page_title_sys_manage', '_bx_resources_page_title_manage', 'bx_resources', 5, 2147483647, 1, 'resources-manage', 'page.php?i=resources-manage', '', '', '', 0, 1, 0, 'BxResourcesPageAuthor', 'modules/boonex/resources/classes/BxResourcesPageAuthor.php');
 
 INSERT INTO `sys_pages_blocks`(`object`, `cell_id`, `module`, `title_system`, `title`, `designbox_id`, `visible_for_levels`, `type`, `content`, `deletable`, `copyable`, `order`) VALUES 
 ('bx_resources_manage', 1, 'bx_resources', '_bx_resources_page_block_title_system_manage', '_bx_resources_page_block_title_manage', 11, 2147483647, 'service', 'a:2:{s:6:"module";s:12:"bx_resources";s:6:"method";s:12:"manage_tools";}', 0, 1, 0);
@@ -169,7 +169,10 @@ INSERT INTO `sys_menu_sets`(`set_name`, `module`, `title`, `deletable`) VALUES
 -- MENU: add menu item to profiles modules (trigger* menu sets are processed separately upon modules enable/disable)
 INSERT INTO `sys_menu_items`(`set_name`, `module`, `name`, `title_system`, `title`, `link`, `onclick`, `target`, `icon`, `submenu_object`, `visible_for_levels`, `active`, `copyable`, `order`) VALUES 
 ('trigger_profile_view_submenu', 'bx_resources', 'resources-author', '_bx_resources_menu_item_title_system_view_entries_author', '_bx_resources_menu_item_title_view_entries_author', 'page.php?i=resources-author&profile_id={profile_id}', '', '', 'warehouse col-green2', '', 2147483647, 1, 0, 0),
-('trigger_group_view_submenu', 'bx_resources', 'resources-context', '_bx_resources_menu_item_title_system_view_entries_in_context', '_bx_resources_menu_item_title_view_entries_in_context', 'page.php?i=resources-context&profile_id={profile_id}', '', '', 'warehouse col-green2', '', 2147483647, 1, 0, 0);
+('trigger_profile_view_actions', 'bx_resources', 'resources-manage', '_bx_resources_menu_item_title_system_entries_manage', '_bx_resources_menu_item_title_entries_manage', 'page.php?i=resources-manage&profile_id={profile_id}', '', '', 'warehouse', '', 2147483647, 1, 0, 0),
+
+('trigger_group_view_submenu', 'bx_resources', 'resources-context', '_bx_resources_menu_item_title_system_view_entries_in_context', '_bx_resources_menu_item_title_view_entries_in_context', 'page.php?i=resources-context&profile_id={profile_id}', '', '', 'warehouse col-green2', '', 2147483647, 1, 0, 0),
+('trigger_group_view_actions', 'bx_resources', 'resources-manage', '_bx_resources_menu_item_title_system_entries_manage', '_bx_resources_menu_item_title_entries_manage', 'page.php?i=resources-manage&profile_id={profile_id}', '', '', 'warehouse', '', 2147483647, 1, 0, 0);
 
 
 -- PRIVACY 
@@ -264,8 +267,8 @@ INSERT INTO `sys_objects_chart` (`object`, `title`, `table`, `field_date_ts`, `f
 
 -- GRIDS: moderation tools
 INSERT INTO `sys_objects_grid` (`object`, `source_type`, `source`, `table`, `field_id`, `field_order`, `field_active`, `paginate_url`, `paginate_per_page`, `paginate_simple`, `paginate_get_start`, `paginate_get_per_page`, `filter_fields`, `filter_fields_translatable`, `filter_mode`, `sorting_fields`, `sorting_fields_translatable`, `visible_for_levels`, `override_class_name`, `override_class_file`) VALUES
-('bx_resources_administration', 'Sql', 'SELECT `tt`.*, `tp`.`id` AS `context_id`, `tp`.`type` AS `context_module` FROM `bx_resources_entries` AS `tt` INNER JOIN `sys_profiles` AS `tp` ON ABS(`tt`.`allow_view_to`)=`tp`.`id` WHERE 1 ', 'bx_resources_entries', 'id', 'added', 'status_admin', '', 20, NULL, 'start', '', 'tt`.`title,tt`.`text', '', 'like', 'reports', '', 192, 'BxResourcesGridAdministration', 'modules/boonex/resources/classes/BxResourcesGridAdministration.php'),
-('bx_resources_common', 'Sql', 'SELECT `tt`.*, `tp`.`id` AS `context_id`, `tp`.`type` AS `context_module` FROM `bx_resources_entries` AS `tt` INNER JOIN `sys_profiles` AS `tp` ON ABS(`tt`.`allow_view_to`)=`tp`.`id` WHERE 1 ', 'bx_resources_entries', 'id', 'added', 'status', '', 20, NULL, 'start', '', 'tt`.`title,tt`.`text', '', 'like', '', '', 2147483647, 'BxResourcesGridCommon', 'modules/boonex/resources/classes/BxResourcesGridCommon.php');
+('bx_resources_administration', 'Sql', 'SELECT * FROM `bx_resources_entries` WHERE 1 ', 'bx_resources_entries', 'id', 'added', 'status_admin', '', 20, NULL, 'start', '', 'title,text', '', 'like', 'reports', '', 192, 'BxResourcesGridAdministration', 'modules/boonex/resources/classes/BxResourcesGridAdministration.php'),
+('bx_resources_common', 'Sql', 'SELECT * FROM `bx_resources_entries` WHERE 1 ', 'bx_resources_entries', 'id', 'added', 'status', '', 20, NULL, 'start', '', 'title,text', '', 'like', '', '', 2147483647, 'BxResourcesGridCommon', 'modules/boonex/resources/classes/BxResourcesGridCommon.php');
 
 INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable`, `chars_limit`, `params`, `order`) VALUES
 ('bx_resources_administration', 'checkbox', '_sys_select', '2%', 0, 0, '', 1),
@@ -278,8 +281,8 @@ INSERT INTO `sys_grid_fields` (`object`, `name`, `title`, `width`, `translatable
 
 ('bx_resources_common', 'checkbox', '_sys_select', '2%', 0, 0, '', 1),
 ('bx_resources_common', 'switcher', '_bx_resources_grid_column_title_adm_active', '8%', 0, 0, '', 2),
-('bx_resources_common', 'title', '_bx_resources_grid_column_title_adm_title', '30%', 0, 35, '', 3),
-('bx_resources_common', 'cat', '_bx_resources_grid_column_title_adm_cat', '15%', 0, 0, '', 4),
+('bx_resources_common', 'title', '_bx_resources_grid_column_title_adm_title', '15%', 0, 16, '', 3),
+('bx_resources_common', 'link', '_bx_resources_grid_column_title_adm_link', '30%', 0, 32, '', 4),
 ('bx_resources_common', 'added', '_bx_resources_grid_column_title_adm_added', '10%', 1, 25, '', 5),
 ('bx_resources_common', 'status_admin', '_bx_resources_grid_column_title_adm_status_admin', '15%', 0, 16, '', 6),
 ('bx_resources_common', 'actions', '', '20%', 0, 0, '', 7);
@@ -294,6 +297,7 @@ INSERT INTO `sys_grid_actions` (`object`, `type`, `name`, `title`, `icon`, `icon
 ('bx_resources_administration', 'single', 'audit_content', '_bx_resources_grid_action_title_adm_audit_content', 'search', 1, 0, 4),
 ('bx_resources_administration', 'single', 'clear_reports', '_bx_resources_grid_action_title_adm_clear_reports', 'eraser', 1, 0, 5),
 
+('bx_resources_common', 'independent', 'add', '_bx_resources_grid_action_title_adm_add', '', 0, 0, 1),
 ('bx_resources_common', 'bulk', 'delete', '_bx_resources_grid_action_title_adm_delete', '', 0, 1, 1),
 ('bx_resources_common', 'single', 'edit', '_bx_resources_grid_action_title_adm_edit', 'pencil-alt', 1, 0, 1),
 ('bx_resources_common', 'single', 'delete', '_bx_resources_grid_action_title_adm_delete', 'remove', 1, 1, 2),

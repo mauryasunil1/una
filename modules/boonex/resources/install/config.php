@@ -52,7 +52,9 @@ $aConfig = [
      */
     'menu_triggers' => [
         'trigger_profile_view_submenu',
+        'trigger_profile_view_actions',
         'trigger_group_view_submenu',
+        'trigger_group_view_actions'
     ],
 
     /**

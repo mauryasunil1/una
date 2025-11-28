@@ -9,7 +9,12 @@
                         bx_loading($("#__form_id__"), true);
                     },
                     success: function (data) {
-                        processJsonData(data);
+                        if(glGrids && glGrids.__object__ != undefined) {
+                            $(".bx-popup-applied:visible").dolPopupHide();
+                            glGrids.__object__.processJson(data, '__action__');
+                        }
+                        else
+                            processJsonData(data);
                     }
                 });
             });

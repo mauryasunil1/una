@@ -52,7 +52,7 @@ class BxResourcesConfig extends BxBaseModTextConfig
             'FIELD_TEXT_ID' => 'post-text',
             'FIELD_CATEGORY' => 'cat',
             'FIELD_ALLOW_VIEW_TO' => 'allow_view_to',
-            'FIELD_CF' => 'cf',
+            'FIELD_CF' => '',
             'FIELD_COVER' => 'covers',
             'FIELD_PHOTO' => '',
             'FIELD_VIDEO' => '',
@@ -226,6 +226,8 @@ class BxResourcesConfig extends BxBaseModTextConfig
         $this->_aHtmlIds = array_merge($this->_aHtmlIds, [
             'lists' => $sPrefix . '-lists',
             'list' =>  $sPrefix . '-list-',
+            'entry_popup_add' => $sPrefix . '-add-entry-popup',
+            'entry_popup_edit' => $sPrefix . '-add-entry-popup',
         ]);
 
         $this->_bAttachmentsInTimeline = false;
