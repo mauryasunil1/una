@@ -344,9 +344,10 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
 
                 $aInputs['by_context'] = [
                     'name' => 'by_context',
-                    'type' => 'select',
+                    'type' => $this->_bIsApi ? 'selector' : 'select',
+                    'is_single' => true,
                     'caption' => _t('_bx_timeline_form_filters_input_by_contexts'),
-                    'values' => [
+                    'values' => $this->_bIsApi ? [] : [
                         ['key' => 0, 'value' => _t('_bx_timeline_form_filters_input_by_contexts_any')],
                     ]
                 ];
@@ -359,7 +360,7 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
                     if(empty($aContextsIds) || !is_array($aContextsIds))
                         continue;
 
-                    if($bShowGrouped)
+                    if($bShowGrouped && !$this->_bIsApi)
                         $aInputs['by_context']['values'][] = ['type' => 'group_header', 'value' => ($sLk = '_' . $sContext) && ($_sLk = _t($sLk)) && strcmp($sLk, $_sLk) != 0 ? $_sLk : $aContext['title']];
 
                     foreach($aContextsIds as $iContextId) {
@@ -370,7 +371,7 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
                         $aInputs['by_context']['values'][] = ['key' => $sContext . '|' . $iContextId, 'value' => $oContext->getDisplayName()];
                     }
 
-                    if($bShowGrouped)
+                    if($bShowGrouped && !$this->_bIsApi)
                         $aInputs['by_context']['values'][] = ['type' => 'group_end'];
                 }
             }
@@ -403,30 +404,57 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
         uasort($aModules, function($aV1, $aV2) {
             return strcmp($aV1['value'], $aV2['value']);
         });
-
-        $aInputs = array_merge($aInputs, [
-            'by_module' => [
-                'name' => 'by_module',
-                'type' => 'radio_set',
-                'caption' => _t('_bx_timeline_form_filters_input_by_modules'),
-                'values' => [
-                    ['key' => 'all', 'value' => _t('_bx_timeline_form_filters_input_by_modules_all')],
-                    ['key' => 'selected', 'value' => _t('_bx_timeline_form_filters_input_by_modules_selected')]
+        if ($this->_bIsApi){
+            $aInputs = array_merge($aInputs, [
+                'modules' => [
+                    'name' => 'modules',
+                    'type' => 'checkbox_set',
+                     'caption' => _t('_bx_timeline_form_filters_input_by_modules'),
+                    'values' => array_values($aModules),
+                    'tr_attrs' => ['class' => 'modules', 'style' => 'display:none']
+                ]
+            ]);
+        }else{
+            $aInputs = array_merge($aInputs, [
+                'by_module' => [
+                    'name' => 'by_module',
+                    'type' => 'radio_set',
+                    'caption' => _t('_bx_timeline_form_filters_input_by_modules'),
+                    'values' => [
+                        ['key' => 'all', 'value' => _t('_bx_timeline_form_filters_input_by_modules_all')],
+                        ['key' => 'selected', 'value' => _t('_bx_timeline_form_filters_input_by_modules_selected')]
+                    ],
+                    'value' => 'all',
+                    'attrs' => ['onchange' => $sJsObject . '.onFilterByModuleChange(this)'],
+                    'dv_thd' => 1
                 ],
-                'value' => 'all',
-                'attrs' => ['onchange' => $sJsObject . '.onFilterByModuleChange(this)'],
-                'dv_thd' => 1
-            ],
-            'modules' => [
-                'name' => 'modules',
+                'modules' => [
+                    'name' => 'modules',
+                    'type' => 'checkbox_set',
+                    'values' => array_values($aModules),
+                    'tr_attrs' => ['class' => 'modules', 'style' => 'display:none']
+                ]
+            ]);
+        }
+        
+        //--- by Media
+        if ($this->_bIsApi){
+            $aInputs = array_merge($aInputs, [
+            'media' => [
+                'name' => 'media',
                 'type' => 'checkbox_set',
-                'values' => array_values($aModules),
-                'tr_attrs' => ['class' => 'modules', 'style' => 'display:none']
+                'caption' => _t('_bx_timeline_form_filters_input_by_media'),
+                'values' => [
+                    ['key' => 'images', 'value' => _t('_bx_timeline_form_filters_input_by_media_images')],
+                    ['key' => 'videos', 'value' => _t('_bx_timeline_form_filters_input_by_media_videos')],
+                    ['key' => 'files', 'value' => _t('_bx_timeline_form_filters_input_by_media_files')]
+                ],
+                'tr_attrs' => ['class' => 'media', 'style' => 'display:none']
             ]
         ]);
-
-        //--- by Media
-        $aInputs = array_merge($aInputs, [
+        }
+        else{
+            $aInputs = array_merge($aInputs, [
             'by_media' => [
                 'name' => 'by_media',
                 'type' => 'radio_set',
@@ -449,7 +477,8 @@ class BxTimelineTemplate extends BxBaseModNotificationsTemplate
                 ],
                 'tr_attrs' => ['class' => 'media', 'style' => 'display:none']
             ]
-        ]);
+        ]);   
+        }
 
         $aForm = [
             'form_attrs' => [
