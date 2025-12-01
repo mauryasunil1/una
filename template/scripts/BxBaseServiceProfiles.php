@@ -1057,10 +1057,44 @@ class BxBaseServiceProfiles extends BxDol
         if($this->_bIsApi)
             $aParams = bx_api_get_browse_params($aParams, true);
 
+        return $this->_serviceBrowseRecommendations($iProfileId, array_merge([
+            'object' => 'sys_friends',
+            'uri' => 'browse_recommendations_friends',
+        ], $aParams));
+    }
+
+    public function serviceBrowseRecommendationsSubscriptions ($iProfileId = 0, $aParams = [])
+    {
+        if($this->_bIsApi)
+            $aParams = bx_api_get_browse_params($aParams, true);
+
+        $aModules = bx_srv('system', 'get_modules_by_type', ['profile', ['name_as_key' => true]]);
+        
+        return $this->_serviceBrowseRecommendations($iProfileId, array_merge([
+            'object' => 'sys_subscriptions',
+            'uri' => 'browse_recommendations_subscriptions',
+            'type' => !empty($aModules) && is_array($aModules) ? array_keys($aModules) : '',
+        ], $aParams));
+    }
+
+    protected function _serviceBrowseRecommendations($iProfileId = 0, $aParams = [])
+    {
         if(!$iProfileId)
             $iProfileId = bx_get_logged_profile_id();
         if(!$iProfileId)
             return '';
+
+        $sObject = '';
+        if(isset($aParams['object'])) {
+            $sObject = $aParams['object'];
+            unset($aParams['object']);
+        }
+
+        $sUri = '';
+        if(isset($aParams['uri'])) {
+            $sUri = $aParams['uri'];
+            unset($aParams['uri']);
+        }
 
         $aParams = array_merge([
             'empty_message' => false,
@@ -1074,19 +1108,28 @@ class BxBaseServiceProfiles extends BxDol
         if(($iPerPageGet = bx_get('per_page')) !== false)
             $aParams['per_page'] = (int)$iPerPageGet;
 
-        $oRecommendation = BxDolRecommendation::getObjectInstance('sys_friends');
+        $oRecommendation = BxDolRecommendation::getObjectInstance($sObject);
         if(!$oRecommendation)
             return false;
 
-        if(bx_is_api()) {
-            $aData = $oRecommendation->getCodeAPI($iProfileId, $aParams);
-            $aData = array_merge($aData, [
-                'module' => 'system',
-                'unit' => 'mixed', 
-                'request_url' => '/api.php?r=system/browse_recommendations_friends/TemplServiceProfiles&params[]=' . $iProfileId . '&params[]='
-            ]);
+        if($this->_bIsApi) {
+            $aBlock = BxDolPage::getBlockProcessing();
+            
+            $sContentType = 'browse';
+            if(($sK = 'config_api') && $aBlock[$sK] && is_array($aBlock[$sK]))
+                $sContentType = $aBlock[$sK]['content_type'] ?? $sContentType;
 
-            return [bx_api_get_block('browse', $aData)];
+            $bBrowseSimple = $sContentType == 'browse_simple';
+
+            $aData = $oRecommendation->getCodeAPI($iProfileId, array_merge($aParams, ['force_get_data' => $bBrowseSimple]));
+            if(!$bBrowseSimple || $aData['data'])
+                $aData = bx_api_get_block($sContentType, array_merge($aData, [
+                    'module' => 'system',
+                    'unit' => 'mixed', 
+                    'request_url' => '/api.php?r=system/' . $sUri . '/TemplServiceProfiles&params[]=' . $iProfileId . '&params[]='
+                ]));
+
+            return [$aData];
         }
 
         $sCode = $oRecommendation->getCode($iProfileId, $aParams);
@@ -1121,53 +1164,6 @@ class BxBaseServiceProfiles extends BxDol
             return true;//array('code' => 2, 'msg' => _t('_error occured'));
 
         return true;//$aResult;
-    }
-
-    public function serviceBrowseRecommendationsSubscriptions ($iProfileId = 0, $aParams = [])
-    {
-        if($this->_bIsApi)
-            $aParams = bx_api_get_browse_params($aParams, true);
-
-        if(!$iProfileId)
-            $iProfileId = bx_get_logged_profile_id();
-        if(!$iProfileId)
-            return '';
-
-        $aModules = bx_srv('system', 'get_modules_by_type', ['profile', ['name_as_key' => true]]);
-
-        $aParams = array_merge([
-            'empty_message' => false,
-            'type' => !empty($aModules) && is_array($aModules) ? array_keys($aModules) : '',
-            'start' => 0,
-            'per_page' => 0
-        ], $aParams);
-
-        if(($iStartGet = bx_get('start')) !== false)
-            $aParams['start'] = (int)$iStartGet;
-
-        if(($iPerPageGet = bx_get('per_page')) !== false)
-            $aParams['per_page'] = (int)$iPerPageGet;
-
-        $oRecommendation = BxDolRecommendation::getObjectInstance('sys_subscriptions');
-        if(!$oRecommendation)
-            return false;
-
-        if(bx_is_api()) {
-            $aData = $oRecommendation->getCodeAPI($iProfileId, $aParams);
-            $aData = array_merge($aData, [
-                'module' => 'system',
-                'unit' => 'mixed',
-                'request_url' => '/api.php?r=system/browse_recommendations_subscriptions/TemplServiceProfiles&params[]=' . $iProfileId . '&params[]='
-            ]);
-
-            return [bx_api_get_block('browse', $aData)];
-        }
-
-        $sCode = $oRecommendation->getCode($iProfileId, $aParams);
-        if(!$sCode && $aParams['empty_message'])
-            $sCode = MsgBox(_t('_Empty'));
-
-        return $sCode;
     }
 
     public function serviceAccountProfileSwitcher ($iAccountId = false, $iActiveProfileId = null, $sUrlProfileAction = '', $bShowAll = 0, $sButtonTitle = '', $sProfileTemplate = '')

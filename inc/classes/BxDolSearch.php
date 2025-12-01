@@ -569,7 +569,7 @@ class BxDolSearchResult implements iBxDolReplaceable
         return $sCode;
     }
 
-    function processingAPI () 
+    function processingAPI ($bForceGetData = false) 
     {
         $sModule = 'system';
         $sUnitType = 'content';
@@ -590,7 +590,7 @@ class BxDolSearchResult implements iBxDolReplaceable
         if(in_array($this->sUnitViewDefault, ['showcase', 'gallery']))
             $sUnit = 'card';
         
-        $aData = defined('BX_API_PAGE') ? [] : $this->decodeDataAPI($this->getSearchData());
+        $aData = defined('BX_API_PAGE') && !$bForceGetData ? [] : $this->decodeDataAPI($this->getSearchData());
         
         $aParams =  [
             'per_page' => $this->aCurrent['paginate']['perPage'],

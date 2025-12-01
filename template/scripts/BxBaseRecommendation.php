@@ -97,8 +97,14 @@ class BxBaseRecommendation extends BxDolRecommendation
         $iStart = !empty($aParams['start']) ? (int)$aParams['start'] : 0;
         $iPerPage = !empty($aParams['per_page']) ? (int)$aParams['per_page'] : $this->_iPerPageDefault;
 
+        $bForceGetData = false;
+        if(($sK = 'force_get_data') && isset($aParams[$sK])) {
+            $bForceGetData = (bool)$aParams[$sK];
+            unset($aParams[$sK]);
+        }
+
         $aItems = [];
-        if(!defined('BX_API_PAGE'))
+        if(!defined('BX_API_PAGE') || $bForceGetData)
             $aItems = $this->_oDb->get($iProfileId, $this->_aObject['id'], $aParams);
 
         $aData = [];

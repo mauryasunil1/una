@@ -113,6 +113,8 @@
  */
 class BxDolPage extends BxDolFactory implements iBxDolFactoryObject, iBxDolReplaceable
 {
+    protected static $_aBlockProcessing = [];
+
     protected $_sObject;
     protected $_aObject;
     protected $_oQuery;
@@ -724,6 +726,21 @@ class BxDolPage extends BxDolFactory implements iBxDolFactoryObject, iBxDolRepla
         $sData = is_array($mixedData) ? json_encode($mixedData) : $mixedData;
 
         return $oDb->setPageBlockData($iBlockId, $iContentId, $sContentModule, $sData);
+    }
+    
+    static public function getBlockProcessing()
+    {
+        return self::$_aBlockProcessing;
+    }
+
+    static public function setBlockProcessing($aBlock)
+    {
+        self::$_aBlockProcessing = $aBlock && is_array($aBlock) ? $aBlock : [];
+    }
+
+    static public function unsetBlockProcessing()
+    {
+        self::$_aBlockProcessing = [];
     }
 
     /**

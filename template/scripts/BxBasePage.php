@@ -661,9 +661,9 @@ class BxBasePage extends BxDolPage
                     $aContexts[] = BxDolProfile::getData($iCpId);
 
                 $aInvitedTo = [];
-                $aInvitations = bx_srv($sContextSwitcher, 'invitations', [$iLogged, true]);
-                foreach($aInvitations as $aInvitation)
-                    $aInvitedTo[] = BxDolProfile::getData($aInvitation['group_profile_id']);
+                if(($aInvitations = bx_srv($sContextSwitcher, 'invitations', [$iLogged, true])) && is_array($aInvitations))
+                    foreach($aInvitations as $aInvitation)
+                        $aInvitedTo[] = BxDolProfile::getData($aInvitation['group_profile_id']);
 
                 $aInfo = [];
                 if(($iId = bx_get('id')) !== false) {
@@ -740,7 +740,7 @@ class BxBasePage extends BxDolPage
 
         $aCells = $this->_oQuery->getPageBlocks(true);
         foreach($aCells as $sKey => &$aCell) {
-            foreach($aCell as $i => $aBlock) {     
+            foreach($aCell as $i => &$aBlock) {
                 if(!$this->_isVisibleBlock($aBlock)) {
                     unset($aCells[$sKey][$i]);
                     continue;
@@ -761,6 +761,12 @@ class BxBasePage extends BxDolPage
                 if($bBlocks && !in_array($sSource, $aBlocks)) {
                     unset($aCells[$sKey][$i]);
                     continue;
+                }
+
+                if(($sK = 'config_api') && !empty($aBlock[$sK])) {
+                    $aConfigApi = json_decode($aBlock[$sK], true);
+                    if(!empty($aConfigApi) && is_array($aConfigApi))
+                        $aBlock[$sK] = $aConfigApi;
                 }
 
                 $mBlock = $aBlock['content'];
@@ -1313,11 +1319,15 @@ class BxBasePage extends BxDolPage
      */
     protected function _getBlockService ($aBlock)
     {
-        $aMarkers = array_merge($this->_aMarkers, [
-            'block_id' => $aBlock['id']
-        ]);
+        self::setBlockProcessing($aBlock);
 
-        return BxDolService::callSerialized($aBlock['content'], $aMarkers);
+        $aResult = BxDolService::callSerialized($aBlock['content'], array_merge($this->_aMarkers, [
+            'block_id' => $aBlock['id']
+        ]));
+
+        self::unsetBlockProcessing();
+
+        return $aResult;
     }
 
     /**

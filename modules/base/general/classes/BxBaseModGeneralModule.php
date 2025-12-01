@@ -3723,8 +3723,8 @@ class BxBaseModGeneralModule extends BxDolModule
 
     public function _serviceBrowse ($sMode, $aParams = false, $iDesignBox = BX_DB_PADDING_DEF, $bDisplayEmptyMsg = false, $bAjaxPaginate = true, $sClassSearchResult = 'SearchResult')
     {
-        if (CHECK_ACTION_RESULT_ALLOWED !== ($sMsg = $this->checkAllowedBrowse()))
-            return bx_is_api() ? [bx_api_get_msg($sMsg)] : MsgBox($sMsg);
+        if(CHECK_ACTION_RESULT_ALLOWED !== ($sMsg = $this->checkAllowedBrowse()))
+            return $this->_bIsApi ? [bx_api_get_msg($sMsg)] : MsgBox($sMsg);
 
         bx_import($sClassSearchResult, $this->_aModule);
         $sClass = $this->_aModule['class_prefix'] . $sClassSearchResult;
@@ -3734,16 +3734,29 @@ class BxBaseModGeneralModule extends BxDolModule
         $o->setDisplayEmptyMsg($bDisplayEmptyMsg);
         $o->setAjaxPaginate($bAjaxPaginate);
         $o->setUnitParams(array('context' => $sMode));
-        if (isset($aParams['condition']) && is_array($aParams['condition']))
+        if(isset($aParams['condition']) && is_array($aParams['condition']))
             $o->setCustomCurrentCondition($aParams['condition']);
 
-        if ($o->isError)
+        if($o->isError)
             return '';
 
-        if ($s = $o->processing())
-            return bx_is_api() ? [bx_api_get_block('browse', $s)] : $s;
+        if($this->_bIsApi) {
+            $aBlock = BxDolPage::getBlockProcessing();
+
+            $sContentType = 'browse';
+            if(($sK = 'config_api') && $aBlock[$sK] && is_array($aBlock[$sK]))
+                $sContentType = $aBlock[$sK]['content_type'] ?? $sContentType;
+
+            $bBrowseSimple = $sContentType == 'browse_simple';
+
+            $a = $o->processingAPI($bBrowseSimple);
+            if(!$bBrowseSimple || $a['data'])
+                $a = bx_api_get_block($sContentType, $a);
+
+            return [$a];
+        }
         else
-            return '';
+            return ($s = $o->processing()) ? $s : '';
     }
 
     /**

@@ -91,9 +91,9 @@ class BxBaseModGeneralSearchResult extends BxTemplSearchResult
         return parent::rss();
     }
 
-    function processingAPI () 
+    function processingAPI ($bForceGetData = false) 
     {
-        $aResult = parent::processingAPI();
+        $aResult = parent::processingAPI($bForceGetData);
 
         if(isset($this->_aParams['filters']) && is_array($this->_aParams['filters'])) {
             $oModule = $this->getMain();

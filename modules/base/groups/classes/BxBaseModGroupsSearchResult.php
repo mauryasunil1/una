@@ -38,11 +38,11 @@ class BxBaseModGroupsSearchResult extends BxBaseModProfileSearchResult
         
         return $aResult;
     }
-    
-    public function processingAPI () 
+
+    public function processingAPI ($bForceGetData = false) 
     {
-        $aResult = parent::processingAPI();
-        
+        $aResult = parent::processingAPI($bForceGetData);
+
         switch($this->_sMode) {
             case 'created_entries':
                 if(isset($this->_aParams['author']))
